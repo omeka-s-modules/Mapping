@@ -1,6 +1,30 @@
 $(document).ready( function() {
 
-var mappingMap = $('#mapping-map');
+// Initialise the map.
+var map = L.map('mapping-map').setView([0, 0], 1);
+// Initialise the tile layer.
+var tileLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+});
+// Initialise the feature group to store editable layers
+var drawnItems = new L.FeatureGroup();
+// Initialise the draw control and pass it the feature group of editable layers
+var drawControl = new L.Control.Draw({
+    draw: {
+        polyline: false,
+        polygon: false,
+        rectangle: false,
+        circle: false
+    },
+    edit: {
+        featureGroup: drawnItems
+    }
+});
+
+// Add the layers and controls to the map.
+map.addLayer(tileLayer);
+map.addLayer(drawnItems);
+map.addControl(drawControl);
 
 var addMarker = function(marker) {
     drawnItems.addLayer(marker);
@@ -18,7 +42,7 @@ var addMarker = function(marker) {
 };
 
 var editMarker = function(marker) {
-    // Edit the corresponding marker inputs.
+    // Edit the corresponding marker form inputs.
     $('input[name="o-module-mapping:geo[' + marker._leaflet_id + '][o-module-mapping:latitude]"]')
         .val(marker.getLatLng().lat);
     $('input[name="o-module-mapping:geo[' + marker._leaflet_id + '][o-module-mapping:longitude]"]')
@@ -30,32 +54,8 @@ var deleteMarker = function(marker) {
     $('input[name^="o-module-mapping:geo[' + marker._leaflet_id + ']"]').remove();
 }
 
-// Initialise the map and tile layer.
-var map = L.map('mapping-map').setView([0, 0], 1);
-L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-}).addTo(map);
-
-// Initialise the feature group to store editable layers
-var drawnItems = new L.FeatureGroup();
-map.addLayer(drawnItems);
-
-// Initialise the draw control and pass it the feature group of editable layers
-var drawControl = new L.Control.Draw({
-    draw: {
-        polyline: false,
-        polygon: false,
-        rectangle: false,
-        circle: false
-    },
-    edit: {
-        featureGroup: drawnItems
-    }
-});
-map.addControl(drawControl);
-
 // Add saved markers to the map.
-$.each(mappingMap.data('markers'), function(index, value) {
+$.each($('#mapping-map').data('markers'), function(index, value) {
     var latLng = L.latLng(value['o-module-mapping:latitude'], value['o-module-mapping:longitude']);
     var marker = L.marker(latLng);
     addMarker(marker);
