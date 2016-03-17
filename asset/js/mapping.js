@@ -90,12 +90,21 @@ map.on('draw:deleted', function (e) {
     });
 });
 
-// Switching sections changes map dimensions, so update the map.
+// Switching sections changes map dimensions, so make the necessary adjustments.
 $('a[href="#mapping-section"]').on('click', function(e) {
     map.invalidateSize();
 });
 
+// Fit the bounds around the existing markers.
+$('#mapping-fit-bounds').on('click', function(e) {
+    e.preventDefault()
+    if (drawnItems.getBounds().isValid()) {
+        map.fitBounds(drawnItems.getBounds());
+    }
+});
+
 $('#mapping-wms-base-url-set').on('click', function(e) {
+    e.preventDefault()
     wms = L.tileLayer.wms($('#mapping-wms-base-url').val(), {
         format: 'image/png',
     }).addTo(map);
