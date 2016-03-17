@@ -9,16 +9,12 @@ var addMarker = function(marker) {
     var mappingForm = $('#mapping-form');
     mappingForm.append($('<input>')
         .attr('type', 'hidden')
-        .attr('name', 'mapping:geo[' + marker._leaflet_id + '][mapping:latitude]')
+        .attr('name', 'o-module-mapping:geo[' + marker._leaflet_id + '][o-module-mapping:latitude]')
         .val(marker.getLatLng().lat));
     mappingForm.append($('<input>')
         .attr('type', 'hidden')
-        .attr('name', 'mapping:geo[' + marker._leaflet_id + '][mapping:longitude]')
+        .attr('name', 'o-module-mapping:geo[' + marker._leaflet_id + '][o-module-mapping:longitude]')
         .val(marker.getLatLng().lng));
-    mappingForm.append($('<input>')
-        .attr('type', 'hidden')
-        .attr('name', 'mapping:geo[' + marker._leaflet_id + '][@type]')
-        .val('mapping:GeoCoordinates'));
 };
 
 var editMarker = function(marker) {
@@ -60,7 +56,7 @@ map.addControl(drawControl);
 
 // Add saved markers to the map.
 $.each(mappingMap.data('markers'), function(index, value) {
-    var latLng = L.latLng(value['mapping:latitude'], value['mapping:longitude']);
+    var latLng = L.latLng(value['o-module-mapping:latitude'], value['o-module-mapping:longitude']);
     var marker = L.marker(latLng);
     addMarker(marker);
 });

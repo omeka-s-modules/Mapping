@@ -7,7 +7,7 @@ $this->headScript()->appendFile($this->assetUrl('js/mapping.js', 'Mapping'));
 
 if (isset($item)) {
     $itemJson = $item->jsonSerialize();
-    $markers = isset($itemJson['mapping:geo']) ? json_encode($itemJson['mapping:geo']) : '[]';
+    $markers = isset($itemJson['o-module-mapping:geo']) ? json_encode($itemJson['o-module-mapping:geo']) : '[]';
 } else {
     $markers = '[]';
 }
