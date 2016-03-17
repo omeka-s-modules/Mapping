@@ -19,15 +19,15 @@ var addMarker = function(marker) {
 
 var editMarker = function(marker) {
     // Edit the corresponding marker inputs.
-    $('input[name="mapping:geo[' + marker._leaflet_id + '][mapping:latitude]"]')
+    $('input[name="o-module-mapping:geo[' + marker._leaflet_id + '][o-module-mapping:latitude]"]')
         .val(marker.getLatLng().lat);
-    $('input[name="mapping:geo[' + marker._leaflet_id + '][mapping:longitude]"]')
+    $('input[name="o-module-mapping:geo[' + marker._leaflet_id + '][o-module-mapping:longitude]"]')
         .val(marker.getLatLng().lng);
 }
 
 var deleteMarker = function(marker) {
     // Remove the corresponding marker inputs from the form.
-    $('input[name^="mapping:geo[' + marker._leaflet_id + ']"]').remove();
+    $('input[name^="o-module-mapping:geo[' + marker._leaflet_id + ']"]').remove();
 }
 
 // Initialise the map and tile layer.
