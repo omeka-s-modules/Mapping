@@ -64,11 +64,13 @@ class Module extends AbstractModule
                         '@type' => 'o-module-mapping:GeoCoordinates',
                         'o-module-mapping:latitude' => '39.36827914916014',
                         'o-module-mapping:longitude' => '-105.809326171875',
+                        'o-module-mapping:name' => 'this is a marker label',
                     ],
                     [
                         '@type' => 'o-module-mapping:GeoCoordinates',
                         'o-module-mapping:latitude' => '25.16517336866393',
                         'o-module-mapping:longitude' => '14.425048828125',
+                        'o-module-mapping:name' => 'this is yet another marker label',
                     ],
                 ];
                 $event->setParam('jsonLd', $jsonLd);

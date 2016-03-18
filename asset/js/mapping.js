@@ -1,5 +1,6 @@
 $(document).ready( function() {
 
+var mappingForm = $('#mapping-form');
 // Initialise the map.
 var map = L.map('mapping-map').setView([0, 0], 1);
 // Initialise the tile layer.
@@ -26,11 +27,21 @@ map.addLayer(tileLayer);
 map.addLayer(drawnItems);
 map.addControl(drawControl);
 
-var addMarker = function(marker) {
+var addMarker = function(marker, markerLabel) {
+
+    // Build the marker popup HTML.
+    var labelInput = $('<input>')
+        .attr('type', 'text')
+        .attr('size', 40)
+        .addClass('mapping-marker-label')
+        .val(markerLabel)
+        .data('marker', marker);
+    var popupHtml = $('<label>').append('Label this marker').append(labelInput);
+
+    marker.bindPopup(popupHtml[0]);
     drawnItems.addLayer(marker);
 
     // Add the corresponding marker inputs to the form. 
-    var mappingForm = $('#mapping-form');
     mappingForm.append($('<input>')
         .attr('type', 'hidden')
         .attr('name', 'o-module-mapping:geo[' + marker._leaflet_id + '][o-module-mapping:latitude]')
@@ -39,6 +50,10 @@ var addMarker = function(marker) {
         .attr('type', 'hidden')
         .attr('name', 'o-module-mapping:geo[' + marker._leaflet_id + '][o-module-mapping:longitude]')
         .val(marker.getLatLng().lng));
+    mappingForm.append($('<input>')
+        .attr('type', 'hidden')
+        .attr('name', 'o-module-mapping:geo[' + marker._leaflet_id + '][o-module-mapping:name]')
+        .val(markerLabel));
 };
 
 var editMarker = function(marker) {
@@ -55,10 +70,10 @@ var deleteMarker = function(marker) {
 }
 
 // Add saved markers to the map.
-$.each($('#mapping-map').data('markers'), function(index, value) {
-    var latLng = L.latLng(value['o-module-mapping:latitude'], value['o-module-mapping:longitude']);
+$.each($('#mapping-map').data('markers'), function(index, data) {
+    var latLng = L.latLng(data['o-module-mapping:latitude'], data['o-module-mapping:longitude']);
     var marker = L.marker(latLng);
-    addMarker(marker);
+    addMarker(marker, data['o-module-mapping:name']);
 });
 
 // Add new markers.
@@ -97,6 +112,14 @@ $('#mapping-fit-bounds').on('click', function(e) {
     if (drawnItems.getBounds().isValid()) {
         map.fitBounds(drawnItems.getBounds());
     }
+});
+
+// Update corresponding form input when updating a marker label.
+$('#mapping-map').on('keyup', 'input.mapping-marker-label', function(e) {
+    var thisInput = $(this);
+    var marker = thisInput.data('marker');
+    var nameInput = $('input[name="o-module-mapping:geo[' + marker._leaflet_id + '][o-module-mapping:name]"]');
+    nameInput.val(thisInput.val());
 });
 
 $('#mapping-wms-base-url-set').on('click', function(e) {
