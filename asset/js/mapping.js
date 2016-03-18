@@ -102,7 +102,7 @@ map.on('draw:deleted', function (e) {
 });
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
-$('a[href="#mapping-section"]').on('click', function(e) {
+$('a[href="#mapping-section"], #mapping-legend').on('click', function(e) {
     map.invalidateSize();
 });
 

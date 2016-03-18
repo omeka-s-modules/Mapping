@@ -13,6 +13,7 @@ if (isset($item)) {
 }
 ?>
 <fieldset id="mapping-section" class="section">
+    <legend id="mapping-legend"><?php echo $this->translate('Mapping'); ?></legend>
     <div id="mapping-map" style="height:500px;" data-markers="<?php echo $this->escapeHtml($markers); ?>"></div>
     <div id="mapping-sidebar" class="always-open sidebar">
         <button id="mapping-fit-bounds">Fit bounds</button>
