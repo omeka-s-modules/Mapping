@@ -3,10 +3,15 @@ $(document).ready( function() {
 var mappingForm = $('#mapping-form');
 // Initialise the map.
 var map = L.map('mapping-map').setView([0, 0], 1);
-// Initialise the tile layer.
-var tileLayer = L.tileLayer('http://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-    attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-});
+// Initialise the selectable base maps.
+var baseMaps = {
+    'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
+    'Grayscale': L.tileLayer.provider('OpenStreetMap.BlackAndWhite'),
+    'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
+    'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
+};
+// Initialize the layer control and pass it the base maps.
+var layerControl = L.control.layers(baseMaps);
 // Initialise the feature group to store editable layers
 var drawnItems = new L.FeatureGroup();
 // Initialise the draw control and pass it the feature group of editable layers
@@ -23,7 +28,8 @@ var drawControl = new L.Control.Draw({
 });
 
 // Add the layers and controls to the map.
-map.addLayer(tileLayer);
+map.addLayer(baseMaps['Streets']);
+map.addControl(layerControl);
 map.addLayer(drawnItems);
 map.addControl(drawControl);
 
@@ -106,14 +112,6 @@ $('a[href="#mapping-section"], #mapping-legend').on('click', function(e) {
     map.invalidateSize();
 });
 
-// Fit the bounds around the existing markers.
-$('#mapping-fit-bounds').on('click', function(e) {
-    e.preventDefault()
-    if (drawnItems.getBounds().isValid()) {
-        map.fitBounds(drawnItems.getBounds());
-    }
-});
-
 // Update corresponding form input when updating a marker label.
 $('#mapping-map').on('keyup', 'input.mapping-marker-label', function(e) {
     var thisInput = $(this);
@@ -122,11 +120,20 @@ $('#mapping-map').on('keyup', 'input.mapping-marker-label', function(e) {
     nameInput.val(thisInput.val());
 });
 
+// Fit the bounds around the existing markers.
+$('#mapping-fit-bounds').on('click', function(e) {
+    e.preventDefault()
+    if (drawnItems.getBounds().isValid()) {
+        map.fitBounds(drawnItems.getBounds());
+    }
+});
+
 $('#mapping-wms-base-url-set').on('click', function(e) {
     e.preventDefault()
-    wms = L.tileLayer.wms($('#mapping-wms-base-url').val(), {
+    var wms = L.tileLayer.wms($('#mapping-wms-base-url').val(), {
         format: 'image/png',
     }).addTo(map);
+    layerControl.addOverlay(wms, 'WMS');
 });
 
 });
