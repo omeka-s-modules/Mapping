@@ -55,24 +55,7 @@ class Module extends AbstractModule
             function (Event $event) {
                 $itemRepresentation = $event->getTarget();
                 $jsonLd = $event->getParam('jsonLd');
-                $jsonLd['@context']['o-module-mapping'] = 'http://schema.org/';
-
-                // @todo Get the geographical data needed to place saved markers
-                // on the map. Using test data for now.
-                $jsonLd['o-module-mapping:geo'] = [
-                    [
-                        '@type' => 'o-module-mapping:GeoCoordinates',
-                        'o-module-mapping:latitude' => '39.36827914916014',
-                        'o-module-mapping:longitude' => '-105.809326171875',
-                        'o-module-mapping:name' => 'this is a marker label',
-                    ],
-                    [
-                        '@type' => 'o-module-mapping:GeoCoordinates',
-                        'o-module-mapping:latitude' => '25.16517336866393',
-                        'o-module-mapping:longitude' => '14.425048828125',
-                        'o-module-mapping:name' => 'this is yet another marker label',
-                    ],
-                ];
+                // @todo Get mapping data.
                 $event->setParam('jsonLd', $jsonLd);
             }
         );
@@ -82,8 +65,8 @@ class Module extends AbstractModule
             function (Event $event) {
                 $request = $event->getParam('request');
                 $jsonLd = $request->getContent();
-                if (isset($jsonLd['o-module-mapping:geo'])) {
-                    // @todo Save marker data to the database.
+                if (isset($jsonLd['o-module-mapping:mapping'])) {
+                    // @todo Save mapping data
                 }
             }
         );
