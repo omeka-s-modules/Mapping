@@ -1,6 +1,6 @@
 $(document).ready( function() {
 
-var mappingDiv = $('#mapping-map');
+var mappingMap = $('#mapping-map');
 var mappingForm = $('#mapping-form');
 // Initialise the map.
 var map = L.map('mapping-map').setView([0, 0], 1);
@@ -34,7 +34,7 @@ map.addControl(layerControl);
 map.addLayer(drawnItems);
 map.addControl(drawControl);
 
-var addMarker = function(marker, markerLabel) {
+var addMarker = function(marker, markerId, markerLabel) {
 
     // Build the marker popup HTML.
     var labelInput = $('<input>')
@@ -49,10 +49,12 @@ var addMarker = function(marker, markerLabel) {
     drawnItems.addLayer(marker);
 
     // Add the corresponding marker inputs to the form.
-    mappingForm.append($('<input>')
-        .attr('type', 'hidden')
-        .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o:item][o:id]')
-        .val(mappingDiv.data('itemId')));
+    if (markerId) {
+        mappingForm.append($('<input>')
+            .attr('type', 'hidden')
+            .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o:id]')
+            .val(markerId));
+    }
     mappingForm.append($('<input>')
         .attr('type', 'hidden')
         .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:lat]')
@@ -81,10 +83,10 @@ var deleteMarker = function(marker) {
 }
 
 // Add saved markers to the map.
-$.each(mappingDiv.data('markers'), function(index, data) {
+$.each(mappingMap.data('markers'), function(index, data) {
     var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
     var marker = L.marker(latLng);
-    addMarker(marker, data['o-module-mapping:label']);
+    addMarker(marker, data['o:id'], data['o-module-mapping:label']);
 });
 
 // Add new markers.
@@ -118,7 +120,7 @@ $('a[href="#mapping-section"], #mapping-legend').on('click', function(e) {
 });
 
 // Update corresponding form input when updating a marker label.
-mappingDiv.on('keyup', 'input.mapping-marker-label', function(e) {
+mappingMap.on('keyup', 'input.mapping-marker-label', function(e) {
     var thisInput = $(this);
     var marker = thisInput.data('marker');
     var labelInput = $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:label]"]');

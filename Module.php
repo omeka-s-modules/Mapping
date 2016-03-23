@@ -97,11 +97,11 @@ class Module extends AbstractModule
             // Update and create markers passed in the request.
             $markersData = $request->getValue('o-module-mapping:marker', []);
             foreach ($markersData as $markerData) {
+                $markerData['o:item']['o:id'] = $item->id();
                 if (isset($markerData['o:id'])) {
                     $response = $api->update('mapping_markers', $markerData['o:id'], $markerData);
                     $retainMarkerIds[] = $markerData['o:id'];
                 } else {
-                    $markerData['o:item']['o:id'] = $item->id();
                     $response = $api->create('mapping_markers', $markerData);
                 }
                 if ($response->isError()) {
