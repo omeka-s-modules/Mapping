@@ -19,22 +19,25 @@ class Module extends AbstractModule
         parent::onBootstrap($event);
 
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
+        $acl->allow(
+            null,
+            'Mapping\Api\Adapter\MappingMarkerAdapter',
+            ['search', 'read']
+        );
+
     }
 
     public function install(ServiceLocatorInterface $serviceLocator)
     {
         $conn = $serviceLocator->get('Omeka\Connection');
-        $conn->exec('CREATE TABLE mapping_marker (id INT AUTO_INCREMENT NOT NULL, mapping_id INT NOT NULL, lat DOUBLE PRECISION NOT NULL, lng DOUBLE PRECISION NOT NULL, `label` VARCHAR(255) DEFAULT NULL, INDEX IDX_667C9244FABB77CC (mapping_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-        $conn->exec('CREATE TABLE mapping (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, center_lat DOUBLE PRECISION DEFAULT NULL, center_lng DOUBLE PRECISION DEFAULT NULL, UNIQUE INDEX UNIQ_49E62C8A126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-        $conn->exec('ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244FABB77CC FOREIGN KEY (mapping_id) REFERENCES mapping (id);');
-        $conn->exec('ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;');
+        $conn->exec('CREATE TABLE mapping_marker (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, lat DOUBLE PRECISION NOT NULL, lng DOUBLE PRECISION NOT NULL, `label` VARCHAR(255) DEFAULT NULL, INDEX IDX_667C9244126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
+        $conn->exec('ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;');
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
         $conn = $serviceLocator->get('Omeka\Connection');
         $conn->exec('DROP TABLE mapping_marker');
-        $conn->exec('DROP TABLE mapping');
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
@@ -59,23 +62,63 @@ class Module extends AbstractModule
             'Omeka\Api\Representation\ItemRepresentation',
             'rep.resource.json',
             function (Event $event) {
-                $itemRepresentation = $event->getTarget();
+                $item = $event->getTarget();
                 $jsonLd = $event->getParam('jsonLd');
-                // @todo Get mapping data.
+                $response = $event->getParam('services')
+                    ->get('Omeka\ApiManager')
+                    ->search('mapping_markers', ['item_id' => $item->id()]);
+                $jsonLd['o-module-mapping:marker'] = $response->getContent();
                 $event->setParam('jsonLd', $jsonLd);
             }
         );
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
-            'api.update.post',
-            function (Event $event) {
-                $request = $event->getParam('request');
-                $jsonLd = $request->getContent();
-                if (isset($jsonLd['o-module-mapping:mapping'])) {
-                    // @todo Save mapping data
+            ['api.create.post', 'api.update.post'],
+            [$this, 'handleMarkers']
+        );
+    }
+
+    public function handleMarkers(Event $event)
+    {
+        $request = $event->getParam('request');
+        $itemAdapter = $event->getTarget();
+        if ($itemAdapter->shouldHydrate($request, 'o-module-mapping:marker')) {
+
+            $item = $event->getParam('response')->getContent();
+            $em = $this->getServiceLocator()->get('Omeka\EntityManager');
+            $api = $this->getServiceLocator()->get('Omeka\ApiManager');
+
+            // Get all marker IDs already assigned to this item.
+            $sql = 'SELECT mm.id FROM Mapping\Entity\MappingMarker mm WHERE mm.item = ?1';
+            $query = $em->createQuery($sql)->setParameter(1, $item->id());
+            $existingMarkerIds = array_map('current', $query->getResult());
+            $retainMarkerIds = [];
+
+            // Update and create markers passed in the request.
+            $markersData = $request->getValue('o-module-mapping:marker', []);
+            foreach ($markersData as $markerData) {
+                if (isset($markerData['o:id'])) {
+                    $response = $api->update('mapping_markers', $markerData['o:id'], $markerData);
+                    $retainMarkerIds[] = $markerData['o:id'];
+                } else {
+                    $markerData['o:item']['o:id'] = $item->id();
+                    $response = $api->create('mapping_markers', $markerData);
+                }
+                if ($response->isError()) {
+                    // @todo fail silently?
                 }
             }
-        );
+
+            // Delete markers not passed in the request.
+            foreach ($existingMarkerIds as $existingMarkerId) {
+                if (!in_array($existingMarkerId, $retainMarkerIds)) {
+                    $response = $api->delete('mapping_markers', $existingMarkerId);
+                }
+            }
+            if ($response->isError()) {
+                // @todo fail silently?
+            }
+        }
     }
 }
 

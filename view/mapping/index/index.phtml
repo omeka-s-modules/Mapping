@@ -6,16 +6,17 @@ $this->headScript()->appendFile($this->assetUrl('js/Leaflet.draw/0.3.0/leaflet.d
 $this->headScript()->appendFile($this->assetUrl('js/Leaflet.providers/1.1.7/leaflet-providers.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping.js', 'Mapping'));
 
+$markers = [];
 if (isset($item)) {
-    $itemJson = $item->jsonSerialize();
-    $markers = isset($itemJson['o-module-mapping:geo']) ? json_encode($itemJson['o-module-mapping:geo']) : '[]';
-} else {
-    $markers = '[]';
+    $response = $this->api()->search('mapping_markers', ['item_id' => $item->id()]);
+    $markers = $response->getContent();
 }
 ?>
 <fieldset id="mapping-section" class="section">
     <legend id="mapping-legend"><?php echo $this->translate('Mapping'); ?></legend>
-    <div id="mapping-map" style="height:500px;" data-markers="<?php echo $this->escapeHtml($markers); ?>"></div>
+    <div id="mapping-map" style="height:500px;"
+        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
+    ></div>
     <div id="mapping-sidebar" class="always-open sidebar">
         <button id="mapping-fit-bounds">Fit bounds</button>
         <input type="text" id="mapping-wms-base-url"><button id="mapping-wms-base-url-set">Set WMS</button>

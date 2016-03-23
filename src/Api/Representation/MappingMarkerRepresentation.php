@@ -1,0 +1,44 @@
+<?php
+namespace Mapping\Api\Representation;
+
+use Omeka\Api\Representation\AbstractEntityRepresentation;
+
+class MappingMarkerRepresentation extends AbstractEntityRepresentation
+{
+    public function getJsonLdType()
+    {
+        return 'o-module-mapping:Marker';
+    }
+
+    public function getJsonLd()
+    {
+        $this->addTermDefinitionToContext('o-module-mapping', 'http://omeka.org/s/vocabs/module/mapping#');
+        return [
+            'o:item' => $this->item()->getReference(),
+            'o-module-mapping:lat' => $this->lat(),
+            'o-module-mapping:lng' => $this->lng(),
+            'o-module-mapping:label' => $this->label(),
+        ];
+    }
+
+    public function item()
+    {
+        return $this->getAdapter('items')
+            ->getRepresentation($this->resource->getItem());
+    }
+
+    public function lat()
+    {
+        return $this->resource->getLat();
+    }
+
+    public function lng()
+    {
+        return $this->resource->getLng();
+    }
+
+    public function label()
+    {
+        return $this->resource->getLabel();
+    }
+}

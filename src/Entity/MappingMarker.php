@@ -1,7 +1,8 @@
 <?php
-namespace Omeka\Entity;
+namespace Mapping\Entity;
 
 use Omeka\Entity\AbstractEntity;
+use Omeka\Entity\Item;
 
 /**
  * @Entity
@@ -14,6 +15,12 @@ class MappingMarker extends AbstractEntity
      * @GeneratedValue
      */
     protected $id;
+
+    /**
+     * @ManyToOne(targetEntity="Omeka\Entity\Item")
+     * @JoinColumn(nullable=false, onDelete="CASCADE")
+     */
+    protected $item;
 
     /**
      * @Column(type="float")
@@ -30,15 +37,19 @@ class MappingMarker extends AbstractEntity
      */
     protected $label;
 
-    /**
-     * @ManyToOne(targetEntity="Mapping", inversedBy="markers")
-     * @JoinColumn(nullable=false)
-     */
-    protected $mapping;
-
     public function getId()
     {
         return $this->id;
+    }
+
+    public function setItem(Item $item)
+    {
+        $this->item = $item;
+    }
+
+    public function getItem()
+    {
+        return $this->item;
     }
 
     public function setLat($lat)
@@ -69,10 +80,5 @@ class MappingMarker extends AbstractEntity
     public function getLabel()
     {
         return $this->label;
-    }
-
-    public function getMapping()
-    {
-        return $this->mapping;
     }
 }
