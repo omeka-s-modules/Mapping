@@ -113,10 +113,10 @@ class Module extends AbstractModule
             foreach ($existingMarkerIds as $existingMarkerId) {
                 if (!in_array($existingMarkerId, $retainMarkerIds)) {
                     $response = $api->delete('mapping_markers', $existingMarkerId);
+                    if ($response->isError()) {
+                        // @todo fail silently?
+                    }
                 }
-            }
-            if ($response->isError()) {
-                // @todo fail silently?
             }
         }
     }
