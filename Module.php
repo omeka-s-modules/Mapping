@@ -73,50 +73,54 @@ class Module extends AbstractModule
         );
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
-            ['api.create.post', 'api.update.post'],
+            'api.hydrate.post',
             [$this, 'handleMarkers']
         );
     }
 
     public function handleMarkers(Event $event)
     {
-        $request = $event->getParam('request');
         $itemAdapter = $event->getTarget();
-        if ($itemAdapter->shouldHydrate($request, 'o-module-mapping:marker')) {
+        $request = $event->getParam('request');
 
-            $item = $event->getParam('response')->getContent();
-            $em = $this->getServiceLocator()->get('Omeka\EntityManager');
-            $api = $this->getServiceLocator()->get('Omeka\ApiManager');
+        if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:marker')) {
+            return;
+        }
 
-            // Get all marker IDs already assigned to this item.
-            $sql = 'SELECT mm.id FROM Mapping\Entity\MappingMarker mm WHERE mm.item = ?1';
-            $query = $em->createQuery($sql)->setParameter(1, $item->id());
-            $existingMarkerIds = array_map('current', $query->getResult());
-            $retainMarkerIds = [];
+        $item = $event->getParam('entity');
+        $entityManager = $itemAdapter->getEntityManager();
+        $markersAdapter = $itemAdapter->getAdapter('mapping_markers');
+        $retainMarkerIds = [];
 
-            // Update and create markers passed in the request.
-            $markersData = $request->getValue('o-module-mapping:marker', []);
-            foreach ($markersData as $markerData) {
-                $markerData['o:item']['o:id'] = $item->id();
-                if (isset($markerData['o:id'])) {
-                    $response = $api->update('mapping_markers', $markerData['o:id'], $markerData);
-                    $retainMarkerIds[] = $markerData['o:id'];
-                } else {
-                    $response = $api->create('mapping_markers', $markerData);
-                }
-                if ($response->isError()) {
-                    // @todo fail silently?
-                }
+        // Create/update markers passed in the request.
+        foreach ($request->getValue('o-module-mapping:marker', []) as $markerData) {
+            if (isset($markerData['o:id'])) {
+                $subRequest = new \Omeka\Api\Request('update', 'mapping_markers');
+                $subRequest->setId($markerData['o:id']);
+                $subRequest->setContent($markerData);
+                $marker = $markersAdapter->findEntity($markerData['o:id'], $subRequest);
+                $markersAdapter->hydrateEntity($subRequest, $marker, new \Omeka\Stdlib\ErrorStore);
+                $retainMarkerIds[] = $marker->getId();
+            } else {
+                $subRequest = new \Omeka\Api\Request('create', 'mapping_markers');
+                $subRequest->setContent($markerData);
+                $marker = new \Mapping\Entity\MappingMarker;
+                $marker->setItem($item);
+                $markersAdapter->hydrateEntity($subRequest, $marker, new \Omeka\Stdlib\ErrorStore);
+                $entityManager->persist($marker);
             }
+        }
 
-            // Delete markers not passed in the request.
-            foreach ($existingMarkerIds as $existingMarkerId) {
-                if (!in_array($existingMarkerId, $retainMarkerIds)) {
-                    $response = $api->delete('mapping_markers', $existingMarkerId);
-                    if ($response->isError()) {
-                        // @todo fail silently?
-                    }
-                }
+        // Delete existing markers not passed in the request.
+        $existingMarkers = [];
+        if ($item->getId()) {
+            $dql = 'SELECT mm FROM Mapping\Entity\MappingMarker mm INDEX BY mm.id WHERE mm.item = ?1';
+            $query = $entityManager->createQuery($dql)->setParameter(1, $item->getId());
+            $existingMarkers = $query->getResult();
+        }
+        foreach ($existingMarkers as $existingMarkerId => $existingMarker) {
+            if (!in_array($existingMarkerId, $retainMarkerIds)) {
+                $entityManager->remove($existingMarker);
             }
         }
     }
