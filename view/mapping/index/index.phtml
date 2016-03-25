@@ -14,15 +14,32 @@ if (isset($item)) {
 ?>
 <fieldset id="mapping-section" class="section">
     <legend id="mapping-legend"><?php echo $this->translate('Mapping'); ?></legend>
-    <div id="mapping-map" style="height:500px;" data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"></div>
+    <div id="mapping-map" style="height:500px;"
+        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"></div>
     <div id="mapping-sidebar" class="always-open sidebar">
-        <button id="mapping-fit-bounds">Fit bounds</button>
+        <button id="mapping-fit-bounds">Fit bounds</button><br>
         <input type="text" id="mapping-wms-base-url"><button id="mapping-wms-base-url-set">Set WMS</button>
+        <div id="mapping-marker-image-selector" class="sidebar">
+            <h3>Select Image</h3>
+            <label style="font-size:16px;">
+                <input type="radio" class="mapping-marker-image-select" name="marker-image" value="" checked> No Image
+            </label>
+            <?php foreach ($item->media() as $media): ?>
+            <?php if ($media->hasThumbnails()): ?>
+            <label>
+                <input type="radio" class="mapping-marker-image-select" name="marker-image"
+                    value="<?php echo $this->escapeHtml($media->id()); ?>"
+                    data-media-thumbnail-url="<?php echo $this->escapeHtml($media->thumbnailUrl('square')); ?>">
+                <img src="<?php echo $this->escapeHtml($media->thumbnailUrl('square')); ?>" width="100" height="100">
+            </label>
+            <?php endif; ?>
+            <?php endforeach; ?>
+        </div>
     </div>
     <div id="mapping-form"></div>
 </fieldset>
 
 <div class="template mapping-marker-popup-content">
     <label>Label <input type="text" class="mapping-marker-label" size="40"></label>
-    <button class="mapping-marker-assign-media-button">Assign media</button>
+    <div class="mapping-marker-image"></div>
 </div>
