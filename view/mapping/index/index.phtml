@@ -14,12 +14,15 @@ if (isset($item)) {
 ?>
 <fieldset id="mapping-section" class="section">
     <legend id="mapping-legend"><?php echo $this->translate('Mapping'); ?></legend>
-    <div id="mapping-map" style="height:500px;"
-        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
-    ></div>
+    <div id="mapping-map" style="height:500px;" data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"></div>
     <div id="mapping-sidebar" class="always-open sidebar">
         <button id="mapping-fit-bounds">Fit bounds</button>
         <input type="text" id="mapping-wms-base-url"><button id="mapping-wms-base-url-set">Set WMS</button>
     </div>
     <div id="mapping-form"></div>
 </fieldset>
+
+<div class="template mapping-marker-popup-content">
+    <label>Label <input type="text" class="mapping-marker-label" size="40"></label>
+    <button class="mapping-marker-assign-media-button">Assign media</button>
+</div>

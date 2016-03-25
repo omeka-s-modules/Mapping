@@ -36,16 +36,11 @@ map.addControl(drawControl);
 
 var addMarker = function(marker, markerId, markerLabel) {
 
-    // Build the marker popup HTML.
-    var labelInput = $('<input>')
-        .attr('type', 'text')
-        .attr('size', 40)
-        .addClass('mapping-marker-label')
-        .val(markerLabel)
-        .data('marker', marker);
-    var popupHtml = $('<label>').append('Label this marker').append(labelInput);
+    // Build the marker popup content.
+    var popupContent = $('.template.mapping-marker-popup-content').clone().removeClass('template');
+    popupContent.find('.mapping-marker-label').val(markerLabel).data('marker', marker);
 
-    marker.bindPopup(popupHtml[0]);
+    marker.bindPopup(popupContent[0]);
     drawnItems.addLayer(marker);
 
     // Add the corresponding marker inputs to the form.
