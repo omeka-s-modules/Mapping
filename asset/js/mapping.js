@@ -42,6 +42,14 @@ var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
         .data('marker', marker)
         .data('selectedMediaId', markerMediaId);
     popupContent.find('.mapping-marker-popup-label').val(markerLabel);
+    if (markerMediaId) {
+        var mediaThumbnail = $('<img>', {
+            src: $('.mapping-marker-image-select[value="' + markerMediaId + '"').data('mediaThumbnailUrl'),
+            width: '140px',
+            height: '140px'
+        });
+        popupContent.find('.mapping-marker-popup-image').html(mediaThumbnail);
+    }
     marker.bindPopup(popupContent[0]);
 
     // Prepare image selector when marker is clicked.
@@ -107,7 +115,8 @@ var deleteMarker = function(marker) {
 $.each(mappingMap.data('markers'), function(index, data) {
     var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
     var marker = L.marker(latLng);
-    addMarker(marker, data['o:id'], data['o-module-mapping:label']);
+    var markerMediaId = data['o:media'] ? data['o:media']['o:id'] : null;
+    addMarker(marker, data['o:id'], data['o-module-mapping:label'], markerMediaId);
 });
 
 // Add new markers.

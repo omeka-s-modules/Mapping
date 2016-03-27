@@ -3,6 +3,7 @@ namespace Mapping\Entity;
 
 use Omeka\Entity\AbstractEntity;
 use Omeka\Entity\Item;
+use Omeka\Entity\Media;
 
 /**
  * @Entity
@@ -21,6 +22,12 @@ class MappingMarker extends AbstractEntity
      * @JoinColumn(nullable=false, onDelete="CASCADE")
      */
     protected $item;
+
+    /**
+     * @ManyToOne(targetEntity="Omeka\Entity\Media")
+     * @JoinColumn(nullable=true, onDelete="SET NULL")
+     */
+    protected $media;
 
     /**
      * @Column(type="float")
@@ -52,6 +59,16 @@ class MappingMarker extends AbstractEntity
         return $this->item;
     }
 
+    public function setMedia(Media $media = null)
+    {
+        $this->media = $media;
+    }
+
+    public function getMedia()
+    {
+        return $this->media;
+    }
+
     public function setLat($lat)
     {
         $this->lat = $lat;
@@ -74,7 +91,7 @@ class MappingMarker extends AbstractEntity
 
     public function setLabel($label)
     {
-        $this->label = $label;
+        $this->label = '' === trim($label) ? null : $label;
     }
 
     public function getLabel()

@@ -28,9 +28,20 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
         ErrorStore $errorStore
     ) {
         $data = $request->getContent();
-        if (Request::CREATE === $request->getOperation() && isset($data['o:item']['o:id'])) {
+        if (Request::CREATE === $request->getOperation()
+            && isset($data['o:item']['o:id'])
+        ) {
             $item = $this->getAdapter('items')->findEntity($data['o:item']['o:id']);
             $entity->setItem($item);
+        }
+        if ($this->shouldHydrate($request, 'o:media')
+            && isset($data['o:media']['o:id'])
+            && is_numeric($data['o:media']['o:id'])
+        ) {
+            $media = $this->getAdapter('media')->findEntity($data['o:media']['o:id']);
+            $entity->setMedia($media);
+        } else {
+            $entity->setMedia(null);
         }
         if ($this->shouldHydrate($request, 'o-module-mapping:lat')) {
             $entity->setLat($request->getValue('o-module-mapping:lat'));

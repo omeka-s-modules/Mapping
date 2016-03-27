@@ -15,6 +15,7 @@ class MappingMarkerRepresentation extends AbstractEntityRepresentation
         $this->addTermDefinitionToContext('o-module-mapping', 'http://omeka.org/s/vocabs/module/mapping#');
         return [
             'o:item' => $this->item()->getReference(),
+            'o:media' => $this->resource->getMedia() ? $this->media()->getReference() : null,
             'o-module-mapping:lat' => $this->lat(),
             'o-module-mapping:lng' => $this->lng(),
             'o-module-mapping:label' => $this->label(),
@@ -25,6 +26,12 @@ class MappingMarkerRepresentation extends AbstractEntityRepresentation
     {
         return $this->getAdapter('items')
             ->getRepresentation($this->resource->getItem());
+    }
+
+    public function media()
+    {
+        return $this->getAdapter('media')
+            ->getRepresentation($this->resource->getMedia());
     }
 
     public function lat()
