@@ -30,17 +30,18 @@ var drawControl = new L.Control.Draw({
 
 // Add the layers and controls to the map.
 map.addLayer(baseMaps['Streets']);
-map.addControl(layerControl);
 map.addLayer(drawnItems);
+map.addControl(layerControl);
 map.addControl(drawControl);
 
 var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
 
     // Build the marker popup content.
     var popupContent = $('.template.mapping-marker-popup-content').clone()
-        .removeClass('template').data('marker', marker);
-    popupContent.find('.mapping-marker-label').val(markerLabel);
-    popupContent.data('selectedMediaId', markerMediaId);
+        .removeClass('template')
+        .data('marker', marker)
+        .data('selectedMediaId', markerMediaId);
+    popupContent.find('.mapping-marker-popup-label').val(markerLabel);
     marker.bindPopup(popupContent[0]);
 
     // Prepare image selector when marker is clicked.
@@ -140,7 +141,7 @@ $('a[href="#mapping-section"], #mapping-legend').on('click', function(e) {
 });
 
 // Update corresponding form input when updating a marker label.
-mappingMap.on('keyup', 'input.mapping-marker-label', function(e) {
+mappingMap.on('keyup', '.mapping-marker-popup-label', function(e) {
     var thisInput = $(this);
     var marker = thisInput.closest('.mapping-marker-popup-content').data('marker');
     var labelInput = $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:label]"]');
@@ -154,12 +155,16 @@ $('input.mapping-marker-image-select').on('change', function(e) {
     var marker = popupContent.data('marker');
 
     // Render thumbnail in popup content.
-    var mediaThumbnail = $('<img>', {
-        src: thisInput.data('mediaThumbnailUrl'),
-        width: '100px',
-        height: '100px'
-    });
-    popupContent.children('.mapping-marker-image').html(mediaThumbnail);
+    var mediaThumbnail = null;
+    var mediaThumbnailUrl = thisInput.data('mediaThumbnailUrl');
+    if (mediaThumbnailUrl) {
+        var mediaThumbnail = $('<img>', {
+            src: mediaThumbnailUrl,
+            width: '140px',
+            height: '140px'
+        });
+    }
+    popupContent.find('.mapping-marker-popup-image').html(mediaThumbnail);
     popupContent.data('selectedMediaId', thisInput.val());
 
     // Update corresponding form input when updating an image.
