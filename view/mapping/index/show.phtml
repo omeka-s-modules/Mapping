@@ -1,0 +1,26 @@
+<?php
+$this->headLink()->appendStylesheet($this->assetUrl('js/Leaflet/0.7.7/leaflet.css', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/Leaflet.providers/1.1.7/leaflet-providers.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/mapping-show.js', 'Mapping'));
+
+$response = $this->api()->search('mapping_markers', ['item_id' => $item->id()]);
+$markers = $response->getContent();
+$markerMedia = [];
+foreach ($markers as $marker) {
+    $media = $marker->media();
+    if ($media) {
+        $markerMedia[$marker->id()] = $media;
+    }
+}
+?>
+<div id="mapping-section" class="section">
+    <div id="mapping-map" style="height:500px;"
+        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
+        data-marker-media="<?php echo $this->escapeHtml(json_encode($markerMedia)) ?>"></div>
+</div>
+
+<div class="template mapping-marker-popup-content">
+    <h4 class="mapping-marker-popup-label"></h4>
+    <div class="mapping-marker-popup-image"></div>
+</div>

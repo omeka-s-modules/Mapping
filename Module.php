@@ -47,12 +47,19 @@ class Module extends AbstractModule
             'Omeka\Controller\Admin\Item',
             ['view.add.form.after', 'view.edit.form.after'],
             function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/index.phtml');
+                echo $event->getTarget()->partial('mapping/index/form.phtml');
             }
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
-            ['view.add.section_nav', 'view.edit.section_nav'],
+            'view.show.after',
+            function (Event $event) {
+                echo $event->getTarget()->partial('mapping/index/show.phtml');
+            }
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            ['view.add.section_nav', 'view.edit.section_nav', 'view.show.section_nav'],
             function (Event $event) {
                 $sectionNav = $event->getParam('section_nav');
                 $sectionNav['mapping-section'] = 'Mapping';
