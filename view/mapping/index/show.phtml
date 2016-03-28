@@ -6,21 +6,16 @@ $this->headScript()->appendFile($this->assetUrl('js/mapping-show.js', 'Mapping')
 
 $response = $this->api()->search('mapping_markers', ['item_id' => $item->id()]);
 $markers = $response->getContent();
-$markerMedia = [];
-foreach ($markers as $marker) {
-    $media = $marker->media();
-    if ($media) {
-        $markerMedia[$marker->id()] = $media;
-    }
-}
 ?>
 <div id="mapping-section" class="section">
-    <div id="mapping-map" style="height:500px;"
-        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
-        data-marker-media="<?php echo $this->escapeHtml(json_encode($markerMedia)) ?>"></div>
+    <div id="mapping-map" style="height:500px;" data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"></div>
 </div>
 
-<div class="template mapping-marker-popup-content">
-    <h4 class="mapping-marker-popup-label"></h4>
-    <div class="mapping-marker-popup-image"></div>
+<?php foreach ($markers as $marker): ?>
+<div class="template mapping-marker-popup-content" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>">
+    <h4><?php echo $this->escapeHtml($marker->label()); ?></h4>
+    <?php if ($marker->media()): ?>
+    <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
+    <?php endif; ?>
 </div>
+<?php endforeach; ?>

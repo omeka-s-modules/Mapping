@@ -18,14 +18,8 @@ map.addControl(layerControl);
 $.each(markers, function(index, data) {
     var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
     var marker = L.marker(latLng);
-    var popupContent = $('.template.mapping-marker-popup-content').clone().removeClass('template');
-    if (data['o-module-mapping:label']) {
-        popupContent.find('.mapping-marker-popup-label').html(data['o-module-mapping:label']);
-    }
-    if (data['o:media']) {
-        var mediaThumbnailUrl = markerMedia[data['o:id']]['o:thumbnail_urls']['medium'];
-        popupContent.find('.mapping-marker-popup-image').html($('<img>', {src: mediaThumbnailUrl}));
-    }
+    var popupContent = $('.template.mapping-marker-popup-content[data-marker-id="' + data['o:id'] + '"]')
+        .clone().removeClass('template');
     marker.bindPopup(popupContent[0]);
     marker.addTo(map);
 
