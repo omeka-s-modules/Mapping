@@ -44,9 +44,7 @@ var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
     popupContent.find('.mapping-marker-popup-label').val(markerLabel);
     if (markerMediaId) {
         var mediaThumbnail = $('<img>', {
-            src: $('.mapping-marker-image-select[value="' + markerMediaId + '"').data('mediaThumbnailUrl'),
-            width: '140px',
-            height: '140px'
+            src: $('.mapping-marker-image-select[value="' + markerMediaId + '"').data('mediaThumbnailUrl')
         });
         popupContent.find('.mapping-marker-popup-image').html(mediaThumbnail);
     }
@@ -167,11 +165,7 @@ $('input.mapping-marker-image-select').on('change', function(e) {
     var mediaThumbnail = null;
     var mediaThumbnailUrl = thisInput.data('mediaThumbnailUrl');
     if (mediaThumbnailUrl) {
-        var mediaThumbnail = $('<img>', {
-            src: mediaThumbnailUrl,
-            width: '140px',
-            height: '140px'
-        });
+        var mediaThumbnail = $('<img>', {src: mediaThumbnailUrl});
     }
     popupContent.find('.mapping-marker-popup-image').html(mediaThumbnail);
     popupContent.data('selectedMediaId', thisInput.val());

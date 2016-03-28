@@ -29,8 +29,8 @@ if (isset($item)) {
             <label>
                 <input type="radio" class="mapping-marker-image-select" name="marker-image"
                     value="<?php echo $this->escapeHtml($media->id()); ?>"
-                    data-media-thumbnail-url="<?php echo $this->escapeHtml($media->thumbnailUrl('square')); ?>">
-                <img src="<?php echo $this->escapeHtml($media->thumbnailUrl('square')); ?>" width="140" height="140">
+                    data-media-thumbnail-url="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>">
+                <img src="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>">
             </label>
             <?php endif; ?>
             <?php endforeach; ?>
