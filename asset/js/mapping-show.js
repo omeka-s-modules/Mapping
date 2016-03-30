@@ -1,7 +1,7 @@
 $(document).ready( function() {
 
 // Control that fits markers within bounds.
-var FitBounds = L.Control.extend({
+L.Control.FitBounds = L.Control.extend({
     options: {
         position: 'topleft'
     },
@@ -37,6 +37,9 @@ var FitBounds = L.Control.extend({
         }
     },
 });
+L.control.fitBounds = function (layerGroup) {
+    return new L.Control.FitBounds(layerGroup);
+};
 
 var mappingMap = $('#mapping-map');
 var map = L.map('mapping-map').setView([0, 0], 1);
@@ -48,11 +51,12 @@ var baseMaps = {
 };
 var drawnItems = new L.FeatureGroup();
 var layerControl = L.control.layers(baseMaps);
+var fitBoundsControl = L.control.fitBounds(drawnItems);
 
 map.addLayer(baseMaps['Streets']);
 map.addLayer(drawnItems);
 map.addControl(layerControl);
-map.addControl(new FitBounds(drawnItems));
+map.addControl(fitBoundsControl);
 
 $.each(mappingMap.data('markers'), function(index, data) {
     var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);

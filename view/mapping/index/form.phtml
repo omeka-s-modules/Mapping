@@ -17,7 +17,6 @@ if (isset($item)) {
     <div id="mapping-map" style="height:500px;"
         data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"></div>
     <div id="mapping-sidebar" class="always-open sidebar">
-        <button id="mapping-fit-bounds">Fit bounds</button><br>
         <input type="text" id="mapping-wms-base-url"><button id="mapping-wms-base-url-set">Set WMS</button>
         <div id="mapping-marker-image-selector" class="sidebar">
             <h3>Select Marker Image</h3>
