@@ -68,7 +68,7 @@ $.each(mappingMap.data('markers'), function(index, data) {
 });
 
 var mapping = mappingMap.data('mapping');
-if (mapping) {
+if (mapping && mapping['o-module-mapping:wms_base_url']) {
     wms = L.tileLayer.wms(mapping['o-module-mapping:wms_base_url'], {
         layers: mapping['o-module-mapping:wms_layers'],
         styles: mapping['o-module-mapping:wms_styles'],
