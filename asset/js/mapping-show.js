@@ -16,10 +16,10 @@ L.Control.FitBounds = L.Control.extend({
         var container = L.DomUtil.create('div', 'mapping-control-fit leaflet-bar');
         var link = L.DomUtil.create('a', 'mapping-control-fit-bounds', container);
 
-        link.innerHTML = '❏';
+        link.innerHTML = '⊡';
         link.href = '#';
         link.title = 'Fit markers within bounds';
-        link.style.fontWeight = 'bold';
+        link.style.fontSize = '20px';
 
         L.DomEvent
             .on(link, 'mousedown', L.DomEvent.stopPropagation)
