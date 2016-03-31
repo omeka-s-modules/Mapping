@@ -21,7 +21,7 @@ class Module extends AbstractModule
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
         $acl->allow(
             null,
-            'Mapping\Api\Adapter\MappingMarkerAdapter',
+            ['Mapping\Api\Adapter\MappingMarkerAdapter','Mapping\Api\Adapter\MappingAdapter'],
             ['search', 'read']
         );
 
@@ -30,6 +30,8 @@ class Module extends AbstractModule
     public function install(ServiceLocatorInterface $serviceLocator)
     {
         $conn = $serviceLocator->get('Omeka\Connection');
+        $conn->exec('CREATE TABLE mapping (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, wms_base_url VARCHAR(255) DEFAULT NULL, wms_layers VARCHAR(255) DEFAULT NULL, wms_styles VARCHAR(255) DEFAULT NULL, wms_label VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_49E62C8A126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
+        $conn->exec('ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;');
         $conn->exec('CREATE TABLE mapping_marker (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, media_id INT DEFAULT NULL, lat DOUBLE PRECISION NOT NULL, lng DOUBLE PRECISION NOT NULL, `label` VARCHAR(255) DEFAULT NULL, INDEX IDX_667C9244126F525E (item_id), INDEX IDX_667C9244EA9FDD75 (media_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
         $conn->exec('ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;');
         $conn->exec('ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244EA9FDD75 FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE SET NULL;');
@@ -38,7 +40,8 @@ class Module extends AbstractModule
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
         $conn = $serviceLocator->get('Omeka\Connection');
-        $conn->exec('DROP TABLE mapping_marker');
+        $conn->exec('DROP TABLE IF EXISTS mapping');
+        $conn->exec('DROP TABLE IF EXISTS mapping_marker');
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
@@ -69,21 +72,63 @@ class Module extends AbstractModule
         $sharedEventManager->attach(
             'Omeka\Api\Representation\ItemRepresentation',
             'rep.resource.json',
-            function (Event $event) {
-                $item = $event->getTarget();
-                $jsonLd = $event->getParam('jsonLd');
-                $response = $event->getParam('services')
-                    ->get('Omeka\ApiManager')
-                    ->search('mapping_markers', ['item_id' => $item->id()]);
-                $jsonLd['o-module-mapping:marker'] = $response->getContent();
-                $event->setParam('jsonLd', $jsonLd);
-            }
+            [$this, 'filterItemJsonLd']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.hydrate.post',
+            [$this, 'handleMapping']
         );
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.hydrate.post',
             [$this, 'handleMarkers']
         );
+    }
+
+    public function filterItemJsonLd(Event $event)
+    {
+        $item = $event->getTarget();
+        $jsonLd = $event->getParam('jsonLd');
+        $api = $this->getServiceLocator()->get('Omeka\ApiManager');
+        $response = $api->search('mapping_markers', ['item_id' => $item->id()]);
+        $jsonLd['o-module-mapping:marker'] = $response->getContent();
+        $response = $api->search('mappings', ['item_id' => $item->id()]);
+        if ($response->getTotalResults()) {
+            $mapping = $response->getContent();
+            $jsonLd['o-module-mapping:mapping'] = $mapping[0];
+        }
+        $event->setParam('jsonLd', $jsonLd);
+    }
+
+    public function handleMapping(Event $event)
+    {
+        $itemAdapter = $event->getTarget();
+        $request = $event->getParam('request');
+
+        if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:mapping')) {
+            return;
+        }
+
+        $item = $event->getParam('entity');
+        $entityManager = $itemAdapter->getEntityManager();
+        $mappingsAdapter = $itemAdapter->getAdapter('mappings');
+        $mappingData = $request->getValue('o-module-mapping:mapping', []);
+
+        if (isset($mappingData['o:id']) && is_numeric($mappingData['o:id'])) {
+            $subRequest = new \Omeka\Api\Request('update', 'mappings');
+            $subRequest->setId($mappingData['o:id']);
+            $subRequest->setContent($mappingData);
+            $mapping = $mappingsAdapter->findEntity($mappingData['o:id'], $subRequest);
+            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
+        } else {
+            $subRequest = new \Omeka\Api\Request('create', 'mappings');
+            $subRequest->setContent($mappingData);
+            $mapping = new \Mapping\Entity\Mapping;
+            $mapping->setItem($item);
+            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
+            $entityManager->persist($mapping);
+        }
     }
 
     public function handleMarkers(Event $event)

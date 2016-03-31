@@ -67,6 +67,17 @@ $.each(mappingMap.data('markers'), function(index, data) {
     drawnItems.addLayer(marker);
 });
 
+var mapping = mappingMap.data('mapping');
+if (mapping) {
+    wms = L.tileLayer.wms(mapping['o-module-mapping:wms_base_url'], {
+        layers: mapping['o-module-mapping:wms_layers'],
+        styles: mapping['o-module-mapping:wms_styles'],
+        format: 'image/png',
+        transparent: true,
+    }).addTo(map);
+    layerControl.addOverlay(wms, mapping['o-module-mapping:wms_label']);
+}
+
 // Switching sections changes map dimensions, so make the necessary adjustments.
 $('a[href="#mapping-section"], #mapping-legend').on('click', function(e) {
     map.invalidateSize();

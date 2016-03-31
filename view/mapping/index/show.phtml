@@ -4,11 +4,16 @@ $this->headScript()->appendFile($this->assetUrl('js/Leaflet/0.7.7/leaflet.js', '
 $this->headScript()->appendFile($this->assetUrl('js/Leaflet.providers/1.1.7/leaflet-providers.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-show.js', 'Mapping'));
 
-$response = $this->api()->search('mapping_markers', ['item_id' => $item->id()]);
-$markers = $response->getContent();
+$mapping = $this->api()
+    ->searchOne('mappings', ['item_id' => $item->id()])->getContent();
+$markers = $this->api()
+    ->search('mapping_markers', ['item_id' => $item->id()])->getContent();
 ?>
 <div id="mapping-section" class="section">
-    <div id="mapping-map" style="height:500px;" data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"></div>
+    <div id="mapping-map" style="height:500px;"
+        data-mapping="<?php echo $this->escapeHtml(json_encode($mapping)); ?>"
+        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
+    ></div>
 </div>
 
 <?php foreach ($markers as $marker): ?>

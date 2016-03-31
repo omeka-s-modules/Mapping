@@ -2,6 +2,7 @@
 return [
     'api_adapters' => array(
         'invokables' => array(
+            'mappings' => 'Mapping\Api\Adapter\MappingAdapter',
             'mapping_markers' => 'Mapping\Api\Adapter\MappingMarkerAdapter',
         ),
     ),

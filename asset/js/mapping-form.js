@@ -27,6 +27,7 @@ var drawControl = new L.Control.Draw({
         featureGroup: drawnItems
     }
 });
+var wms;
 
 // Add the layers and controls to the map.
 map.addLayer(baseMaps['Streets']);
@@ -175,20 +176,63 @@ $('input.mapping-marker-image-select').on('change', function(e) {
     mediaIdInput.val(thisInput.val());
 });
 
-// Fit the bounds around the existing markers.
-$('#mapping-fit-bounds').on('click', function(e) {
-    e.preventDefault()
-    if (drawnItems.getBounds().isValid()) {
-        map.fitBounds(drawnItems.getBounds());
+var setWms = function(baseUrl, layers, styles, label) {
+    if (wms) {
+        map.removeLayer(wms);
+        layerControl.removeLayer(wms);
     }
+    wms = L.tileLayer.wms(baseUrl, {
+        layers: layers,
+        styles: styles,
+        format: 'image/png',
+        transparent: true,
+    }).addTo(map);
+    layerControl.addOverlay(wms, label);
+
+    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_base_url]"]').val(baseUrl);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_layers]"]').val(layers);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_styles]"]').val(styles);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_label]"]').val(label);
+}
+
+
+// Set a saved WMS layer to the map.
+var mapping = mappingMap.data('mapping');
+if (mapping) {
+    $('input[name="o-module-mapping:mapping[o:id]"]').val(mapping['o:id']);
+    if (mapping['o-module-mapping:wms_base_url']) {
+        // WMS is valid only with a base URL.
+        setWms(
+            mapping['o-module-mapping:wms_base_url'],
+            mapping['o-module-mapping:wms_layers'],
+            mapping['o-module-mapping:wms_styles'],
+            mapping['o-module-mapping:wms_label']
+        );
+    }
+    $('#mapping-wms-base-url').val(mapping['o-module-mapping:wms_base_url']),
+    $('#mapping-wms-layers').val(mapping['o-module-mapping:wms_layers']),
+    $('#mapping-wms-styles').val(mapping['o-module-mapping:wms_styles']),
+    $('#mapping-wms-label').val(mapping['o-module-mapping:wms_label'])
+}
+
+$('#mapping-wms-unset').on('click', function(e) {
+    e.preventDefault();
+    if (wms) {
+        map.removeLayer(wms);
+        layerControl.removeLayer(wms);
+    }
+    $('input[name^="o-module-mapping:mapping[o-module-mapping:wms_').val('');
+    $('#mapping-wms-base-url, #mapping-wms-layers, #mapping-wms-styles, #mapping-wms-label').val('');
 });
 
-$('#mapping-wms-base-url-set').on('click', function(e) {
-    e.preventDefault()
-    var wms = L.tileLayer.wms($('#mapping-wms-base-url').val(), {
-        format: 'image/png',
-    }).addTo(map);
-    layerControl.addOverlay(wms, 'WMS');
+$('#mapping-wms-set').on('click', function(e) {
+    e.preventDefault();
+    setWms(
+        $('#mapping-wms-base-url').val(),
+        $('#mapping-wms-layers').val(),
+        $('#mapping-wms-styles').val(),
+        $('#mapping-wms-label').val()
+    );
 });
 
 });

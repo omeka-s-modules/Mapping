@@ -6,18 +6,33 @@ $this->headScript()->appendFile($this->assetUrl('js/Leaflet.draw/0.3.0/leaflet.d
 $this->headScript()->appendFile($this->assetUrl('js/Leaflet.providers/1.1.7/leaflet-providers.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-form.js', 'Mapping'));
 
+$mapping = null;
 $markers = [];
 if (isset($item)) {
-    $response = $this->api()->search('mapping_markers', ['item_id' => $item->id()]);
-    $markers = $response->getContent();
+    $mapping = $this->api()
+        ->searchOne('mappings', ['item_id' => $item->id()])->getContent();
+    $markers = $this->api()
+        ->search('mapping_markers', ['item_id' => $item->id()])->getContent();
 }
 ?>
 <fieldset id="mapping-section" class="section">
     <legend id="mapping-legend"><?php echo $this->translate('Mapping'); ?></legend>
     <div id="mapping-map" style="height:500px;"
-        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"></div>
+        data-mapping="<?php echo $this->escapeHtml(json_encode($mapping)); ?>"
+        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
+    ></div>
     <div id="mapping-sidebar" class="always-open sidebar">
-        <input type="text" id="mapping-wms-base-url"><button id="mapping-wms-base-url-set">Set WMS</button>
+        <p>Add a Web Map Service (WMS) overlay to the map by providing information below:</p>
+        <label>Base URL<br>
+        <input type="text" id="mapping-wms-base-url" style="width:100%"></label>
+        <label>Layers (comma-separated)<br>
+        <input type="text" id="mapping-wms-layers" style="width:100%"></label>
+        <label>Styles (comma-separated)<br>
+        <input type="text" id="mapping-wms-styles" style="width:100%"></label>
+        <label>Label<br>
+        <input type="text" id="mapping-wms-label" style="width:100%"></label>
+        <button id="mapping-wms-set">Set WMS Overlay</button>
+        <button id="mapping-wms-unset">Unset</button>
         <div id="mapping-marker-image-selector" class="sidebar">
             <h3>Select Marker Image</h3>
             <label style="font-size:16px;">
@@ -35,7 +50,13 @@ if (isset($item)) {
             <?php endforeach; ?>
         </div>
     </div>
-    <div id="mapping-form"></div>
+    <div id="mapping-form">
+        <input type="hidden" name="o-module-mapping:mapping[o:id]">
+        <input type="hidden" name="o-module-mapping:mapping[o-module-mapping:wms_base_url]">
+        <input type="hidden" name="o-module-mapping:mapping[o-module-mapping:wms_layers]">
+        <input type="hidden" name="o-module-mapping:mapping[o-module-mapping:wms_styles]">
+        <input type="hidden" name="o-module-mapping:mapping[o-module-mapping:wms_label]">
+    </div>
 </fieldset>
 
 <div class="template mapping-marker-popup-content">
