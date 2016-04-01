@@ -187,6 +187,10 @@ var setWms = function(baseUrl, layers, styles, label) {
         format: 'image/png',
         transparent: true,
     }).addTo(map);
+
+    if (!label) {
+        label = 'Unlabeled Overlay';
+    }
     layerControl.addOverlay(wms, label);
 
     $('input[name="o-module-mapping:mapping[o-module-mapping:wms_base_url]"]').val(baseUrl);

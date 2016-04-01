@@ -52,6 +52,7 @@ var baseMaps = {
 var drawnItems = new L.FeatureGroup();
 var layerControl = L.control.layers(baseMaps);
 var fitBoundsControl = L.control.fitBounds(drawnItems);
+var wms;
 
 map.addLayer(baseMaps['Streets']);
 map.addLayer(drawnItems);
@@ -75,7 +76,12 @@ if (mapping && mapping['o-module-mapping:wms_base_url']) {
         format: 'image/png',
         transparent: true,
     }).addTo(map);
-    layerControl.addOverlay(wms, mapping['o-module-mapping:wms_label']);
+
+    var label = 'Unlabeled Overlay';
+    if (mapping['o-module-mapping:wms_label']) {
+        label = mapping['o-module-mapping:wms_label'];
+    }
+    layerControl.addOverlay(wms, label);
 }
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
