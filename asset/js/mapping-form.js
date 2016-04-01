@@ -192,6 +192,7 @@ var setWms = function(baseUrl, layers, styles, label) {
     }).addTo(map);
     if (!label) {
         label = 'Unlabeled Overlay';
+        $('#mapping-wms-label').val(label)
     }
     layerControl.addOverlay(wms, label);
     if (opacityControl) {
