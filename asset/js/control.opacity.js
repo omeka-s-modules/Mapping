@@ -54,8 +54,7 @@ L.Control.Opacity = L.Control.extend({
             .on(link, 'mousedown', stop)
             .on(link, 'dblclick', stop)
             .on(link, 'click', L.DomEvent.preventDefault)
-            .on(link, 'click', fn, context)
-            .on(link, 'click', this._refocusOnMap, context);
+            .on(link, 'click', fn, context);
 
         return link;
     },
