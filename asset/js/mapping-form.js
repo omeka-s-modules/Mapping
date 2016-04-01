@@ -180,6 +180,7 @@ $('input.mapping-marker-image-select').on('change', function(e) {
 
 var setWms = function(baseUrl, layers, styles, label) {
     if (wms) {
+        // Remove existing WMS overlay before setting another.
         map.removeLayer(wms);
         layerControl.removeLayer(wms);
     }
@@ -189,12 +190,12 @@ var setWms = function(baseUrl, layers, styles, label) {
         format: 'image/png',
         transparent: true,
     }).addTo(map);
-
     if (!label) {
         label = 'Unlabeled Overlay';
     }
     layerControl.addOverlay(wms, label);
     if (opacityControl) {
+        // Remove existing opacity control before setting another.
         map.removeControl(opacityControl);
     }
     opacityControl = L.control.opacity(wms);
@@ -230,8 +231,11 @@ $('#mapping-wms-unset').on('click', function(e) {
     e.preventDefault();
     if (wms) {
         map.removeLayer(wms);
-        layerControl.removeLayer(wms);
         map.removeControl(opacityControl);
+        layerControl.removeLayer(wms);
+        // Remove the WMS overlay and opacity control completely.
+        wms = null;
+        opacityControl = null;
     }
     $('input[name^="o-module-mapping:mapping[o-module-mapping:wms_').val('');
     $('#mapping-wms-base-url, #mapping-wms-layers, #mapping-wms-styles, #mapping-wms-label').val('');
