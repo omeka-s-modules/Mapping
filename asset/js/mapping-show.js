@@ -28,6 +28,13 @@ $.each(mappingMap.data('markers'), function(index, data) {
 
 var mapping = mappingMap.data('mapping');
 if (mapping && mapping['o-module-mapping:wms_base_url']) {
+    // WMS layers and styles cannot be null.
+    if (!mapping['o-module-mapping:wms_layers']) {
+        mapping['o-module-mapping:wms_layers'] = '';;
+    }
+    if (!mapping['o-module-mapping:wms_styles']) {
+        mapping['o-module-mapping:wms_styles'] = '';;
+    }
     wms = L.tileLayer.wms(mapping['o-module-mapping:wms_base_url'], {
         layers: mapping['o-module-mapping:wms_layers'],
         styles: mapping['o-module-mapping:wms_styles'],

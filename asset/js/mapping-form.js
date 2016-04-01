@@ -184,6 +184,13 @@ var setWms = function(baseUrl, layers, styles, label) {
         map.removeLayer(wms);
         layerControl.removeLayer(wms);
     }
+    // WMS layers and styles cannot be null.
+    if (!layers) {
+        layers = '';;
+    }
+    if (!styles) {
+        styles = '';;
+    }
     wms = L.tileLayer.wms(baseUrl, {
         layers: layers,
         styles: styles,
