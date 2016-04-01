@@ -28,6 +28,7 @@ var drawControl = new L.Control.Draw({
     }
 });
 var wms;
+var opacityControl;
 
 // Add the layers and controls to the map.
 map.addLayer(baseMaps['Streets']);
@@ -193,6 +194,8 @@ var setWms = function(baseUrl, layers, styles, label) {
         label = 'Unlabeled Overlay';
     }
     layerControl.addOverlay(wms, label);
+    opacityControl = L.control.opacity(wms);
+    map.addControl(opacityControl);
 
     $('input[name="o-module-mapping:mapping[o-module-mapping:wms_base_url]"]').val(baseUrl);
     $('input[name="o-module-mapping:mapping[o-module-mapping:wms_layers]"]').val(layers);
@@ -225,6 +228,7 @@ $('#mapping-wms-unset').on('click', function(e) {
     if (wms) {
         map.removeLayer(wms);
         layerControl.removeLayer(wms);
+        map.removeControl(opacityControl);
     }
     $('input[name^="o-module-mapping:mapping[o-module-mapping:wms_').val('');
     $('#mapping-wms-base-url, #mapping-wms-layers, #mapping-wms-styles, #mapping-wms-label').val('');
