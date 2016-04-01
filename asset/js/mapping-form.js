@@ -34,6 +34,7 @@ map.addLayer(baseMaps['Streets']);
 map.addLayer(drawnItems);
 map.addControl(layerControl);
 map.addControl(drawControl);
+map.addControl(L.control.fitBounds(drawnItems));
 
 var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
 

@@ -1,46 +1,5 @@
 $(document).ready( function() {
 
-// Control that fits markers within bounds.
-L.Control.FitBounds = L.Control.extend({
-    options: {
-        position: 'topleft'
-    },
-
-    initialize: function (layerGroup) {
-        this._layerGroup = layerGroup;
-    },
-
-    onAdd: function (map) {
-        this._map = map;
-
-        var container = L.DomUtil.create('div', 'mapping-control-fit leaflet-bar');
-        var link = L.DomUtil.create('a', 'mapping-control-fit-bounds', container);
-
-        link.innerHTML = '⊡';
-        link.href = '#';
-        link.title = 'Fit markers within bounds';
-        link.style.fontSize = '20px';
-
-        L.DomEvent
-            .on(link, 'mousedown', L.DomEvent.stopPropagation)
-            .on(link, 'dblclick', L.DomEvent.stopPropagation)
-            .on(link, 'click', L.DomEvent.stopPropagation)
-            .on(link, 'click', L.DomEvent.preventDefault)
-            .on(link, 'click', this._fitBounds, this);
-        return container;
-    },
-
-    _fitBounds: function(e) {
-        var bounds = this._layerGroup.getBounds();
-        if (bounds.isValid()) {
-            this._map.fitBounds(bounds);
-        }
-    },
-});
-L.control.fitBounds = function (layerGroup) {
-    return new L.Control.FitBounds(layerGroup);
-};
-
 var mappingMap = $('#mapping-map');
 var map = L.map('mapping-map').setView([0, 0], 1);
 var baseMaps = {
@@ -49,15 +8,14 @@ var baseMaps = {
     'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
     'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
 };
+var wms;
 var drawnItems = new L.FeatureGroup();
 var layerControl = L.control.layers(baseMaps);
-var fitBoundsControl = L.control.fitBounds(drawnItems);
-var wms;
 
 map.addLayer(baseMaps['Streets']);
 map.addLayer(drawnItems);
 map.addControl(layerControl);
-map.addControl(fitBoundsControl);
+map.addControl(L.control.fitBounds(drawnItems));
 
 $.each(mappingMap.data('markers'), function(index, data) {
     var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
@@ -82,6 +40,7 @@ if (mapping && mapping['o-module-mapping:wms_base_url']) {
         label = mapping['o-module-mapping:wms_label'];
     }
     layerControl.addOverlay(wms, label);
+    map.addControl(L.control.opacity(wms));
 }
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
