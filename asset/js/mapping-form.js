@@ -194,6 +194,9 @@ var setWms = function(baseUrl, layers, styles, label) {
         label = 'Unlabeled Overlay';
     }
     layerControl.addOverlay(wms, label);
+    if (opacityControl) {
+        map.removeControl(opacityControl);
+    }
     opacityControl = L.control.opacity(wms);
     map.addControl(opacityControl);
 
