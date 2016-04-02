@@ -10,11 +10,13 @@ $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Map
 
 $mapping = null;
 $markers = [];
+$itemMedia = [];
 if (isset($item)) {
     $mapping = $this->api()
         ->searchOne('mappings', ['item_id' => $item->id()])->getContent();
     $markers = $this->api()
         ->search('mapping_markers', ['item_id' => $item->id()])->getContent();
+    $itemMedia = $item->media();
 }
 ?>
 <fieldset id="mapping-section" class="section">
@@ -40,7 +42,7 @@ if (isset($item)) {
             <label style="font-size:16px;">
                 <input type="radio" class="mapping-marker-image-select" name="marker-image" value="" checked> No Image
             </label>
-            <?php foreach ($item->media() as $media): ?>
+            <?php foreach ($itemMedia as $media): ?>
             <?php if ($media->hasThumbnails()): ?>
             <label style="cursor:pointer;">
                 <input type="radio" class="mapping-marker-image-select" name="marker-image" style="display:none;"
