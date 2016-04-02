@@ -7,6 +7,7 @@ $this->headScript()->appendFile($this->assetUrl('js/Leaflet.providers/1.1.7/leaf
 $this->headScript()->appendFile($this->assetUrl('js/mapping-form.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.opacity.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/control.default-view.js', 'Mapping'));
 
 $mapping = null;
 $markers = [];
@@ -58,6 +59,9 @@ if (isset($item)) {
     </div>
     <div id="mapping-form">
         <input type="hidden" name="o-module-mapping:mapping[o:id]">
+        <input type="hidden" name="o-module-mapping:mapping[o-module-mapping:default_zoom]">
+        <input type="hidden" name="o-module-mapping:mapping[o-module-mapping:default_lat]">
+        <input type="hidden" name="o-module-mapping:mapping[o-module-mapping:default_lng]">
         <input type="hidden" name="o-module-mapping:mapping[o-module-mapping:wms_base_url]">
         <input type="hidden" name="o-module-mapping:mapping[o-module-mapping:wms_layers]">
         <input type="hidden" name="o-module-mapping:mapping[o-module-mapping:wms_styles]">

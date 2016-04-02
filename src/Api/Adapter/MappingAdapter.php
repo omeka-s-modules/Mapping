@@ -34,6 +34,15 @@ class MappingAdapter extends AbstractEntityAdapter
             $item = $this->getAdapter('items')->findEntity($data['o:item']['o:id']);
             $entity->setItem($item);
         }
+        if ($this->shouldHydrate($request, 'o-module-mapping:default_zoom')) {
+            $entity->setDefaultZoom($request->getValue('o-module-mapping:default_zoom'));
+        }
+        if ($this->shouldHydrate($request, 'o-module-mapping:default_lat')) {
+            $entity->setDefaultLat($request->getValue('o-module-mapping:default_lat'));
+        }
+        if ($this->shouldHydrate($request, 'o-module-mapping:default_lng')) {
+            $entity->setDefaultLng($request->getValue('o-module-mapping:default_lng'));
+        }
         if ($this->shouldHydrate($request, 'o-module-mapping:wms_base_url')) {
             $entity->setWmsBaseUrl($request->getValue('o-module-mapping:wms_base_url'));
         }
@@ -52,6 +61,18 @@ class MappingAdapter extends AbstractEntityAdapter
     {
         if (!$entity->getItem()) {
             $errorStore->addError('o:item', 'A marker must have an item.');
+        }
+        $zoom = $entity->getDefaultZoom();
+        if (null !== $zoom && !is_numeric($zoom)) {
+            $errorStore->addError('o-module-mapping:default_zoom', 'The default zoom must be numeric.');
+        }
+        $lat = $entity->getDefaultLat();
+        if (null !== $lat && !is_numeric($lat)) {
+            $errorStore->addError('o-module-mapping:default_lat', 'The default latitude must be numeric.');
+        }
+        $lng = $entity->getDefaultLng();
+        if (null !== $lng && !is_numeric($lng)) {
+            $errorStore->addError('o-module-mapping:default_lng', 'The default longitude must be numeric.');
         }
     }
 

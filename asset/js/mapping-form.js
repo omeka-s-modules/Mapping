@@ -2,8 +2,26 @@ $(document).ready( function() {
 
 var mappingMap = $('#mapping-map');
 var mappingForm = $('#mapping-form');
+var mappingData = mappingMap.data('mapping');
+var markersData = mappingMap.data('markers');
+
 // Initialise the map.
-var map = L.map('mapping-map').setView([0, 0], 1);
+var map = L.map('mapping-map');
+var mapDefaultCenter = [0, 0];
+var mapDefaultZoom = 1;
+if (mappingData) {
+    if (mappingData['o-module-mapping:default_lat'] && mappingData['o-module-mapping:default_lng']) {
+        mapDefaultCenter = [
+            mappingData['o-module-mapping:default_lat'],
+            mappingData['o-module-mapping:default_lng']
+        ];
+    }
+    if (mappingData['o-module-mapping:default_zoom']) {
+        mapDefaultZoom = mappingData['o-module-mapping:default_zoom'];
+    }
+}
+map.setView(mapDefaultCenter, mapDefaultZoom);
+
 // Initialise the selectable base maps.
 var baseMaps = {
     'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
@@ -36,6 +54,7 @@ map.addLayer(drawnItems);
 map.addControl(layerControl);
 map.addControl(drawControl);
 map.addControl(L.control.fitBounds(drawnItems));
+map.addControl(L.control.defaultView());
 
 var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
 
@@ -112,7 +131,7 @@ var deleteMarker = function(marker) {
 }
 
 // Add saved markers to the map.
-$.each(mappingMap.data('markers'), function(index, data) {
+$.each(markersData, function(index, data) {
     var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
     var marker = L.marker(latLng);
     var markerMediaId = data['o:media'] ? data['o:media']['o:id'] : null;
@@ -224,23 +243,26 @@ var setWms = function(baseUrl, layers, styles, label) {
 }
 
 
-// Set a saved WMS layer to the map.
-var mapping = mappingMap.data('mapping');
-if (mapping) {
-    $('input[name="o-module-mapping:mapping[o:id]"]').val(mapping['o:id']);
-    if (mapping['o-module-mapping:wms_base_url']) {
+// Set a saved mapping data to the map (default view and WMS overlay).
+if (mappingData) {
+    $('input[name="o-module-mapping:mapping[o:id]"]').val(mappingData['o:id']);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(mappingData['o-module-mapping:default_lat']);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(mappingData['o-module-mapping:default_lng']);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(mappingData['o-module-mapping:default_zoom']);
+
+    if (mappingData['o-module-mapping:wms_base_url']) {
         // WMS is valid only with a base URL.
         setWms(
-            mapping['o-module-mapping:wms_base_url'],
-            mapping['o-module-mapping:wms_layers'],
-            mapping['o-module-mapping:wms_styles'],
-            mapping['o-module-mapping:wms_label']
+            mappingData['o-module-mapping:wms_base_url'],
+            mappingData['o-module-mapping:wms_layers'],
+            mappingData['o-module-mapping:wms_styles'],
+            mappingData['o-module-mapping:wms_label']
         );
     }
-    $('#mapping-wms-base-url').val(mapping['o-module-mapping:wms_base_url']),
-    $('#mapping-wms-layers').val(mapping['o-module-mapping:wms_layers']),
-    $('#mapping-wms-styles').val(mapping['o-module-mapping:wms_styles']),
-    $('#mapping-wms-label').val(mapping['o-module-mapping:wms_label'])
+    $('#mapping-wms-base-url').val(mappingData['o-module-mapping:wms_base_url']),
+    $('#mapping-wms-layers').val(mappingData['o-module-mapping:wms_layers']),
+    $('#mapping-wms-styles').val(mappingData['o-module-mapping:wms_styles']),
+    $('#mapping-wms-label').val(mappingData['o-module-mapping:wms_label'])
 }
 
 $('#mapping-wms-unset').on('click', function(e) {

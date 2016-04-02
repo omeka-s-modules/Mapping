@@ -15,6 +15,9 @@ class MappingRepresentation extends AbstractEntityRepresentation
         $this->addTermDefinitionToContext('o-module-mapping', 'http://omeka.org/s/vocabs/module/mapping#');
         return [
             'o:item' => $this->item()->getReference(),
+            'o-module-mapping:default_zoom' => $this->defaultZoom(),
+            'o-module-mapping:default_lat' => $this->defaultLat(),
+            'o-module-mapping:default_lng' => $this->defaultLng(),
             'o-module-mapping:wms_base_url' => $this->wmsBaseUrl(),
             'o-module-mapping:wms_layers' => $this->wmsLayers(),
             'o-module-mapping:wms_styles' => $this->wmsStyles(),
@@ -26,6 +29,21 @@ class MappingRepresentation extends AbstractEntityRepresentation
     {
         return $this->getAdapter('items')
             ->getRepresentation($this->resource->getItem());
+    }
+
+    public function defaultZoom()
+    {
+        return $this->resource->getDefaultZoom();
+    }
+
+    public function defaultLat()
+    {
+        return $this->resource->getDefaultLat();
+    }
+
+    public function defaultLng()
+    {
+        return $this->resource->getDefaultLng();
     }
 
     public function wmsBaseUrl()
