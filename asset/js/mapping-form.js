@@ -40,8 +40,7 @@ map.addControl(L.control.fitBounds(drawnItems));
 var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
 
     // Build the marker popup content.
-    var popupContent = $('.template.mapping-marker-popup-content').clone()
-        .removeClass('template')
+    var popupContent = $('.mapping-marker-popup-content').clone().show()
         .data('marker', marker)
         .data('selectedMediaId', markerMediaId);
     popupContent.find('.mapping-marker-popup-label').val(markerLabel);

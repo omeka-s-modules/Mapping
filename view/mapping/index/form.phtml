@@ -47,7 +47,8 @@ if (isset($item)) {
                     value="<?php echo $this->escapeHtml($media->id()); ?>"
                     data-media-thumbnail-url="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>"
                     data-media-title="<?php echo $this->escapeHtml($media->displayTitle()); ?>">
-                <img src="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>">
+                <img src="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>"
+                    title="<?php echo $this->escapeHtml($media->displayTitle()); ?>">
             </label>
             <?php endif; ?>
             <?php endforeach; ?>
@@ -62,7 +63,7 @@ if (isset($item)) {
     </div>
 </fieldset>
 
-<div class="template mapping-marker-popup-content">
+<div class="mapping-marker-popup-content" style="display:none;">
     <p>Enter a label for this marker:</p>
     <input type="text" class="mapping-marker-popup-label" size="40">
     <div class="mapping-marker-popup-image-content">
