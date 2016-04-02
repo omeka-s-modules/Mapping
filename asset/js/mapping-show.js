@@ -20,8 +20,8 @@ map.addControl(L.control.fitBounds(drawnItems));
 $.each(mappingMap.data('markers'), function(index, data) {
     var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
     var marker = L.marker(latLng);
-    var popupContent = $('.template.mapping-marker-popup-content[data-marker-id="' + data['o:id'] + '"]')
-        .clone().removeClass('template');
+    var popupContent = $('.mapping-marker-popup-content[data-marker-id="' + data['o:id'] + '"]')
+        .clone().show();
     marker.bindPopup(popupContent[0]);
     drawnItems.addLayer(marker);
 });

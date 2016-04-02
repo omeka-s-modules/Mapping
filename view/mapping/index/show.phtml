@@ -19,7 +19,7 @@ $markers = $this->api()
 </div>
 
 <?php foreach ($markers as $marker): ?>
-<div class="template mapping-marker-popup-content" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>">
+<div class="mapping-marker-popup-content" style="display:none;" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>">
     <h4><?php echo $this->escapeHtml($marker->label()); ?></h4>
     <?php if ($marker->media()): ?>
     <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">

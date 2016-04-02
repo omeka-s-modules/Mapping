@@ -54,7 +54,7 @@ class Module extends AbstractModule
             }
         );
         $sharedEventManager->attach(
-            'Omeka\Controller\Admin\Item',
+            ['Omeka\Controller\Admin\Item', 'Omeka\Controller\Site\Item'],
             'view.show.after',
             function (Event $event) {
                 echo $event->getTarget()->partial('mapping/index/show.phtml');
