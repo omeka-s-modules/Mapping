@@ -45,7 +45,8 @@ if (isset($item)) {
             <label style="cursor:pointer;">
                 <input type="radio" class="mapping-marker-image-select" name="marker-image" style="display:none;"
                     value="<?php echo $this->escapeHtml($media->id()); ?>"
-                    data-media-thumbnail-url="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>">
+                    data-media-thumbnail-url="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>"
+                    data-media-title="<?php echo $this->escapeHtml($media->displayTitle()); ?>">
                 <img src="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>">
             </label>
             <?php endif; ?>

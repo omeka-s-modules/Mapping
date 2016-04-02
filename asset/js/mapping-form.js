@@ -176,6 +176,15 @@ $('input.mapping-marker-image-select').on('change', function(e) {
     // Update corresponding form input when updating an image.
     var mediaIdInput = $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o:media][o:id]"]');
     mediaIdInput.val(thisInput.val());
+
+    // Set the media title as the popup label if not already set.
+    var mediaTitle = thisInput.data('mediaTitle');
+    var popupLabel = popupContent.find('.mapping-marker-popup-label');
+    if (!popupLabel.val()) {
+        var labelInput = $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:label]"]');
+        labelInput.val(mediaTitle);
+        popupLabel.val(mediaTitle);
+    }
 });
 
 var setWms = function(baseUrl, layers, styles, label) {
