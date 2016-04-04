@@ -3,25 +3,26 @@ L.Control.Opacity = L.Control.extend({
     options: {
         position: 'topleft',
         opacityIncText: '▲',
-        opacityIncTitle: 'Increase overlay opacity',
         opacityDecText: '▼',
-        opacityDecTitle: 'Decrease overlay opactiy'
     },
 
-    initialize: function (overlay) {
+    initialize: function (overlay, label) {
         this._overlay = overlay;
+        this._label = label;
         this._opacity = 1.0
     },
 
     onAdd: function (map) {
         var opacityName = 'mapping-control-opacity',
             container = L.DomUtil.create('div', opacityName + ' leaflet-bar');
+        var opacityIncTitle = 'Increase opacity of "' + this._label + '" overlay';
+        var opacityDecTitle = 'Decrease opacity of "' + this._label + '" overlay';
 
         this._opacityIncButton  = this._createButton(
-            this.options.opacityIncText, this.options.opacityIncTitle,
+            this.options.opacityIncText, opacityIncTitle,
             opacityName + '-inc',  container, this._opacityInc,  this);
         this._opacityDecButton = this._createButton(
-            this.options.opacityDecText, this.options.opacityDecTitle,
+            this.options.opacityDecText, opacityDecTitle,
             opacityName + '-dec', container, this._opacityDec, this);
 
         return container;
@@ -59,6 +60,6 @@ L.Control.Opacity = L.Control.extend({
         return link;
     },
 });
-L.control.opacity = function (overlay) {
-    return new L.Control.Opacity(overlay);
+L.control.opacity = function (overlay, label) {
+    return new L.Control.Opacity(overlay, label);
 };

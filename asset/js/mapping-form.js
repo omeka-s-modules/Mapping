@@ -158,7 +158,7 @@ var setWms = function(baseUrl, layers, styles, label) {
         // Remove existing opacity control before setting another.
         map.removeControl(opacityControl);
     }
-    opacityControl = L.control.opacity(wms);
+    opacityControl = L.control.opacity(wms, label);
     map.addControl(opacityControl);
 
     $('input[name="o-module-mapping:mapping[o-module-mapping:wms_base_url]"]').val(baseUrl);

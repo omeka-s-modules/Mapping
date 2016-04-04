@@ -10,10 +10,10 @@ L.Control.DefaultView = L.Control.extend({
         var container = L.DomUtil.create('div', 'mapping-control-default leaflet-bar');
         var link = L.DomUtil.create('a', 'mapping-control-default-view', container);
 
-        link.innerHTML = '⊕';
+        link.innerHTML = '⊹';
         link.href = '#';
-        link.title = 'Set this view as the default center and zoom level';
-        link.style.fontSize = '18px';
+        link.title = 'Set the current view as the default center and zoom level.';
+        link.style.fontSize = '20px';
 
         L.DomEvent
             .on(link, 'mousedown', L.DomEvent.stopPropagation)

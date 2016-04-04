@@ -65,7 +65,7 @@ if (mappingData && mappingData['o-module-mapping:wms_base_url']) {
         label = mappingData['o-module-mapping:wms_label'];
     }
     layerControl.addOverlay(wms, label);
-    map.addControl(L.control.opacity(wms));
+    map.addControl(L.control.opacity(wms, label));
 }
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
