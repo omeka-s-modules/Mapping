@@ -130,6 +130,43 @@ var deleteMarker = function(marker) {
     $('input[name^="o-module-mapping:marker[' + marker._leaflet_id + ']"]').remove();
 }
 
+var setWms = function(baseUrl, layers, styles, label) {
+    if (wms) {
+        // Remove existing WMS overlay before setting another.
+        map.removeLayer(wms);
+        layerControl.removeLayer(wms);
+    }
+    // WMS layers and styles cannot be null.
+    if (!layers) {
+        layers = '';;
+    }
+    if (!styles) {
+        styles = '';;
+    }
+    wms = L.tileLayer.wms(baseUrl, {
+        layers: layers,
+        styles: styles,
+        format: 'image/png',
+        transparent: true,
+    }).addTo(map);
+    if (!label) {
+        label = 'Unlabeled Overlay';
+        $('#mapping-wms-label').val(label)
+    }
+    layerControl.addOverlay(wms, label);
+    if (opacityControl) {
+        // Remove existing opacity control before setting another.
+        map.removeControl(opacityControl);
+    }
+    opacityControl = L.control.opacity(wms);
+    map.addControl(opacityControl);
+
+    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_base_url]"]').val(baseUrl);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_layers]"]').val(layers);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_styles]"]').val(styles);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_label]"]').val(label);
+}
+
 // Add saved markers to the map.
 $.each(markersData, function(index, data) {
     var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
@@ -137,6 +174,28 @@ $.each(markersData, function(index, data) {
     var markerMediaId = data['o:media'] ? data['o:media']['o:id'] : null;
     addMarker(marker, data['o:id'], data['o-module-mapping:label'], markerMediaId);
 });
+
+// Set saved mapping data to the map (default view and WMS overlay).
+if (mappingData) {
+    $('input[name="o-module-mapping:mapping[o:id]"]').val(mappingData['o:id']);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(mappingData['o-module-mapping:default_lat']);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(mappingData['o-module-mapping:default_lng']);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(mappingData['o-module-mapping:default_zoom']);
+
+    if (mappingData['o-module-mapping:wms_base_url']) {
+        // WMS is valid only with a base URL.
+        setWms(
+            mappingData['o-module-mapping:wms_base_url'],
+            mappingData['o-module-mapping:wms_layers'],
+            mappingData['o-module-mapping:wms_styles'],
+            mappingData['o-module-mapping:wms_label']
+        );
+    }
+    $('#mapping-wms-base-url').val(mappingData['o-module-mapping:wms_base_url']),
+    $('#mapping-wms-layers').val(mappingData['o-module-mapping:wms_layers']),
+    $('#mapping-wms-styles').val(mappingData['o-module-mapping:wms_styles']),
+    $('#mapping-wms-label').val(mappingData['o-module-mapping:wms_label'])
+}
 
 // Add new markers.
 map.on('draw:created', function (e) {
@@ -205,66 +264,7 @@ $('input.mapping-marker-image-select').on('change', function(e) {
     }
 });
 
-var setWms = function(baseUrl, layers, styles, label) {
-    if (wms) {
-        // Remove existing WMS overlay before setting another.
-        map.removeLayer(wms);
-        layerControl.removeLayer(wms);
-    }
-    // WMS layers and styles cannot be null.
-    if (!layers) {
-        layers = '';;
-    }
-    if (!styles) {
-        styles = '';;
-    }
-    wms = L.tileLayer.wms(baseUrl, {
-        layers: layers,
-        styles: styles,
-        format: 'image/png',
-        transparent: true,
-    }).addTo(map);
-    if (!label) {
-        label = 'Unlabeled Overlay';
-        $('#mapping-wms-label').val(label)
-    }
-    layerControl.addOverlay(wms, label);
-    if (opacityControl) {
-        // Remove existing opacity control before setting another.
-        map.removeControl(opacityControl);
-    }
-    opacityControl = L.control.opacity(wms);
-    map.addControl(opacityControl);
-
-    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_base_url]"]').val(baseUrl);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_layers]"]').val(layers);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_styles]"]').val(styles);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_label]"]').val(label);
-}
-
-
-// Set a saved mapping data to the map (default view and WMS overlay).
-if (mappingData) {
-    $('input[name="o-module-mapping:mapping[o:id]"]').val(mappingData['o:id']);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(mappingData['o-module-mapping:default_lat']);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(mappingData['o-module-mapping:default_lng']);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(mappingData['o-module-mapping:default_zoom']);
-
-    if (mappingData['o-module-mapping:wms_base_url']) {
-        // WMS is valid only with a base URL.
-        setWms(
-            mappingData['o-module-mapping:wms_base_url'],
-            mappingData['o-module-mapping:wms_layers'],
-            mappingData['o-module-mapping:wms_styles'],
-            mappingData['o-module-mapping:wms_label']
-        );
-    }
-    $('#mapping-wms-base-url').val(mappingData['o-module-mapping:wms_base_url']),
-    $('#mapping-wms-layers').val(mappingData['o-module-mapping:wms_layers']),
-    $('#mapping-wms-styles').val(mappingData['o-module-mapping:wms_styles']),
-    $('#mapping-wms-label').val(mappingData['o-module-mapping:wms_label'])
-}
-
+// Unset the WMS overlay.
 $('#mapping-wms-unset').on('click', function(e) {
     e.preventDefault();
     if (wms) {
@@ -279,6 +279,7 @@ $('#mapping-wms-unset').on('click', function(e) {
     $('#mapping-wms-base-url, #mapping-wms-layers, #mapping-wms-styles, #mapping-wms-label').val('');
 });
 
+// Set the WMS overlay.
 $('#mapping-wms-set').on('click', function(e) {
     e.preventDefault();
     setWms(
