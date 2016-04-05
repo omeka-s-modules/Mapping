@@ -1,0 +1,18 @@
+<?php
+$this->headLink()->appendStylesheet($this->assetUrl('js/Leaflet/0.7.7/leaflet.css', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/mapping-block.js', 'Mapping'));
+
+?>
+<div class="mapping-map" style="height:500px;"
+    data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
+></div>
+
+<?php foreach ($markers as $marker): ?>
+<div class="mapping-marker-popup-content" style="display:none;" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>">
+    <h4><?php echo $this->escapeHtml($marker->label()); ?></h4>
+    <?php if ($marker->media()): ?>
+    <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
+    <?php endif; ?>
+</div>
+<?php endforeach; ?>

@@ -57,19 +57,18 @@ class Map extends AbstractBlockLayout
             )->getContent();
             $allMarkers = array_merge($allMarkers, $markers);
         }
-        foreach ($allMarkers as $marker) {
-            var_dump($marker->label(), $marker->lat(), $marker->lng());
-        }
+        //~ foreach ($allMarkers as $marker) {
+            //~ var_dump($marker->label(), $marker->lat(), $marker->lng());
+        //~ }
 
         // Get WMS overlay and center/zoom data from from $block->data(), and
         // get markers for all attachments (items) and render them on a map via
         // a partial
 
-        //~ return $view->partial('common/block-layout/mapping-map', array(
-            //~ 'block' => $block,
-            //~ 'attachments' => $attachments,
-            //~ 'markers' => $allMarkers,
-        //~ ));
+        return $view->partial('common/block-layout/mapping-map', array(
+            'block' => $block,
+            'markers' => $allMarkers,
+        ));
 
     }
 }
