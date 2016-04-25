@@ -16,4 +16,9 @@ return [
             OMEKA_PATH . '/modules/Mapping/view',
         ),
     ),
+    'csv_import_mappings' => [
+        'items' => [
+            'Mapping\CsvMapping\CsvMapping',
+        ],
+    ],
 ];
