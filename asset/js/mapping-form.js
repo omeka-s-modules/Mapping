@@ -138,10 +138,10 @@ var setWms = function(baseUrl, layers, styles, label) {
     }
     // WMS layers and styles cannot be null.
     if (!layers) {
-        layers = '';;
+        layers = '';
     }
     if (!styles) {
-        styles = '';;
+        styles = '';
     }
     wms = L.tileLayer.wms(baseUrl, {
         layers: layers,
@@ -160,11 +160,6 @@ var setWms = function(baseUrl, layers, styles, label) {
     }
     opacityControl = L.control.opacity(wms, label);
     map.addControl(opacityControl);
-
-    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_base_url]"]').val(baseUrl);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_layers]"]').val(layers);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_styles]"]').val(styles);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:wms_label]"]').val(label);
 }
 
 // Add saved markers to the map.
@@ -175,26 +170,12 @@ $.each(markersData, function(index, data) {
     addMarker(marker, data['o:id'], data['o-module-mapping:label'], markerMediaId);
 });
 
-// Set saved mapping data to the map (default view and WMS overlay).
+// Set saved mapping data to the map (default view).
 if (mappingData) {
     $('input[name="o-module-mapping:mapping[o:id]"]').val(mappingData['o:id']);
     $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(mappingData['o-module-mapping:default_lat']);
     $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(mappingData['o-module-mapping:default_lng']);
     $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(mappingData['o-module-mapping:default_zoom']);
-
-    if (mappingData['o-module-mapping:wms_base_url']) {
-        // WMS is valid only with a base URL.
-        setWms(
-            mappingData['o-module-mapping:wms_base_url'],
-            mappingData['o-module-mapping:wms_layers'],
-            mappingData['o-module-mapping:wms_styles'],
-            mappingData['o-module-mapping:wms_label']
-        );
-    }
-    $('#mapping-wms-base-url').val(mappingData['o-module-mapping:wms_base_url']),
-    $('#mapping-wms-layers').val(mappingData['o-module-mapping:wms_layers']),
-    $('#mapping-wms-styles').val(mappingData['o-module-mapping:wms_styles']),
-    $('#mapping-wms-label').val(mappingData['o-module-mapping:wms_label'])
 }
 
 // Add new markers.
@@ -275,12 +256,11 @@ $('#mapping-wms-unset').on('click', function(e) {
         wms = null;
         opacityControl = null;
     }
-    $('input[name^="o-module-mapping:mapping[o-module-mapping:wms_').val('');
     $('#mapping-wms-base-url, #mapping-wms-layers, #mapping-wms-styles, #mapping-wms-label').val('');
 });
 
-// Set the WMS overlay.
-$('#mapping-wms-set').on('click', function(e) {
+// Add the WMS overlay.
+$('#mapping-wms-add').on('click', function(e) {
     e.preventDefault();
     setWms(
         $('#mapping-wms-base-url').val(),
