@@ -27,7 +27,6 @@ var baseMaps = {
     'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
     'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
 };
-var wms;
 var drawnItems = new L.FeatureGroup();
 var layerControl = L.control.layers(baseMaps);
 
@@ -44,29 +43,6 @@ $.each(markersData, function(index, data) {
     marker.bindPopup(popupContent[0]);
     drawnItems.addLayer(marker);
 });
-
-if (mappingData && mappingData['o-module-mapping:wms_base_url']) {
-    // WMS layers and styles cannot be null.
-    if (!mappingData['o-module-mapping:wms_layers']) {
-        mappingData['o-module-mapping:wms_layers'] = '';;
-    }
-    if (!mappingData['o-module-mapping:wms_styles']) {
-        mappingData['o-module-mapping:wms_styles'] = '';;
-    }
-    wms = L.tileLayer.wms(mappingData['o-module-mapping:wms_base_url'], {
-        layers: mappingData['o-module-mapping:wms_layers'],
-        styles: mappingData['o-module-mapping:wms_styles'],
-        format: 'image/png',
-        transparent: true,
-    }).addTo(map);
-
-    var label = 'Unlabeled Overlay';
-    if (mappingData['o-module-mapping:wms_label']) {
-        label = mappingData['o-module-mapping:wms_label'];
-    }
-    layerControl.addOverlay(wms, label);
-    map.addControl(L.control.opacity(wms, label));
-}
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
 $('a[href="#mapping-section"], #mapping-legend').on('click', function(e) {
