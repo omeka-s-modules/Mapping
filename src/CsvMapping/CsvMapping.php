@@ -36,7 +36,7 @@ class CsvMapping implements MappingInterface
     public static function getSidebar($view)
     {
         $html = "<div id='mapping-plugin-sidebar' class='sidebar flags'>
-                    <legend>Users Info</legend>
+                    <legend>Mapping Info</legend>
                     <ul>
                         <li data-flag='column-map-lat'>
                             <a href='#' class='button'><span>Latitude</span></a>
