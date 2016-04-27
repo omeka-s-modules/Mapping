@@ -20,13 +20,13 @@ class CsvMapping extends AbstractMapping
         $html = "<div id='mapping-plugin' class='sidebar flags'>
                     <h3>Mapping Info: </h3>
                     <ul>
-                        <li data-flag='column-map-lat'>
+                        <li data-flag='column-map-lat' data-flag-type='mapping-plugin'>
                             <a href='#' class='button'><span>Latitude</span></a>
                         </li>
-                        <li data-flag='column-map-lng'>
+                        <li data-flag='column-map-lng' data-flag-type='mapping-plugin'>
                             <a href='#' class='button'><span>Longitude</span></a>
                         </li>
-                        <li data-flag='column-map-latlng'>
+                        <li data-flag='column-map-latlng' data-flag-type='mapping-plugin'>
                             <a href='#' class='button'><span>Latitude/Longitude</span></a>
                         </li>
                     </ul>
