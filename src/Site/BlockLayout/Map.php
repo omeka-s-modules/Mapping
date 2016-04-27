@@ -38,12 +38,16 @@ class Map extends AbstractBlockLayout
         }
     }
 
+    public function prepareForm(PhpRenderer $view)
+    {
+        $view->headScript()->appendFile($view->assetUrl('js/mapping-block-form.js', 'Mapping'));
+    }
+
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageBlockRepresentation $block = null
     ) {
-        // Add WMS overlay inputs and center/zoom inputs. Maybe add a map to set
-        // center/zoom and verify that the WMS overlay works?
-        return $this->attachmentsForm($view, $site, $block, true);
+        return $view->partial('common/block-layout/mapping-block-form')
+            . $this->attachmentsForm($view, $site, $block, true);
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
@@ -65,7 +69,7 @@ class Map extends AbstractBlockLayout
         // get markers for all attachments (items) and render them on a map via
         // a partial
 
-        return $view->partial('common/block-layout/mapping-map', array(
+        return $view->partial('common/block-layout/mapping-block', array(
             'block' => $block,
             'markers' => $allMarkers,
         ));
