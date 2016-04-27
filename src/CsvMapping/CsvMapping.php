@@ -1,28 +1,10 @@
 <?php
 namespace Mapping\CsvMapping;
 
-use CSVImport\Mapping\MappingInterface;
+use CSVImport\Mapping\AbstractMapping;
 
-class CsvMapping implements MappingInterface
+class CsvMapping extends AbstractMapping
 {
-    
-    
-    protected $args;
-
-    protected $api;
-
-    protected $logger;
-    
-    protected $serviceLocator;
-
-    public function __construct($args, $serviceLocator)
-    {
-        $this->args = $args;
-        $this->logger = $serviceLocator->get('Omeka\Logger');
-        $this->api = $serviceLocator->get('Omeka\ApiManager');
-        $this->serviceLocator = $serviceLocator;
-    }
-    
     public static function getLabel()
     {
         return 'Map';
@@ -35,8 +17,8 @@ class CsvMapping implements MappingInterface
     
     public static function getSidebar($view)
     {
-        $html = "<div id='mapping-plugin-sidebar' class='sidebar flags'>
-                    <legend>Mapping Info</legend>
+        $html = "<div id='mapping-plugin' class='sidebar flags'>
+                    <h3>Mapping Info: </h3>
                     <ul>
                         <li data-flag='column-map-lat'>
                             <a href='#' class='button'><span>Latitude</span></a>
