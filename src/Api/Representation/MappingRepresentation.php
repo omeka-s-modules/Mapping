@@ -18,10 +18,6 @@ class MappingRepresentation extends AbstractEntityRepresentation
             'o-module-mapping:default_zoom' => $this->defaultZoom(),
             'o-module-mapping:default_lat' => $this->defaultLat(),
             'o-module-mapping:default_lng' => $this->defaultLng(),
-            'o-module-mapping:wms_base_url' => $this->wmsBaseUrl(),
-            'o-module-mapping:wms_layers' => $this->wmsLayers(),
-            'o-module-mapping:wms_styles' => $this->wmsStyles(),
-            'o-module-mapping:wms_label' => $this->wmsLabel(),
         ];
     }
 
@@ -44,25 +40,5 @@ class MappingRepresentation extends AbstractEntityRepresentation
     public function defaultLng()
     {
         return $this->resource->getDefaultLng();
-    }
-
-    public function wmsBaseUrl()
-    {
-        return $this->resource->getWmsBaseUrl();
-    }
-
-    public function wmsLayers()
-    {
-        return $this->resource->getWmsLayers();
-    }
-
-    public function wmsStyles()
-    {
-        return $this->resource->getWmsStyles();
-    }
-
-    public function wmsLabel()
-    {
-        return $this->resource->getWmsLabel();
     }
 }

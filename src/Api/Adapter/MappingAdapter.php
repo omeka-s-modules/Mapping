@@ -43,18 +43,6 @@ class MappingAdapter extends AbstractEntityAdapter
         if ($this->shouldHydrate($request, 'o-module-mapping:default_lng')) {
             $entity->setDefaultLng($request->getValue('o-module-mapping:default_lng'));
         }
-        if ($this->shouldHydrate($request, 'o-module-mapping:wms_base_url')) {
-            $entity->setWmsBaseUrl($request->getValue('o-module-mapping:wms_base_url'));
-        }
-        if ($this->shouldHydrate($request, 'o-module-mapping:wms_layers')) {
-            $entity->setWmsLayers($request->getValue('o-module-mapping:wms_layers'));
-        }
-        if ($this->shouldHydrate($request, 'o-module-mapping:wms_styles')) {
-            $entity->setWmsStyles($request->getValue('o-module-mapping:wms_styles'));
-        }
-        if ($this->shouldHydrate($request, 'o-module-mapping:wms_label')) {
-            $entity->setWmsLabel($request->getValue('o-module-mapping:wms_label'));
-        }
     }
 
     public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
