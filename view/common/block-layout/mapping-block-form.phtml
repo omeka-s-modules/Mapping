@@ -10,10 +10,10 @@ $wmsOverlayTemplate = '
         <a href="#" class="mapping-wms-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
         <a href="#" class="mapping-wms-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
     </ul>
-    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][label]">
-    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][base_url]">
-    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][layers]">
-    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][styles]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][label]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][base_url]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][layers]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][styles]">
 </li>';
 ?>
 <h4>Web Map Service (WMS) Overlays</h4>
@@ -25,10 +25,10 @@ $wmsOverlayTemplate = '
             <a href="#" class="mapping-wms-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
             <a href="#" class="mapping-wms-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
         </ul>
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][label]" value="<?php echo $this->escapeHtml($wmsOverlay['label']); ?>">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][base_url]" value="<?php echo $this->escapeHtml($wmsOverlay['base_url']); ?>">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][layers]" value="<?php echo $this->escapeHtml($wmsOverlay['layers']); ?>">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][styles]" value="<?php echo $this->escapeHtml($wmsOverlay['styles']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][label]" value="<?php echo $this->escapeHtml($wmsOverlay['label']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][base_url]" value="<?php echo $this->escapeHtml($wmsOverlay['base_url']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][layers]" value="<?php echo $this->escapeHtml($wmsOverlay['layers']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][styles]" value="<?php echo $this->escapeHtml($wmsOverlay['styles']); ?>">
     </li>
     <?php endforeach; ?>
 </ul>

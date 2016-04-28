@@ -4,7 +4,7 @@ $('form').submit(function(e) {
     $('.mapping-wms-overlay').each(function(index) {
         $(this).find(':input').each(function() {
             var thisInput = $(this);
-            var name = thisInput.attr('name').replace('[__mappingWmsDataIndex__]', '[' + index + ']');
+            var name = thisInput.attr('name').replace('[__mappingWmsIndex__]', '[' + index + ']');
             thisInput.attr('name', name);
         });
     });
