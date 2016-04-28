@@ -1,5 +1,6 @@
 $(document).ready( function() {
 
+// Handle preparing the WMS data for submission.
 $('form').submit(function(e) {
     $('.mapping-wms-overlay').each(function(index) {
         $(this).find(':input').each(function() {
@@ -10,15 +11,23 @@ $('form').submit(function(e) {
     });
 });
 
-$('#blocks').on('click', '.mapping-wms-add', function(e) {
-    var block = $(this).closest('.block');
-    var wmsOverlays = block.find('ul.mapping-wms-overlays');
-    var wmsOverlay = $($.parseHTML(wmsOverlays.data('wmsOverlayTemplate')));
+/**
+ * Set WMS data to page form.
+ *
+ * @param block The page block (div) jQuery object
+ * @param wmsOverlay The WMS overlay (li) jQuery object
+ * @return bool Whether the WMS data is valid
+ */
+var setWmsData = function(block, wmsOverlay) {
+    var wmsLabel = block.find('input.mapping-wms-label').val();
+    var wmsBaseUrl = block.find('input.mapping-wms-base-url').val();
+    var wmsLayers = block.find('input.mapping-wms-layers').val();
+    var wmsStyles = block.find('input.mapping-wms-styles').val();
 
-    var wmsLabel = block.find('input.mapping-wms-overlay-label').val();
-    var wmsBaseUrl = block.find('input.mapping-wms-overlay-base-url').val();
-    var wmsLayers = block.find('input.mapping-wms-overlay-layers').val();
-    var wmsStyles = block.find('input.mapping-wms-overlay-styles').val();
+    // Label and base URL are required for WMS overlays.
+    if (!wmsLabel || !wmsBaseUrl) {
+        return false;
+    }
 
     wmsOverlay.find('.mapping-wms-overlay-title').html(wmsLabel);
     wmsOverlay.find('input[name$="[label]"]').val(wmsLabel);
@@ -26,8 +35,86 @@ $('#blocks').on('click', '.mapping-wms-add', function(e) {
     wmsOverlay.find('input[name$="[layers]"]').val(wmsLayers);
     wmsOverlay.find('input[name$="[styles]"]').val(wmsStyles);
 
-    block.find('.mapping-wms-overlay-fields :input').val('');
-    wmsOverlays.append(wmsOverlay);
+    block.find('.mapping-wms-fields :input').val('');
+    return true;
+}
+
+// Handle adding a new WMS overlay.
+$('#blocks').on('click', '.mapping-wms-add', function(e) {
+    e.preventDefault();
+
+    var block = $(this).closest('.block');
+    block.find('.mapping-wms-add').show();
+    block.find('.mapping-wms-edit').hide();
+    var wmsOverlays = block.find('ul.mapping-wms-overlays');
+    var wmsOverlay = $($.parseHTML(wmsOverlays.data('wmsOverlayTemplate')));
+
+    if (setWmsData(block, wmsOverlay)) {
+        wmsOverlays.append(wmsOverlay);
+    } else {
+        alert('A label and base URL are required for WMS overlays.');
+    }
+});
+
+// Handle editing an existing WMS overlay.
+$('#blocks').on('click', '.mapping-wms-edit', function(e) {
+    e.preventDefault();
+
+    var block = $(this).closest('.block');
+    block.find('.mapping-wms-add').show();
+    block.find('.mapping-wms-edit').hide();
+    var wmsOverlay = block.find('li.mapping-wms-overlay-editing');
+    wmsOverlay.removeClass('mapping-wms-overlay-editing');
+
+    if (!setWmsData(block, wmsOverlay)) {
+        alert('A label and base URL are required for WMS overlays.');
+    }
+});
+
+// Handle clearing the WMS input form.
+$('#blocks').on('click', '.mapping-wms-clear', function(e) {
+    e.preventDefault();
+
+    var block = $(this).closest('.block');
+    block.find('.mapping-wms-add').show();
+    block.find('.mapping-wms-edit').hide();
+    block.find('.mapping-wms-fields :input').val('');
+    block.find('li.mapping-wms-overlay').removeClass('mapping-wms-overlay-editing');
+});
+
+// Handle populating existing WMS data to the WMS input form.
+$('#blocks').on('click', '.mapping-wms-overlay-edit', function(e) {
+    e.preventDefault();
+
+    var block = $(this).closest('.block');
+    block.find('.mapping-wms-add').hide();
+    block.find('.mapping-wms-edit').show();
+    var wmsOverlay = $(this).closest('.mapping-wms-overlay');
+    wmsOverlay.addClass('mapping-wms-overlay-editing');
+
+    var wmsLabel = wmsOverlay.find('input[name$="[label]"]').val();
+    var wmsBaseUrl = wmsOverlay.find('input[name$="[base_url]"]').val();
+    var wmsLayers = wmsOverlay.find('input[name$="[layers]"]').val();
+    var wmsStyles = wmsOverlay.find('input[name$="[styles]"]').val();
+
+    block.find('input.mapping-wms-label').val(wmsLabel);
+    block.find('input.mapping-wms-base-url').val(wmsBaseUrl);
+    block.find('input.mapping-wms-layers').val(wmsLayers);
+    block.find('input.mapping-wms-styles').val(wmsStyles);
+});
+
+// Handle WMS overlay deletion.
+$('#blocks').on('click', '.mapping-wms-overlay-delete', function(e) {
+    e.preventDefault();
+
+    var wmsOverlay = $(this).closest('.mapping-wms-overlay');
+    if (wmsOverlay.hasClass('mapping-wms-overlay-editing')) {
+        var block = $(this).closest('.block');
+        block.find('.mapping-wms-add').show();
+        block.find('.mapping-wms-edit').hide();
+        block.find('.mapping-wms-fields :input').val('');
+    }
+    wmsOverlay.remove();
 });
 
 });

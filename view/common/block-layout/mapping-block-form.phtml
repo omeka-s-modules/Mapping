@@ -32,14 +32,14 @@ $wmsOverlayTemplate = '
     </li>
     <?php endforeach; ?>
 </ul>
-<div class="mapping-wms-overlay-fields">
+<div class="mapping-wms-fields">
     <div class="field">
         <div class="field-meta">
             <label>Label</label>
             <div class="field-description"></div>
         </div>
         <div class="inputs">
-            <input type="text" class="mapping-wms-overlay-label">
+            <input type="text" class="mapping-wms-label">
         </div>
     </div>
     <div class="field">
@@ -48,7 +48,7 @@ $wmsOverlayTemplate = '
             <div class="field-description"></div>
         </div>
         <div class="inputs">
-            <input type="text" class="mapping-wms-overlay-base-url">
+            <input type="text" class="mapping-wms-base-url">
         </div>
     </div>
     <div class="field">
@@ -57,7 +57,7 @@ $wmsOverlayTemplate = '
             <div class="field-description">The WMS layers, if any (comma-separated).</div>
         </div>
         <div class="inputs">
-            <input type="text" class="mapping-wms-overlay-layers">
+            <input type="text" class="mapping-wms-layers">
         </div>
     </div>
     <div class="field">
@@ -66,10 +66,11 @@ $wmsOverlayTemplate = '
             <div class="field-description">The WMS styles, if any (comma-separated).</div>
         </div>
         <div class="inputs">
-            <input type="text" class="mapping-wms-overlay-styles">
+            <input type="text" class="mapping-wms-styles">
         </div>
     </div>
 </div>
-<button type="button" class="mapping-wms-add">Add WMS Overlay</button>
-<button type="button" class="mapping-wms-clear">Clear</button>
+<button type="button" class="mapping-wms-add">Add Overlay</button>
+<button type="button" class="mapping-wms-edit" style="display:none;">Save Changes</button>
+<button type="button" class="mapping-wms-clear">Clear Form</button>
 <h4>Items Attached to Map</h4>
