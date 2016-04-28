@@ -1,51 +1,73 @@
+<?php
+$wmsOverlays = [];
+if ($block && isset($block->data()['wms'])) {
+    $wmsOverlays = $block->data()['wms'];
+}
+$wmsOverlayTemplate = '
+<li class="mapping-wms-overlay">
+    <span class="mapping-wms-overlay-title"></span>
+    <ul class="actions">
+        <a href="#" class="mapping-wms-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
+        <a href="#" class="mapping-wms-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
+    </ul>
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][label]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][base_url]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][layers]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][styles]">
+</li>';
+?>
 <h4>Web Map Service (WMS) Overlays</h4>
-<ul>
-    <li class="mapping-wms-data">
-        <span class="mapping-wms-label">Foobar (http://example.com)</span>
+<ul class="mapping-wms-overlays" data-wms-overlay-template="<?php echo $this->escapeHtml($wmsOverlayTemplate); ?>">
+    <?php foreach ($wmsOverlays as $wmsOverlay): ?>
+    <li class="mapping-wms-overlay">
+        <span class="mapping-wms-overlay-title"><?php echo $wmsOverlay['label']; ?></span>
         <ul class="actions">
-            <a href="#" class="o-icon-edit" aria-label="Edit" title="Edit" ></a>
-            <a href="#" class="o-icon-delete" aria-label="Delete" title="Delete"></a>
+            <a href="#" class="mapping-wms-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
+            <a href="#" class="mapping-wms-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
         </ul>
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][base_url]" value="">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][layers]" value="">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][styles]" value="">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][label]" value="">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][label]" value="<?php echo $this->escapeHtml($wmsOverlay['label']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][base_url]" value="<?php echo $this->escapeHtml($wmsOverlay['base_url']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][layers]" value="<?php echo $this->escapeHtml($wmsOverlay['layers']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][styles]" value="<?php echo $this->escapeHtml($wmsOverlay['styles']); ?>">
     </li>
+    <?php endforeach; ?>
 </ul>
-<div class="field">
-    <div class="field-meta">
-        <label>Label</label>
-        <div class="field-description"></div>
+<div class="mapping-wms-overlay-fields">
+    <div class="field">
+        <div class="field-meta">
+            <label>Label</label>
+            <div class="field-description"></div>
+        </div>
+        <div class="inputs">
+            <input type="text" class="mapping-wms-overlay-label">
+        </div>
     </div>
-    <div class="inputs">
-        <input type="text">
+    <div class="field">
+        <div class="field-meta">
+            <label>Base URL</label>
+            <div class="field-description"></div>
+        </div>
+        <div class="inputs">
+            <input type="text" class="mapping-wms-overlay-base-url">
+        </div>
     </div>
-</div>
-<div class="field">
-    <div class="field-meta">
-        <label>Base URL</label>
-        <div class="field-description"></div>
+    <div class="field">
+        <div class="field-meta">
+            <label>Layers</label>
+            <div class="field-description">The WMS layers, if any (comma-separated).</div>
+        </div>
+        <div class="inputs">
+            <input type="text" class="mapping-wms-overlay-layers">
+        </div>
     </div>
-    <div class="inputs">
-        <input type="text">
-    </div>
-</div>
-<div class="field">
-    <div class="field-meta">
-        <label>Layers</label>
-        <div class="field-description">The WMS layers, if any (comma-separated).</div>
-    </div>
-    <div class="inputs">
-        <input type="text">
-    </div>
-</div>
-<div class="field">
-    <div class="field-meta">
-        <label>Styles</label>
-        <div class="field-description">The WMS styles, if any (comma-separated).</div>
-    </div>
-    <div class="inputs">
-        <input type="text">
+    <div class="field">
+        <div class="field-meta">
+            <label>Styles</label>
+            <div class="field-description">The WMS styles, if any (comma-separated).</div>
+        </div>
+        <div class="inputs">
+            <input type="text" class="mapping-wms-overlay-styles">
+        </div>
     </div>
 </div>
 <button type="button" class="mapping-wms-add">Add WMS Overlay</button>

@@ -46,7 +46,7 @@ class Map extends AbstractBlockLayout
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageBlockRepresentation $block = null
     ) {
-        return $view->partial('common/block-layout/mapping-block-form')
+        return $view->partial('common/block-layout/mapping-block-form', ['block' => $block])
             . $this->attachmentsForm($view, $site, $block, true);
     }
 
