@@ -4,34 +4,44 @@ L.Control.DefaultView = L.Control.extend({
         position: 'topleft'
     },
 
+    initialize: function (setCallback, clearCallback) {
+        this._setCallback = setCallback;
+        this._clearCallback = clearCallback;
+    },
+
     onAdd: function (map) {
         this._map = map;
 
         var container = L.DomUtil.create('div', 'mapping-control-default leaflet-bar');
-        var link = L.DomUtil.create('a', 'mapping-control-default-view', container);
+        var setLink = L.DomUtil.create('a', 'mapping-control-default-view-set', container);
+        var clearLink = L.DomUtil.create('a', 'mapping-control-default-view-clear', container);
 
-        link.innerHTML = '⊹';
-        link.href = '#';
-        link.title = 'Set the current view as the default center and zoom level.';
-        link.style.fontSize = '20px';
+        setLink.innerHTML = '↧';
+        setLink.href = '#';
+        setLink.title = 'Set the current view as the default center and zoom level';
+        setLink.style.fontSize = '18px';
+
+        clearLink.innerHTML = '↺';
+        clearLink.href = '#';
+        clearLink.title = 'Clear the default center and zoom level';
+        clearLink.style.fontSize = '18px';
 
         L.DomEvent
-            .on(link, 'mousedown', L.DomEvent.stopPropagation)
-            .on(link, 'dblclick', L.DomEvent.stopPropagation)
-            .on(link, 'click', L.DomEvent.stopPropagation)
-            .on(link, 'click', L.DomEvent.preventDefault)
-            .on(link, 'click', this._setDefaultView, this);
+            .on(setLink, 'mousedown', L.DomEvent.stopPropagation)
+            .on(setLink, 'dblclick', L.DomEvent.stopPropagation)
+            .on(setLink, 'click', L.DomEvent.stopPropagation)
+            .on(setLink, 'click', L.DomEvent.preventDefault)
+            .on(setLink, 'click', this._setCallback, this);
+        L.DomEvent
+            .on(clearLink, 'mousedown', L.DomEvent.stopPropagation)
+            .on(clearLink, 'dblclick', L.DomEvent.stopPropagation)
+            .on(clearLink, 'click', L.DomEvent.stopPropagation)
+            .on(clearLink, 'click', L.DomEvent.preventDefault)
+            .on(clearLink, 'click', this._clearCallback, this);
+
         return container;
     },
-
-    _setDefaultView: function(e) {
-        var zoom = this._map.getZoom();
-        var center = this._map.getCenter();
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(zoom);
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(center.lat);
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(center.lng);
-    },
 });
-L.control.defaultView = function () {
-    return new L.Control.DefaultView();
+L.control.defaultView = function (setCallback, clearCallback) {
+    return new L.Control.DefaultView(setCallback, clearCallback);
 };

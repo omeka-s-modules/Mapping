@@ -54,7 +54,21 @@ map.addLayer(drawnItems);
 map.addControl(layerControl);
 map.addControl(drawControl);
 map.addControl(L.control.fitBounds(drawnItems));
-map.addControl(L.control.defaultView());
+map.addControl(L.control.defaultView(
+    function(e) {
+        var zoom = map.getZoom();
+        var center = map.getCenter();
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(zoom);
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(center.lat);
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(center.lng);
+    },
+    function(e) {
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(0);
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(0);
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(0);
+        map.setView([0, 0], 0);
+    }
+));
 
 var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
 

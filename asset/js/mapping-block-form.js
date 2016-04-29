@@ -1,15 +1,37 @@
 $(document).ready( function() {
 
-// Handle preparing the WMS data for submission.
-$('form').submit(function(e) {
-    $('.mapping-wms-overlay').each(function(index) {
-        $(this).find(':input').each(function() {
-            var thisInput = $(this);
-            var name = thisInput.attr('name').replace('[__mappingWmsIndex__]', '[' + index + ']');
-            thisInput.attr('name', name);
-        });
-    });
-});
+/**
+ * Set the map with the default view to a block.
+ *
+ * @param block The page block (div) jQuery object
+ */
+var setDefaultViewMap = function(block) {
+    var mapDiv = block.find('.mapping-map');
+    var defaultZoom = mapDiv.find('input[name$="[zoom]"]').val();
+    var defaultLat = mapDiv.find('input[name$="[lat]"]').val();
+    var defaultLng = mapDiv.find('input[name$="[lng]"]').val();
+
+    var map = L.map(mapDiv[0]).setView([defaultLat, defaultLng], defaultZoom);
+    L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+    }).addTo(map);
+
+    map.addControl(L.control.defaultView(
+        function(e) {
+            var zoom = map.getZoom();
+            var center = map.getCenter();
+            mapDiv.find('input[name$="[zoom]"]').val(zoom);
+            mapDiv.find('input[name$="[lat]"]').val(center.lat);
+            mapDiv.find('input[name$="[lng]"]').val(center.lng);
+        },
+        function(e) {
+            mapDiv.find('input[name$="[zoom]"]').val(0);
+            mapDiv.find('input[name$="[lat]"]').val(0);
+            mapDiv.find('input[name$="[lng]"]').val(0);
+            map.setView([0, 0], 0);
+        }
+    ));
+};
 
 /**
  * Set WMS data to page form.
@@ -38,6 +60,27 @@ var setWmsData = function(block, wmsOverlay) {
     block.find('.mapping-wms-fields :input').val('');
     return true;
 }
+
+// Handle setting the map for added blocks.
+$('#blocks').on('o:block-added', '.block[data-block-layout="mappingmap"]', function(e) {
+    setDefaultViewMap($(this));
+});
+
+// Handle setting the map for existing blocks.
+$('.block[data-block-layout="mappingmap"]').each(function() {
+    setDefaultViewMap($(this));
+});
+
+// Handle preparing the WMS data for submission.
+$('form').submit(function(e) {
+    $('.mapping-wms-overlay').each(function(index) {
+        $(this).find(':input').each(function() {
+            var thisInput = $(this);
+            var name = thisInput.attr('name').replace('[__mappingWmsIndex__]', '[' + index + ']');
+            thisInput.attr('name', name);
+        });
+    });
+});
 
 // Handle adding a new WMS overlay.
 $('#blocks').on('click', '.mapping-wms-add', function(e) {
