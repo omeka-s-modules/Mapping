@@ -9,16 +9,19 @@ var markersData = mappingMap.data('markers');
 var map = L.map('mapping-map');
 var mapDefaultCenter = [0, 0];
 var mapDefaultZoom = 1;
-if (mappingData) {
-    if (mappingData['o-module-mapping:default_lat'] && mappingData['o-module-mapping:default_lng']) {
-        mapDefaultCenter = [
-            mappingData['o-module-mapping:default_lat'],
-            mappingData['o-module-mapping:default_lng']
-        ];
-    }
-    if (mappingData['o-module-mapping:default_zoom']) {
-        mapDefaultZoom = mappingData['o-module-mapping:default_zoom'];
-    }
+var noInitialDefaultView = false;
+if (mappingData
+    && mappingData['o-module-mapping:default_lat'] !== null
+    && mappingData['o-module-mapping:default_lng'] !== null
+    && mappingData['o-module-mapping:default_zoom'] !== null
+) {
+    mapDefaultCenter = [
+        mappingData['o-module-mapping:default_lat'],
+        mappingData['o-module-mapping:default_lng']
+    ];
+    mapDefaultZoom = mappingData['o-module-mapping:default_zoom'];
+} else {
+    noInitialDefaultView = true;
 }
 map.setView(mapDefaultCenter, mapDefaultZoom);
 
@@ -45,16 +48,8 @@ var drawControl = new L.Control.Draw({
         featureGroup: drawnItems
     }
 });
-var wms;
-var opacityControl;
-
-// Add the layers and controls to the map.
-map.addLayer(baseMaps['Streets']);
-map.addLayer(drawnItems);
-map.addControl(layerControl);
-map.addControl(drawControl);
-map.addControl(L.control.fitBounds(drawnItems));
-map.addControl(L.control.defaultView(
+// Initialise the default view control
+var defaultViewControl = new L.Control.DefaultView(
     function(e) {
         var zoom = map.getZoom();
         var center = map.getCenter();
@@ -63,12 +58,30 @@ map.addControl(L.control.defaultView(
         $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(center.lng);
     },
     function(e) {
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(0);
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(0);
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(0);
-        map.setView([0, 0], 0);
-    }
-));
+        var zoom = $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val();
+        var lat = $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val();
+        var lng = $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val();
+        if (zoom && lat && lng) {
+            map.setView([lat, lng], zoom);
+        }
+    },
+    function(e) {
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val('');
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val('');
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val('');
+        map.setView([0, 0], 1);
+    },
+    {noInitialDefaultView: noInitialDefaultView}
+);
+var wms;
+var opacityControl;
+
+// Add the layers and controls to the map.
+map.addLayer(baseMaps['Streets']);
+map.addLayer(drawnItems);
+map.addControl(layerControl);
+map.addControl(drawControl);
+map.addControl(defaultViewControl);
 
 var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
 

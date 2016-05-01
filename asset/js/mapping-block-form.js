@@ -5,18 +5,26 @@ $(document).ready( function() {
  *
  * @param block The page block (div) jQuery object
  */
-var setDefaultViewMap = function(block) {
+var setMap = function(block) {
     var mapDiv = block.find('.mapping-map');
+
     var defaultZoom = mapDiv.find('input[name$="[zoom]"]').val();
     var defaultLat = mapDiv.find('input[name$="[lat]"]').val();
     var defaultLng = mapDiv.find('input[name$="[lng]"]').val();
+    var noInitialDefaultView = false;
+
+    if (!defaultZoom || !defaultLat || !defaultLng) {
+        noInitialDefaultView = true;
+        defaultZoom = 1;
+        defaultLat = 0;
+        defaultLng = 0;
+    }
 
     var map = L.map(mapDiv[0]).setView([defaultLat, defaultLng], defaultZoom);
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
     }).addTo(map);
-
-    map.addControl(L.control.defaultView(
+    map.addControl(new L.Control.DefaultView(
         function(e) {
             var zoom = map.getZoom();
             var center = map.getCenter();
@@ -25,11 +33,20 @@ var setDefaultViewMap = function(block) {
             mapDiv.find('input[name$="[lng]"]').val(center.lng);
         },
         function(e) {
-            mapDiv.find('input[name$="[zoom]"]').val(0);
-            mapDiv.find('input[name$="[lat]"]').val(0);
-            mapDiv.find('input[name$="[lng]"]').val(0);
-            map.setView([0, 0], 0);
-        }
+            var zoom = mapDiv.find('input[name$="[zoom]"]').val();
+            var lat = mapDiv.find('input[name$="[lat]"]').val();
+            var lng = mapDiv.find('input[name$="[lng]"]').val();
+            if (zoom && lat && lng) {
+                map.setView([lat, lng], zoom);
+            }
+        },
+        function(e) {
+            mapDiv.find('input[name$="[zoom]"]').val('');
+            mapDiv.find('input[name$="[lat]"]').val('');
+            mapDiv.find('input[name$="[lng]"]').val('');
+            map.setView([0, 0], 1);
+        },
+        {noInitialDefaultView: noInitialDefaultView}
     ));
 };
 
@@ -63,12 +80,12 @@ var setWmsData = function(block, wmsOverlay) {
 
 // Handle setting the map for added blocks.
 $('#blocks').on('o:block-added', '.block[data-block-layout="mappingmap"]', function(e) {
-    setDefaultViewMap($(this));
+    setMap($(this));
 });
 
 // Handle setting the map for existing blocks.
 $('.block[data-block-layout="mappingmap"]').each(function() {
-    setDefaultViewMap($(this));
+    setMap($(this));
 });
 
 // Handle preparing the WMS data for submission.

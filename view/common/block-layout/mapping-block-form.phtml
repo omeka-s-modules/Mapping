@@ -1,5 +1,5 @@
 <?php
-$defaultView = ['zoom' => 0, 'lat' => 0, 'lng' => 0];
+$defaultView = ['zoom' => '', 'lat' => '', 'lng' => ''];
 if ($block && isset($block->data()['default_view'])) {
     $defaultView['zoom'] = $block->data()['default_view']['zoom'];
     $defaultView['lat'] = $block->data()['default_view']['lat'];
