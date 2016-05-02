@@ -48,6 +48,11 @@ var setMap = function(block) {
         },
         {noInitialDefaultView: noInitialDefaultView}
     ));
+
+    // Expanding changes map dimensions, so make the necessary adjustments.
+    block.on('o:expanded', '.mapping-map-expander', function(e) {
+        map.invalidateSize();
+    })
 };
 
 /**
