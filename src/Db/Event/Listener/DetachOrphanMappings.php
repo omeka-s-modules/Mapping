@@ -3,9 +3,10 @@ namespace Mapping\Db\Event\Listener;
 
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Mapping\Entity\Mapping;
+use Mapping\Entity\MappingMarker;
 
 /**
- * Automatically detach mappings that reference unknown items.
+ * Automatically detach mappings and markers that reference unknown items.
  */
 class DetachOrphanMappings
 {
@@ -25,6 +26,14 @@ class DetachOrphanMappings
         foreach ($identityMap[Mapping::class] as $mapping) {
             if (!$em->contains($mapping->getItem())) {
                 $em->detach($mapping);
+            }
+        }
+
+        foreach ($identityMap[MappingMarker::class] as $marker) {
+            if (!$em->contains($marker->getItem())
+                || ($marker->getMedia() && !$em->contains($marker->getMedia()))
+            ) {
+                $em->detach($marker);
             }
         }
     }
