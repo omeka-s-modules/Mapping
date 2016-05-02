@@ -1,6 +1,8 @@
 <?php
 namespace Mapping;
 
+use Doctrine\ORM\Events;
+use Mapping\Db\Event\Listener\DetachOrphanMappings;
 use Omeka\Module\AbstractModule;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
@@ -25,6 +27,11 @@ class Module extends AbstractModule
             ['search', 'read']
         );
 
+        $em = $this->getServiceLocator()->get('Omeka\EntityManager');
+        $em->getEventManager()->addEventListener(
+            Events::preFlush,
+            new DetachOrphanMappings
+        );
     }
 
     public function install(ServiceLocatorInterface $serviceLocator)
