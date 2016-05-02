@@ -1,53 +1,89 @@
+<?php
+$defaultView = ['zoom' => '', 'lat' => '', 'lng' => ''];
+if ($block && isset($block->data()['default_view'])) {
+    $defaultView['zoom'] = $block->data()['default_view']['zoom'];
+    $defaultView['lat'] = $block->data()['default_view']['lat'];
+    $defaultView['lng'] = $block->data()['default_view']['lng'];
+}
+
+$wmsOverlays = [];
+if ($block && isset($block->data()['wms'])) {
+    $wmsOverlays = $block->data()['wms'];
+}
+$wmsOverlayTemplate = '
+<li class="mapping-wms-overlay">
+    <span class="mapping-wms-overlay-title"></span>
+    <ul class="actions">
+        <a href="#" class="mapping-wms-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
+        <a href="#" class="mapping-wms-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
+    </ul>
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][label]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][base_url]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][layers]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][styles]">
+</li>';
+?>
+<h4>Default Center and Zoom</h4>
+<div class="mapping-map" style="height:300px;">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][zoom]" value="<?php echo $this->escapeHtml($defaultView['zoom']); ?>">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][lat]" value="<?php echo $this->escapeHtml($defaultView['lat']); ?>">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][lng]" value="<?php echo $this->escapeHtml($defaultView['lng']); ?>">
+</div>
 <h4>Web Map Service (WMS) Overlays</h4>
-<ul>
-    <li class="mapping-wms-data">
-        <span class="mapping-wms-label">Foobar (http://example.com)</span>
+<ul class="mapping-wms-overlays" data-wms-overlay-template="<?php echo $this->escapeHtml($wmsOverlayTemplate); ?>">
+    <?php foreach ($wmsOverlays as $wmsOverlay): ?>
+    <li class="mapping-wms-overlay">
+        <span class="mapping-wms-overlay-title"><?php echo $wmsOverlay['label']; ?></span>
         <ul class="actions">
-            <a href="#" class="o-icon-edit" aria-label="Edit" title="Edit" ></a>
-            <a href="#" class="o-icon-delete" aria-label="Delete" title="Delete"></a>
+            <a href="#" class="mapping-wms-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
+            <a href="#" class="mapping-wms-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
         </ul>
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][base_url]" value="">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][layers]" value="">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][styles]" value="">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsDataIndex__][label]" value="">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][label]" value="<?php echo $this->escapeHtml($wmsOverlay['label']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][base_url]" value="<?php echo $this->escapeHtml($wmsOverlay['base_url']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][layers]" value="<?php echo $this->escapeHtml($wmsOverlay['layers']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][styles]" value="<?php echo $this->escapeHtml($wmsOverlay['styles']); ?>">
     </li>
+    <?php endforeach; ?>
 </ul>
-<div class="field">
-    <div class="field-meta">
-        <label>Label</label>
-        <div class="field-description"></div>
+<div class="mapping-wms-fields">
+    <div class="field">
+        <div class="field-meta">
+            <label>Label</label>
+            <div class="field-description"></div>
+        </div>
+        <div class="inputs">
+            <input type="text" class="mapping-wms-label">
+        </div>
     </div>
-    <div class="inputs">
-        <input type="text">
+    <div class="field">
+        <div class="field-meta">
+            <label>Base URL</label>
+            <div class="field-description"></div>
+        </div>
+        <div class="inputs">
+            <input type="text" class="mapping-wms-base-url">
+        </div>
+    </div>
+    <div class="field">
+        <div class="field-meta">
+            <label>Layers</label>
+            <div class="field-description">The WMS layers, if any (comma-separated).</div>
+        </div>
+        <div class="inputs">
+            <input type="text" class="mapping-wms-layers">
+        </div>
+    </div>
+    <div class="field">
+        <div class="field-meta">
+            <label>Styles</label>
+            <div class="field-description">The WMS styles, if any (comma-separated).</div>
+        </div>
+        <div class="inputs">
+            <input type="text" class="mapping-wms-styles">
+        </div>
     </div>
 </div>
-<div class="field">
-    <div class="field-meta">
-        <label>Base URL</label>
-        <div class="field-description"></div>
-    </div>
-    <div class="inputs">
-        <input type="text">
-    </div>
-</div>
-<div class="field">
-    <div class="field-meta">
-        <label>Layers</label>
-        <div class="field-description">The WMS layers, if any (comma-separated).</div>
-    </div>
-    <div class="inputs">
-        <input type="text">
-    </div>
-</div>
-<div class="field">
-    <div class="field-meta">
-        <label>Styles</label>
-        <div class="field-description">The WMS styles, if any (comma-separated).</div>
-    </div>
-    <div class="inputs">
-        <input type="text">
-    </div>
-</div>
-<button type="button" class="mapping-wms-add">Add WMS Overlay</button>
-<button type="button" class="mapping-wms-clear">Clear</button>
+<button type="button" class="mapping-wms-add">Add Overlay</button>
+<button type="button" class="mapping-wms-edit" style="display:none;">Save Changes</button>
+<button type="button" class="mapping-wms-clear">Clear Form</button>
 <h4>Items Attached to Map</h4>

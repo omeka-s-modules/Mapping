@@ -41,12 +41,15 @@ class Map extends AbstractBlockLayout
     public function prepareForm(PhpRenderer $view)
     {
         $view->headScript()->appendFile($view->assetUrl('js/mapping-block-form.js', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('js/Leaflet/0.7.7/leaflet.css', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('js/control.default-view.js', 'Mapping'));
     }
 
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageBlockRepresentation $block = null
     ) {
-        return $view->partial('common/block-layout/mapping-block-form')
+        return $view->partial('common/block-layout/mapping-block-form', ['block' => $block])
             . $this->attachmentsForm($view, $site, $block, true);
     }
 
