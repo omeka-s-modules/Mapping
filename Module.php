@@ -66,6 +66,15 @@ DROP TABLE IF EXISTS mapping_marker');
             'Omeka\Controller\Admin\Item',
             ['view.add.section_nav', 'view.edit.section_nav', 'view.show.section_nav'],
             function (Event $event) {
+                if ('view.show.section_nav' === $event->getName()) {
+                    // Don't render the mapping tab if there is no mapping data.
+                    $itemJson = $event->getParam('resource')->jsonSerialize();
+                    if (!isset($itemJson['o-module-mapping:marker'])
+                        && !isset($itemJson['o-module-mapping:mapping'])
+                    ) {
+                        return;
+                    }
+                }
                 $sectionNav = $event->getParam('section_nav');
                 $sectionNav['mapping-section'] = 'Mapping';
                 $event->setParam('section_nav', $sectionNav);
@@ -93,13 +102,18 @@ DROP TABLE IF EXISTS mapping_marker');
         $item = $event->getTarget();
         $jsonLd = $event->getParam('jsonLd');
         $api = $this->getServiceLocator()->get('Omeka\ApiManager');
+
         $response = $api->search('mapping_markers', ['item_id' => $item->id()]);
-        $jsonLd['o-module-mapping:marker'] = $response->getContent();
+        if ($response->getTotalResults()) {
+            $jsonLd['o-module-mapping:marker'] = $response->getContent();
+        }
+
         $response = $api->search('mappings', ['item_id' => $item->id()]);
         if ($response->getTotalResults()) {
             $mapping = $response->getContent();
             $jsonLd['o-module-mapping:mapping'] = $mapping[0];
         }
+
         $event->setParam('jsonLd', $jsonLd);
     }
 
@@ -112,24 +126,63 @@ DROP TABLE IF EXISTS mapping_marker');
             return;
         }
 
-        $item = $event->getParam('entity');
-        $entityManager = $itemAdapter->getEntityManager();
         $mappingsAdapter = $itemAdapter->getAdapter('mappings');
         $mappingData = $request->getValue('o-module-mapping:mapping', []);
 
-        if (isset($mappingData['o:id']) && is_numeric($mappingData['o:id'])) {
-            $subRequest = new \Omeka\Api\Request('update', 'mappings');
-            $subRequest->setId($mappingData['o:id']);
-            $subRequest->setContent($mappingData);
-            $mapping = $mappingsAdapter->findEntity($mappingData['o:id'], $subRequest);
-            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
+        $mappingId = null;
+        $defaultZoom = null;
+        $defaultLat = null;
+        $defaultLng = null;
+
+        if (isset($mappingData['o:id'])
+            && is_numeric($mappingData['o:id'])
+        ) {
+            $mappingId = $mappingData['o:id'];
+        }
+        if (isset($mappingData['o-module-mapping:default_zoom'])
+            && is_numeric($mappingData['o-module-mapping:default_zoom'])
+        ) {
+            $defaultZoom = $mappingData['o-module-mapping:default_zoom'];
+        }
+        if (isset($mappingData['o-module-mapping:default_lat'])
+            && is_numeric($mappingData['o-module-mapping:default_lat'])
+        ) {
+            $defaultLat = $mappingData['o-module-mapping:default_lat'];
+        }
+        if (isset($mappingData['o-module-mapping:default_lng'])
+            && is_numeric($mappingData['o-module-mapping:default_lng'])
+        ) {
+            $defaultLng = $mappingData['o-module-mapping:default_lng'];
+        }
+
+        if (null === $defaultZoom || null === $defaultLat || null === $defaultLng) {
+            // This request has no mapping data. If a mapping for this item
+            // exists, delete it. If no mapping for this item exists, do nothing.
+            if (null !== $mappingId) {
+                // Delete mapping
+                $subRequest = new \Omeka\Api\Request('delete', 'mappings');
+                $subRequest->setId($mappingId);
+                $mappingsAdapter->deleteEntity($subRequest);
+            }
         } else {
-            $subRequest = new \Omeka\Api\Request('create', 'mappings');
-            $subRequest->setContent($mappingData);
-            $mapping = new \Mapping\Entity\Mapping;
-            $mapping->setItem($item);
-            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
-            $entityManager->persist($mapping);
+            // This request has mapping data. If a mapping for this item exists,
+            // update it. If no mapping for this item exists, create it.
+            if ($mappingId) {
+                // Update mapping
+                $subRequest = new \Omeka\Api\Request('update', 'mappings');
+                $subRequest->setId($mappingData['o:id']);
+                $subRequest->setContent($mappingData);
+                $mapping = $mappingsAdapter->findEntity($mappingData['o:id'], $subRequest);
+                $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
+            } else {
+                // Create mapping
+                $subRequest = new \Omeka\Api\Request('create', 'mappings');
+                $subRequest->setContent($mappingData);
+                $mapping = new \Mapping\Entity\Mapping;
+                $mapping->setItem($event->getParam('entity'));
+                $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
+                $mappingsAdapter->getEntityManager()->persist($mapping);
+            }
         }
     }
 

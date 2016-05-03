@@ -5,6 +5,8 @@ use Omeka\Entity\AbstractEntity;
 use Omeka\Entity\Item;
 
 /**
+ * Defines the default state of an item's map.
+ *
  * @Entity
  */
 class Mapping extends AbstractEntity
