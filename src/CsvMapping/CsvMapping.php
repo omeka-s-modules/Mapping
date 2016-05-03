@@ -42,7 +42,6 @@ class CsvMapping extends AbstractMapping
         $lngMap = isset($this->args['column-map-lng']) ? array_keys($this->args['column-map-lng']) : [];
         $latLngMap = isset($this->args['column-map-latlng']) ? array_keys($this->args['column-map-latlng']) : [];
         
-        
         $markerJson = [];
         foreach($row as $index => $value) {
             $value = trim($value);
@@ -56,9 +55,9 @@ class CsvMapping extends AbstractMapping
             }
             
             if(in_array($index, $latLngMap)) {
-                $latLng = explode($value, '/');
-                $markerJson['o-module-mapping:lat'] = $latLng[0];
-                $markerJson['o-module-mapping:lng'] = $latLng[1];
+                $latLng = explode('/', $value);
+                $markerJson['o-module-mapping:lat'] = trim($latLng[0]);
+                $markerJson['o-module-mapping:lng'] = trim($latLng[1]);
             }
             
         }
