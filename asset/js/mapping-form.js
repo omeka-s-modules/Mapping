@@ -73,8 +73,6 @@ var defaultViewControl = new L.Control.DefaultView(
     },
     {noInitialDefaultView: noInitialDefaultView}
 );
-var wms;
-var opacityControl;
 
 // Add the layers and controls to the map.
 map.addLayer(baseMaps['Streets']);
@@ -157,38 +155,6 @@ var deleteMarker = function(marker) {
     $('input[name^="o-module-mapping:marker[' + marker._leaflet_id + ']"]').remove();
 }
 
-var setWms = function(baseUrl, layers, styles, label) {
-    if (wms) {
-        // Remove existing WMS overlay before setting another.
-        map.removeLayer(wms);
-        layerControl.removeLayer(wms);
-    }
-    // WMS layers and styles cannot be null.
-    if (!layers) {
-        layers = '';
-    }
-    if (!styles) {
-        styles = '';
-    }
-    wms = L.tileLayer.wms(baseUrl, {
-        layers: layers,
-        styles: styles,
-        format: 'image/png',
-        transparent: true,
-    }).addTo(map);
-    if (!label) {
-        label = 'Unlabeled Overlay';
-        $('#mapping-wms-label').val(label)
-    }
-    layerControl.addOverlay(wms, label);
-    if (opacityControl) {
-        // Remove existing opacity control before setting another.
-        map.removeControl(opacityControl);
-    }
-    opacityControl = L.control.opacity(wms, label);
-    map.addControl(opacityControl);
-}
-
 // Add saved markers to the map.
 $.each(markersData, function(index, data) {
     var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
@@ -231,8 +197,10 @@ map.on('draw:deleted', function (e) {
 });
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
-$('a[href="#mapping-section"], #mapping-legend').on('click', function(e) {
-    map.invalidateSize();
+$('#mapping-section').on('o:section-opened', function(e) {
+    window.setTimeout(function() {
+        map.invalidateSize();
+    }, 300)
 });
 
 // Update corresponding form input when updating a marker label.
@@ -270,31 +238,6 @@ $('input.mapping-marker-image-select').on('change', function(e) {
         labelInput.val(mediaTitle);
         popupLabel.val(mediaTitle);
     }
-});
-
-// Unset the WMS overlay.
-$('#mapping-wms-unset').on('click', function(e) {
-    e.preventDefault();
-    if (wms) {
-        map.removeLayer(wms);
-        map.removeControl(opacityControl);
-        layerControl.removeLayer(wms);
-        // Remove the WMS overlay and opacity control completely.
-        wms = null;
-        opacityControl = null;
-    }
-    $('#mapping-wms-base-url, #mapping-wms-layers, #mapping-wms-styles, #mapping-wms-label').val('');
-});
-
-// Add the WMS overlay.
-$('#mapping-wms-add').on('click', function(e) {
-    e.preventDefault();
-    setWms(
-        $('#mapping-wms-base-url').val(),
-        $('#mapping-wms-layers').val(),
-        $('#mapping-wms-styles').val(),
-        $('#mapping-wms-label').val()
-    );
 });
 
 });
