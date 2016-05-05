@@ -45,7 +45,7 @@ $.each(markersData, function(index, data) {
 });
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
-$('a[href="#mapping-section"], #mapping-legend').on('click', function(e) {
+$('#mapping-section').on('o:section-opened', function(e) {
     map.invalidateSize();
 });
 
