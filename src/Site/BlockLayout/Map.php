@@ -55,6 +55,28 @@ class Map extends AbstractBlockLayout
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
+        $data = $block->data();
+
+        // Get the default view data.
+        $defaultZoom = 1;
+        $defaultLat = 0;
+        $defaultLng = 0;
+        if (
+            isset($data['default_view']['zoom']) && is_numeric($data['default_view']['zoom'])
+            && isset($data['default_view']['lat']) && is_numeric($data['default_view']['lat'])
+            && isset($data['default_view']['lng']) && is_numeric($data['default_view']['lng'])
+        ) {
+            $defaultZoom = $data['default_view']['zoom'];
+            $defaultLat = $data['default_view']['lat'];
+            $defaultLng = $data['default_view']['lng'];
+        }
+
+        // Get WMS data.
+        $wms = [];
+        if (isset($data['wms']) && is_array($data['wms'])) {
+            $wms = $data['wms'];
+        }
+
         // Get all markers from the attachment items.
         $allMarkers = [];
         foreach ($block->attachments() as $attachment) {
@@ -64,18 +86,15 @@ class Map extends AbstractBlockLayout
             )->getContent();
             $allMarkers = array_merge($allMarkers, $markers);
         }
-        //~ foreach ($allMarkers as $marker) {
-            //~ var_dump($marker->label(), $marker->lat(), $marker->lng());
-        //~ }
 
-        // Get WMS overlay and center/zoom data from from $block->data(), and
-        // get markers for all attachments (items) and render them on a map via
-        // a partial
-
-        return $view->partial('common/block-layout/mapping-block', array(
+        return $view->partial('common/block-layout/mapping-block', [
             'block' => $block,
+            'defaultZoom' => $defaultZoom,
+            'defaultLat' => $defaultLat,
+            'defaultLng' => $defaultLng,
+            'wms' => $wms,
             'markers' => $allMarkers,
-        ));
+        ]);
 
     }
 }

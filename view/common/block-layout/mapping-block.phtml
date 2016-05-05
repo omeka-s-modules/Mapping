@@ -1,11 +1,16 @@
 <?php
 $this->headLink()->appendStylesheet($this->assetUrl('js/Leaflet/0.7.7/leaflet.css', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/Leaflet.providers/1.1.7/leaflet-providers.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-block.js', 'Mapping'));
 
 ?>
 <div class="mapping-map" style="height:500px;"
     data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
+    data-default-zoom="<?php echo $this->escapeHtml($defaultZoom); ?>"
+    data-default-lat="<?php echo $this->escapeHtml($defaultLat); ?>"
+    data-default-lng="<?php echo $this->escapeHtml($defaultLng); ?>"
+    data-wms="<?php echo $this->escapeHtml(json_encode($wms)); ?>"
 ></div>
 
 <?php foreach ($markers as $marker): ?>
