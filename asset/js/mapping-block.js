@@ -38,9 +38,11 @@ mappingMaps.each(function() {
     $.each(markers, function(index, data) {
         var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
         var marker = L.marker(latLng);
-        var popupContent = $('.mapping-marker-popup-content[data-marker-id="' + data['o:id'] + '"]')
-            .clone().show();
-        marker.bindPopup(popupContent[0]);
+        var popupContent = $('.mapping-marker-popup-content[data-marker-id="' + data['o:id'] + '"]');
+        if (popupContent.length > 0) {
+            popupContent = popupContent.clone().show();
+            marker.bindPopup(popupContent[0]);
+        }
         marker.addTo(map);
     });
 });

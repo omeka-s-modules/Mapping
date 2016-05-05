@@ -14,10 +14,21 @@ $this->headScript()->appendFile($this->assetUrl('js/mapping-block.js', 'Mapping'
 ></div>
 
 <?php foreach ($markers as $marker): ?>
+<?php
+if (!$marker->label() && !$marker->media()) {
+    // Don't render marker popup content if there's no label or media.
+    continue;
+}
+?>
 <div class="mapping-marker-popup-content" style="display:none;" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>">
+    <?php if ($marker->label()): ?>
     <h4><?php echo $this->escapeHtml($marker->label()); ?></h4>
+    <?php endif; ?>
     <?php if ($marker->media()): ?>
     <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
+    <div>
+        <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>">View media</a>
+    </div>
     <?php endif; ?>
 </div>
 <?php endforeach; ?>
