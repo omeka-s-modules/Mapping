@@ -198,9 +198,9 @@ map.on('draw:deleted', function (e) {
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
 $('#mapping-section').on('o:section-opened', function(e) {
-    window.setTimeout(function() {
+    $('#content').one('transitionend', function(e) {
         map.invalidateSize();
-    }, 300)
+    });
 });
 
 // Update corresponding form input when updating a marker label.
