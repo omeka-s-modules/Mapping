@@ -1,92 +1,21 @@
 $(document).ready( function() {
 
-var mappingMap = $('#mapping-map');
-var mappingForm = $('#mapping-form');
-var mappingData = mappingMap.data('mapping');
-var markersData = mappingMap.data('markers');
-
-// Initialise the map.
-var map = L.map('mapping-map');
-var mapDefaultCenter = [0, 0];
-var mapDefaultZoom = 1;
-var noInitialDefaultView = false;
-if (mappingData
-    && mappingData['o-module-mapping:default_lat'] !== null
-    && mappingData['o-module-mapping:default_lng'] !== null
-    && mappingData['o-module-mapping:default_zoom'] !== null
-) {
-    mapDefaultCenter = [
-        mappingData['o-module-mapping:default_lat'],
-        mappingData['o-module-mapping:default_lng']
-    ];
-    mapDefaultZoom = mappingData['o-module-mapping:default_zoom'];
-} else {
-    noInitialDefaultView = true;
-}
-map.setView(mapDefaultCenter, mapDefaultZoom);
-
-// Initialise the selectable base maps.
-var baseMaps = {
-    'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
-    'Grayscale': L.tileLayer.provider('OpenStreetMap.BlackAndWhite'),
-    'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
-    'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
-};
-// Initialize the layer control and pass it the base maps.
-var layerControl = L.control.layers(baseMaps);
-// Initialise the feature group to store editable layers
-var drawnItems = new L.FeatureGroup();
-// Initialise the draw control and pass it the feature group of editable layers
-var drawControl = new L.Control.Draw({
-    draw: {
-        polyline: false,
-        polygon: false,
-        rectangle: false,
-        circle: false
-    },
-    edit: {
-        featureGroup: drawnItems
-    }
-});
-// Initialise the default view control
-var defaultViewControl = new L.Control.DefaultView(
-    function(e) {
-        var zoom = map.getZoom();
-        var center = map.getCenter();
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(zoom);
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(center.lat);
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(center.lng);
-    },
-    function(e) {
-        var zoom = $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val();
-        var lat = $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val();
-        var lng = $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val();
-        if (zoom && lat && lng) {
-            map.setView([lat, lng], zoom);
-        }
-    },
-    function(e) {
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val('');
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val('');
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val('');
-        map.setView([0, 0], 1);
-    },
-    {noInitialDefaultView: noInitialDefaultView}
-);
-
-// Add the layers and controls to the map.
-map.addLayer(baseMaps['Streets']);
-map.addLayer(drawnItems);
-map.addControl(layerControl);
-map.addControl(drawControl);
-map.addControl(defaultViewControl);
-
+/**
+ * Add a marker to the map.
+ *
+ * @param marker
+ * @param markerId
+ * @param markerLabel
+ * @param markerMediaId
+ */
 var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
 
     // Build the marker popup content.
-    var popupContent = $('.mapping-marker-popup-content').clone().show()
+    var popupContent = $('.mapping-marker-popup-content.template').clone()
+        .removeClass('template')
         .data('marker', marker)
-        .data('selectedMediaId', markerMediaId);
+        .data('selectedMediaId', markerMediaId)
+        .show();
     popupContent.find('.mapping-marker-popup-label').val(markerLabel);
     if (markerMediaId) {
         var mediaThumbnail = $('<img>', {
@@ -98,7 +27,6 @@ var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
 
     // Prepare image selector when marker is clicked.
     marker.on('click', function(e) {
-        Omeka.openSidebar($(this), '#mapping-marker-image-selector');
         var selectedMediaId = popupContent.data('selectedMediaId');
         if (selectedMediaId) {
             $('.mapping-marker-image-select[value="' + selectedMediaId + '"]').prop('checked', true);
@@ -109,8 +37,10 @@ var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
 
     // Close image selector when marker closes.
     marker.on('popupclose', function(e) {
-        // Context must be within the sidebar, thus the ".children()"
-        Omeka.closeSidebar($('#mapping-marker-image-selector').children());
+        var sidebar = $('#mapping-marker-image-selector');
+        if (sidebar.hasClass('active')) {
+            Omeka.closeSidebar(sidebar);
+        }
     });
 
     // Add the marker layer before adding marker inputs so Leaflet sets an ID.
@@ -142,6 +72,11 @@ var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
 
 };
 
+/**
+ * Edit a marker.
+ *
+ * @param marker
+ */
 var editMarker = function(marker) {
     // Edit the corresponding marker form inputs.
     $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:lat]"]')
@@ -150,10 +85,90 @@ var editMarker = function(marker) {
         .val(marker.getLatLng().lng);
 }
 
+/**
+ * Delete a marker.
+ *
+ * @param marker
+ */
 var deleteMarker = function(marker) {
     // Remove the corresponding marker inputs from the form.
     $('input[name^="o-module-mapping:marker[' + marker._leaflet_id + ']"]').remove();
 }
+
+// Get map data.
+var mappingMap = $('#mapping-map');
+var mappingForm = $('#mapping-form');
+var mappingData = mappingMap.data('mapping');
+var markersData = mappingMap.data('markers');
+
+// Initialize the map and set default view.
+var map = L.map('mapping-map');
+var mapDefaultCenter = [0, 0];
+var mapDefaultZoom = 1;
+var noInitialDefaultView = false;
+if (mappingData
+    && mappingData['o-module-mapping:default_lat'] !== null
+    && mappingData['o-module-mapping:default_lng'] !== null
+    && mappingData['o-module-mapping:default_zoom'] !== null
+) {
+    mapDefaultCenter = [
+        mappingData['o-module-mapping:default_lat'],
+        mappingData['o-module-mapping:default_lng']
+    ];
+    mapDefaultZoom = mappingData['o-module-mapping:default_zoom'];
+} else {
+    noInitialDefaultView = true;
+}
+map.setView(mapDefaultCenter, mapDefaultZoom);
+
+// Add layers and controls to the map.
+var baseMaps = {
+    'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
+    'Grayscale': L.tileLayer.provider('OpenStreetMap.BlackAndWhite'),
+    'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
+    'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
+};
+var layerControl = L.control.layers(baseMaps);
+var drawnItems = new L.FeatureGroup();
+var drawControl = new L.Control.Draw({
+    draw: {
+        polyline: false,
+        polygon: false,
+        rectangle: false,
+        circle: false
+    },
+    edit: {
+        featureGroup: drawnItems
+    }
+});
+map.addLayer(baseMaps['Streets']);
+map.addLayer(drawnItems);
+map.addControl(layerControl);
+map.addControl(drawControl);
+map.addControl(new L.Control.DefaultView(
+    function(e) {
+        var zoom = map.getZoom();
+        var center = map.getCenter();
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(zoom);
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(center.lat);
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(center.lng);
+    },
+    function(e) {
+        var zoom = $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val();
+        var lat = $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val();
+        var lng = $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val();
+        if (zoom && lat && lng) {
+            map.setView([lat, lng], zoom);
+        }
+    },
+    function(e) {
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val('');
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val('');
+        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val('');
+        map.setView([0, 0], 1);
+    },
+    {noInitialDefaultView: noInitialDefaultView}
+));
 
 // Add saved markers to the map.
 $.each(markersData, function(index, data) {
@@ -171,7 +186,7 @@ if (mappingData) {
     $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(mappingData['o-module-mapping:default_zoom']);
 }
 
-// Add new markers.
+// Handle adding new markers.
 map.on('draw:created', function (e) {
     var type = e.layerType;
     var layer = e.layer;
@@ -180,7 +195,7 @@ map.on('draw:created', function (e) {
     }
 });
 
-// Edit existing (saved and unsaved) markers.
+// Handle editing existing markers (saved and unsaved).
 map.on('draw:edited', function (e) {
     var layers = e.layers;
     layers.eachLayer(function (layer) {
@@ -188,7 +203,7 @@ map.on('draw:edited', function (e) {
     });
 });
 
-// Delete existing (saved and unsaved) markers.
+// Handle deleting existing (saved and unsaved) markers.
 map.on('draw:deleted', function (e) {
     var layers = e.layers;
     layers.eachLayer(function (layer) {
@@ -203,12 +218,18 @@ $('#mapping-section').on('o:section-opened', function(e) {
     });
 });
 
-// Update corresponding form input when updating a marker label.
+// Handle updating corresponding form input when updating a marker label.
 mappingMap.on('keyup', '.mapping-marker-popup-label', function(e) {
     var thisInput = $(this);
     var marker = thisInput.closest('.mapping-marker-popup-content').data('marker');
     var labelInput = $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:label]"]');
     labelInput.val(thisInput.val());
+});
+
+// Handle select popup image button.
+$('#mapping-section').on('click', '.mapping-marker-popup-image-select', function(e) {
+    e.preventDefault();
+    Omeka.openSidebar($(this), '#mapping-marker-image-selector');
 });
 
 // Handle media image selection.
@@ -222,6 +243,9 @@ $('input.mapping-marker-image-select').on('change', function(e) {
     var mediaThumbnailUrl = thisInput.data('mediaThumbnailUrl');
     if (mediaThumbnailUrl) {
         var mediaThumbnail = $('<img>', {src: mediaThumbnailUrl});
+        popupContent.find('.mapping-marker-popup-image-select').html('Change Marker Image');
+    } else {
+        popupContent.find('.mapping-marker-popup-image-select').html('Select Marker Image');
     }
     popupContent.find('.mapping-marker-popup-image').html(mediaThumbnail);
     popupContent.data('selectedMediaId', thisInput.val());
