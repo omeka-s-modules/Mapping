@@ -16,14 +16,13 @@ mappingMaps.each(function() {
         'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
         'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
     };
-    var layerControl = L.control.layers(baseMaps);
+    var groupedOverlays = {'Overlays': {
+        'No overlay': L.tileLayer.canvas()
+    }};
     var map = L.map(this, {
         center: [defaultLat, defaultLng],
         zoom: defaultZoom
     });
-
-    map.addLayer(baseMaps['Streets']);
-    map.addControl(layerControl);
 
     $.each(wms, function(index, data) {
         wms = L.tileLayer.wms(data.base_url, {
@@ -32,8 +31,17 @@ mappingMaps.each(function() {
             format: 'image/png',
             transparent: true,
         }).addTo(map);
-        layerControl.addOverlay(wms, data.label);
+        groupedOverlays['Overlays'][data.label] = wms;
     });
+
+    map.addLayer(baseMaps['Streets']);
+    L.control.groupedLayers(baseMaps, groupedOverlays, {
+        exclusiveGroups: ['Overlays']
+    }).addTo(map);
+    $.each(groupedOverlays['Overlays'], function(index, data) {
+        map.removeLayer(groupedOverlays['Overlays'][index]);
+    });
+    map.addLayer(groupedOverlays['Overlays']['No overlay']);
 
     $.each(markers, function(index, data) {
         var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
