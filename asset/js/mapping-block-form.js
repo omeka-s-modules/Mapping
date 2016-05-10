@@ -155,6 +155,7 @@ $('#blocks').on('click', '.mapping-wms-overlay-edit', function(e) {
     block.find('.mapping-wms-add').hide();
     block.find('.mapping-wms-edit').show();
     var wmsOverlay = $(this).closest('.mapping-wms-overlay');
+    $('.mapping-wms-overlay-editing').removeClass('mapping-wms-overlay-editing');
     wmsOverlay.addClass('mapping-wms-overlay-editing');
 
     var wmsLabel = wmsOverlay.find('input[name$="[label]"]').val();
