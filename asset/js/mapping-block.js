@@ -10,13 +10,11 @@ mappingMaps.each(function() {
     var defaultZoom = data['default_view']['zoom'];
     var defaultLat = data['default_view']['lat'];
     var defaultLng = data['default_view']['lng'];
-
     if (!defaultZoom || !defaultLat || !defaultLng) {
         defaultZoom = 1;
         defaultLat = 0;
         defaultLng = 0;
     }
-
     var map = L.map(this, {
         center: [defaultLat, defaultLng],
         zoom: defaultZoom
@@ -34,21 +32,21 @@ mappingMaps.each(function() {
         marker.addTo(map);
     });
 
-    // Add base map and WMS overlay layers to map.
+    // Add base map and grouped WMS overlay layers to the map.
     var baseMaps = {
         'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
         'Grayscale': L.tileLayer.provider('OpenStreetMap.BlackAndWhite'),
         'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
         'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
     };
+    var noOverlayLayer = L.tileLayer.canvas();
     var groupedOverlays = {
         'Overlays': {
-            // Set an empty canvas for a "no overlay" option.
-            'No overlay': L.tileLayer.canvas()
-        }
+            'No overlay': noOverlayLayer,
+        },
     };
     map.addLayer(baseMaps['Streets']);
-    map.addLayer(groupedOverlays['Overlays']['No overlay']);
+    map.addLayer(noOverlayLayer);
     $.each(data['wms'], function(index, data) {
         wms = L.tileLayer.wms(data.base_url, {
             layers: data.layers,
@@ -58,19 +56,21 @@ mappingMaps.each(function() {
         });
         groupedOverlays['Overlays'][data.label] = wms;
     });
-
     L.control.groupedLayers(baseMaps, groupedOverlays, {
         exclusiveGroups: ['Overlays']
     }).addTo(map);
 
-    // Handle the opacity control for this overlay.
+    // Handle the overlay opacity control.
     var opacityControl;
     map.on('overlayadd', function(e) {
         if (opacityControl) {
             map.removeControl(opacityControl);
+            opacityControl = null;
         }
-        opacityControl =  new L.Control.Opacity(e.layer, e.name);
-        map.addControl(opacityControl);
+        if (e.layer !== noOverlayLayer) {
+            opacityControl =  new L.Control.Opacity(e.layer, e.name);
+            map.addControl(opacityControl);
+        }
     });
 });
 
