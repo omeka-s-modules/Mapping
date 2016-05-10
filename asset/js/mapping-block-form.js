@@ -22,7 +22,7 @@ var setMap = function(block) {
 
     var map = L.map(mapDiv[0]).setView([defaultLat, defaultLng], defaultZoom);
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
     map.addControl(new L.Control.DefaultView(
         function(e) {

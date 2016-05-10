@@ -20,9 +20,40 @@ class Map extends AbstractBlockLayout
     public function onHydrate(SitePageBlock $block, ErrorStore $errorStore)
     {
         $data = $block->getData();
-        // Do something to data if needed.
-        $block->setData($data);
 
+        // Validate the defualt view data.
+        $defaultView = ['zoom' => null, 'lat' => null, 'lng' => null];
+        if (isset($data['default_view']) && is_array($data['default_view'])
+            && isset($data['default_view']['zoom']) && is_numeric($data['default_view']['zoom'])
+            && isset($data['default_view']['lat']) && is_numeric($data['default_view']['lat'])
+            && isset($data['default_view']['lng']) && is_numeric($data['default_view']['lng'])
+        ) {
+            // Default view data must have numeric zoom, lat, and lng.
+            $defaultView['zoom'] = $data['default_view']['zoom'];
+            $defaultView['lat'] = $data['default_view']['lat'];
+            $defaultView['lng'] = $data['default_view']['lng'];
+        }
+
+        // Validate the WMS overlay data.
+        $wmsOverlays = [];
+        if (isset($data['wms']) && is_array($data['wms'])) {
+            foreach ($data['wms'] as $wmsOverlay) {
+                // WMS data must have label and base URL.
+                if (is_array($wmsOverlay)
+                    && isset($wmsOverlay['label'])
+                    && isset($wmsOverlay['base_url'])
+                ) {
+                    $wmsOverlays[] = $wmsOverlay;
+                }
+            }
+        }
+
+        $block->setData([
+            'default_view' => $defaultView,
+            'wms' => $wmsOverlays,
+        ]);
+
+        // Validate attachments.
         $itemIds = [];
         $attachments = $block->getAttachments();
         foreach ($attachments as $attachment) {
@@ -49,8 +80,9 @@ class Map extends AbstractBlockLayout
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageBlockRepresentation $block = null
     ) {
-        return $view->partial('common/block-layout/mapping-block-form', ['block' => $block])
-            . $this->attachmentsForm($view, $site, $block, true);
+        return $view->partial('common/block-layout/mapping-block-form', [
+            'block' => $block,
+        ]) . $this->attachmentsForm($view, $site, $block, true);
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)

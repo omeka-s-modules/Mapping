@@ -39,24 +39,20 @@ mappingMaps.each(function() {
             'No overlay': L.tileLayer.canvas()
         }
     };
+    map.addLayer(baseMaps['Streets']);
+    map.addLayer(groupedOverlays['Overlays']['No overlay']);
     $.each(mappingMap.data('wms'), function(index, data) {
         wms = L.tileLayer.wms(data.base_url, {
             layers: data.layers,
             styles: data.styles,
             format: 'image/png',
             transparent: true,
-        }).addTo(map);
+        });
         groupedOverlays['Overlays'][data.label] = wms;
     });
     L.control.groupedLayers(baseMaps, groupedOverlays, {
         exclusiveGroups: ['Overlays']
     }).addTo(map);
-    // Remove grouped overlays from the map so the user can select one at a time.
-    $.each(groupedOverlays['Overlays'], function(index, data) {
-        map.removeLayer(data);
-    });
-    map.addLayer(baseMaps['Streets']);
-    map.addLayer(groupedOverlays['Overlays']['No overlay']);
 });
 
 });
