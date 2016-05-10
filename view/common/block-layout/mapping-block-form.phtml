@@ -15,16 +15,16 @@ $wmsOverlayTemplate = '
 <a href="#" class="mapping-map-expander expand"><h4>Default Center and Zoom</h4></a>
 <div class="collapsible">
     <div class="mapping-map" style="height:300px;">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][zoom]" value="<?php echo $this->escapeHtml($block->data()['default_view']['zoom']); ?>">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][lat]" value="<?php echo $this->escapeHtml($block->data()['default_view']['lat']); ?>">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][lng]" value="<?php echo $this->escapeHtml($block->data()['default_view']['lng']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][zoom]" value="<?php echo $this->escapeHtml($data['default_view']['zoom']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][lat]" value="<?php echo $this->escapeHtml($data['default_view']['lat']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][lng]" value="<?php echo $this->escapeHtml($data['default_view']['lng']); ?>">
     </div>
 </div>
 
 <a href="#" class="expand"><h4>Web Map Service (WMS) Overlays</h4></a>
 <div class="collapsible">
     <ul class="mapping-wms-overlays" data-wms-overlay-template="<?php echo $this->escapeHtml($wmsOverlayTemplate); ?>">
-        <?php foreach ($block->data()['wms'] as $wmsOverlay): ?>
+        <?php foreach ($data['wms'] as $wmsOverlay): ?>
         <li class="mapping-wms-overlay">
             <span class="mapping-wms-overlay-title"><?php echo $wmsOverlay['label']; ?></span>
             <ul class="actions">

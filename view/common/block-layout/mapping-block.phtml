@@ -9,10 +9,7 @@ $this->headScript()->appendFile($this->assetUrl('js/mapping-block.js', 'Mapping'
 ?>
 <div class="mapping-map" style="height:500px;"
     data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
-    data-default-zoom="<?php echo $this->escapeHtml($defaultZoom); ?>"
-    data-default-lat="<?php echo $this->escapeHtml($defaultLat); ?>"
-    data-default-lng="<?php echo $this->escapeHtml($defaultLng); ?>"
-    data-wms="<?php echo $this->escapeHtml(json_encode($wms)); ?>"
+    data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
 ></div>
 
 <?php foreach ($markers as $marker): ?>

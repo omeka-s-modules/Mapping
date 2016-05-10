@@ -4,11 +4,19 @@ var mappingMaps = $('.mapping-map');
 
 mappingMaps.each(function() {
     var mappingMap = $(this);
+    var data = mappingMap.data('data');
 
     // Initialize the map with default view.
-    var defaultZoom = mappingMap.data('defaultZoom');
-    var defaultLat = mappingMap.data('defaultLat');
-    var defaultLng = mappingMap.data('defaultLng');
+    var defaultZoom = data['default_view']['zoom'];
+    var defaultLat = data['default_view']['lat'];
+    var defaultLng = data['default_view']['lng'];
+
+    if (!defaultZoom || !defaultLat || !defaultLng) {
+        defaultZoom = 1;
+        defaultLat = 0;
+        defaultLng = 0;
+    }
+
     var map = L.map(this, {
         center: [defaultLat, defaultLng],
         zoom: defaultZoom
@@ -41,7 +49,7 @@ mappingMaps.each(function() {
     };
     map.addLayer(baseMaps['Streets']);
     map.addLayer(groupedOverlays['Overlays']['No overlay']);
-    $.each(mappingMap.data('wms'), function(index, data) {
+    $.each(data['wms'], function(index, data) {
         wms = L.tileLayer.wms(data.base_url, {
             layers: data.layers,
             styles: data.styles,
@@ -50,9 +58,14 @@ mappingMaps.each(function() {
         });
         groupedOverlays['Overlays'][data.label] = wms;
     });
+
     L.control.groupedLayers(baseMaps, groupedOverlays, {
         exclusiveGroups: ['Overlays']
     }).addTo(map);
+
+    map.on('overlayadd', function(e) {
+        console.log('foo');
+    });
 });
 
 });
