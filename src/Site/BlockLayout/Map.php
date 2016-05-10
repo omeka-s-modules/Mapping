@@ -48,8 +48,9 @@ class Map extends AbstractBlockLayout
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageBlockRepresentation $block = null
     ) {
+        $data = $block ? $block->data() : [];
         return $view->partial('common/block-layout/mapping-block-form', [
-            'data' => $this->filterBlockData($block->data()),
+            'data' => $this->filterBlockData($data),
         ]) . $this->attachmentsForm($view, $site, $block, true);
     }
 
