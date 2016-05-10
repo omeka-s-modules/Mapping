@@ -9,10 +9,12 @@ L.Control.Opacity = L.Control.extend({
     initialize: function (overlay, label) {
         this._overlay = overlay;
         this._label = label;
-        this._opacity = 1.0
+        this._opacity = 1.0;
     },
 
     onAdd: function (map) {
+        this._opacity = this._overlay.options.opacity;
+
         var opacityName = 'mapping-control-opacity',
             container = L.DomUtil.create('div', opacityName + ' leaflet-bar');
         var opacityIncTitle = 'Increase opacity of "' + this._label + '" overlay';

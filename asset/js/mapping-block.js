@@ -63,8 +63,14 @@ mappingMaps.each(function() {
         exclusiveGroups: ['Overlays']
     }).addTo(map);
 
+    // Handle the opacity control for this overlay.
+    var opacityControl;
     map.on('overlayadd', function(e) {
-        console.log('foo');
+        if (opacityControl) {
+            map.removeControl(opacityControl);
+        }
+        opacityControl =  new L.Control.Opacity(e.layer, e.name);
+        map.addControl(opacityControl);
     });
 });
 
