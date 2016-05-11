@@ -17,29 +17,7 @@ class CsvMapping extends AbstractMapping
     
     public static function getSidebar($view)
     {
-        $html = "<div id='mapping-plugin' class='sidebar flags'>
-<a href='#' class='sidebar-close o-icon-close'><span class='screen-reader-text'>Close Me</span></a>
-                    <h3>Mapping Info: </h3>
-                    <ul>
-                        <li data-flag='column-map-lat' data-flag-type='mapping-plugin'>
-                            <a href='#' class='button'><span>Latitude</span></a>
-                        </li>
-                        <li data-flag='column-map-lng' data-flag-type='mapping-plugin'>
-                            <a href='#' class='button'><span>Longitude</span></a>
-                        </li>
-                        <li data-flag='column-map-latlng' data-flag-type='mapping-plugin'>
-                            <a href='#' class='button'><span>Latitude/Longitude</span></a>
-                        </li>
-                    </ul>";
-        
-        $html .= "<div class='mapping-mapping options'>";
-        $html .= "<h4>Options</h4>";
-        $html .= "<a href='#' class='button column-multivalue'><span>Use multivalue separator</span></a>";
-        $html .= "<p>(Only applies to Latitude/Longitude)</p>";
-        $html .= "</div>";
-        
-        $html .= "</div>";
-        return $html;
+        return $view->partial('admin/csv-mapping');
     }
     
     public function processRow($row)
