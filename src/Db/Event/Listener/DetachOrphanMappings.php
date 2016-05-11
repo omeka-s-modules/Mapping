@@ -20,20 +20,22 @@ class DetachOrphanMappings
         $em = $event->getEntityManager();
         $uow = $em->getUnitOfWork();
         $identityMap = $uow->getIdentityMap();
-        if (!isset($identityMap[Mapping::class])) {
-            return;
-        }
-        foreach ($identityMap[Mapping::class] as $mapping) {
-            if (!$em->contains($mapping->getItem())) {
-                $em->detach($mapping);
+
+        if (isset($identityMap[Mapping::class])) {
+            foreach ($identityMap[Mapping::class] as $mapping) {
+                if (!$em->contains($mapping->getItem())) {
+                    $em->detach($mapping);
+                }
             }
         }
 
-        foreach ($identityMap[MappingMarker::class] as $marker) {
-            if (!$em->contains($marker->getItem())
-                || ($marker->getMedia() && !$em->contains($marker->getMedia()))
-            ) {
-                $em->detach($marker);
+        if (isset($identityMap[MappingMarker::class])) {
+            foreach ($identityMap[MappingMarker::class] as $marker) {
+                if (!$em->contains($marker->getItem())
+                    || ($marker->getMedia() && !$em->contains($marker->getMedia()))
+                ) {
+                    $em->detach($marker);
+                }
             }
         }
     }
