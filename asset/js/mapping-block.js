@@ -32,7 +32,7 @@ mappingMaps.each(function() {
         marker.addTo(map);
     });
 
-    // Add base map and grouped WMS overlay layers to the map.
+    // Set base map and grouped overlay layers.
     var baseMaps = {
         'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
         'Grayscale': L.tileLayer.provider('OpenStreetMap.BlackAndWhite'),
@@ -46,18 +46,22 @@ mappingMaps.each(function() {
         },
     };
 
+    // Set and prepare opacity control.
     var opacityControl;
     var handleOpacityControl = function(overlay, label) {
         if (opacityControl) {
+            // Only one control at a time.
             map.removeControl(opacityControl);
             opacityControl = null;
         }
         if (overlay !== noOverlayLayer) {
+            // The "No overlay" overlay gets no control.
             opacityControl =  new L.Control.Opacity(overlay, label);
             map.addControl(opacityControl);
         }
     };
 
+    // Add base map and grouped WMS overlay layers.
     map.addLayer(baseMaps['Streets']);
     map.addLayer(noOverlayLayer);
     $.each(data['wms'], function(index, data) {
@@ -68,7 +72,7 @@ mappingMaps.each(function() {
             transparent: true,
         });
         if (data.open) {
-            // This overlay is open by default.
+            // This WMS overlay is open by default.
             map.removeLayer(noOverlayLayer);
             map.addLayer(wmsLayer);
             handleOpacityControl(wmsLayer, data.label);

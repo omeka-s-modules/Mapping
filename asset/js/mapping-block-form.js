@@ -183,6 +183,7 @@ $('#blocks').on('click', '.mapping-wms-overlay-delete', function(e) {
     wmsOverlay.remove();
 });
 
+// Handle WMS overlay open/closed checkboxes.
 $('#blocks').on('change', '.mapping-wms-open', function(e) {
     var thisCheckbox = $(this);
     var isChecked = thisCheckbox.prop('checked');
