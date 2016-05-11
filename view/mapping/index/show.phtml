@@ -10,7 +10,6 @@ $this->headLink()->appendStylesheet($this->assetUrl('js/Leaflet/0.7.7/leaflet.cs
 $this->headScript()->appendFile($this->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/Leaflet.providers/1.1.7/leaflet-providers.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-show.js', 'Mapping'));
-$this->headScript()->appendFile($this->assetUrl('js/control.opacity.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Mapping'));
 ?>
 <div id="mapping-section" class="section">
@@ -21,10 +20,21 @@ $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Map
 </div>
 
 <?php foreach ($markers as $marker): ?>
+<?php
+if (!$marker->label() && !$marker->media()) {
+    // Don't render marker popup content if there's no label or media.
+    continue;
+}
+?>
 <div class="mapping-marker-popup-content" style="display:none;" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>">
-    <h4><?php echo $this->escapeHtml($marker->label()); ?></h4>
+    <?php if ($marker->label()): ?>
+    <h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
+    <?php endif; ?>
     <?php if ($marker->media()): ?>
     <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
+    <div>
+        <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>">View media</a>
+    </div>
     <?php endif; ?>
 </div>
 <?php endforeach; ?>

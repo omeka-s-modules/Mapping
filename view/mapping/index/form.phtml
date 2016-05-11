@@ -26,24 +26,10 @@ if (isset($item)) {
         data-mapping="<?php echo $this->escapeHtml(json_encode($mapping)); ?>"
         data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
     ></div>
-    <div id="mapping-sidebar" class="always-open sidebar">
-        <p>Add a Web Map Service (WMS) overlay to the map by providing information below:</p>
-        <label>Base URL<br>
-        <input type="text" id="mapping-wms-base-url" style="width:100%"></label>
-        <label>Layers (comma-separated)<br>
-        <input type="text" id="mapping-wms-layers" style="width:100%"></label>
-        <label>Styles (comma-separated)<br>
-        <input type="text" id="mapping-wms-styles" style="width:100%"></label>
-        <label>Label<br>
-        <input type="text" id="mapping-wms-label" style="width:100%"></label>
-        <button id="mapping-wms-add">Add WMS Overlay</button>
-        <button id="mapping-wms-unset">Unset</button>
-    </div>
     <div id="mapping-marker-image-selector" class="sidebar">
-        <h3>Select Marker Image</h3>
-        <label style="font-size:16px;">
-            <input type="radio" class="mapping-marker-image-select" name="marker-image" value="" checked> No Image
-        </label>
+        <a href="#" class="sidebar-close o-icon-close"><span class="screen-reader-text">Close Me</span></a>
+        <h3>Marker Image</h3>
+        <label><input type="radio" class="mapping-marker-image-select" name="marker-image" value="" checked> No Image</label>
         <?php foreach ($itemMedia as $media): ?>
         <?php if ($media->hasThumbnails()): ?>
         <label style="cursor:pointer;">
@@ -65,11 +51,9 @@ if (isset($item)) {
     </div>
 </fieldset>
 
-<div class="mapping-marker-popup-content" style="display:none;">
-    <p>Enter a label for this marker:</p>
+<div class="mapping-marker-popup-content template">
+    <div>Marker Label</div>
     <input type="text" class="mapping-marker-popup-label" size="30">
-    <div class="mapping-marker-popup-image-content">
-        <p>Select an image for this marker from the sidebar:</p>
-        <div class="mapping-marker-popup-image"></div>
-    </div>
+    <div class="mapping-marker-popup-image"></div>
+    <button class="mapping-marker-popup-image-select">Select Marker Image</button>
 </div>

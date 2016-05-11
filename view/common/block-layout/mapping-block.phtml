@@ -1,18 +1,34 @@
 <?php
 $this->headLink()->appendStylesheet($this->assetUrl('js/Leaflet/0.7.7/leaflet.css', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/Leaflet.providers/1.1.7/leaflet-providers.js', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('js/Leaflet.groupedlayercontrol/0.4.0/leaflet.groupedlayercontrol.min.css', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/Leaflet.groupedlayercontrol/0.4.0/leaflet.groupedlayercontrol.min.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/control.opacity.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-block.js', 'Mapping'));
 
 ?>
 <div class="mapping-map" style="height:500px;"
     data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
+    data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
 ></div>
 
 <?php foreach ($markers as $marker): ?>
+<?php
+if (!$marker->label() && !$marker->media()) {
+    // Don't render marker popup content if there's no label or media.
+    continue;
+}
+?>
 <div class="mapping-marker-popup-content" style="display:none;" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>">
+    <?php if ($marker->label()): ?>
     <h4><?php echo $this->escapeHtml($marker->label()); ?></h4>
+    <?php endif; ?>
     <?php if ($marker->media()): ?>
     <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
+    <div>
+        <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>">View media</a>
+    </div>
     <?php endif; ?>
 </div>
 <?php endforeach; ?>

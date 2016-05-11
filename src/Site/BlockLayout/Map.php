@@ -19,10 +19,9 @@ class Map extends AbstractBlockLayout
 
     public function onHydrate(SitePageBlock $block, ErrorStore $errorStore)
     {
-        $data = $block->getData();
-        // Do something to data if needed.
-        $block->setData($data);
+        $block->setData($this->filterBlockData($block->getData()));
 
+        // Validate attachments.
         $itemIds = [];
         $attachments = $block->getAttachments();
         foreach ($attachments as $attachment) {
@@ -49,8 +48,10 @@ class Map extends AbstractBlockLayout
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageBlockRepresentation $block = null
     ) {
-        return $view->partial('common/block-layout/mapping-block-form', ['block' => $block])
-            . $this->attachmentsForm($view, $site, $block, true);
+        $data = $block ? $block->data() : [];
+        return $view->partial('common/block-layout/mapping-block-form', [
+            'data' => $this->filterBlockData($data),
+        ]) . $this->attachmentsForm($view, $site, $block, true);
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
@@ -64,18 +65,76 @@ class Map extends AbstractBlockLayout
             )->getContent();
             $allMarkers = array_merge($allMarkers, $markers);
         }
-        //~ foreach ($allMarkers as $marker) {
-            //~ var_dump($marker->label(), $marker->lat(), $marker->lng());
-        //~ }
 
-        // Get WMS overlay and center/zoom data from from $block->data(), and
-        // get markers for all attachments (items) and render them on a map via
-        // a partial
-
-        return $view->partial('common/block-layout/mapping-block', array(
-            'block' => $block,
+        return $view->partial('common/block-layout/mapping-block', [
+            'data' => $this->filterBlockData($block->data()),
             'markers' => $allMarkers,
-        ));
+        ]);
+    }
 
+    /**
+     * Filter Map block data.
+     *
+     * We filter data on input and output to ensure a valid format, regardless
+     * of version.
+     *
+     * @param array $data
+     * @return array
+     */
+    protected function filterBlockData($data)
+    {
+        // Filter the defualt view data.
+        $defaultView = [
+            'zoom' => null,
+            'lat' => null,
+            'lng' => null,
+        ];
+        if (isset($data['default_view']) && is_array($data['default_view'])
+            && isset($data['default_view']['zoom']) && is_numeric($data['default_view']['zoom'])
+            && isset($data['default_view']['lat']) && is_numeric($data['default_view']['lat'])
+            && isset($data['default_view']['lng']) && is_numeric($data['default_view']['lng'])
+        ) {
+            // Default view data must have numeric zoom, lat, and lng.
+            $defaultView['zoom'] = $data['default_view']['zoom'];
+            $defaultView['lat'] = $data['default_view']['lat'];
+            $defaultView['lng'] = $data['default_view']['lng'];
+        }
+
+        // Filter the WMS overlay data.
+        $wmsOverlays = [];
+        if (isset($data['wms']) && is_array($data['wms'])) {
+            foreach ($data['wms'] as $wmsOverlay) {
+                // WMS data must have label and base URL.
+                if (is_array($wmsOverlay)
+                    && isset($wmsOverlay['label'])
+                    && isset($wmsOverlay['base_url'])
+                ) {
+                    $layers = '';
+                    if (isset($wmsOverlay['layers']) && '' !== trim($wmsOverlay['layers'])) {
+                        $layers = $wmsOverlay['layers'];
+                    }
+                    $wmsOverlay['layers'] = $layers;
+
+                    $styles = '';
+                    if (isset($wmsOverlay['styles']) && '' !== trim($wmsOverlay['styles'])) {
+                        $styles = $wmsOverlay['styles'];
+                    }
+                    $wmsOverlay['styles'] = $styles;
+
+                    $open = null;
+                    if (isset($wmsOverlay['open']) && $wmsOverlay['open']) {
+                        $open = true;
+                    }
+                    $wmsOverlay['open'] = $open;
+
+                    $wmsOverlays[] = $wmsOverlay;
+                }
+            }
+        }
+
+        return [
+            'default_view' => $defaultView,
+            'wms' => $wmsOverlays,
+        ];
     }
 }

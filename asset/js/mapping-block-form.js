@@ -22,7 +22,7 @@ var setMap = function(block) {
 
     var map = L.map(mapDiv[0]).setView([defaultLat, defaultLng], defaultZoom);
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
     map.addControl(new L.Control.DefaultView(
         function(e) {
@@ -96,7 +96,7 @@ $('.block[data-block-layout="mappingmap"]').each(function() {
 // Handle preparing the WMS data for submission.
 $('form').submit(function(e) {
     $('.mapping-wms-overlay').each(function(index) {
-        $(this).find(':input').each(function() {
+        $(this).find('input[type="hidden"]').each(function() {
             var thisInput = $(this);
             var name = thisInput.attr('name').replace('[__mappingWmsIndex__]', '[' + index + ']');
             thisInput.attr('name', name);
@@ -155,6 +155,7 @@ $('#blocks').on('click', '.mapping-wms-overlay-edit', function(e) {
     block.find('.mapping-wms-add').hide();
     block.find('.mapping-wms-edit').show();
     var wmsOverlay = $(this).closest('.mapping-wms-overlay');
+    $('.mapping-wms-overlay-editing').removeClass('mapping-wms-overlay-editing');
     wmsOverlay.addClass('mapping-wms-overlay-editing');
 
     var wmsLabel = wmsOverlay.find('input[name$="[label]"]').val();
@@ -180,6 +181,20 @@ $('#blocks').on('click', '.mapping-wms-overlay-delete', function(e) {
         block.find('.mapping-wms-fields :input').val('');
     }
     wmsOverlay.remove();
+});
+
+// Handle WMS overlay open/closed checkboxes.
+$('#blocks').on('change', '.mapping-wms-open', function(e) {
+    var thisCheckbox = $(this);
+    var isChecked = thisCheckbox.prop('checked');
+    var wmsOverlay = thisCheckbox.closest('.mapping-wms-overlay');
+    var wmsOverlays = thisCheckbox.closest('.mapping-wms-overlays');
+
+    wmsOverlays.find('.mapping-wms-open').prop('checked', false);
+    thisCheckbox.prop('checked', isChecked);
+
+    wmsOverlays.find('input[name$="[open]"]').val(0);
+    wmsOverlay.find('input[name$="[open]"]').val(isChecked ? 1 : 0);
 });
 
 });

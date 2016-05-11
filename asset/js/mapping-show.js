@@ -38,14 +38,16 @@ map.addControl(L.control.fitBounds(drawnItems));
 $.each(markersData, function(index, data) {
     var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
     var marker = L.marker(latLng);
-    var popupContent = $('.mapping-marker-popup-content[data-marker-id="' + data['o:id'] + '"]')
-        .clone().show();
-    marker.bindPopup(popupContent[0]);
+    var popupContent = $('.mapping-marker-popup-content[data-marker-id="' + data['o:id'] + '"]');
+    if (popupContent.length > 0) {
+        popupContent = popupContent.clone().show();
+        marker.bindPopup(popupContent[0]);
+    }
     drawnItems.addLayer(marker);
 });
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
-$('a[href="#mapping-section"], #mapping-legend').on('click', function(e) {
+$('#mapping-section').on('o:section-opened', function(e) {
     map.invalidateSize();
 });
 
