@@ -45,32 +45,43 @@ mappingMaps.each(function() {
             'No overlay': noOverlayLayer,
         },
     };
+
+    var opacityControl;
+    var handleOpacityControl = function(overlay, label) {
+        if (opacityControl) {
+            map.removeControl(opacityControl);
+            opacityControl = null;
+        }
+        if (overlay !== noOverlayLayer) {
+            opacityControl =  new L.Control.Opacity(overlay, label);
+            map.addControl(opacityControl);
+        }
+    };
+
     map.addLayer(baseMaps['Streets']);
     map.addLayer(noOverlayLayer);
     $.each(data['wms'], function(index, data) {
-        wms = L.tileLayer.wms(data.base_url, {
+        wmsLayer = L.tileLayer.wms(data.base_url, {
             layers: data.layers,
             styles: data.styles,
             format: 'image/png',
             transparent: true,
         });
-        groupedOverlays['Overlays'][data.label] = wms;
+        if (data.open) {
+            // This overlay is open by default.
+            map.removeLayer(noOverlayLayer);
+            map.addLayer(wmsLayer);
+            handleOpacityControl(wmsLayer, data.label);
+        }
+        groupedOverlays['Overlays'][data.label] = wmsLayer;
     });
     L.control.groupedLayers(baseMaps, groupedOverlays, {
         exclusiveGroups: ['Overlays']
     }).addTo(map);
 
     // Handle the overlay opacity control.
-    var opacityControl;
     map.on('overlayadd', function(e) {
-        if (opacityControl) {
-            map.removeControl(opacityControl);
-            opacityControl = null;
-        }
-        if (e.layer !== noOverlayLayer) {
-            opacityControl =  new L.Control.Opacity(e.layer, e.name);
-            map.addControl(opacityControl);
-        }
+        handleOpacityControl(e.layer, e.name);
     });
 });
 

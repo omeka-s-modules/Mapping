@@ -1,6 +1,7 @@
 <?php
 $wmsOverlayTemplate = '
 <li class="mapping-wms-overlay">
+    <input type="checkbox" class="mapping-wms-open">
     <span class="mapping-wms-overlay-title"></span>
     <ul class="actions">
         <a href="#" class="mapping-wms-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
@@ -10,6 +11,7 @@ $wmsOverlayTemplate = '
     <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][base_url]">
     <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][layers]">
     <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][styles]">
+    <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][open]">
 </li>';
 ?>
 <a href="#" class="mapping-map-expander expand"><h4>Default Center and Zoom</h4></a>
@@ -23,9 +25,11 @@ $wmsOverlayTemplate = '
 
 <a href="#" class="expand"><h4>Web Map Service (WMS) Overlays</h4></a>
 <div class="collapsible">
+    <p>Add, edit, and delete WMS overlays below. You may check which overlay you want open by default.</p>
     <ul class="mapping-wms-overlays" data-wms-overlay-template="<?php echo $this->escapeHtml($wmsOverlayTemplate); ?>">
         <?php foreach ($data['wms'] as $wmsOverlay): ?>
         <li class="mapping-wms-overlay">
+            <input type="checkbox" class="mapping-wms-open"<?php echo $wmsOverlay['open'] ? ' checked="checked"' : '' ?>>
             <span class="mapping-wms-overlay-title"><?php echo $wmsOverlay['label']; ?></span>
             <ul class="actions">
                 <a href="#" class="mapping-wms-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
@@ -35,6 +39,7 @@ $wmsOverlayTemplate = '
             <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][base_url]" value="<?php echo $this->escapeHtml($wmsOverlay['base_url']); ?>">
             <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][layers]" value="<?php echo $this->escapeHtml($wmsOverlay['layers']); ?>">
             <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][styles]" value="<?php echo $this->escapeHtml($wmsOverlay['styles']); ?>">
+            <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][open]" value="<?php echo $this->escapeHtml($wmsOverlay['open']); ?>">
         </li>
         <?php endforeach; ?>
     </ul>

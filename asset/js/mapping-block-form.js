@@ -96,7 +96,7 @@ $('.block[data-block-layout="mappingmap"]').each(function() {
 // Handle preparing the WMS data for submission.
 $('form').submit(function(e) {
     $('.mapping-wms-overlay').each(function(index) {
-        $(this).find(':input').each(function() {
+        $(this).find('input[type="hidden"]').each(function() {
             var thisInput = $(this);
             var name = thisInput.attr('name').replace('[__mappingWmsIndex__]', '[' + index + ']');
             thisInput.attr('name', name);
@@ -181,6 +181,19 @@ $('#blocks').on('click', '.mapping-wms-overlay-delete', function(e) {
         block.find('.mapping-wms-fields :input').val('');
     }
     wmsOverlay.remove();
+});
+
+$('#blocks').on('change', '.mapping-wms-open', function(e) {
+    var thisCheckbox = $(this);
+    var isChecked = thisCheckbox.prop('checked');
+    var wmsOverlay = thisCheckbox.closest('.mapping-wms-overlay');
+    var wmsOverlays = thisCheckbox.closest('.mapping-wms-overlays');
+
+    wmsOverlays.find('.mapping-wms-open').prop('checked', false);
+    thisCheckbox.prop('checked', isChecked);
+
+    wmsOverlays.find('input[name$="[open]"]').val(0);
+    wmsOverlay.find('input[name$="[open]"]').val(isChecked ? 1 : 0);
 });
 
 });

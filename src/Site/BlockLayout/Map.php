@@ -84,7 +84,11 @@ class Map extends AbstractBlockLayout
     protected function filterBlockData($data)
     {
         // Filter the defualt view data.
-        $defaultView = ['zoom' => null, 'lat' => null, 'lng' => null];
+        $defaultView = [
+            'zoom' => null,
+            'lat' => null,
+            'lng' => null,
+        ];
         if (isset($data['default_view']) && is_array($data['default_view'])
             && isset($data['default_view']['zoom']) && is_numeric($data['default_view']['zoom'])
             && isset($data['default_view']['lat']) && is_numeric($data['default_view']['lat'])
@@ -105,6 +109,24 @@ class Map extends AbstractBlockLayout
                     && isset($wmsOverlay['label'])
                     && isset($wmsOverlay['base_url'])
                 ) {
+                    $layers = '';
+                    if (isset($wmsOverlay['layers']) && '' !== trim($wmsOverlay['layers'])) {
+                        $layers = $wmsOverlay['layers'];
+                    }
+                    $wmsOverlay['layers'] = $layers;
+
+                    $styles = '';
+                    if (isset($wmsOverlay['styles']) && '' !== trim($wmsOverlay['styles'])) {
+                        $styles = $wmsOverlay['styles'];
+                    }
+                    $wmsOverlay['styles'] = $styles;
+
+                    $open = null;
+                    if (isset($wmsOverlay['open']) && $wmsOverlay['open']) {
+                        $open = true;
+                    }
+                    $wmsOverlay['open'] = $open;
+
                     $wmsOverlays[] = $wmsOverlay;
                 }
             }
