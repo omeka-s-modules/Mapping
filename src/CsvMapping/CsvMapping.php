@@ -27,6 +27,10 @@ class CsvMapping extends AbstractMapping
         $lngMap = isset($this->args['column-map-lng']) ? array_keys($this->args['column-map-lng']) : [];
         $latLngMap = isset($this->args['column-map-latlng']) ? array_keys($this->args['column-map-latlng']) : [];
         
+        $defaultLatMap = isset($this->args['column-default-lat']) ? array_keys($this->args['column-default-lat']) : [];
+        $defaultLngMap = isset($this->args['column-default-lng']) ? array_keys($this->args['column-default-lng']) : [];
+        $defaultZoomMap = isset($this->args['column-default-zoom']) ? array_keys($this->args['column-default-zoom']) : [];
+        
         $markerJson = [];
         foreach($row as $index => $value) {
             $value = trim($value);
@@ -45,12 +49,23 @@ class CsvMapping extends AbstractMapping
                 $markerJson['o-module-mapping:lng'] = trim($latLng[1]);
             }
             
-        }
-        if (isset($markerJson['o-module-mapping:lat']) && isset($markerJson['o-module-mapping:lng'])) {
-            $json['o-module-mapping:marker'][] = $markerJson;
-            return $json;
+            if(in_array($index, $defaultLatMap)) {
+                $json['o-module-mapping:default_lat'] = $value;
+            }
+            
+            if(in_array($index, $defaultLngMap)) {
+                $json['o-module-mapping:default_lng'] = $value;
+            }
+            
+            if(in_array($index, $defaultZoomMap)) {
+                $json['o-module-mapping:default_zoom'] = $value;
+            }
+            
         }
         
-        return [];
+        if (isset($markerJson['o-module-mapping:lat']) && isset($markerJson['o-module-mapping:lng'])) {
+            $json['o-module-mapping:marker'][] = $markerJson;
+        }
+        return $json;
     }
 }
