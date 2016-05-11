@@ -35,6 +35,3 @@ L.Control.FitBounds = L.Control.extend({
         }
     },
 });
-L.control.fitBounds = function (layerGroup) {
-    return new L.Control.FitBounds(layerGroup);
-};

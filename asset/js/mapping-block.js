@@ -10,10 +10,12 @@ mappingMaps.each(function() {
     var defaultZoom = data['default_view']['zoom'];
     var defaultLat = data['default_view']['lat'];
     var defaultLng = data['default_view']['lng'];
+    var noInitialDefaultView = false;
     if (!defaultZoom || !defaultLat || !defaultLng) {
         defaultZoom = 1;
         defaultLat = 0;
         defaultLng = 0;
+        noInitialDefaultView = true;
     }
     var map = L.map(this, {
         center: [defaultLat, defaultLng],
@@ -21,6 +23,7 @@ mappingMaps.each(function() {
     });
 
     // Add markers to map.
+    var markers = new L.FeatureGroup();
     $.each(mappingMap.data('markers'), function(index, data) {
         var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
         var marker = L.marker(latLng);
@@ -29,8 +32,15 @@ mappingMaps.each(function() {
             popupContent = popupContent.clone().show();
             marker.bindPopup(popupContent[0]);
         }
-        marker.addTo(map);
+        markers.addLayer(marker);
     });
+    map.addLayer(markers);
+    if (noInitialDefaultView) {
+        var bounds = markers.getBounds();
+        if (bounds.isValid()) {
+            map.fitBounds(bounds);
+        }
+    }
 
     // Set base map and grouped overlay layers.
     var baseMaps = {
