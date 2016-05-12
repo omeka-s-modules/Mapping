@@ -22,7 +22,7 @@ class CsvMapping extends AbstractMapping
     
     public function processRow($row)
     {
-        $json = ['o-module-mapping:marker' => []];
+        $json = ['o-module-mapping:marker' => [], 'o-module-mapping:mapping' => []];
         $latMap = isset($this->args['column-map-lat']) ? array_keys($this->args['column-map-lat']) : [];
         $lngMap = isset($this->args['column-map-lng']) ? array_keys($this->args['column-map-lng']) : [];
         $latLngMap = isset($this->args['column-map-latlng']) ? array_keys($this->args['column-map-latlng']) : [];
@@ -32,6 +32,7 @@ class CsvMapping extends AbstractMapping
         $defaultZoomMap = isset($this->args['column-default-zoom']) ? array_keys($this->args['column-default-zoom']) : [];
         
         $markerJson = [];
+        $mappingJson = ['o-module-mapping:default_zoom' => 1];
         foreach($row as $index => $value) {
             $value = trim($value);
             
@@ -50,15 +51,15 @@ class CsvMapping extends AbstractMapping
             }
             
             if(in_array($index, $defaultLatMap)) {
-                $json['o-module-mapping:default_lat'] = $value;
+                $mappingJson['o-module-mapping:default_lat'] = $value;
             }
             
             if(in_array($index, $defaultLngMap)) {
-                $json['o-module-mapping:default_lng'] = $value;
+                $mappingJson['o-module-mapping:default_lng'] = $value;
             }
             
             if(in_array($index, $defaultZoomMap)) {
-                $json['o-module-mapping:default_zoom'] = $value;
+                $mappingJson['o-module-mapping:default_zoom'] = $value;
             }
             
         }
@@ -66,6 +67,7 @@ class CsvMapping extends AbstractMapping
         if (isset($markerJson['o-module-mapping:lat']) && isset($markerJson['o-module-mapping:lng'])) {
             $json['o-module-mapping:marker'][] = $markerJson;
         }
+        $json['o-module-mapping:mapping'] = $mappingJson;
         return $json;
     }
 }
