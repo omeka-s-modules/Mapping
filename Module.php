@@ -102,6 +102,23 @@ DROP TABLE IF EXISTS mapping_marker');
             'api.hydrate.post',
             [$this, 'handleMarkers']
         );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            ['api.search.query'],
+            function (Event $event) {
+                $query = $event->getParam('request')->getContent();
+                if (isset($query['has_markers'])) {
+                    $qb = $event->getParam('queryBuilder');
+                    $itemAdapter = $event->getTarget();
+                    $mappingMarkerAlias = $itemAdapter->createAlias();
+                    $itemAlias = $itemAdapter->getEntityClass();
+                    $qb->innerJoin(
+                        'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
+                        'WITH', "$mappingMarkerAlias.item = $itemAlias.id"
+                    );
+                }
+            }
+        );
     }
 
     public function filterItemJsonLd(Event $event)
