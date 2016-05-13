@@ -35,7 +35,7 @@ return [
         'routes' => [
             'site' => [
                 'child_routes' => [
-                    'mapping' => [
+                    'mapping-map-browse' => [
                         'type' => 'Literal',
                         'options' => [
                             'route' => '/map-browse',

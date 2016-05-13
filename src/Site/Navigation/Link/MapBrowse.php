@@ -34,7 +34,7 @@ class MapBrowse extends AbstractLink
     {
         return [
             'label' => $data['label'],
-            'route' => 'site/mapping',
+            'route' => 'site/mapping-map-browse',
             'params' => [
                 'site-slug' => $site->slug(),
             ],
