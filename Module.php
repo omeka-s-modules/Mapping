@@ -55,6 +55,7 @@ DROP TABLE IF EXISTS mapping_marker');
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
+        // Add the map form to the item add and edit pages.
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             ['view.add.form.after', 'view.edit.form.after'],
@@ -62,6 +63,7 @@ DROP TABLE IF EXISTS mapping_marker');
                 echo $event->getTarget()->partial('mapping/index/form.phtml');
             }
         );
+        // Add the map to the item show page.
         $sharedEventManager->attach(
             ['Omeka\Controller\Admin\Item', 'Omeka\Controller\Site\Item'],
             'view.show.after',
@@ -69,6 +71,7 @@ DROP TABLE IF EXISTS mapping_marker');
                 echo $event->getTarget()->partial('mapping/index/show.phtml');
             }
         );
+        // Add the map tab to the item add, edit, and show section navigations.
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             ['view.add.section_nav', 'view.edit.section_nav', 'view.show.section_nav'],
@@ -87,21 +90,7 @@ DROP TABLE IF EXISTS mapping_marker');
                 $event->setParam('section_nav', $sectionNav);
             }
         );
-        $sharedEventManager->attach(
-            'Omeka\Api\Representation\ItemRepresentation',
-            'rep.resource.json',
-            [$this, 'filterItemJsonLd']
-        );
-        $sharedEventManager->attach(
-            'Omeka\Api\Adapter\ItemAdapter',
-            'api.hydrate.post',
-            [$this, 'handleMapping']
-        );
-        $sharedEventManager->attach(
-            'Omeka\Api\Adapter\ItemAdapter',
-            'api.hydrate.post',
-            [$this, 'handleMarkers']
-        );
+        // Add the "has_markers" filter to item search.
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             ['api.search.query'],
@@ -119,8 +108,28 @@ DROP TABLE IF EXISTS mapping_marker');
                 }
             }
         );
+        $sharedEventManager->attach(
+            'Omeka\Api\Representation\ItemRepresentation',
+            'rep.resource.json',
+            [$this, 'filterItemJsonLd']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.hydrate.post',
+            [$this, 'handleMapping']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.hydrate.post',
+            [$this, 'handleMarkers']
+        );
     }
 
+    /**
+     * Add the mapping and marker data to the item JSON-LD.
+     *
+     * @param Event $event
+     */
     public function filterItemJsonLd(Event $event)
     {
         $item = $event->getTarget();
@@ -141,6 +150,11 @@ DROP TABLE IF EXISTS mapping_marker');
         $event->setParam('jsonLd', $jsonLd);
     }
 
+    /**
+     * Handle hydration for mapping data.
+     *
+     * @param Event $event
+     */
     public function handleMapping(Event $event)
     {
         $itemAdapter = $event->getTarget();
@@ -210,6 +224,11 @@ DROP TABLE IF EXISTS mapping_marker');
         }
     }
 
+    /**
+     * Handle hydration for marker data.
+     *
+     * @param Event $event
+     */
     public function handleMarkers(Event $event)
     {
         $itemAdapter = $event->getTarget();
