@@ -15,18 +15,15 @@ $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Map
 <div id="mapping-section" class="section">
     <div id="mapping-map" style="height:500px;"
         data-mapping="<?php echo $this->escapeHtml(json_encode($mapping)); ?>"
-        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
     ></div>
 </div>
 
 <?php foreach ($markers as $marker): ?>
-<?php
-if (!$marker->label() && !$marker->media()) {
-    // Don't render marker popup content if there's no label or media.
-    continue;
-}
-?>
-<div class="mapping-marker-popup-content" style="display:none;" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>">
+<div class="mapping-marker-popup-content" style="display:none;"
+    data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>"
+    data-marker-lat="<?php echo $this->escapeHtml($marker->lat()); ?>"
+    data-marker-lng="<?php echo $this->escapeHtml($marker->lng()); ?>"
+>
     <?php if ($marker->label()): ?>
     <h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
     <?php endif; ?>
@@ -36,5 +33,8 @@ if (!$marker->label() && !$marker->media()) {
         <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>">View media</a>
     </div>
     <?php endif; ?>
+    <div>
+        <a href="<?php echo $this->escapeHtml($marker->item()->url()); ?>">View item</a>
+    </div>
 </div>
 <?php endforeach; ?>

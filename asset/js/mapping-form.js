@@ -103,23 +103,23 @@ var markersData = mappingMap.data('markers');
 
 // Initialize the map and set default view.
 var map = L.map('mapping-map');
-var mapDefaultCenter = [0, 0];
-var mapDefaultZoom = 1;
-var noInitialDefaultView = false;
+var center = [0, 0];
+var zoom = 1;
+var noDefaultView = false;
 if (mappingData
     && mappingData['o-module-mapping:default_lat'] !== null
     && mappingData['o-module-mapping:default_lng'] !== null
     && mappingData['o-module-mapping:default_zoom'] !== null
 ) {
-    mapDefaultCenter = [
+    center = [
         mappingData['o-module-mapping:default_lat'],
         mappingData['o-module-mapping:default_lng']
     ];
-    mapDefaultZoom = mappingData['o-module-mapping:default_zoom'];
+    zoom = mappingData['o-module-mapping:default_zoom'];
 } else {
-    noInitialDefaultView = true;
+    noDefaultView = true;
 }
-map.setView(mapDefaultCenter, mapDefaultZoom);
+map.setView(center, zoom);
 
 // Add layers and controls to the map.
 var baseMaps = {
@@ -167,7 +167,7 @@ map.addControl(new L.Control.DefaultView(
         $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val('');
         map.setView([0, 0], 1);
     },
-    {noInitialDefaultView: noInitialDefaultView}
+    {noInitialDefaultView: noDefaultView}
 ));
 
 // Add saved markers to the map.
