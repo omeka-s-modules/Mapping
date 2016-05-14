@@ -2,14 +2,19 @@
 namespace Mapping\Site\Navigation\Link;
 
 use Omeka\Api\Representation\SiteRepresentation;
-use Omeka\Site\Navigation\Link\AbstractLink;
+use Omeka\Site\Navigation\Link\LinkInterface;
 use Omeka\Stdlib\ErrorStore;
 
-class MapBrowse extends AbstractLink
+class MapBrowse implements LinkInterface
 {
     public function getLabel()
     {
-        return 'Map Browse';
+        return 'Map Browse'; // @translate
+    }
+
+    public function getFormTemplate()
+    {
+        return 'common/navigation-link-form/mapping-map-browse';
     }
 
     public function isValid(array $data, ErrorStore $errorStore)
@@ -19,15 +24,6 @@ class MapBrowse extends AbstractLink
             return false;
         }
         return true;
-    }
-
-    public function getForm(array $data, SiteRepresentation $site)
-    {
-        $escape = $this->getViewHelper('escapeHtml');
-        $label = isset($data['label']) ? $data['label'] : $this->getLabel();
-        $query = isset($data['query']) ? $data['query'] : null;
-        return '<label>Type <input type="text" value="' . $escape($this->getLabel()) . '" disabled></label>'
-            . '<label>Label <input type="text" data-name="label" value="' . $escape($label) . '"></label>';
     }
 
     public function toZend(array $data, SiteRepresentation $site)
