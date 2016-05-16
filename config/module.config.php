@@ -26,4 +26,33 @@ return [
             'mappingMap' => 'Mapping\Site\BlockLayout\Map',
         ],
     ],
+    'navigation_links' => [
+        'invokables' => [
+            'mapping' => 'Mapping\Site\Navigation\Link\MapBrowse',
+        ],
+    ],
+    'controllers' => [
+        'invokables' => [
+            'Mapping\Controller\Site\Index' => 'Mapping\Controller\Site\IndexController',
+        ],
+    ],
+    'router' => [
+        'routes' => [
+            'site' => [
+                'child_routes' => [
+                    'mapping-map-browse' => [
+                        'type' => 'Literal',
+                        'options' => [
+                            'route' => '/map-browse',
+                            'defaults' => [
+                                '__NAMESPACE__' => 'Mapping\Controller\Site',
+                                'controller' => 'index',
+                                'action' => 'browse',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
+        ],
+    ],
 ];

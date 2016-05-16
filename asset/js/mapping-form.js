@@ -103,23 +103,23 @@ var markersData = mappingMap.data('markers');
 
 // Initialize the map and set default view.
 var map = L.map('mapping-map');
-var mapDefaultCenter = [0, 0];
-var mapDefaultZoom = 1;
-var noInitialDefaultView = false;
+var center = [0, 0];
+var zoom = 1;
+var noDefaultView = false;
 if (mappingData
     && mappingData['o-module-mapping:default_lat'] !== null
     && mappingData['o-module-mapping:default_lng'] !== null
     && mappingData['o-module-mapping:default_zoom'] !== null
 ) {
-    mapDefaultCenter = [
+    center = [
         mappingData['o-module-mapping:default_lat'],
         mappingData['o-module-mapping:default_lng']
     ];
-    mapDefaultZoom = mappingData['o-module-mapping:default_zoom'];
+    zoom = mappingData['o-module-mapping:default_zoom'];
 } else {
-    noInitialDefaultView = true;
+    noDefaultView = true;
 }
-map.setView(mapDefaultCenter, mapDefaultZoom);
+map.setView(center, zoom);
 
 // Add layers and controls to the map.
 var baseMaps = {
@@ -130,6 +130,11 @@ var baseMaps = {
 };
 var layerControl = L.control.layers(baseMaps);
 var drawnItems = new L.FeatureGroup();
+var geoSearchControl = new L.Control.GeoSearch({
+    provider: new L.GeoSearch.Provider.OpenStreetMap(),
+    showMarker: false,
+    retainZoomLevel: true,
+});
 var drawControl = new L.Control.Draw({
     draw: {
         polyline: false,
@@ -145,6 +150,7 @@ map.addLayer(baseMaps['Streets']);
 map.addLayer(drawnItems);
 map.addControl(layerControl);
 map.addControl(drawControl);
+map.addControl(geoSearchControl);
 map.addControl(new L.Control.DefaultView(
     function(e) {
         var zoom = map.getZoom();
@@ -167,7 +173,7 @@ map.addControl(new L.Control.DefaultView(
         $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val('');
         map.setView([0, 0], 1);
     },
-    {noInitialDefaultView: noInitialDefaultView}
+    {noInitialDefaultView: noDefaultView}
 ));
 
 // Add saved markers to the map.
@@ -187,28 +193,29 @@ if (mappingData) {
 }
 
 // Handle adding new markers.
-map.on('draw:created', function (e) {
-    var type = e.layerType;
-    var layer = e.layer;
-    if (type === 'marker') {
-        addMarker(layer);
+map.on('draw:created', function(e) {
+    if (e.layerType === 'marker') {
+        addMarker(e.layer);
     }
 });
 
 // Handle editing existing markers (saved and unsaved).
-map.on('draw:edited', function (e) {
-    var layers = e.layers;
-    layers.eachLayer(function (layer) {
+map.on('draw:edited', function(e) {
+    e.layers.eachLayer(function(layer) {
         editMarker(layer);
     });
 });
 
 // Handle deleting existing (saved and unsaved) markers.
-map.on('draw:deleted', function (e) {
-    var layers = e.layers;
-    layers.eachLayer(function (layer) {
+map.on('draw:deleted', function(e) {
+    e.layers.eachLayer(function(layer) {
         deleteMarker(layer);
     });
+});
+
+// Handle adding a geocoded marker.
+map.on('geosearch_showlocation', function(e) {
+    addMarker(new L.Marker([e.Location.Y, e.Location.X]), null, e.Location.Label);
 });
 
 // Switching sections changes map dimensions, so make the necessary adjustments.

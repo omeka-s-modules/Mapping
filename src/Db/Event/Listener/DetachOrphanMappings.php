@@ -11,7 +11,8 @@ use Mapping\Entity\MappingMarker;
 class DetachOrphanMappings
 {
     /**
-     * Detach all Mapping entities that reference Items not currently in the entity manager.
+     * Detach all Mapping entities that reference Items not currently in the
+     * entity manager.
      *
      * @param PreFlushEventArgs $event
      */
