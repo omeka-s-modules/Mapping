@@ -7,7 +7,7 @@ use Omeka\Stdlib\ErrorStore;
 
 class MapBrowse implements LinkInterface
 {
-    public function getLabel()
+    public function getName()
     {
         return 'Map Browse'; // @translate
     }
@@ -19,17 +19,18 @@ class MapBrowse implements LinkInterface
 
     public function isValid(array $data, ErrorStore $errorStore)
     {
-        if (!isset($data['label'])) {
-            $errorStore->addError('o:navigation', 'Invalid navigation: map browse link missing label');
-            return false;
-        }
         return true;
+    }
+
+    public function getLabel(array $data, SiteRepresentation $site)
+    {
+        return isset($data['label']) && '' !== trim($data['label'])
+            ? $data['label'] : $this->getName();
     }
 
     public function toZend(array $data, SiteRepresentation $site)
     {
         return [
-            'label' => $data['label'],
             'route' => 'site/mapping-map-browse',
             'params' => [
                 'site-slug' => $site->slug(),
@@ -39,9 +40,8 @@ class MapBrowse implements LinkInterface
 
     public function toJstree(array $data, SiteRepresentation $site)
     {
-        $label = isset($data['label']) ? $data['label'] : $sitePage->title();
         return [
-            'label' => $label,
+            'label' => $data['label'],
         ];
     }
 }
