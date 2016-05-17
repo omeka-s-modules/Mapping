@@ -236,7 +236,7 @@ mappingMap.on('keyup', '.mapping-marker-popup-label', function(e) {
 // Handle select popup image button.
 $('#mapping-section').on('click', '.mapping-marker-popup-image-select', function(e) {
     e.preventDefault();
-    Omeka.openSidebar($(this), '#mapping-marker-image-selector');
+    Omeka.openSidebar($('#mapping-marker-image-selector'));
 });
 
 // Handle media image selection.
