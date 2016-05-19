@@ -4,9 +4,15 @@ $this->headScript()->appendFile($this->assetUrl('js/Leaflet/0.7.7/leaflet.js', '
 $this->headScript()->appendFile($this->assetUrl('js/Leaflet.providers/1.1.7/leaflet-providers.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-browse.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'));
 ?>
 
-<div id="mapping-map" style="height:500px;"</div>
+<div id="mapping-map" style="height:500px; width: 80%; margin:0 auto;"></div>
+
+<form id="advanced-search">
+    <?php echo $this->partial('common/advanced-search', ['query' => $query]); ?>
+    <button><?php echo $this->translate('Search Map'); ?></button>
+</form>
 
 <?php foreach ($markers as $marker): ?>
 <div class="mapping-marker-popup-content" style="display:none;"
