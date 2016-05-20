@@ -82,5 +82,18 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                 'WITH', $qb->expr()->in("$itemAlias.id", $this->createNamedParameter($qb, $items))
             );
         }
+        if (isset($query['media_id'])) {
+            $media = $query['media_id'];
+            if (!is_array($media)) {
+                $media = [$media];
+            }
+            $media = array_filter($media, 'is_numeric');
+
+            $mediaAlias = $this->createAlias();
+            $qb->innerJoin(
+                $this->getEntityClass() . '.media', $mediaAlias,
+                'WITH', $qb->expr()->in("$mediaAlias.id", $this->createNamedParameter($qb, $media))
+            );
+        }
     }
 }

@@ -18,7 +18,8 @@ class IndexController extends AbstractSiteController
             $itemPool['site_id'] = $site->id();
         }
 
-        $response = $this->api()->search('items', $itemPool);
+        $query = $this->params()->fromQuery();
+        $response = $this->api()->search('items', array_merge_recursive($query, $itemPool));
         $items = $response->getContent();
         $itemIds = [];
         foreach ($items as $item) {
@@ -30,6 +31,7 @@ class IndexController extends AbstractSiteController
         $markers = $response->getContent();
 
         $view = new ViewModel;
+        $view->setVariable('query', $query);
         $view->setVariable('markers', $markers);
         return $view;
     }
