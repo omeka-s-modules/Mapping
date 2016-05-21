@@ -1,0 +1,20 @@
+<?php
+$address = isset($query['mapping_address']) ? $query['mapping_address'] : null;
+$radius = isset($query['mapping_radius']) ? $query['mapping_radius'] : null;
+?>
+<div class="field">
+    <div class="field-meta">
+        <legend>Geographic Address</legend>
+    </div>
+    <div class="inputs">
+        <input type="text" name="mapping_address" value="<?php echo $this->escapeHtml($address); ?>">
+    </div>
+</div>
+<div class="field">
+    <div class="field-meta">
+        <legend>Geographic Radius (in miles)</legend>
+    </div>
+    <div class="inputs">
+        <input type="text" name="mapping_radius" value="<?php echo $this->escapeHtml($radius); ?>">
+    </div>
+</div>

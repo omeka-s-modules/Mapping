@@ -95,5 +95,51 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                 'WITH', $qb->expr()->in("$mediaAlias.id", $this->createNamedParameter($qb, $media))
             );
         }
+        if (isset($query['address']) && '' !== trim($query['address'])
+            && isset($query['radius']) && is_numeric($query['radius'])
+        ) {
+            // If no address is found below, these settings result in no markers.
+            $centerLat = 0;
+            $centerLng = 0;
+            $radius = -1;
+
+            // Get the address' latitude and longitude from OpenStreetMap.
+            $client = $this->getServiceLocator()->get('Omeka\HttpClient')
+                ->setUri('http://nominatim.openstreetmap.org/search')
+                ->setParameterGet([
+                    'q'  => $query['address'],
+                    'format'  => 'json',
+                ]);
+            $response = $client->send();
+            if ($response->isSuccess()) {
+                $results = json_decode($response->getBody(), true);
+                if (isset($results[0]['lat']) && $results[0]['lon']) {
+                    $centerLat = $results[0]['lat'];
+                    $centerLng = $results[0]['lon'];
+                    $radius = $query['radius'];
+                }
+            }
+
+            // Calculate the distance of markers from center coordinates.
+            // @see http://stackoverflow.com/questions/8994718/mysql-longitude-and-latitude-query-for-other-rows-within-x-mile-radius
+            $sql = '
+            (6371 * acos(
+                (
+                    cos(radians(%1$s)) *
+                    cos(radians(Mapping\Entity\MappingMarker.lat)) *
+                    cos(
+                        (radians(Mapping\Entity\MappingMarker.lng) - radians(%2$s))
+                    ) +
+                    sin(radians(%1$s)) *
+                    sin(radians(Mapping\Entity\MappingMarker.lat))
+                )
+            )) <= %3$s';
+            $qb->andWhere(sprintf(
+                $sql,
+                $this->createNamedParameter($qb, $centerLat),
+                $this->createNamedParameter($qb, $centerLng),
+                $this->createNamedParameter($qb, $radius)
+            ));
+        }
     }
 }

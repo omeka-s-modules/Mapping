@@ -27,7 +27,12 @@ class IndexController extends AbstractSiteController
         }
         unset($items);
 
-        $response = $this->api()->search('mapping_markers', ['item_id' => $itemIds]);
+        $markersQuery = ['item_id' => $itemIds];
+        if (isset($query['mapping_address']) && isset($query['mapping_radius'])) {
+            $markersQuery['address'] = $query['mapping_address'];
+            $markersQuery['radius'] = $query['mapping_radius'];
+        }
+        $response = $this->api()->search('mapping_markers', $markersQuery);
         $markers = $response->getContent();
 
         $view = new ViewModel;
