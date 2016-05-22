@@ -113,7 +113,7 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
             $response = $client->send();
             if ($response->isSuccess()) {
                 $results = json_decode($response->getBody(), true);
-                if (isset($results[0]['lat']) && $results[0]['lon']) {
+                if (isset($results[0]['lat']) && isset($results[0]['lon'])) {
                     $centerLat = $results[0]['lat'];
                     $centerLng = $results[0]['lon'];
                     $radius = $query['radius'];
@@ -122,7 +122,7 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
 
             // Calculate the distance of markers from center coordinates.
             // @see http://stackoverflow.com/questions/8994718/mysql-longitude-and-latitude-query-for-other-rows-within-x-mile-radius
-            $sql = '
+            $dql = '
             (6371 * acos(
                 (
                     cos(radians(%1$s)) *
@@ -135,7 +135,7 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                 )
             )) <= %3$s';
             $qb->andWhere(sprintf(
-                $sql,
+                $dql,
                 $this->createNamedParameter($qb, $centerLat),
                 $this->createNamedParameter($qb, $centerLng),
                 $this->createNamedParameter($qb, $radius)
