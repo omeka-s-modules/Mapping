@@ -98,11 +98,6 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
         if (isset($query['address']) && '' !== trim($query['address'])
             && isset($query['radius']) && is_numeric($query['radius'])
         ) {
-            // If no address is found below, these settings result in no markers.
-            $centerLat = 0;
-            $centerLng = 0;
-            $radius = -1;
-
             // Get the address' latitude and longitude from OpenStreetMap.
             $client = $this->getServiceLocator()->get('Omeka\HttpClient')
                 ->setUri('http://nominatim.openstreetmap.org/search')
@@ -111,35 +106,34 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                     'format'  => 'json',
                 ]);
             $response = $client->send();
+
+            // If no address is found don't waste time making distance
+            // calculations. This WHERE statement will always have no results.
+            $dql = '1 = 0';
+
             if ($response->isSuccess()) {
                 $results = json_decode($response->getBody(), true);
                 if (isset($results[0]['lat']) && isset($results[0]['lon'])) {
-                    $centerLat = $results[0]['lat'];
-                    $centerLng = $results[0]['lon'];
-                    $radius = $query['radius'];
+                    // Calculate the distance of markers from center coordinates.
+                    $dql = sprintf('
+                        (6371 * acos(
+                            (
+                                cos(radians(%1$s)) *
+                                cos(radians(Mapping\Entity\MappingMarker.lat)) *
+                                cos(
+                                    (radians(Mapping\Entity\MappingMarker.lng) - radians(%2$s))
+                                ) +
+                                sin(radians(%1$s)) *
+                                sin(radians(Mapping\Entity\MappingMarker.lat))
+                            )
+                        )) <= %3$s',
+                        $this->createNamedParameter($qb, $results[0]['lat']),
+                        $this->createNamedParameter($qb, $results[0]['lon']),
+                        $this->createNamedParameter($qb, $query['radius'])
+                    );
                 }
             }
-
-            // Calculate the distance of markers from center coordinates.
-            // @see http://stackoverflow.com/questions/8994718/mysql-longitude-and-latitude-query-for-other-rows-within-x-mile-radius
-            $dql = '
-            (6371 * acos(
-                (
-                    cos(radians(%1$s)) *
-                    cos(radians(Mapping\Entity\MappingMarker.lat)) *
-                    cos(
-                        (radians(Mapping\Entity\MappingMarker.lng) - radians(%2$s))
-                    ) +
-                    sin(radians(%1$s)) *
-                    sin(radians(Mapping\Entity\MappingMarker.lat))
-                )
-            )) <= %3$s';
-            $qb->andWhere(sprintf(
-                $dql,
-                $this->createNamedParameter($qb, $centerLat),
-                $this->createNamedParameter($qb, $centerLng),
-                $this->createNamedParameter($qb, $radius)
-            ));
+            $qb->andWhere($dql);
         }
     }
 }
