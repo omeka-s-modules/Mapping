@@ -95,5 +95,45 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                 'WITH', $qb->expr()->in("$mediaAlias.id", $this->createNamedParameter($qb, $media))
             );
         }
+        if (isset($query['address']) && '' !== trim($query['address'])
+            && isset($query['radius']) && is_numeric($query['radius'])
+        ) {
+            // Get the address' latitude and longitude from OpenStreetMap.
+            $client = $this->getServiceLocator()->get('Omeka\HttpClient')
+                ->setUri('http://nominatim.openstreetmap.org/search')
+                ->setParameterGet([
+                    'q'  => $query['address'],
+                    'format'  => 'json',
+                ]);
+            $response = $client->send();
+
+            // If no address is found don't waste time making distance
+            // calculations. This WHERE statement will always have no results.
+            $dql = '1 = 0';
+
+            if ($response->isSuccess()) {
+                $results = json_decode($response->getBody(), true);
+                if (isset($results[0]['lat']) && isset($results[0]['lon'])) {
+                    // Calculate the distance of markers from center coordinates.
+                    $dql = sprintf('
+                        (6371 * acos(
+                            (
+                                cos(radians(%1$s)) *
+                                cos(radians(Mapping\Entity\MappingMarker.lat)) *
+                                cos(
+                                    (radians(Mapping\Entity\MappingMarker.lng) - radians(%2$s))
+                                ) +
+                                sin(radians(%1$s)) *
+                                sin(radians(Mapping\Entity\MappingMarker.lat))
+                            )
+                        )) <= %3$s',
+                        $this->createNamedParameter($qb, $results[0]['lat']),
+                        $this->createNamedParameter($qb, $results[0]['lon']),
+                        $this->createNamedParameter($qb, $query['radius'])
+                    );
+                }
+            }
+            $qb->andWhere($dql);
+        }
     }
 }

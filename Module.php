@@ -71,6 +71,14 @@ DROP TABLE IF EXISTS mapping_marker');
                 echo $event->getTarget()->partial('mapping/index/show.phtml');
             }
         );
+        // Add the mapping fields to the site's map browse page.
+        $sharedEventManager->attach(
+            'Mapping\Controller\Site\Index',
+            'view.advanced_search',
+            function (Event $event) {
+                echo $event->getTarget()->partial('mapping/index/advanced-search.phtml');
+            }
+        );
         // Add the map tab to the item add, edit, and show section navigations.
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
