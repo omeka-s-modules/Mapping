@@ -107,13 +107,11 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                 ]);
             $response = $client->send();
 
-            // If no address is found don't waste time making distance
-            // calculations. This WHERE statement will always have no results.
-            $dql = '1 = 0';
-
+            $addressFound = false;
             if ($response->isSuccess()) {
                 $results = json_decode($response->getBody(), true);
                 if (isset($results[0]['lat']) && isset($results[0]['lon'])) {
+                    $addressFound = true;
                     // Calculate the distance of markers from center coordinates.
                     $dql = sprintf('
                         (6371 * acos(
@@ -126,14 +124,23 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                                 sin(radians(%1$s)) *
                                 sin(radians(Mapping\Entity\MappingMarker.lat))
                             )
-                        )) <= %3$s',
+                        )) AS HIDDEN distance',
                         $this->createNamedParameter($qb, $results[0]['lat']),
-                        $this->createNamedParameter($qb, $results[0]['lon']),
-                        $this->createNamedParameter($qb, $query['radius'])
+                        $this->createNamedParameter($qb, $results[0]['lon'])
                     );
+                    $qb->addSelect($dql);
+                    $qb->having(sprintf(
+                        'distance <= %s',
+                        $this->createNamedParameter($qb, $query['radius'])
+                    ));
                 }
             }
-            $qb->andWhere($dql);
+            if (!$addressFound) {
+                // If no address is found don't waste time making distance
+                // calculations. This WHERE statement will always have no
+                // results.
+                $qb->andWhere('1 = 0');
+            }
         }
     }
 }
