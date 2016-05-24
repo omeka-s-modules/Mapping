@@ -73,11 +73,13 @@ class MappingAdapter extends AbstractEntityAdapter
             }
             $items = array_filter($items, 'is_numeric');
 
-            $itemAlias = $this->createAlias();
-            $qb->innerJoin(
-                $this->getEntityClass() . '.item', $itemAlias,
-                'WITH', $qb->expr()->in("$itemAlias.id", $this->createNamedParameter($qb, $items))
-            );
+            if ($items) {
+                $itemAlias = $this->createAlias();
+                $qb->innerJoin(
+                    $this->getEntityClass() . '.item', $itemAlias,
+                    'WITH', $qb->expr()->in("$itemAlias.id", $this->createNamedParameter($qb, $items))
+                );
+            }
         }
     }
 }

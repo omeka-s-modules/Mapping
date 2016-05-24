@@ -76,11 +76,13 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
             }
             $items = array_filter($items, 'is_numeric');
 
-            $itemAlias = $this->createAlias();
-            $qb->innerJoin(
-                $this->getEntityClass() . '.item', $itemAlias,
-                'WITH', $qb->expr()->in("$itemAlias.id", $this->createNamedParameter($qb, $items))
-            );
+            if ($items) {
+                $itemAlias = $this->createAlias();
+                $qb->innerJoin(
+                    $this->getEntityClass() . '.item', $itemAlias,
+                    'WITH', $qb->expr()->in("$itemAlias.id", $this->createNamedParameter($qb, $items))
+                );
+            }
         }
         if (isset($query['media_id'])) {
             $media = $query['media_id'];
@@ -89,11 +91,13 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
             }
             $media = array_filter($media, 'is_numeric');
 
-            $mediaAlias = $this->createAlias();
-            $qb->innerJoin(
-                $this->getEntityClass() . '.media', $mediaAlias,
-                'WITH', $qb->expr()->in("$mediaAlias.id", $this->createNamedParameter($qb, $media))
-            );
+            if ($media) {
+                $mediaAlias = $this->createAlias();
+                $qb->innerJoin(
+                    $this->getEntityClass() . '.media', $mediaAlias,
+                    'WITH', $qb->expr()->in("$mediaAlias.id", $this->createNamedParameter($qb, $media))
+                );
+            }
         }
         if (isset($query['address']) && '' !== trim($query['address'])
             && isset($query['radius']) && is_numeric($query['radius'])
