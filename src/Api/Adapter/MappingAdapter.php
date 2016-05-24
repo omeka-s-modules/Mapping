@@ -67,14 +67,16 @@ class MappingAdapter extends AbstractEntityAdapter
     public function buildQuery(QueryBuilder $qb, array $query)
     {
         if (isset($query['item_id'])) {
+            $items = $query['item_id'];
+            if (!is_array($items)) {
+                $items = [$items];
+            }
+            $items = array_filter($items, 'is_numeric');
+
             $itemAlias = $this->createAlias();
             $qb->innerJoin(
-                'Mapping\Entity\Mapping.item',
-                $itemAlias
-            );
-            $qb->andWhere($qb->expr()->eq(
-                "$itemAlias.id",
-                $this->createNamedParameter($qb, $query['item_id']))
+                $this->getEntityClass() . '.item', $itemAlias,
+                'WITH', $qb->expr()->in("$itemAlias.id", $this->createNamedParameter($qb, $items))
             );
         }
     }
