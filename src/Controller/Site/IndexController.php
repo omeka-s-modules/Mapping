@@ -31,6 +31,8 @@ class IndexController extends AbstractSiteController
         if (isset($query['mapping_address']) && isset($query['mapping_radius'])) {
             $markersQuery['address'] = $query['mapping_address'];
             $markersQuery['radius'] = $query['mapping_radius'];
+            $markersQuery['radius_unit'] = isset($query['mapping_radius_unit'])
+                ? $query['mapping_radius_unit'] : null;
         }
         $response = $this->api()->search('mapping_markers', $markersQuery);
         $markers = $response->getContent();

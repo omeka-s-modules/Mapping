@@ -116,19 +116,34 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                 $results = json_decode($response->getBody(), true);
                 if (isset($results[0]['lat']) && isset($results[0]['lon'])) {
                     $addressFound = true;
-                    // Calculate the distance of markers from center coordinates.
+
+                    // Set the radius unit constant needed for the distance
+                    // calcluation below.
+                    $unit = isset($query['radius_unit']) ? $query['radius_unit'] : 'km';
+                    switch ($unit) {
+                        case 'mile':
+                            $unitConst = 3959;
+                            break;
+                        case 'km':
+                        default:
+                            $unitConst = 6371;
+                    }
+
+                    // Calculate the distance of markers from center coordinates
+                    // using the Haversine formula.
                     $dql = sprintf('
-                        (6371 * acos(
+                        (%1$s * acos(
                             (
-                                cos(radians(%1$s)) *
+                                cos(radians(%2$s)) *
                                 cos(radians(Mapping\Entity\MappingMarker.lat)) *
                                 cos(
-                                    (radians(Mapping\Entity\MappingMarker.lng) - radians(%2$s))
+                                    (radians(Mapping\Entity\MappingMarker.lng) - radians(%3$s))
                                 ) +
-                                sin(radians(%1$s)) *
+                                sin(radians(%2$s)) *
                                 sin(radians(Mapping\Entity\MappingMarker.lat))
                             )
                         )) AS HIDDEN distance',
+                        $unitConst,
                         $this->createNamedParameter($qb, $results[0]['lat']),
                         $this->createNamedParameter($qb, $results[0]['lon'])
                     );
@@ -140,9 +155,8 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                 }
             }
             if (!$addressFound) {
-                // If no address is found don't waste time making distance
-                // calculations. This WHERE statement will always have no
-                // results.
+                // If no address is found there are no results. This WHERE
+                // statement will always have no results.
                 $qb->andWhere('1 = 0');
             }
         }

@@ -1,6 +1,8 @@
 <?php
 $address = isset($query['mapping_address']) ? $query['mapping_address'] : null;
 $radius = isset($query['mapping_radius']) ? $query['mapping_radius'] : null;
+$radiusUnit = isset($query['mapping_radius_unit']) ? $query['mapping_radius_unit'] : null;
+$units = ['km' => 'Kilometers', 'miles' => 'Miles'];
 ?>
 <div class="field">
     <div class="field-meta">
@@ -12,9 +14,21 @@ $radius = isset($query['mapping_radius']) ? $query['mapping_radius'] : null;
 </div>
 <div class="field">
     <div class="field-meta">
-        <legend>Geographic Radius (in miles)</legend>
+        <legend>Geographic Radius</legend>
     </div>
     <div class="inputs">
         <input type="text" name="mapping_radius" value="<?php echo $this->escapeHtml($radius); ?>">
+    </div>
+</div>
+<div class="field">
+    <div class="field-meta">
+        <legend>Geographic Radius Unit</legend>
+    </div>
+    <div class="inputs">
+        <select name="mapping_radius_unit">
+            <?php foreach ($units as $key => $value): ?>
+            <option value="<?php echo $this->escapeHtml($key); ?>"<?php echo $key === $radiusUnit ? ' selected' : null; ?>><?php echo $this->escapeHtml($value); ?></option>
+            <?php endforeach; ?>
+        </select>
     </div>
 </div>
