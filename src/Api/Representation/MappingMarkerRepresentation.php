@@ -12,7 +12,6 @@ class MappingMarkerRepresentation extends AbstractEntityRepresentation
 
     public function getJsonLd()
     {
-        $this->addTermDefinitionToContext('o-module-mapping', 'http://omeka.org/s/vocabs/module/mapping#');
         return [
             'o:item' => $this->item()->getReference(),
             'o:media' => $this->resource->getMedia() ? $this->media()->getReference() : null,

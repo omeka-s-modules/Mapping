@@ -12,7 +12,6 @@ class MappingRepresentation extends AbstractEntityRepresentation
 
     public function getJsonLd()
     {
-        $this->addTermDefinitionToContext('o-module-mapping', 'http://omeka.org/s/vocabs/module/mapping#');
         return [
             'o:item' => $this->item()->getReference(),
             'o-module-mapping:default_zoom' => $this->defaultZoom(),

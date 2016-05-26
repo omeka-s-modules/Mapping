@@ -121,6 +121,16 @@ DROP TABLE IF EXISTS mapping_marker');
                 }
             }
         );
+        // Add the Mapping term definition.
+        $sharedEventManager->attach(
+            '*',
+            'api.context',
+            function (Event $event) {
+                $context = $event->getParam('context');
+                $context['o-module-mapping'] = 'http://omeka.org/s/vocabs/module/mapping#';
+                $event->setParam('context', $context);
+            }
+        );
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             ['api.search.post', 'api.read.post'],
