@@ -37,6 +37,15 @@ $('.mapping-marker-popup-content').each(function() {
     markers.addLayer(marker);
 });
 
+if (noDefaultView) {
+    var bounds = markers.getBounds();
+    if (bounds.isValid()) {
+        map.fitBounds(bounds);
+    }
+} else {
+    map.setView(center, zoom);
+}
+
 map.addLayer(baseMaps['Streets']);
 map.addLayer(markers);
 map.addControl(new L.Control.Layers(baseMaps));
@@ -45,14 +54,6 @@ map.addControl(new L.Control.FitBounds(markers));
 // Switching sections changes map dimensions, so make the necessary adjustments.
 $('#mapping-section').one('o:section-opened', function(e) {
     map.invalidateSize();
-    if (noDefaultView) {
-        var bounds = markers.getBounds();
-        if (bounds.isValid()) {
-            map.fitBounds(bounds);
-        }
-    } else {
-        map.setView(center, zoom);
-    }
 });
 
 });
