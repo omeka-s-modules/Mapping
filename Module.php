@@ -44,7 +44,7 @@ class Module extends AbstractModule
         $conn = $serviceLocator->get('Omeka\Connection');
         $conn->exec('
 CREATE TABLE mapping_marker (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, media_id INT DEFAULT NULL, lat DOUBLE PRECISION NOT NULL, lng DOUBLE PRECISION NOT NULL, `label` VARCHAR(255) DEFAULT NULL, INDEX IDX_667C9244126F525E (item_id), INDEX IDX_667C9244EA9FDD75 (media_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-CREATE TABLE mapping (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, default_zoom SMALLINT DEFAULT NULL, default_lat DOUBLE PRECISION DEFAULT NULL, default_lng DOUBLE PRECISION DEFAULT NULL, UNIQUE INDEX UNIQ_49E62C8A126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
+CREATE TABLE mapping (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, bounds VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_49E62C8A126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
 ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;
 ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244EA9FDD75 FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE SET NULL;
 ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;');
@@ -223,32 +223,18 @@ DROP TABLE IF EXISTS mapping_marker');
         $mappingData = $request->getValue('o-module-mapping:mapping', []);
 
         $mappingId = null;
-        $defaultZoom = null;
-        $defaultLat = null;
-        $defaultLng = null;
+        $bounds = null;
 
-        if (isset($mappingData['o:id'])
-            && is_numeric($mappingData['o:id'])
-        ) {
+        if (isset($mappingData['o:id']) && is_numeric($mappingData['o:id'])) {
             $mappingId = $mappingData['o:id'];
         }
-        if (isset($mappingData['o-module-mapping:default_zoom'])
-            && is_numeric($mappingData['o-module-mapping:default_zoom'])
+        if (isset($mappingData['o-module-mapping:bounds'])
+            && '' !== trim($mappingData['o-module-mapping:bounds'])
         ) {
-            $defaultZoom = $mappingData['o-module-mapping:default_zoom'];
-        }
-        if (isset($mappingData['o-module-mapping:default_lat'])
-            && is_numeric($mappingData['o-module-mapping:default_lat'])
-        ) {
-            $defaultLat = $mappingData['o-module-mapping:default_lat'];
-        }
-        if (isset($mappingData['o-module-mapping:default_lng'])
-            && is_numeric($mappingData['o-module-mapping:default_lng'])
-        ) {
-            $defaultLng = $mappingData['o-module-mapping:default_lng'];
+            $bounds = $mappingData['o-module-mapping:bounds'];
         }
 
-        if (null === $defaultZoom || null === $defaultLat || null === $defaultLng) {
+        if (null === $bounds) {
             // This request has no mapping data. If a mapping for this item
             // exists, delete it. If no mapping for this item exists, do nothing.
             if (null !== $mappingId) {

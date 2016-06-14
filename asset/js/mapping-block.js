@@ -6,23 +6,7 @@ mappingMaps.each(function() {
     var mappingMap = $(this);
     var data = mappingMap.data('data');
 
-    // Initialize the map with default view.
-    var defaultZoom = data['default_view']['zoom'];
-    var defaultLat = data['default_view']['lat'];
-    var defaultLng = data['default_view']['lng'];
-    var noInitialDefaultView = false;
-    if (!defaultZoom || !defaultLat || !defaultLng) {
-        defaultZoom = 1;
-        defaultLat = 0;
-        defaultLng = 0;
-        noInitialDefaultView = true;
-    }
-    var map = L.map(this, {
-        center: [defaultLat, defaultLng],
-        zoom: defaultZoom
-    });
-
-    // Add markers to map.
+    // Build the marker feature group.
     var markers = new L.FeatureGroup();
     $.each(mappingMap.data('markers'), function(index, data) {
         var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
@@ -34,11 +18,21 @@ mappingMaps.each(function() {
         }
         markers.addLayer(marker);
     });
+
+    // Initialize the map, add markers, and set the default view.
+    var map = L.map(this);
     map.addLayer(markers);
-    if (noInitialDefaultView) {
+    if (data['bounds']) {
+        var bounds = data['bounds'].split(',');
+        var southWest = [bounds[1], bounds[0]];
+        var northEast = [bounds[3], bounds[2]];
+        map.fitBounds([southWest, northEast]);
+    } else {
         var bounds = markers.getBounds();
         if (bounds.isValid()) {
             map.fitBounds(bounds);
+        } else {
+            map.setView([20, 0], 2);
         }
     }
 

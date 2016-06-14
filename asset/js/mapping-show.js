@@ -4,9 +4,6 @@ var mappingMap = $('#mapping-map');
 var mappingData = mappingMap.data('mapping');
 
 var map = L.map('mapping-map');
-var center = [0, 0];
-var zoom = 1;
-var noDefaultView = false;
 var markers = new L.FeatureGroup();
 var baseMaps = {
     'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
@@ -15,18 +12,12 @@ var baseMaps = {
     'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
 };
 
-if (mappingData
-    && mappingData['o-module-mapping:default_lat'] !== null
-    && mappingData['o-module-mapping:default_lng'] !== null
-    && mappingData['o-module-mapping:default_zoom'] !== null
-) {
-    center = [
-        mappingData['o-module-mapping:default_lat'],
-        mappingData['o-module-mapping:default_lng']
-    ];
-    zoom = mappingData['o-module-mapping:default_zoom'];
-} else {
-    noDefaultView = true;
+var defaultBounds = null;
+if (mappingData && mappingData['o-module-mapping:bounds'] !== null) {
+    var bounds = mappingData['o-module-mapping:bounds'].split(',');
+    var southWest = [bounds[1], bounds[0]];
+    var northEast = [bounds[3], bounds[2]];
+    defaultBounds = [southWest, northEast];
 }
 
 $('.mapping-marker-popup-content').each(function() {
@@ -37,23 +28,30 @@ $('.mapping-marker-popup-content').each(function() {
     markers.addLayer(marker);
 });
 
-if (noDefaultView) {
-    var bounds = markers.getBounds();
-    if (bounds.isValid()) {
-        map.fitBounds(bounds);
-    }
-} else {
-    map.setView(center, zoom);
-}
-
 map.addLayer(baseMaps['Streets']);
 map.addLayer(markers);
 map.addControl(new L.Control.Layers(baseMaps));
 map.addControl(new L.Control.FitBounds(markers));
 
+var setView = function() {
+    if (defaultBounds) {
+        map.fitBounds(defaultBounds);
+    } else {
+        var bounds = markers.getBounds();
+        if (bounds.isValid()) {
+            map.fitBounds(bounds);
+        } else {
+            map.setView([20, 0], 2)
+        }
+    }
+};
+
+setView();
+
 // Switching sections changes map dimensions, so make the necessary adjustments.
 $('#mapping-section').one('o:section-opened', function(e) {
     map.invalidateSize();
+    setView();
 });
 
 });

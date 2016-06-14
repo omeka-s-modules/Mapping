@@ -14,9 +14,7 @@ class MappingRepresentation extends AbstractEntityRepresentation
     {
         return [
             'o:item' => $this->item()->getReference(),
-            'o-module-mapping:default_zoom' => $this->defaultZoom(),
-            'o-module-mapping:default_lat' => $this->defaultLat(),
-            'o-module-mapping:default_lng' => $this->defaultLng(),
+            'o-module-mapping:bounds' => $this->bounds(),
         ];
     }
 
@@ -26,18 +24,8 @@ class MappingRepresentation extends AbstractEntityRepresentation
             ->getRepresentation($this->resource->getItem());
     }
 
-    public function defaultZoom()
+    public function bounds()
     {
-        return $this->resource->getDefaultZoom();
-    }
-
-    public function defaultLat()
-    {
-        return $this->resource->getDefaultLat();
-    }
-
-    public function defaultLng()
-    {
-        return $this->resource->getDefaultLng();
+        return $this->resource->getBounds();
     }
 }

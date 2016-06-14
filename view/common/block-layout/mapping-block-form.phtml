@@ -16,11 +16,9 @@ $wmsOverlayTemplate = '
 ?>
 <a href="#" class="mapping-map-expander expand"><h4>Default View</h4></a>
 <div class="collapsible">
-    <p>Set the default view (center and zoom level) using the in-map controls.</p>
+    <p>Set the default view using the in-map controls.</p>
     <div class="mapping-map" style="height:300px;">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][zoom]" value="<?php echo $this->escapeHtml($data['default_view']['zoom']); ?>">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][lat]" value="<?php echo $this->escapeHtml($data['default_view']['lat']); ?>">
-        <input type="hidden" name="o:block[__blockIndex__][o:data][default_view][lng]" value="<?php echo $this->escapeHtml($data['default_view']['lng']); ?>">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][bounds]" value="<?php echo $this->escapeHtml($data['bounds']); ?>">
     </div>
 </div>
 

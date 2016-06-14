@@ -103,23 +103,13 @@ var markersData = mappingMap.data('markers');
 
 // Initialize the map and set default view.
 var map = L.map('mapping-map');
-var center = [0, 0];
-var zoom = 1;
-var noDefaultView = false;
-if (mappingData
-    && mappingData['o-module-mapping:default_lat'] !== null
-    && mappingData['o-module-mapping:default_lng'] !== null
-    && mappingData['o-module-mapping:default_zoom'] !== null
-) {
-    center = [
-        mappingData['o-module-mapping:default_lat'],
-        mappingData['o-module-mapping:default_lng']
-    ];
-    zoom = mappingData['o-module-mapping:default_zoom'];
-} else {
-    noDefaultView = true;
+var defaultBounds = null;
+if (mappingData && mappingData['o-module-mapping:bounds'] !== null) {
+    var bounds = mappingData['o-module-mapping:bounds'.split(',');
+    var southWest = [bounds[1], bounds[0]];
+    var northEast = [bounds[3], bounds[2]];
+    defaultBounds = [southWest, northEast];
 }
-map.setView(center, zoom);
 
 // Add layers and controls to the map.
 var baseMaps = {
@@ -152,28 +142,23 @@ map.addControl(layerControl);
 map.addControl(drawControl);
 map.addControl(geoSearchControl);
 map.addControl(new L.Control.DefaultView(
+    // Set default view callback
     function(e) {
-        var zoom = map.getZoom();
-        var center = map.getCenter();
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(zoom);
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(center.lat);
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(center.lng);
+        defaultBounds = map.getBounds();
+        $('input[name="o-module-mapping:mapping[o-module-mapping:bounds]"]').val(defaultBounds.toBBoxString());
     },
+    // Go to default view callback
     function(e) {
-        var zoom = $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val();
-        var lat = $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val();
-        var lng = $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val();
-        if (zoom && lat && lng) {
-            map.setView([lat, lng], zoom);
-        }
+        map.invalidateSize();
+        map.fitBounds(defaultBounds);
     },
+    // clear default view callback
     function(e) {
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val('');
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val('');
-        $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val('');
-        map.setView([0, 0], 1);
+        defaultBounds = null;
+        $('input[name="o-module-mapping:mapping[o-module-mapping:bounds]"]').val('');
+        map.setView([20, 0], 2);
     },
-    {noInitialDefaultView: noDefaultView}
+    {noInitialDefaultView: !defaultBounds}
 ));
 
 // Add saved markers to the map.
@@ -187,9 +172,7 @@ $.each(markersData, function(index, data) {
 // Set saved mapping data to the map (default view).
 if (mappingData) {
     $('input[name="o-module-mapping:mapping[o:id]"]').val(mappingData['o:id']);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:default_lat]"]').val(mappingData['o-module-mapping:default_lat']);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:default_lng]"]').val(mappingData['o-module-mapping:default_lng']);
-    $('input[name="o-module-mapping:mapping[o-module-mapping:default_zoom]"]').val(mappingData['o-module-mapping:default_zoom']);
+    $('input[name="o-module-mapping:mapping[o-module-mapping:bounds]"]').val(mappingData['o-module-mapping:bounds']);
 }
 
 // Handle adding new markers.
@@ -222,6 +205,7 @@ map.on('geosearch_showlocation', function(e) {
 $('#mapping-section').on('o:section-opened', function(e) {
     $('#content').one('transitionend', function(e) {
         map.invalidateSize();
+        defaultBounds ? map.fitBounds(defaultBounds) : map.setView([20, 0], 2);
     });
 });
 

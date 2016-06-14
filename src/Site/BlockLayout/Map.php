@@ -84,20 +84,11 @@ class Map extends AbstractBlockLayout
     protected function filterBlockData($data)
     {
         // Filter the defualt view data.
-        $defaultView = [
-            'zoom' => null,
-            'lat' => null,
-            'lng' => null,
-        ];
-        if (isset($data['default_view']) && is_array($data['default_view'])
-            && isset($data['default_view']['zoom']) && is_numeric($data['default_view']['zoom'])
-            && isset($data['default_view']['lat']) && is_numeric($data['default_view']['lat'])
-            && isset($data['default_view']['lng']) && is_numeric($data['default_view']['lng'])
+        $bounds = null;
+        if (isset($data['bounds'])
+            && 4 === count(array_filter(explode(',', $data['bounds']), 'is_numeric'))
         ) {
-            // Default view data must have numeric zoom, lat, and lng.
-            $defaultView['zoom'] = $data['default_view']['zoom'];
-            $defaultView['lat'] = $data['default_view']['lat'];
-            $defaultView['lng'] = $data['default_view']['lng'];
+            $bounds = $data['bounds'];
         }
 
         // Filter the WMS overlay data.
@@ -133,7 +124,7 @@ class Map extends AbstractBlockLayout
         }
 
         return [
-            'default_view' => $defaultView,
+            'bounds' => $bounds,
             'wms' => $wmsOverlays,
         ];
     }

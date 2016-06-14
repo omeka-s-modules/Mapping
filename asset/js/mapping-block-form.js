@@ -8,50 +8,41 @@ $(document).ready( function() {
 var setMap = function(block) {
     var mapDiv = block.find('.mapping-map');
 
-    var defaultZoom = mapDiv.find('input[name$="[zoom]"]').val();
-    var defaultLat = mapDiv.find('input[name$="[lat]"]').val();
-    var defaultLng = mapDiv.find('input[name$="[lng]"]').val();
-    var noInitialDefaultView = false;
-
-    if (!defaultZoom || !defaultLat || !defaultLng) {
-        noInitialDefaultView = true;
-        defaultZoom = 1;
-        defaultLat = 0;
-        defaultLng = 0;
+    var map = L.map(mapDiv[0]);
+    var defaultBounds = null;
+    var defaultBoundsData = mapDiv.find('input[name$="[bounds]"]').val();
+    if (defaultBoundsData) {
+        var bounds = defaultBoundsData.split(',');
+        var southWest = [bounds[1], bounds[0]];
+        var northEast = [bounds[3], bounds[2]];
+        defaultBounds = [southWest, northEast];
     }
 
-    var map = L.map(mapDiv[0]).setView([defaultLat, defaultLng], defaultZoom);
     L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
         attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
     }).addTo(map);
+
     map.addControl(new L.Control.DefaultView(
         function(e) {
-            var zoom = map.getZoom();
-            var center = map.getCenter();
-            mapDiv.find('input[name$="[zoom]"]').val(zoom);
-            mapDiv.find('input[name$="[lat]"]').val(center.lat);
-            mapDiv.find('input[name$="[lng]"]').val(center.lng);
+            defaultBounds = map.getBounds();
+            mapDiv.find('input[name$="[bounds]"]').val(defaultBounds.toBBoxString());
         },
         function(e) {
-            var zoom = mapDiv.find('input[name$="[zoom]"]').val();
-            var lat = mapDiv.find('input[name$="[lat]"]').val();
-            var lng = mapDiv.find('input[name$="[lng]"]').val();
-            if (zoom && lat && lng) {
-                map.setView([lat, lng], zoom);
-            }
+            map.invalidateSize();
+            map.fitBounds(defaultBounds);
         },
         function(e) {
-            mapDiv.find('input[name$="[zoom]"]').val('');
-            mapDiv.find('input[name$="[lat]"]').val('');
-            mapDiv.find('input[name$="[lng]"]').val('');
-            map.setView([0, 0], 1);
+            defaultBounds = null;
+            mapDiv.find('input[name$="[bounds]"]').val('');
+            map.setView([20, 0], 2);
         },
-        {noInitialDefaultView: noInitialDefaultView}
+        {noInitialDefaultView: !defaultBounds}
     ));
 
     // Expanding changes map dimensions, so make the necessary adjustments.
     block.on('o:expanded', '.mapping-map-expander', function(e) {
         map.invalidateSize();
+        defaultBounds ? map.fitBounds(defaultBounds) : map.setView([20, 0], 2);
     })
 };
 

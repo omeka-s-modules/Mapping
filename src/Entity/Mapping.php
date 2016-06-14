@@ -25,19 +25,9 @@ class Mapping extends AbstractEntity
     protected $item;
 
     /**
-     * @Column(type="smallint", nullable=true)
+     * @Column(type="string", nullable=true)
      */
-    protected $defaultZoom;
-
-    /**
-     * @Column(type="float", nullable=true)
-     */
-    protected $defaultLat;
-
-    /**
-     * @Column(type="float", nullable=true)
-     */
-    protected $defaultLng;
+    protected $bounds;
 
     public function getId()
     {
@@ -54,33 +44,13 @@ class Mapping extends AbstractEntity
         return $this->item;
     }
 
-    public function setDefaultZoom($defaultZoom)
+    public function setBounds($bounds)
     {
-        $this->defaultZoom = '' === trim($defaultZoom) ? null : $defaultZoom;
+        $this->bounds = $bounds;
     }
 
-    public function getDefaultZoom()
+    public function getBounds()
     {
-        return $this->defaultZoom;
-    }
-
-    public function setDefaultLat($defaultLat)
-    {
-        $this->defaultLat = '' === trim($defaultLat) ? null : $defaultLat;
-    }
-
-    public function getDefaultLat()
-    {
-        return $this->defaultLat;
-    }
-
-    public function setDefaultLng($defaultLng)
-    {
-        $this->defaultLng = '' === trim($defaultLng) ? null : $defaultLng;
-    }
-
-    public function getDefaultLng()
-    {
-        return $this->defaultLng;
+        return $this->bounds;
     }
 }

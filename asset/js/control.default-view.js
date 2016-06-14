@@ -28,7 +28,7 @@ L.Control.DefaultView = L.Control.extend({
 
         setLink.innerHTML = '⊹';
         setLink.href = '#';
-        setLink.title = 'Set the current view as the default center and zoom level';
+        setLink.title = 'Set the current view as the default view';
         setLink.style.fontSize = '18px';
 
         gotoLink.innerHTML = '⊡';
@@ -38,7 +38,7 @@ L.Control.DefaultView = L.Control.extend({
 
         clearLink.innerHTML = '✕';
         clearLink.href = '#';
-        clearLink.title = 'Clear the default center and zoom level';
+        clearLink.title = 'Clear the default view';
         clearLink.style.fontSize = '18px';
 
         if (this.options.noInitialDefaultView) {
