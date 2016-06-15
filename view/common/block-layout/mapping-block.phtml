@@ -27,7 +27,7 @@ if (!$marker->label() && !$marker->media()) {
     <?php if ($marker->media()): ?>
     <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
     <div>
-        <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>">View media</a>
+        <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>"><?php echo $this->translate('View media'); ?></a>
     </div>
     <?php endif; ?>
 </div>

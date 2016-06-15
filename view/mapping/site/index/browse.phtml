@@ -26,11 +26,11 @@ $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'
     <?php if ($marker->media()): ?>
     <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
     <div>
-        <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>">View media</a>
+        <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>"><?php echo $this->translate('View media'); ?></a>
     </div>
     <?php endif; ?>
     <div>
-        <a href="<?php echo $this->escapeHtml($marker->item()->url()); ?>">View item</a>
+        <a href="<?php echo $this->escapeHtml($marker->item()->url()); ?>"><?php echo $this->translate('View item'); ?></a>
     </div>
 </div>
 <?php endforeach; ?>

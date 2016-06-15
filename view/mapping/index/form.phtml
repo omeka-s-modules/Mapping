@@ -30,9 +30,9 @@ if (isset($item)) {
         data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
     ></div>
     <div id="mapping-marker-image-selector" class="sidebar">
-        <a href="#" class="sidebar-close o-icon-close"><span class="screen-reader-text">Close Me</span></a>
-        <h3>Marker Image</h3>
-        <label><input type="radio" class="mapping-marker-image-select" name="marker-image" value="" checked> No Image</label>
+        <a href="#" class="sidebar-close o-icon-close"><span class="screen-reader-text"><?php echo $this->translate('Close Me'); ?></span></a>
+        <h3><?php echo $this->translate('Marker Image'); ?></h3>
+        <label><input type="radio" class="mapping-marker-image-select" name="marker-image" value="" checked><?php echo $this->translate(' No Image'); ?></label>
         <?php foreach ($itemMedia as $media): ?>
         <?php if ($media->hasThumbnails()): ?>
         <label style="cursor:pointer;">
@@ -53,8 +53,8 @@ if (isset($item)) {
 </fieldset>
 
 <div class="mapping-marker-popup-content template">
-    <div>Marker Label</div>
+    <div><?php echo $this->translate('Marker Label'); ?></div>
     <input type="text" class="mapping-marker-popup-label" size="30">
     <div class="mapping-marker-popup-image"></div>
-    <button class="mapping-marker-popup-image-select">Select Marker Image</button>
+    <button class="mapping-marker-popup-image-select"><?php echo $this->translate('Select Marker Image'); ?></button>
 </div>

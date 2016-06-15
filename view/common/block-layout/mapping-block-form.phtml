@@ -14,17 +14,17 @@ $wmsOverlayTemplate = '
     <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][open]">
 </li>';
 ?>
-<a href="#" class="mapping-map-expander expand"><h4>Default View</h4></a>
+<a href="#" class="mapping-map-expander expand"><h4><?php echo $this->translate('Default View'); ?></h4></a>
 <div class="collapsible">
-    <p>Set the default view using the in-map controls.</p>
+    <p><?php echo $this->translate('Set the default view using the in-map controls.'); ?></p>
     <div class="mapping-map" style="height:300px;">
         <input type="hidden" name="o:block[__blockIndex__][o:data][bounds]" value="<?php echo $this->escapeHtml($data['bounds']); ?>">
     </div>
 </div>
 
-<a href="#" class="expand"><h4>WMS Overlays</h4></a>
+<a href="#" class="expand"><h4><?php echo $this->translate('WMS Overlays'); ?></h4></a>
 <div class="collapsible">
-    <p>Add, edit, and delete Web Map Service (WMS) overlays below. You may check which overlay you want open by default.</p>
+    <p><?php echo $this->translate('Add, edit, and delete Web Map Service (WMS) overlays below. You may check which overlay you want open by default.'); ?></p>
     <ul class="mapping-wms-overlays" data-wms-overlay-template="<?php echo $this->escapeHtml($wmsOverlayTemplate); ?>">
         <?php foreach ($data['wms'] as $wmsOverlay): ?>
         <li class="mapping-wms-overlay">
@@ -45,7 +45,7 @@ $wmsOverlayTemplate = '
     <div class="mapping-wms-fields">
         <div class="field">
             <div class="field-meta">
-                <label>Label</label>
+                <label><?php echo $this->translate('Label'); ?></label>
                 <div class="field-description"></div>
             </div>
             <div class="inputs">
@@ -54,7 +54,7 @@ $wmsOverlayTemplate = '
         </div>
         <div class="field">
             <div class="field-meta">
-                <label>Base URL</label>
+                <label><?php echo $this->translate('Base URL'); ?></label>
                 <div class="field-description"></div>
             </div>
             <div class="inputs">
@@ -63,9 +63,9 @@ $wmsOverlayTemplate = '
         </div>
         <div class="field">
             <div class="field-meta">
-                <label>Layers</label><a href="#" class="expand"></a>
+                <label><?php echo $this->translate('Layers'); ?></label><a href="#" class="expand"></a>
                 <div class="collapsible">
-                    <div class="field-description">The WMS layers, if any (comma-separated).</div>
+                    <div class="field-description"><?php echo $this->translate('The WMS layers, if any (comma-separated).'); ?></div>
                 </div>
             </div>
             <div class="inputs">
@@ -76,7 +76,7 @@ $wmsOverlayTemplate = '
             <div class="field-meta">
                 <label>Styles</label><a href="#" class="expand"></a>
                 <div class="collapsible">
-                    <div class="field-description">The WMS styles, if any (comma-separated).</div>
+                    <div class="field-description"><?php echo $this->translate('The WMS styles, if any (comma-separated).'); ?></div>
                 </div>
             </div>
             <div class="inputs">
@@ -84,7 +84,7 @@ $wmsOverlayTemplate = '
             </div>
         </div>
     </div>
-    <button type="button" class="mapping-wms-add">Add Overlay</button>
-    <button type="button" class="mapping-wms-edit" style="display:none;">Save Changes</button>
-    <button type="button" class="mapping-wms-clear">Clear Inputs</button>
+    <button type="button" class="mapping-wms-add"><?php echo $this->translate('Add Overlay'); ?></button>
+    <button type="button" class="mapping-wms-edit" style="display:none;"><?php echo $this->translate('Save Changes'); ?></button>
+    <button type="button" class="mapping-wms-clear"><?php echo $this->translate('Clear Inputs'); ?></button>
 </div>

@@ -2,11 +2,11 @@
 $address = isset($query['mapping_address']) ? $query['mapping_address'] : null;
 $radius = isset($query['mapping_radius']) ? $query['mapping_radius'] : null;
 $radiusUnit = isset($query['mapping_radius_unit']) ? $query['mapping_radius_unit'] : null;
-$units = ['km' => 'Kilometers', 'miles' => 'Miles'];
+$units = ['km' => $this->translate('Kilometers'), 'miles' => $this->translate('Miles')];
 ?>
 <div class="field">
     <div class="field-meta">
-        <legend>Geographic Address</legend>
+        <legend><?php echo $this->translate('Geographic Address'); ?></legend>
     </div>
     <div class="inputs">
         <input type="text" name="mapping_address" value="<?php echo $this->escapeHtml($address); ?>">
@@ -14,7 +14,7 @@ $units = ['km' => 'Kilometers', 'miles' => 'Miles'];
 </div>
 <div class="field">
     <div class="field-meta">
-        <legend>Geographic Radius</legend>
+        <legend><?php echo $this->translate('Geographic Radius'); ?></legend>
     </div>
     <div class="inputs">
         <input type="text" name="mapping_radius" value="<?php echo $this->escapeHtml($radius); ?>">
@@ -22,7 +22,7 @@ $units = ['km' => 'Kilometers', 'miles' => 'Miles'];
 </div>
 <div class="field">
     <div class="field-meta">
-        <legend>Geographic Radius Unit</legend>
+        <legend><?php echo $this->translate('Geographic Radius Unit'); ?></legend>
     </div>
     <div class="inputs">
         <select name="mapping_radius_unit">
