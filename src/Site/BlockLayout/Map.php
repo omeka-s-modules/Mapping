@@ -13,8 +13,7 @@ class Map extends AbstractBlockLayout
 {
     public function getLabel()
     {
-        $translator = $this->getServiceLocator()->get('MvcTranslator');
-        return $translator->translate('Map');
+        return 'Map'; // @translate
     }
 
     public function onHydrate(SitePageBlock $block, ErrorStore $errorStore)
@@ -51,7 +50,7 @@ class Map extends AbstractBlockLayout
         $data = $block ? $block->data() : [];
         return $view->partial('common/block-layout/mapping-block-form', [
             'data' => $this->filterBlockData($data),
-        ]) . $this->attachmentsForm($view, $site, $block, true, ['has_markers' => true]);
+        ]) . $view->blockAttachmentsForm($block, true, ['has_markers' => true]);
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
