@@ -105,7 +105,7 @@ var markersData = mappingMap.data('markers');
 var map = L.map('mapping-map');
 var defaultBounds = null;
 if (mappingData && mappingData['o-module-mapping:bounds'] !== null) {
-    var bounds = mappingData['o-module-mapping:bounds'.split(',');
+    var bounds = mappingData['o-module-mapping:bounds'].split(',');
     var southWest = [bounds[1], bounds[0]];
     var northEast = [bounds[3], bounds[2]];
     defaultBounds = [southWest, northEast];
