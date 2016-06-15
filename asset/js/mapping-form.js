@@ -136,6 +136,12 @@ var drawControl = new L.Control.Draw({
         featureGroup: drawnItems
     }
 });
+L.drawLocal.edit.toolbar.buttons.edit = 'Move markers';
+L.drawLocal.edit.toolbar.buttons.editDisabled = 'No markers to move';
+L.drawLocal.edit.toolbar.buttons.remove = 'Delete markers';
+L.drawLocal.edit.toolbar.buttons.removeDisabled = 'No markers to delete';
+L.drawLocal.edit.handlers.edit.tooltip.text = 'Drag and drop marker to move it.';
+L.drawLocal.edit.handlers.remove.tooltip.text = 'Click on a marker to delete it.';
 map.addLayer(baseMaps['Streets']);
 map.addLayer(drawnItems);
 map.addControl(layerControl);
