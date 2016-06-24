@@ -10,17 +10,13 @@ class IndexController extends AbstractSiteController
     {
         // Get all markers in this site's item pool and render them on a map.
         $site = $this->getSite();
-        $itemPool = $site->itemPool();
-        $itemPool['has_markers'] = true;
-
-        $settings = $this->getServiceLocator()->get('Omeka\SiteSettings');
-        if ($settings->get('browse_attached_items', false)) {
-            $itemPool['site_id'] = $site->id();
-        }
 
         $query = $this->params()->fromQuery();
-        $response = $this->api()->search('items', array_merge_recursive($query, $itemPool));
-        $items = $response->getContent();
+        $query['site_id'] = $site->id();
+        if ($this->siteSettings()->get('browse_attached_items', false)) {
+            $query['site_attachments_only'] = true;
+        }
+        $items = $this->api()->search('items', $query)->getContent();
         $itemIds = [];
         foreach ($items as $item) {
             $itemIds[] = $item->id();
