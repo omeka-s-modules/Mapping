@@ -1,15 +1,15 @@
 <?php
 namespace Mapping\Controller\Site;
 
-use Omeka\Controller\Site\AbstractSiteController;
+use Zend\Mvc\Controller\AbstractActionController;
 use Zend\View\Model\ViewModel;
 
-class IndexController extends AbstractSiteController
+class IndexController extends AbstractActionController
 {
     public function browseAction()
     {
         // Get all markers in this site's item pool and render them on a map.
-        $site = $this->getSite();
+        $site = $this->currentSite();
 
         $query = $this->params()->fromQuery();
         $query['site_id'] = $site->id();
