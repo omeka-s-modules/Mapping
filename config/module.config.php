@@ -10,14 +10,6 @@ return [
         'mapping_classes_paths' => [
             OMEKA_PATH . '/modules/Mapping/src/Entity',
         ],
-        'functions' => [
-            'numeric' => [
-                'acos' => 'Mapping\Db\Udf\Acos',
-                'cos' => 'Mapping\Db\Udf\Cos',
-                'radians' => 'Mapping\Db\Udf\Radians',
-                'sin' => 'Mapping\Db\Udf\Sin',
-            ],
-        ],
     ],
     'view_manager' => [
         'template_path_stack' => [
