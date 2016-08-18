@@ -36,6 +36,11 @@ return [
             'Mapping\Controller\Site\Index' => 'Mapping\Controller\Site\IndexController',
         ],
     ],
+    'collecting_media_types' => [
+        'factories' => [
+            'map' => 'Mapping\Collecting\MapFactory',
+        ],
+    ],
     'router' => [
         'routes' => [
             'site' => [
