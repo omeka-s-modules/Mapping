@@ -35,7 +35,6 @@ class Map implements MediaTypeInterface
         $element = new Element\PromptHtml($name);
         $element->setValue(sprintf('
             <p>%1$s</p>
-            <input type="hidden" name="%2$s[label]" value="%1$s">
             <input type="hidden" name="%2$s[lat]" class="collecting-map-lat">
             <input type="hidden" name="%2$s[lng]" class="collecting-map-lng">
             <div class="collecting-map" style="height:300px;"></div>',
@@ -51,7 +50,7 @@ class Map implements MediaTypeInterface
         $itemData['o-module-mapping:marker'][] = [
             'o-module-mapping:lat' => $postedPrompt['lat'],
             'o-module-mapping:lng' => $postedPrompt['lng'],
-            'o-module-mapping:label' => $postedPrompt['label'],
+            'o-module-mapping:label' => $prompt->text(),
         ];
         return $itemData;
     }
