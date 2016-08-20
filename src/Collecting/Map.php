@@ -30,16 +30,22 @@ class Map implements MediaTypeInterface
 
     public function form(Form $form, CollectingPromptRepresentation $prompt, $name)
     {
+        $params = $this->helpers->get('params');
         $escape = $this->helpers->get('escapeHtml');
+
+        // If the form isn't valid, preserve any passed coordinates.
+        $post = $params->fromPost($name, []);
+        $lat = isset($post['lat']) ? $post['lat'] : '';
+        $lng = isset($post['lng']) ? $post['lng'] : '';
+
         $element = new PromptMap($name);
         $element->setIsRequired($prompt->required());
         $element->setHtml(sprintf('
             <p>%1$s</p>
-            <input type="hidden" name="%2$s[lat]" class="collecting-map-lat">
-            <input type="hidden" name="%2$s[lng]" class="collecting-map-lng">
+            <input type="hidden" class="collecting-map-lat" name="%2$s[lat]" value="%3$s">
+            <input type="hidden" class="collecting-map-lng" name="%2$s[lng]" value="%4$s">
             <div class="collecting-map" style="height:300px;"></div>',
-            $escape($prompt->text()),
-            $name
+            $escape($prompt->text()), $name, $escape($lat), $escape($lng)
         ));
         $form->add($element);
     }

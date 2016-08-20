@@ -18,17 +18,27 @@ $(document).ready(function() {
             if (marker) {
                 map.removeLayer(marker);
             }
-
             marker = new L.marker(e.latlng).addTo(map);
             inputLat.val(e.latlng.lat);
             inputLng.val(e.latlng.lng);
-
-            // Remove the marker if it's clicked.
-            $(marker).on('click', function(e) {
-                map.removeLayer(marker);
-                inputLat.val('');
-                inputLng.val('');
-            });
         });
+
+        // Remove the marker if it's clicked.
+        map.on('layeradd', function(e) {
+            if (e.layer instanceof L.Marker) {
+                $(e.layer).on('click', function(e) {
+                    map.removeLayer(marker);
+                    inputLat.val('');
+                    inputLng.val('');
+                });
+            }
+        });
+
+        // Add an existing marker to the map.
+        var lat = inputLat.val();
+        var lng = inputLng.val();
+        if (lat && lng) {
+            marker = new L.marker(L.latLng(lat, lng)).addTo(map);
+        }
     });
 });
