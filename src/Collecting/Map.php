@@ -9,13 +9,6 @@ use Zend\View\Renderer\PhpRenderer;
 
 class Map implements MediaTypeInterface
 {
-    protected $helpers;
-
-    public function __construct(HelperPluginManager $helpers)
-    {
-        $this->helpers = $helpers;
-    }
-
     public function getLabel()
     {
         return 'Map'; // @translate
@@ -26,27 +19,14 @@ class Map implements MediaTypeInterface
         $view->headLink()->appendStylesheet($view->assetUrl('js/Leaflet/0.7.7/leaflet.css', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/mapping-collecting-form.js', 'Mapping'));
+        $view->formElement()->addType('promptMap', 'formPromptMap');
     }
 
     public function form(Form $form, CollectingPromptRepresentation $prompt, $name)
     {
-        $params = $this->helpers->get('params');
-        $escape = $this->helpers->get('escapeHtml');
-
-        // If the form isn't valid, preserve any passed coordinates.
-        $post = $params->fromPost($name, []);
-        $lat = isset($post['lat']) ? $post['lat'] : '';
-        $lng = isset($post['lng']) ? $post['lng'] : '';
-
         $element = new PromptMap($name);
-        $element->setIsRequired($prompt->required());
-        $element->setHtml(sprintf('
-            <p>%1$s</p>
-            <input type="hidden" class="collecting-map-lat" name="%2$s[lat]" value="%3$s">
-            <input type="hidden" class="collecting-map-lng" name="%2$s[lng]" value="%4$s">
-            <div class="collecting-map" style="height:300px;"></div>',
-            $escape($prompt->text()), $name, $escape($lat), $escape($lng)
-        ));
+        $element->setLabel($prompt->text())
+            ->setIsRequired($prompt->required());
         $form->add($element);
     }
 

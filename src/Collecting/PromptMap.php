@@ -1,17 +1,22 @@
 <?php
 namespace Mapping\Collecting;
 
-use Collecting\Form\Element\PromptHtml;
 use Collecting\Form\Element\PromptIsRequiredTrait;
+use Zend\Form\Element;
 use Zend\InputFilter\InputProviderInterface;
 
-class PromptMap extends PromptHtml implements InputProviderInterface
+class PromptMap extends Element implements InputProviderInterface
 {
     use PromptIsRequiredTrait;
+
+    protected $attributes = [
+        'type' => 'promptMap',
+    ];
 
     public function getInputSpecification()
     {
         return [
+            'required' => $this->required,
             'validators' => [
                 [
                     'name' => 'Callback',

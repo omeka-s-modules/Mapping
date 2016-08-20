@@ -16,6 +16,11 @@ return [
             OMEKA_PATH . '/modules/Mapping/view',
         ],
     ],
+    'view_helpers' => [
+        'invokables' => [
+            'formPromptMap' => 'Mapping\Collecting\FormPromptMap',
+        ],
+    ],
     'csv_import_mappings' => [
         'items' => [
             'Mapping\CsvMapping\CsvMapping',
@@ -37,8 +42,8 @@ return [
         ],
     ],
     'collecting_media_types' => [
-        'factories' => [
-            'map' => 'Mapping\Collecting\MapFactory',
+        'invokables' => [
+            'map' => 'Mapping\Collecting\Map',
         ],
     ],
     'router' => [
