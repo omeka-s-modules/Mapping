@@ -63,14 +63,28 @@ DROP TABLE IF EXISTS mapping_marker');
         // Add the map form to the item add and edit pages.
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
-            ['view.add.form.after', 'view.edit.form.after'],
+            'view.add.form.after',
+            function (Event $event) {
+                echo $event->getTarget()->partial('mapping/index/form.phtml');
+            }
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            'view.edit.form.after',
             function (Event $event) {
                 echo $event->getTarget()->partial('mapping/index/form.phtml');
             }
         );
         // Add the map to the item show page.
         $sharedEventManager->attach(
-            ['Omeka\Controller\Admin\Item', 'Omeka\Controller\Site\Item'],
+            'Omeka\Controller\Admin\Item',
+            'view.show.after',
+            function (Event $event) {
+                echo $event->getTarget()->partial('mapping/index/show.phtml');
+            }
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Site\Item',
             'view.show.after',
             function (Event $event) {
                 echo $event->getTarget()->partial('mapping/index/show.phtml');
@@ -84,29 +98,10 @@ DROP TABLE IF EXISTS mapping_marker');
                 echo $event->getTarget()->partial('mapping/index/advanced-search.phtml');
             }
         );
-        // Add the map tab to the item add, edit, and show section navigations.
-        $sharedEventManager->attach(
-            'Omeka\Controller\Admin\Item',
-            ['view.add.section_nav', 'view.edit.section_nav', 'view.show.section_nav'],
-            function (Event $event) {
-                if ('view.show.section_nav' === $event->getName()) {
-                    // Don't render the mapping tab if there is no mapping data.
-                    $itemJson = $event->getParam('resource')->jsonSerialize();
-                    if (!isset($itemJson['o-module-mapping:marker'])
-                        && !isset($itemJson['o-module-mapping:mapping'])
-                    ) {
-                        return;
-                    }
-                }
-                $sectionNav = $event->getParam('section_nav');
-                $sectionNav['mapping-section'] = 'Mapping';
-                $event->setParam('section_nav', $sectionNav);
-            }
-        );
         // Add the "has_markers" filter to item search.
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
-            ['api.search.query'],
+            'api.search.query',
             function (Event $event) {
                 $query = $event->getParam('request')->getContent();
                 if (isset($query['has_markers'])) {
@@ -132,8 +127,28 @@ DROP TABLE IF EXISTS mapping_marker');
             }
         );
         $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            'view.add.section_nav',
+            [$this, 'addMapTab']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            'view.edit.section_nav',
+            [$this, 'addMapTab']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            'view.show.section_nav',
+            [$this, 'addMapTab']
+        );
+        $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
-            ['api.search.post', 'api.read.post'],
+            'api.search.post',
+            [$this, 'cacheItemMappingData']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.read.post',
             [$this, 'cacheItemMappingData']
         );
         $sharedEventManager->attach(
@@ -151,6 +166,27 @@ DROP TABLE IF EXISTS mapping_marker');
             'api.hydrate.post',
             [$this, 'handleMarkers']
         );
+    }
+
+    /**
+     * Add the map tab to section navigations.
+     *
+     * Event $event
+     */
+    public function addMapTab(Event $event)
+    {
+        if ('view.show.section_nav' === $event->getName()) {
+            // Don't render the mapping tab if there is no mapping data.
+            $itemJson = $event->getParam('resource')->jsonSerialize();
+            if (!isset($itemJson['o-module-mapping:marker'])
+                && !isset($itemJson['o-module-mapping:mapping'])
+            ) {
+                return;
+            }
+        }
+        $sectionNav = $event->getParam('section_nav');
+        $sectionNav['mapping-section'] = 'Mapping';
+        $event->setParam('section_nav', $sectionNav);
     }
 
     /**
