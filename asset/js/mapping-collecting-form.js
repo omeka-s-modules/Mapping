@@ -18,6 +18,9 @@ $(document).ready(function() {
             showMarker: false,
         }));
 
+        // As a UX consideration, open the GeoSearch address bar by default.
+        mapDiv.find('div.leaflet-control-geosearch > a')[0].click();
+
         // Add the marker to the map.
         map.on('click', function(e) {
             if (marker) {
