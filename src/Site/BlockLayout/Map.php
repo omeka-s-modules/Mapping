@@ -3,6 +3,7 @@ namespace Mapping\Site\BlockLayout;
 
 use Zend\Form\Element\Select;
 use Omeka\Api\Representation\SiteRepresentation;
+use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Entity\SitePageBlock;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
@@ -45,7 +46,7 @@ class Map extends AbstractBlockLayout
     }
 
     public function form(PhpRenderer $view, SiteRepresentation $site,
-        SitePageBlockRepresentation $block = null
+        SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
         $data = $block ? $block->data() : [];
         return $view->partial('common/block-layout/mapping-block-form', [
