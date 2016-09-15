@@ -75,12 +75,12 @@ var setWmsData = function(block, wmsOverlay) {
 }
 
 // Handle setting the map for added blocks.
-$('#blocks').on('o:block-added', '.block[data-block-layout="mappingmap"]', function(e) {
+$('#blocks').on('o:block-added', '.block[data-block-layout="mappingMap"]', function(e) {
     setMap($(this));
 });
 
 // Handle setting the map for existing blocks.
-$('.block[data-block-layout="mappingmap"]').each(function() {
+$('.block[data-block-layout="mappingMap"]').each(function() {
     setMap($(this));
 });
 
