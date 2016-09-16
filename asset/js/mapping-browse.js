@@ -1,7 +1,7 @@
 $(document).ready( function() {
 
 var map = L.map('mapping-map');
-var markers = new L.FeatureGroup();
+var markers = L.markerClusterGroup();
 var baseMaps = {
     'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
     'Grayscale': L.tileLayer.provider('OpenStreetMap.BlackAndWhite'),
