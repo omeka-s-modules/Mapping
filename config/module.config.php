@@ -10,6 +10,9 @@ return [
         'mapping_classes_paths' => [
             OMEKA_PATH . '/modules/Mapping/src/Entity',
         ],
+        'proxy_paths' => [
+            OMEKA_PATH . '/modules/Mapping/data/doctrine-proxies',
+        ],
     ],
     'view_manager' => [
         'template_path_stack' => [
