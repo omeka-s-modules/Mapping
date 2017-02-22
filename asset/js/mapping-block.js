@@ -7,7 +7,7 @@ mappingMaps.each(function() {
     var data = mappingMap.data('data');
 
     // Build the marker feature group.
-    var markers = new L.FeatureGroup();
+    var markers = L.markerClusterGroup();
     $.each(mappingMap.data('markers'), function(index, data) {
         var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
         var marker = L.marker(latLng);
@@ -20,7 +20,7 @@ mappingMaps.each(function() {
     });
 
     // Initialize the map, add markers, and set the default view.
-    var map = L.map(this);
+    var map = L.map(this, {maxZoom: 18});
     map.addLayer(markers);
     if (data['bounds']) {
         var bounds = data['bounds'].split(',');
