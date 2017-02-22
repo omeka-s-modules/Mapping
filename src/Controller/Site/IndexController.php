@@ -16,6 +16,12 @@ class IndexController extends AbstractActionController
         if ($this->siteSettings()->get('browse_attached_items', false)) {
             $query['site_attachments_only'] = true;
         }
+
+        // Limit to a reasonable amount of items that have markers to avoid
+        // reaching the server memory limit and to improve client performance.
+        $query['limit'] = 5000;
+        $query['has_markers'] = true;
+
         $items = $this->api()->search('items', $query)->getContent();
         $itemIds = [];
         foreach ($items as $item) {
