@@ -204,11 +204,11 @@ DROP TABLE IF EXISTS mapping_marker');
         if (is_array($content)) {
             // This is an API search.
             foreach ($content as $item) {
-                $itemIds[] = $item->id();
+                $itemIds[] = $item->getId();
             }
         } else {
             // This is an API read.
-            $itemIds[] = $content->id();
+            $itemIds[] = $content->getId();
         }
         $api = $this->getServiceLocator()->get('Omeka\ApiManager');
         // Cache mappings
