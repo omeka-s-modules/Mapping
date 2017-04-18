@@ -28,6 +28,10 @@ class Module extends AbstractModule
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
         $acl->allow(
             null,
+            'Mapping\Controller\Site\Index'
+        );
+        $acl->allow(
+            null,
             ['Mapping\Api\Adapter\MappingMarkerAdapter','Mapping\Api\Adapter\MappingAdapter'],
             ['search', 'read']
         );
