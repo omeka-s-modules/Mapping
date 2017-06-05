@@ -29,6 +29,9 @@ return [
             'Mapping\CsvMapping\CsvMapping',
         ],
     ],
+    'omeka2_importer_classes' => [
+        'Mapping\Omeka2Importer\GeolocationImporter'
+    ],
     'block_layouts' => [
         'invokables' => [
             'mappingMap' => 'Mapping\Site\BlockLayout\Map',
