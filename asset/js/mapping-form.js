@@ -95,6 +95,31 @@ var deleteMarker = function(marker) {
     $('input[name^="o-module-mapping:marker[' + marker._leaflet_id + ']"]').remove();
 }
 
+/**
+ * Fit map bounds.
+ */
+var fitBounds = function() {
+    if (mapMoved) {
+        // The user moved the map. Do not fit bounds.
+        return;
+    }
+    if (defaultBounds) {
+        map.fitBounds(defaultBounds);
+    } else {
+        var allMarkers = [];
+        map.eachLayer(function(layer) {
+            if (layer._latlng) {
+                allMarkers.push(layer);
+            }
+        });
+        console.log(allMarkers);
+        var bounds = L.featureGroup(allMarkers).getBounds();
+        if (bounds.isValid()) {
+            map.fitBounds(bounds);
+        }
+    }
+}
+
 // Get map data.
 var mappingMap = $('#mapping-map');
 var mappingForm = $('#mapping-form');
@@ -103,6 +128,8 @@ var markersData = mappingMap.data('markers');
 
 // Initialize the map and set default view.
 var map = L.map('mapping-map');
+map.setView([20, 0], 2);
+var mapMoved = false;
 var defaultBounds = null;
 if (mappingData && mappingData['o-module-mapping:bounds'] !== null) {
     var bounds = mappingData['o-module-mapping:bounds'].split(',');
@@ -181,6 +208,12 @@ if (mappingData) {
     $('input[name="o-module-mapping:mapping[o-module-mapping:bounds]"]').val(mappingData['o-module-mapping:bounds']);
 }
 
+fitBounds();
+
+map.on('movestart', function(e) {
+    mapMoved = true;
+});
+
 // Handle adding new markers.
 map.on('draw:created', function(e) {
     if (e.layerType === 'marker') {
@@ -211,7 +244,7 @@ map.on('geosearch_showlocation', function(e) {
 $('#mapping-section').on('o:section-opened', function(e) {
     $('#content').one('transitionend', function(e) {
         map.invalidateSize();
-        defaultBounds ? map.fitBounds(defaultBounds) : map.setView([20, 0], 2);
+        fitBounds();
     });
 });
 
