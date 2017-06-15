@@ -19,6 +19,10 @@ $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Map
 </div>
 
 <?php foreach ($markers as $marker): ?>
+<?php
+$item = $marker->item();
+$media = $marker->media();
+?>
 <div class="mapping-marker-popup-content" style="display:none;"
     data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>"
     data-marker-lat="<?php echo $this->escapeHtml($marker->lat()); ?>"
@@ -27,14 +31,14 @@ $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Map
     <?php if ($marker->label()): ?>
     <h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
     <?php endif; ?>
-    <?php if ($marker->media()): ?>
-    <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
+    <?php if ($media): ?>
+    <img src="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>">
     <div>
-        <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>"><?php echo $this->translate('View media'); ?></a>
+        <?php echo sprintf($this->translate('Media: %s'), $media->link($media->displayTitle())); ?>
     </div>
     <?php endif; ?>
     <div>
-        <a href="<?php echo $this->escapeHtml($marker->item()->url()); ?>"><?php echo $this->translate('View item'); ?></a>
+        <?php echo sprintf($this->translate('Item: %s'), $item->link($item->displayTitle())); ?>
     </div>
 </div>
 <?php endforeach; ?>
