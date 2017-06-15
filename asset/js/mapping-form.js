@@ -112,7 +112,6 @@ var fitBounds = function() {
                 allMarkers.push(layer);
             }
         });
-        console.log(allMarkers);
         var bounds = L.featureGroup(allMarkers).getBounds();
         if (bounds.isValid()) {
             map.fitBounds(bounds);
