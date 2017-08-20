@@ -7,7 +7,7 @@ class CsvMapping extends AbstractMapping
 {
     public static function getLabel()
     {
-        return 'Map';
+        return 'Map'; // @translate
     }
     
     public static function getName()
