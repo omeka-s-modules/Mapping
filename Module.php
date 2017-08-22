@@ -179,6 +179,7 @@ DROP TABLE IF EXISTS mapping_marker');
      */
     public function addMapTab(Event $event)
     {
+        $view = $event->getTarget();
         if ('view.show.section_nav' === $event->getName()) {
             // Don't render the mapping tab if there is no mapping data.
             $itemJson = $event->getParam('resource')->jsonSerialize();
@@ -189,7 +190,7 @@ DROP TABLE IF EXISTS mapping_marker');
             }
         }
         $sectionNav = $event->getParam('section_nav');
-        $sectionNav['mapping-section'] = 'Mapping';
+        $sectionNav['mapping-section'] = $view->translate('Mapping');
         $event->setParam('section_nav', $sectionNav);
     }
 
