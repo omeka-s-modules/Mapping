@@ -99,7 +99,9 @@ DROP TABLE IF EXISTS mapping_marker');
             'Mapping\Controller\Site\Index',
             'view.advanced_search',
             function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/advanced-search.phtml');
+                $partials = $event->getParam('partials');
+                $partials[] = 'mapping/index/advanced-search';
+                $event->setParam('partials', $partials);
             }
         );
         // Add the "has_markers" filter to item search.
