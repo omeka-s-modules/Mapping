@@ -13,7 +13,7 @@ $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'
 <div id="mapping-map" style="height:500px; width: 80%; margin:0 auto;"></div>
 
 <form id="advanced-search">
-    <?php echo $this->partial('common/advanced-search', ['query' => $query]); ?>
+    <?php echo $this->partial('common/advanced-search', ['query' => $query, 'resourceType' => 'item']); ?>
     <button><?php echo $this->translate('Search Map'); ?></button>
 </form>
 
