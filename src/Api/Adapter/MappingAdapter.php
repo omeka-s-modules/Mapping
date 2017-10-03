@@ -42,13 +42,13 @@ class MappingAdapter extends AbstractEntityAdapter
     public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
     {
         if (!$entity->getItem()) {
-            $errorStore->addError('o:item', 'A marker must have an item.');
+            $errorStore->addError('o:item', 'A marker must have an item.'); // @translate
         }
         $bounds = $entity->getBounds();
         if (null !== $bounds
             && 4 !== count(array_filter(explode(',', $bounds), 'is_numeric'))
         ) {
-            $errorStore->addError('o-module-mapping:bounds', 'Map bounds must contain four numbers separated by commas');
+            $errorStore->addError('o-module-mapping:bounds', 'Map bounds must contain four numbers separated by commas'); // @translate
         }
     }
 
