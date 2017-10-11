@@ -44,6 +44,15 @@ class Module extends AbstractModule
             ]
         );
 
+        $acl->allow(
+            null,
+            ['Mapping\Api\Adapter\MappingMarkerAdapter',
+                'Mapping\Api\Adapter\MappingAdapter',
+                'Mapping\Entity\MappingMarker',
+            ],
+            ['show', 'browse', 'read', 'search']
+            );
+
         $em = $this->getServiceLocator()->get('Omeka\EntityManager');
         $em->getEventManager()->addEventListener(
             Events::preFlush,
