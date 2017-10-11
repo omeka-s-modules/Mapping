@@ -4,6 +4,7 @@ namespace Mapping;
 use Doctrine\ORM\Events;
 use Mapping\Db\Event\Listener\DetachOrphanMappings;
 use Omeka\Module\AbstractModule;
+use Omeka\Permissions\Acl;
 use Zend\EventManager\Event;
 use Zend\EventManager\SharedEventManagerInterface;
 use Zend\Mvc\MvcEvent;
@@ -31,7 +32,12 @@ class Module extends AbstractModule
             'Mapping\Controller\Site\Index'
         );
         $acl->allow(
-            null,
+            [Acl::ROLE_AUTHOR,
+                Acl::ROLE_EDITOR,
+                Acl::ROLE_GLOBAL_ADMIN,
+                Acl::ROLE_REVIEWER,
+                Acl::ROLE_SITE_ADMIN,
+            ],
             ['Mapping\Api\Adapter\MappingMarkerAdapter',
              'Mapping\Api\Adapter\MappingAdapter',
              'Mapping\Entity\MappingMarker',
