@@ -41,6 +41,7 @@ class Module extends AbstractModule
             ['Mapping\Api\Adapter\MappingMarkerAdapter',
              'Mapping\Api\Adapter\MappingAdapter',
              'Mapping\Entity\MappingMarker',
+             'Mapping\Entity\Mapping',
             ]
         );
 
