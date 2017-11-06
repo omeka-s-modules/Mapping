@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-22 13:54-0400\n"
+"POT-Creation-Date: 2017-11-06 14:07-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:193 view/mapping/index/form.phtml:27
+#: Module.php:213 view/mapping/index/form.phtml:27
 msgid "Mapping"
 msgstr ""
 
@@ -38,7 +38,7 @@ msgid "Longitude"
 msgstr ""
 
 #: view/admin/csv-mapping.phtml:12
-msgid "Latitude/Longitude"
+msgid "Latitude / Longitude"
 msgstr ""
 
 #: view/admin/csv-mapping.phtml:16
@@ -62,7 +62,7 @@ msgid "Use multivalue separator"
 msgstr ""
 
 #: view/admin/csv-mapping.phtml:32
-msgid "(Only applies to Latitude/Longitude)"
+msgid "(Only applies to Latitude / Longitude)"
 msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:17
@@ -173,6 +173,14 @@ msgstr ""
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
+msgstr ""
+
+#: src/Api/Adapter/MappingAdapter.php:45
+msgid "A marker must have an item."
+msgstr ""
+
+#: src/Api/Adapter/MappingAdapter.php:51
+msgid "Map bounds must contain four numbers separated by commas"
 msgstr ""
 
 #: src/Site/Navigation/Link/MapBrowse.php:12
