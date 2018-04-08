@@ -45,8 +45,8 @@ class Map extends AbstractBlockLayout
     public function prepareForm(PhpRenderer $view)
     {
         $view->headScript()->appendFile($view->assetUrl('js/mapping-block-form.js', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('js/Leaflet/0.7.7/leaflet.css', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/leaflet.css', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/leaflet.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.default-view.js', 'Mapping'));
     }
 
