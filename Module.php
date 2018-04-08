@@ -87,14 +87,14 @@ DROP TABLE IF EXISTS mapping_marker');
             'Omeka\Controller\Admin\Item',
             'view.add.form.after',
             function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/form.phtml');
+                echo $event->getTarget()->partial('mapping/index/form');
             }
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.edit.form.after',
             function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/form.phtml');
+                echo $event->getTarget()->partial('mapping/index/form');
             }
         );
         // Add the map to the item show page.
@@ -102,14 +102,14 @@ DROP TABLE IF EXISTS mapping_marker');
             'Omeka\Controller\Admin\Item',
             'view.show.after',
             function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/show.phtml');
+                echo $event->getTarget()->partial('mapping/index/show');
             }
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Site\Item',
             'view.show.after',
             function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/show.phtml');
+                echo $event->getTarget()->partial('mapping/index/show');
             }
         );
         // Add the mapping fields to the site's map browse page.
