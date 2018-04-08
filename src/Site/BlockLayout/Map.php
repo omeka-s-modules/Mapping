@@ -1,7 +1,6 @@
 <?php
 namespace Mapping\Site\BlockLayout;
 
-use Zend\Form\Element\Select;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
@@ -25,8 +24,14 @@ class Map extends AbstractBlockLayout
         $itemIds = [];
         $attachments = $block->getAttachments();
         foreach ($attachments as $attachment) {
+            // When an item was removed from the base, it should be removed.
+            $item = $attachment->getItem();
+            if (!$item) {
+                $attachments->removeElement($attachment);
+                continue;
+            }
             // Duplicate items are redundant, so remove them.
-            $itemId = $attachment->getItem()->getId();
+            $itemId = $item->getId();
             if (in_array($itemId, $itemIds)) {
                 $attachments->removeElement($attachment);
             }
@@ -59,9 +64,14 @@ class Map extends AbstractBlockLayout
         // Get all markers from the attachment items.
         $allMarkers = [];
         foreach ($block->attachments() as $attachment) {
+            // When an item was removed from the base, it should be skipped.
+            $item = $attachment->item();
+            if (!$item) {
+                continue;
+            }
             $markers = $view->api()->search(
                 'mapping_markers',
-                ['item_id' => $attachment->item()->id()]
+                ['item_id' => $item->id()]
             )->getContent();
             $allMarkers = array_merge($allMarkers, $markers);
         }
