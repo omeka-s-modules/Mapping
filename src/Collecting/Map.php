@@ -4,7 +4,6 @@ namespace Mapping\Collecting;
 use Collecting\Api\Representation\CollectingPromptRepresentation;
 use Collecting\MediaType\MediaTypeInterface;
 use Zend\Form\Form;
-use Zend\View\HelperPluginManager;
 use Zend\View\Renderer\PhpRenderer;
 
 class Map implements MediaTypeInterface
@@ -16,12 +15,12 @@ class Map implements MediaTypeInterface
 
     public function prepareForm(PhpRenderer $view)
     {
-        $view->headLink()->appendStylesheet($view->assetUrl('js/Leaflet/0.7.7/leaflet.css', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/leaflet.css', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/leaflet.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/mapping-collecting-form.js', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('js/Leaflet.GeoSearch/1.1.0/css/l.geosearch.css', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('js/Leaflet.GeoSearch/1.1.0/js/l.control.geosearch.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('js/Leaflet.GeoSearch/1.1.0/js/l.geosearch.provider.openstreetmap.js', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet.geosearch/style.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet.geosearch/leaflet.css', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.geosearch/bundle.min.js', 'Mapping'));
         $view->headLink()->appendStylesheet($view->assetUrl('css/mapping.css', 'Mapping'));
         $view->formElement()->addType('promptMap', 'formPromptMap');
     }
