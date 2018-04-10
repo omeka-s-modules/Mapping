@@ -1,4 +1,6 @@
 <?php
+namespace Mapping;
+
 return [
     'api_adapters' => [
         'invokables' => [
