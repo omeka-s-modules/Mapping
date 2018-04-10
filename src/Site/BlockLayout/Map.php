@@ -1,7 +1,6 @@
 <?php
 namespace Mapping\Site\BlockLayout;
 
-use Zend\Form\Element\Select;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
@@ -25,8 +24,14 @@ class Map extends AbstractBlockLayout
         $itemIds = [];
         $attachments = $block->getAttachments();
         foreach ($attachments as $attachment) {
+            // When an item was removed from the base, it should be removed.
+            $item = $attachment->getItem();
+            if (!$item) {
+                $attachments->removeElement($attachment);
+                continue;
+            }
             // Duplicate items are redundant, so remove them.
-            $itemId = $attachment->getItem()->getId();
+            $itemId = $item->getId();
             if (in_array($itemId, $itemIds)) {
                 $attachments->removeElement($attachment);
             }
@@ -40,8 +45,8 @@ class Map extends AbstractBlockLayout
     public function prepareForm(PhpRenderer $view)
     {
         $view->headScript()->appendFile($view->assetUrl('js/mapping-block-form.js', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('js/Leaflet/0.7.7/leaflet.css', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/leaflet.css', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/leaflet.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.default-view.js', 'Mapping'));
     }
 
@@ -59,9 +64,14 @@ class Map extends AbstractBlockLayout
         // Get all markers from the attachment items.
         $allMarkers = [];
         foreach ($block->attachments() as $attachment) {
+            // When an item was removed from the base, it should be skipped.
+            $item = $attachment->item();
+            if (!$item) {
+                continue;
+            }
             $markers = $view->api()->search(
                 'mapping_markers',
-                ['item_id' => $attachment->item()->id()]
+                ['item_id' => $item->id()]
             )->getContent();
             $allMarkers = array_merge($allMarkers, $markers);
         }

@@ -43,7 +43,7 @@ mappingMaps.each(function() {
         'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
         'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
     };
-    var noOverlayLayer = L.tileLayer.canvas();
+    var noOverlayLayer = new L.GridLayer();
     var groupedOverlays = {
         'Overlays': {
             'No overlay': noOverlayLayer,
