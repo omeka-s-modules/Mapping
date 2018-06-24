@@ -378,4 +378,3 @@ DROP TABLE IF EXISTS mapping_marker');
         }
     }
 }
-

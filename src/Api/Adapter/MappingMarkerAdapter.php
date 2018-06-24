@@ -106,8 +106,8 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
             $client = $this->getServiceLocator()->get('Omeka\HttpClient')
                 ->setUri('http://nominatim.openstreetmap.org/search')
                 ->setParameterGet([
-                    'q'  => $query['address'],
-                    'format'  => 'json',
+                    'q' => $query['address'],
+                    'format' => 'json',
                 ]);
             $response = $client->send();
 
