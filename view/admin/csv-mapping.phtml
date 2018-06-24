@@ -1,34 +1,25 @@
-<div id='mapping-module' class='mapping-group'>
-    <a href='#' class='sidebar-close o-icon-close'><span class='screen-reader-text'><?php echo $this->translate('Close Me'); ?></span></a>
-    <h3><?php echo $this->translate('Mapping Info'); ?></h3>
-    <ul>
-        <li data-flag='column-map-lat' data-flag-type='mapping-module'>
-            <a href='#' class='button'><span><?php echo $this->translate('Latitude'); ?></span></a>
-        </li>
-        <li data-flag='column-map-lng' data-flag-type='mapping-module'>
-            <a href='#' class='button'><span><?php echo $this->translate('Longitude'); ?></span></a>
-        </li>
-        <li data-flag='column-map-latlng' data-flag-type='mapping-module'>
-            <a href='#' class='button'><span><?php echo $this->translate('Latitude/Longitude'); ?></span></a>
-        </li>
-    </ul>
-
-    <h4><?php echo $this->translate('Default View Settings'); ?></h4>
-    <ul>
-        <li data-flag='column-default-lat' data-flag-type='mapping-module-defaults'>
-            <a href='#' class='button'><span><?php echo $this->translate('Default Latitude'); ?></span></a>
-        </li>
-        <li data-flag='column-default-lng' data-flag-type='mapping-module-defaults'>
-            <a href='#' class='button'><span><?php echo $this->translate('Default Longitude'); ?></span></a>
-        </li>
-        <li data-flag='column-default-zoom' data-flag-type='mapping-module-defaults'>
-            <a href='#' class='button'><span><?php echo $this->translate('Default Zoom'); ?></span></a>
-        </li>
-    </ul>
-
-    <div class='mapping-mapping options'>
-        <h4><?php echo $this->translate('Options'); ?></h4>
-        <a href='#' class='button column-multivalue'><span><?php echo $this->translate('Use multivalue separator'); ?></span></a>
-        <p><?php echo $this->translate('(Only applies to Latitude/Longitude)'); ?></p>
+<?php
+$translate = $this->plugin('translate');
+?>
+<div id="mapping-module" class="mapping-group">
+    <a href="#" class="expand" aria-label="<?php echo $translate('Expand'); ?>">
+        <h4><?php echo $translate('Mapping info'); ?></h4>
+    </a>
+    <div class="collapsible">
+        <h5><?php echo $this->translate('Markers'); ?></h5>
+        <select name="mapping-marker" class="flags" data-flag-class="mapping-marker" data-flag-unique="1" data-flag-label="<?php echo $translate('Mapping'); ?>">
+            <option><?php echo $translate('Select below'); ?></option>
+            <option value="1" data-flag-name="column-map-lat"><?php echo $translate('Latitude'); ?></option>
+            <option value="1" data-flag-name="column-map-lng"><?php echo $translate('Longitude'); ?></option>
+            <option value="1" data-flag-name="column-map-latlng"><?php echo $translate('Latitude/longitude'); ?></option>
+        </select>
+        <h5><?php echo $this->translate('Default view settings'); ?></h5>
+        <select name="mapping-defaults" class="flags" data-flag-class="mapping-defaults" data-flag-unique="1" data-flag-label="<?php echo $translate('Mapping'); ?>">
+            <option><?php echo $translate('Select below'); ?></option>
+            <option value="1" data-flag-name="column-default-lat"><?php echo $translate('Default latitude'); ?></option>
+            <option value="1" data-flag-name="column-default-lng"><?php echo $translate('Default longitude'); ?></option>
+            <option value="1" data-flag-name="column-default-zoom"><?php echo $translate('Default zoom'); ?></option>
+        </select>
+        <p><?php echo $this->translate('The multivalue separator only applies to Latitude/longitude and allows to import multiple markers.'); ?></p>
     </div>
 </div>

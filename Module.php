@@ -274,6 +274,7 @@ DROP TABLE IF EXISTS mapping_marker');
     public function handleMapping(Event $event)
     {
         $itemAdapter = $event->getTarget();
+        /** @var \Omeka\Api\Request $request */
         $request = $event->getParam('request');
 
         if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:mapping')) {

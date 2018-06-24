@@ -26,9 +26,66 @@ return [
             'formPromptMap' => Collecting\FormPromptMap::class,
         ],
     ],
-    'csv_import' => [
+    'csvimport' => [
         'mappings' => [
-            'items' => [ CsvMapping\CsvMapping::class ],
+            'items' => [
+                'mappings' => [
+                    CsvMapping\CsvMapping::class,
+                ],
+            ],
+            'resources' => [
+                'mappings' => [
+                    CsvMapping\CsvMapping::class,
+                ],
+            ],
+        ],
+        'automapping' => [
+            'mapping_latitude' => [
+                'name' => 'map-lat',
+                'value' => 1,
+                'label' => 'Mapping [Latitude]', // @translate
+                'class' => 'mapping-marker',
+            ],
+            'mapping_longitude' => [
+                'name' => 'map-lng',
+                'value' => 1,
+                'label' => 'Mapping [Longitude]', // @translate
+                'class' => 'mapping-marker',
+            ],
+            'mapping_latitude_longitude' => [
+                'name' => 'map-latlng',
+                'value' => 1,
+                'label' => 'Mapping [Latitude/Longitude]', // @translate
+                'class' => 'mapping-marker',
+            ],
+            'mapping_default_latitude' => [
+                'name' => 'default-lat',
+                'value' => 1,
+                'label' => 'Mapping [Default latitude]', // @translate
+                'class' => 'mapping-defaults',
+            ],
+            'mapping_default_longitude' => [
+                'name' => 'default-lng',
+                'value' => 1,
+                'label' => 'Mapping [Default longitude]', // @translate
+                'class' => 'mapping-defaults',
+            ],
+            'mapping_default_zoom' => [
+                'name' => 'default-zoom',
+                'value' => 1,
+                'label' => 'Mapping [Default zoom]', // @translate
+                'class' => 'mapping-defaults',
+            ],
+        ],
+        'user_settings' => [
+            'csvimport_automap_user_list' => [
+                'latitude' => 'mapping_latitude',
+                'longitude' => 'mapping_longitude',
+                'latitude/longitude' => 'mapping_latitude_longitude',
+                'default latitude' => 'mapping_default_latitude',
+                'default longitude' => 'mapping_default_longitude',
+                'default zoom' => 'mapping_default_zoom',
+            ],
         ],
     ],
     'omeka2_importer_classes' => [
