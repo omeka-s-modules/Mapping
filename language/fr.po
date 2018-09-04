@@ -1,0 +1,183 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-22 13:54-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: BADEY Sylvain <mali2003@free.fr>, 2018\n"
+"Language-Team: French (https://www.transifex.com/omeka/teams/14184/fr/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: fr\n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+
+#: Module.php:193 view/mapping/index/form.phtml:27
+msgid "Mapping"
+msgstr "Carte"
+
+#: view/admin/csv-mapping.phtml:2 view/mapping/index/form.phtml:33
+msgid "Close Me"
+msgstr "Fermer"
+
+#: view/admin/csv-mapping.phtml:3
+msgid "Mapping Info"
+msgstr "Carte (informations)"
+
+#: view/admin/csv-mapping.phtml:6
+msgid "Latitude"
+msgstr "Latitude"
+
+#: view/admin/csv-mapping.phtml:9
+msgid "Longitude"
+msgstr "Longitude"
+
+#: view/admin/csv-mapping.phtml:12
+msgid "Latitude/Longitude"
+msgstr "Latitude/Longitude"
+
+#: view/admin/csv-mapping.phtml:16
+msgid "Default View Settings"
+msgstr "Réglage de la vue par défaut"
+
+#: view/admin/csv-mapping.phtml:19
+msgid "Default Latitude"
+msgstr "Latitude par défaut"
+
+#: view/admin/csv-mapping.phtml:22
+msgid "Default Longitude"
+msgstr "Longitude par défaut"
+
+#: view/admin/csv-mapping.phtml:25
+msgid "Default Zoom"
+msgstr "Zoom par défaut"
+
+#: view/admin/csv-mapping.phtml:31
+msgid "Use multivalue separator"
+msgstr "Utiliser un séparateur multivalué"
+
+#: view/admin/csv-mapping.phtml:32
+msgid "(Only applies to Latitude/Longitude)"
+msgstr "(S'applique uniquement à Latitude/Longitude)"
+
+#: view/common/block-layout/mapping-block-form.phtml:17
+msgid "Default View"
+msgstr "Vue par défaut"
+
+#: view/common/block-layout/mapping-block-form.phtml:19
+msgid "Set the default view using the in-map controls."
+msgstr "Définir la vue par défaut à l'aide des contrôles intégrés à la carte."
+
+#: view/common/block-layout/mapping-block-form.phtml:25
+msgid "WMS Overlays"
+msgstr "Couches WMS"
+
+#: view/common/block-layout/mapping-block-form.phtml:27
+msgid ""
+"Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
+"which overlay you want open by default."
+msgstr ""
+"Ajouter, modifier et supprimer les couches Web Map Service (WMS) ci-dessous."
+" Vous pouvez cocher quelles couches vous voulez ouvrir par défaut."
+
+#: view/common/block-layout/mapping-block-form.phtml:57
+msgid "Base URL"
+msgstr "URL de base"
+
+#: view/common/block-layout/mapping-block-form.phtml:66
+msgid "Layers"
+msgstr "Couches"
+
+#: view/common/block-layout/mapping-block-form.phtml:68
+msgid "The WMS layers, if any (comma-separated)."
+msgstr "Les couches WMS, le cas échéant (séparées par des virgules)."
+
+#: view/common/block-layout/mapping-block-form.phtml:79
+msgid "The WMS styles, if any (comma-separated)."
+msgstr "Les styles WMS, le cas échéant (séparées par des virgules)."
+
+#: view/common/block-layout/mapping-block-form.phtml:87
+msgid "Add Overlay"
+msgstr "Ajouter une couche"
+
+#: view/common/block-layout/mapping-block-form.phtml:88
+msgid "Save Changes"
+msgstr "Sauvegarder les changements"
+
+#: view/common/block-layout/mapping-block-form.phtml:89
+msgid "Clear Inputs"
+msgstr "Supprimer les entrées"
+
+#: view/common/block-layout/mapping-block.phtml:29
+#: view/mapping/site/index/browse.phtml:32
+msgid "View media"
+msgstr "Voir les médias"
+
+#: view/common/block-layout/mapping-block.phtml:33
+#: view/mapping/site/index/browse.phtml:36
+msgid "View item"
+msgstr "Voir le contenu"
+
+#: view/mapping/index/advanced-search.phtml:5
+msgid "Kilometers"
+msgstr "Kilomètres"
+
+#: view/mapping/index/advanced-search.phtml:5
+msgid "Miles"
+msgstr "Miles"
+
+#: view/mapping/index/advanced-search.phtml:9
+msgid "Geographic Address"
+msgstr "Adresse géographique"
+
+#: view/mapping/index/advanced-search.phtml:17
+msgid "Geographic Radius"
+msgstr "Rayon géographique"
+
+#: view/mapping/index/advanced-search.phtml:25
+msgid "Geographic Radius Unit"
+msgstr "Unité du rayon géographique"
+
+#: view/mapping/index/form.phtml:34
+msgid "Marker Image"
+msgstr "Image de la fenêtre contextuelle"
+
+#: view/mapping/index/form.phtml:35
+msgid " No Image"
+msgstr "Pas d'image"
+
+#: view/mapping/index/form.phtml:56
+msgid "Marker Label"
+msgstr "Étiquette de la fenêtre contextuelle"
+
+#: view/mapping/index/form.phtml:59
+msgid "Select Marker Image"
+msgstr "Sélectionner l'image de la fenêtre contextuelle"
+
+#: view/mapping/index/show.phtml:37
+#, php-format
+msgid "Media: %s"
+msgstr "Média : “%s”"
+
+#: view/mapping/index/show.phtml:41
+#, php-format
+msgid "Item: %s"
+msgstr "Contenu : “%s”"
+
+#: view/mapping/site/index/browse.phtml:17
+msgid "Search Map"
+msgstr "Rechercher une carte"
+
+#: src/Collecting/PromptMap.php:26
+msgid "You must select a location on the map."
+msgstr "Vous devez sélectionner un emplacement sur la carte."
+
+#: src/Site/Navigation/Link/MapBrowse.php:12
+msgid "Map Browse"
+msgstr "Parcourir la carte"

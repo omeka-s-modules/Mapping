@@ -1,0 +1,181 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-22 13:54-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Naosuke Okamoto, 2018\n"
+"Language-Team: Japanese (https://www.transifex.com/omeka/teams/14184/ja/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: ja\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: Module.php:193 view/mapping/index/form.phtml:27
+msgid "Mapping"
+msgstr "マッピング"
+
+#: view/admin/csv-mapping.phtml:2 view/mapping/index/form.phtml:33
+msgid "Close Me"
+msgstr "閉じる"
+
+#: view/admin/csv-mapping.phtml:3
+msgid "Mapping Info"
+msgstr "地図情報"
+
+#: view/admin/csv-mapping.phtml:6
+msgid "Latitude"
+msgstr "緯度"
+
+#: view/admin/csv-mapping.phtml:9
+msgid "Longitude"
+msgstr "経度"
+
+#: view/admin/csv-mapping.phtml:12
+msgid "Latitude/Longitude"
+msgstr "緯度/経度"
+
+#: view/admin/csv-mapping.phtml:16
+msgid "Default View Settings"
+msgstr "デフォルトの表示設定"
+
+#: view/admin/csv-mapping.phtml:19
+msgid "Default Latitude"
+msgstr "デフォルトの緯度"
+
+#: view/admin/csv-mapping.phtml:22
+msgid "Default Longitude"
+msgstr "デフォルトの経度"
+
+#: view/admin/csv-mapping.phtml:25
+msgid "Default Zoom"
+msgstr "デフォルトの拡大倍率"
+
+#: view/admin/csv-mapping.phtml:31
+msgid "Use multivalue separator"
+msgstr "多値セパレータを使用する"
+
+#: view/admin/csv-mapping.phtml:32
+msgid "(Only applies to Latitude/Longitude)"
+msgstr "（緯度/経度 にのみ適用されます）"
+
+#: view/common/block-layout/mapping-block-form.phtml:17
+msgid "Default View"
+msgstr "デフォルトの表示"
+
+#: view/common/block-layout/mapping-block-form.phtml:19
+msgid "Set the default view using the in-map controls."
+msgstr "マップ内のコントロールを使用して、デフォルトのビューを設定します。"
+
+#: view/common/block-layout/mapping-block-form.phtml:25
+msgid "WMS Overlays"
+msgstr "WMS オーバーレイ／地理参照マップイメージのオーバーレイ"
+
+#: view/common/block-layout/mapping-block-form.phtml:27
+msgid ""
+"Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
+"which overlay you want open by default."
+msgstr "以下のWebマップサービス（WMS）オーバーレイを追加、編集、および削除します。 既定で開くオーバーレイを確認することができます。"
+
+#: view/common/block-layout/mapping-block-form.phtml:57
+msgid "Base URL"
+msgstr "ベースURL"
+
+#: view/common/block-layout/mapping-block-form.phtml:66
+msgid "Layers"
+msgstr "レイヤー"
+
+#: view/common/block-layout/mapping-block-form.phtml:68
+msgid "The WMS layers, if any (comma-separated)."
+msgstr "WMS層（ある場合）（コンマ区切り）。"
+
+#: view/common/block-layout/mapping-block-form.phtml:79
+msgid "The WMS styles, if any (comma-separated)."
+msgstr "WMSスタイル（存在する場合）（コンマ区切り）。"
+
+#: view/common/block-layout/mapping-block-form.phtml:87
+msgid "Add Overlay"
+msgstr "オーバーレイを追加"
+
+#: view/common/block-layout/mapping-block-form.phtml:88
+msgid "Save Changes"
+msgstr "変更を保存"
+
+#: view/common/block-layout/mapping-block-form.phtml:89
+msgid "Clear Inputs"
+msgstr "入力をクリア"
+
+#: view/common/block-layout/mapping-block.phtml:29
+#: view/mapping/site/index/browse.phtml:32
+msgid "View media"
+msgstr "メディアを表示"
+
+#: view/common/block-layout/mapping-block.phtml:33
+#: view/mapping/site/index/browse.phtml:36
+msgid "View item"
+msgstr "アイテムを表示"
+
+#: view/mapping/index/advanced-search.phtml:5
+msgid "Kilometers"
+msgstr "キロメートル"
+
+#: view/mapping/index/advanced-search.phtml:5
+msgid "Miles"
+msgstr "マイル"
+
+#: view/mapping/index/advanced-search.phtml:9
+msgid "Geographic Address"
+msgstr "地理的住所"
+
+#: view/mapping/index/advanced-search.phtml:17
+msgid "Geographic Radius"
+msgstr "地理的半径"
+
+#: view/mapping/index/advanced-search.phtml:25
+msgid "Geographic Radius Unit"
+msgstr "地理的半径単位"
+
+#: view/mapping/index/form.phtml:34
+msgid "Marker Image"
+msgstr "マーカー画像"
+
+#: view/mapping/index/form.phtml:35
+msgid " No Image"
+msgstr "画像なし"
+
+#: view/mapping/index/form.phtml:56
+msgid "Marker Label"
+msgstr "マーカーのラベル"
+
+#: view/mapping/index/form.phtml:59
+msgid "Select Marker Image"
+msgstr "マーカー画像を選択"
+
+#: view/mapping/index/show.phtml:37
+#, php-format
+msgid "Media: %s"
+msgstr "メディア： %s"
+
+#: view/mapping/index/show.phtml:41
+#, php-format
+msgid "Item: %s"
+msgstr "アイテム： %s"
+
+#: view/mapping/site/index/browse.phtml:17
+msgid "Search Map"
+msgstr "地図を検索"
+
+#: src/Collecting/PromptMap.php:26
+msgid "You must select a location on the map."
+msgstr "地図上の場所を選択する必要があります。"
+
+#: src/Site/Navigation/Link/MapBrowse.php:12
+msgid "Map Browse"
+msgstr "地図を閲覧"

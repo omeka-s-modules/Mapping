@@ -1,0 +1,181 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-22 13:54-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Hong Zhang <zhangh@unlv.nevada.edu>, 2018\n"
+"Language-Team: Chinese (China) (https://www.transifex.com/omeka/teams/14184/zh_CN/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: zh_CN\n"
+"Plural-Forms: nplurals=1; plural=0;\n"
+
+#: Module.php:193 view/mapping/index/form.phtml:27
+msgid "Mapping"
+msgstr "制图"
+
+#: view/admin/csv-mapping.phtml:2 view/mapping/index/form.phtml:33
+msgid "Close Me"
+msgstr "关闭我"
+
+#: view/admin/csv-mapping.phtml:3
+msgid "Mapping Info"
+msgstr "制图信息"
+
+#: view/admin/csv-mapping.phtml:6
+msgid "Latitude"
+msgstr "纬度"
+
+#: view/admin/csv-mapping.phtml:9
+msgid "Longitude"
+msgstr "经度"
+
+#: view/admin/csv-mapping.phtml:12
+msgid "Latitude/Longitude"
+msgstr "纬度/经度"
+
+#: view/admin/csv-mapping.phtml:16
+msgid "Default View Settings"
+msgstr "默认视图设置"
+
+#: view/admin/csv-mapping.phtml:19
+msgid "Default Latitude"
+msgstr "默认纬度"
+
+#: view/admin/csv-mapping.phtml:22
+msgid "Default Longitude"
+msgstr "默认经度"
+
+#: view/admin/csv-mapping.phtml:25
+msgid "Default Zoom"
+msgstr "默认缩放"
+
+#: view/admin/csv-mapping.phtml:31
+msgid "Use multivalue separator"
+msgstr "使用多值分隔符"
+
+#: view/admin/csv-mapping.phtml:32
+msgid "(Only applies to Latitude/Longitude)"
+msgstr "（只应用于维度/经度）"
+
+#: view/common/block-layout/mapping-block-form.phtml:17
+msgid "Default View"
+msgstr "默认视图"
+
+#: view/common/block-layout/mapping-block-form.phtml:19
+msgid "Set the default view using the in-map controls."
+msgstr "使用图内控制来设置默认视图。"
+
+#: view/common/block-layout/mapping-block-form.phtml:25
+msgid "WMS Overlays"
+msgstr "WMS叠加图"
+
+#: view/common/block-layout/mapping-block-form.phtml:27
+msgid ""
+"Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
+"which overlay you want open by default."
+msgstr "在下面添加、编辑、删除网络地图服务（WMS）叠加图。您可以点选您想默认打开的叠加图。"
+
+#: view/common/block-layout/mapping-block-form.phtml:57
+msgid "Base URL"
+msgstr "基础URL"
+
+#: view/common/block-layout/mapping-block-form.phtml:66
+msgid "Layers"
+msgstr "图层"
+
+#: view/common/block-layout/mapping-block-form.phtml:68
+msgid "The WMS layers, if any (comma-separated)."
+msgstr "WMS图层，如果有的话（逗号分隔的）。"
+
+#: view/common/block-layout/mapping-block-form.phtml:79
+msgid "The WMS styles, if any (comma-separated)."
+msgstr "WMS样式，如果有的话（逗号分隔的）。"
+
+#: view/common/block-layout/mapping-block-form.phtml:87
+msgid "Add Overlay"
+msgstr "添加叠加图"
+
+#: view/common/block-layout/mapping-block-form.phtml:88
+msgid "Save Changes"
+msgstr "保存修改"
+
+#: view/common/block-layout/mapping-block-form.phtml:89
+msgid "Clear Inputs"
+msgstr "清空输入"
+
+#: view/common/block-layout/mapping-block.phtml:29
+#: view/mapping/site/index/browse.phtml:32
+msgid "View media"
+msgstr "查看媒体"
+
+#: view/common/block-layout/mapping-block.phtml:33
+#: view/mapping/site/index/browse.phtml:36
+msgid "View item"
+msgstr "查看条目"
+
+#: view/mapping/index/advanced-search.phtml:5
+msgid "Kilometers"
+msgstr "公里"
+
+#: view/mapping/index/advanced-search.phtml:5
+msgid "Miles"
+msgstr "英哩"
+
+#: view/mapping/index/advanced-search.phtml:9
+msgid "Geographic Address"
+msgstr "地理地址"
+
+#: view/mapping/index/advanced-search.phtml:17
+msgid "Geographic Radius"
+msgstr "地理半径"
+
+#: view/mapping/index/advanced-search.phtml:25
+msgid "Geographic Radius Unit"
+msgstr "地理半径单位"
+
+#: view/mapping/index/form.phtml:34
+msgid "Marker Image"
+msgstr "标记图像"
+
+#: view/mapping/index/form.phtml:35
+msgid " No Image"
+msgstr "无图像"
+
+#: view/mapping/index/form.phtml:56
+msgid "Marker Label"
+msgstr "标记标签"
+
+#: view/mapping/index/form.phtml:59
+msgid "Select Marker Image"
+msgstr "选择标记图像"
+
+#: view/mapping/index/show.phtml:37
+#, php-format
+msgid "Media: %s"
+msgstr "媒体：%s"
+
+#: view/mapping/index/show.phtml:41
+#, php-format
+msgid "Item: %s"
+msgstr "条目：%s"
+
+#: view/mapping/site/index/browse.phtml:17
+msgid "Search Map"
+msgstr "搜索地图"
+
+#: src/Collecting/PromptMap.php:26
+msgid "You must select a location on the map."
+msgstr "您必须在地图上选择一个地点。"
+
+#: src/Site/Navigation/Link/MapBrowse.php:12
+msgid "Map Browse"
+msgstr "地图浏览"
