@@ -149,7 +149,7 @@ var drawnItems = new L.FeatureGroup();
 var geoSearchControl = new window.GeoSearch.GeoSearchControl({
     provider: new window.GeoSearch.OpenStreetMapProvider,
     showMarker: false,
-    retainZoomLevel: true,
+    retainZoomLevel: false,
 });
 var drawControl = new L.Control.Draw({
     draw: {
