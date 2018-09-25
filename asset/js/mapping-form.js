@@ -146,17 +146,18 @@ var baseMaps = {
 };
 var layerControl = L.control.layers(baseMaps);
 var drawnItems = new L.FeatureGroup();
-var geoSearchControl = new L.Control.GeoSearch({
-    provider: new L.GeoSearch.Provider.OpenStreetMap(),
+var geoSearchControl = new window.GeoSearch.GeoSearchControl({
+    provider: new window.GeoSearch.OpenStreetMapProvider,
     showMarker: false,
-    retainZoomLevel: true,
+    retainZoomLevel: false,
 });
 var drawControl = new L.Control.Draw({
     draw: {
         polyline: false,
         polygon: false,
         rectangle: false,
-        circle: false
+        circle: false,
+        circlemarker: false
     },
     edit: {
         featureGroup: drawnItems

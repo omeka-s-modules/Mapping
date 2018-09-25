@@ -1,10 +1,10 @@
 <?php
-$this->headLink()->appendStylesheet($this->assetUrl('js/Leaflet/0.7.7/leaflet.css', 'Mapping'));
-$this->headLink()->appendStylesheet($this->assetUrl('js/Leaflet.markercluster/0.5.0/MarkerCluster.css', 'Mapping'));
-$this->headLink()->appendStylesheet($this->assetUrl('js/Leaflet.markercluster/0.5.0/MarkerCluster.Default.css', 'Mapping'));
-$this->headScript()->appendFile($this->assetUrl('js/Leaflet/0.7.7/leaflet.js', 'Mapping'));
-$this->headScript()->appendFile($this->assetUrl('js/Leaflet.markercluster/0.5.0/leaflet.markercluster-src.js', 'Mapping'));
-$this->headScript()->appendFile($this->assetUrl('js/Leaflet.providers/1.1.7/leaflet-providers.js', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('vendor/leaflet/leaflet.css', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('vendor/leaflet/leaflet.js', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('vendor/leaflet.markercluster/MarkerCluster.css', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('vendor/leaflet.markercluster/MarkerCluster.Default.css', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('vendor/leaflet.markercluster/leaflet.markercluster-src.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('vendor/leaflet.providers/leaflet-providers.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-browse.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'));

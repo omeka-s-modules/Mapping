@@ -2,38 +2,28 @@
 namespace Mapping;
 
 return [
-    'translator' => [
-        'translation_file_patterns' => [
-            [
-                'type' => 'gettext',
-                'base_dir' => OMEKA_PATH . '/modules/Mapping/language',
-                'pattern' => '%s.mo',
-                'text_domain' => null,
-            ],
-        ],
-    ],
     'api_adapters' => [
         'invokables' => [
-            'mappings' => 'Mapping\Api\Adapter\MappingAdapter',
-            'mapping_markers' => 'Mapping\Api\Adapter\MappingMarkerAdapter',
+            'mappings' => Api\Adapter\MappingAdapter::class,
+            'mapping_markers' => Api\Adapter\MappingMarkerAdapter::class,
         ],
     ],
     'entity_manager' => [
         'mapping_classes_paths' => [
-            OMEKA_PATH . '/modules/Mapping/src/Entity',
+            dirname(__DIR__) . '/src/Entity',
         ],
         'proxy_paths' => [
-            OMEKA_PATH . '/modules/Mapping/data/doctrine-proxies',
+            dirname(__DIR__) . '/data/doctrine-proxies',
         ],
     ],
     'view_manager' => [
         'template_path_stack' => [
-            OMEKA_PATH . '/modules/Mapping/view',
+            dirname(__DIR__) . '/view',
         ],
     ],
     'view_helpers' => [
         'invokables' => [
-            'formPromptMap' => 'Mapping\Collecting\FormPromptMap',
+            'formPromptMap' => Collecting\FormPromptMap::class,
         ],
     ],
     'csv_import' => [
@@ -42,26 +32,26 @@ return [
         ],
     ],
     'omeka2_importer_classes' => [
-        'Mapping\Omeka2Importer\GeolocationImporter'
+        Omeka2Importer\GeolocationImporter::class,
     ],
     'block_layouts' => [
         'invokables' => [
-            'mappingMap' => 'Mapping\Site\BlockLayout\Map',
+            'mappingMap' => Site\BlockLayout\Map::class,
         ],
     ],
     'navigation_links' => [
         'invokables' => [
-            'mapping' => 'Mapping\Site\Navigation\Link\MapBrowse',
+            'mapping' => Site\Navigation\Link\MapBrowse::class,
         ],
     ],
     'controllers' => [
         'invokables' => [
-            'Mapping\Controller\Site\Index' => 'Mapping\Controller\Site\IndexController',
+            'Mapping\Controller\Site\Index' => Controller\Site\IndexController::class,
         ],
     ],
     'collecting_media_types' => [
         'invokables' => [
-            'map' => 'Mapping\Collecting\Map',
+            'map' => Collecting\Map::class,
         ],
     ],
     'router' => [
@@ -80,6 +70,16 @@ return [
                         ],
                     ],
                 ],
+            ],
+        ],
+    ],
+    'translator' => [
+        'translation_file_patterns' => [
+            [
+                'type' => 'gettext',
+                'base_dir' => dirname(__DIR__) . '/language',
+                'pattern' => '%s.mo',
+                'text_domain' => null,
             ],
         ],
     ],

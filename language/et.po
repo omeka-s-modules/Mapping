@@ -1,0 +1,183 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# 
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2017-08-22 13:54-0400\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2018\n"
+"Language-Team: Estonian (https://www.transifex.com/omeka/teams/14184/et/)\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Language: et\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#: Module.php:193 view/mapping/index/form.phtml:27
+msgid "Mapping"
+msgstr "Kaardid"
+
+#: view/admin/csv-mapping.phtml:2 view/mapping/index/form.phtml:33
+msgid "Close Me"
+msgstr "Sulge"
+
+#: view/admin/csv-mapping.phtml:3
+msgid "Mapping Info"
+msgstr "Kaardi info"
+
+#: view/admin/csv-mapping.phtml:6
+msgid "Latitude"
+msgstr "Laiuskraad"
+
+#: view/admin/csv-mapping.phtml:9
+msgid "Longitude"
+msgstr "Pikkuskraad"
+
+#: view/admin/csv-mapping.phtml:12
+msgid "Latitude/Longitude"
+msgstr "Laiuskraad/Pikkuskraad"
+
+#: view/admin/csv-mapping.phtml:16
+msgid "Default View Settings"
+msgstr "Vaikimisi vaate seaded"
+
+#: view/admin/csv-mapping.phtml:19
+msgid "Default Latitude"
+msgstr "Vaikimisi laiuskraad"
+
+#: view/admin/csv-mapping.phtml:22
+msgid "Default Longitude"
+msgstr "Vaikimisi pikkuskraad"
+
+#: view/admin/csv-mapping.phtml:25
+msgid "Default Zoom"
+msgstr "Vaikimisi suurendus"
+
+#: view/admin/csv-mapping.phtml:31
+msgid "Use multivalue separator"
+msgstr "Kasuta mitme väärtuse eraldamist"
+
+#: view/admin/csv-mapping.phtml:32
+msgid "(Only applies to Latitude/Longitude)"
+msgstr "(Kasutatakse ainult siis, kui sisestada Laiuskraad/Pikkuskraad)"
+
+#: view/common/block-layout/mapping-block-form.phtml:17
+msgid "Default View"
+msgstr "aikimisi vaade"
+
+#: view/common/block-layout/mapping-block-form.phtml:19
+msgid "Set the default view using the in-map controls."
+msgstr "Määra vaikimisi vaade kasutades kaardi juhtnuppe."
+
+#: view/common/block-layout/mapping-block-form.phtml:25
+msgid "WMS Overlays"
+msgstr "WMS kihid"
+
+#: view/common/block-layout/mapping-block-form.phtml:27
+msgid ""
+"Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
+"which overlay you want open by default."
+msgstr ""
+"Allpool saad kaardi veebiteenuse kihte (WMS) lisada, muuta ja kustutada. "
+"Võid valida millist kihti soovid vaikimisi avada."
+
+#: view/common/block-layout/mapping-block-form.phtml:57
+msgid "Base URL"
+msgstr "Baas URL"
+
+#: view/common/block-layout/mapping-block-form.phtml:66
+msgid "Layers"
+msgstr "Kihid"
+
+#: view/common/block-layout/mapping-block-form.phtml:68
+msgid "The WMS layers, if any (comma-separated)."
+msgstr "WMS kihid, kui neid on (komadega eraldatud)"
+
+#: view/common/block-layout/mapping-block-form.phtml:79
+msgid "The WMS styles, if any (comma-separated)."
+msgstr "WMS stiilid, kui neid on (komadega eraldatud)"
+
+#: view/common/block-layout/mapping-block-form.phtml:87
+msgid "Add Overlay"
+msgstr "Lisa kiht"
+
+#: view/common/block-layout/mapping-block-form.phtml:88
+msgid "Save Changes"
+msgstr "Salvesta muudatused"
+
+#: view/common/block-layout/mapping-block-form.phtml:89
+msgid "Clear Inputs"
+msgstr "Tühjenda lahtrid"
+
+#: view/common/block-layout/mapping-block.phtml:29
+#: view/mapping/site/index/browse.phtml:32
+msgid "View media"
+msgstr "Vaata meediat"
+
+#: view/common/block-layout/mapping-block.phtml:33
+#: view/mapping/site/index/browse.phtml:36
+msgid "View item"
+msgstr "Vaata ühikut"
+
+#: view/mapping/index/advanced-search.phtml:5
+msgid "Kilometers"
+msgstr "Kilomeetrid"
+
+#: view/mapping/index/advanced-search.phtml:5
+msgid "Miles"
+msgstr "iilid"
+
+#: view/mapping/index/advanced-search.phtml:9
+msgid "Geographic Address"
+msgstr "Geograafiline aadress"
+
+#: view/mapping/index/advanced-search.phtml:17
+msgid "Geographic Radius"
+msgstr "Geograafiline raadius"
+
+#: view/mapping/index/advanced-search.phtml:25
+msgid "Geographic Radius Unit"
+msgstr "Geograafilise raadiuse ühik"
+
+#: view/mapping/index/form.phtml:34
+msgid "Marker Image"
+msgstr "Markeri pilt"
+
+#: view/mapping/index/form.phtml:35
+msgid " No Image"
+msgstr "Pilti pole"
+
+#: view/mapping/index/form.phtml:56
+msgid "Marker Label"
+msgstr "Markeri silt"
+
+#: view/mapping/index/form.phtml:59
+msgid "Select Marker Image"
+msgstr "Vali markeri pilt"
+
+#: view/mapping/index/show.phtml:37
+#, php-format
+msgid "Media: %s"
+msgstr "Meedia: %s"
+
+#: view/mapping/index/show.phtml:41
+#, php-format
+msgid "Item: %s"
+msgstr "Ühik: %s"
+
+#: view/mapping/site/index/browse.phtml:17
+msgid "Search Map"
+msgstr "Otsi kaardilt"
+
+#: src/Collecting/PromptMap.php:26
+msgid "You must select a location on the map."
+msgstr "Sa pead valima kaardilt asukoha."
+
+#: src/Site/Navigation/Link/MapBrowse.php:12
+msgid "Map Browse"
+msgstr "Kaardi sirvimine"

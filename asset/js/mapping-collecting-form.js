@@ -13,8 +13,8 @@ $(document).ready(function() {
         }).addTo(map);
         map.setView([20, 0], 2);
 
-        map.addControl(new L.Control.GeoSearch({
-            provider: new L.GeoSearch.Provider.OpenStreetMap(),
+        map.addControl(new window.GeoSearch.GeoSearchControl({
+            provider: new window.GeoSearch.OpenStreetMapProvider,
             showMarker: false,
         }));
 
