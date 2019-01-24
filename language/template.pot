@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-22 13:54-0400\n"
+"POT-Creation-Date: 2019-01-24 15:23-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,19 +17,19 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:193 view/mapping/index/form.phtml:27
+#: Module.php:198 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:2 view/mapping/index/form.phtml:33
-msgid "Close Me"
+#: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
+msgid "Resource location"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:3
-msgid "Mapping Info"
+#: view/admin/csv-mapping.phtml:7 view/admin/csv-mapping.phtml:21
+msgid "Select below"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:6
+#: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
 msgstr ""
 
@@ -37,32 +37,24 @@ msgstr ""
 msgid "Longitude"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:12
+#: view/admin/csv-mapping.phtml:10
 msgid "Latitude/Longitude"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:16
-msgid "Default View Settings"
-msgstr ""
-
-#: view/admin/csv-mapping.phtml:19
-msgid "Default Latitude"
+#: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
+msgid "Default map view"
 msgstr ""
 
 #: view/admin/csv-mapping.phtml:22
-msgid "Default Longitude"
+msgid "Map center latitude"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:25
-msgid "Default Zoom"
+#: view/admin/csv-mapping.phtml:23
+msgid "Map center longitude"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:31
-msgid "Use multivalue separator"
-msgstr ""
-
-#: view/admin/csv-mapping.phtml:32
-msgid "(Only applies to Latitude/Longitude)"
+#: view/admin/csv-mapping.phtml:24
+msgid "Default zoom"
 msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:17
@@ -141,19 +133,23 @@ msgstr ""
 msgid "Geographic Radius Unit"
 msgstr ""
 
-#: view/mapping/index/form.phtml:34
+#: view/mapping/index/form.phtml:32
+msgid "Close Me"
+msgstr ""
+
+#: view/mapping/index/form.phtml:33
 msgid "Marker Image"
 msgstr ""
 
-#: view/mapping/index/form.phtml:35
+#: view/mapping/index/form.phtml:34
 msgid " No Image"
 msgstr ""
 
-#: view/mapping/index/form.phtml:56
+#: view/mapping/index/form.phtml:55
 msgid "Marker Label"
 msgstr ""
 
-#: view/mapping/index/form.phtml:59
+#: view/mapping/index/form.phtml:58
 msgid "Select Marker Image"
 msgstr ""
 
@@ -177,4 +173,12 @@ msgstr ""
 
 #: src/Site/Navigation/Link/MapBrowse.php:12
 msgid "Map Browse"
+msgstr ""
+
+#: src/Api/Adapter/MappingAdapter.php:45
+msgid "A marker must have an item."
+msgstr ""
+
+#: src/Api/Adapter/MappingAdapter.php:51
+msgid "Map bounds must contain four numbers separated by commas"
 msgstr ""
