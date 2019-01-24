@@ -12,11 +12,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class Module extends AbstractModule
 {
-    /**
-     * @var array Cache of mapping and marker data.
-     */
-    protected $cache = ['mappings' => [], 'markers' => []];
-
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';
@@ -166,16 +161,6 @@ DROP TABLE IF EXISTS mapping_marker');
             [$this, 'addMapTab']
         );
         $sharedEventManager->attach(
-            'Omeka\Api\Adapter\ItemAdapter',
-            'api.search.post',
-            [$this, 'cacheItemMappingData']
-        );
-        $sharedEventManager->attach(
-            'Omeka\Api\Adapter\ItemAdapter',
-            'api.read.post',
-            [$this, 'cacheItemMappingData']
-        );
-        $sharedEventManager->attach(
             'Omeka\Api\Representation\ItemRepresentation',
             'rep.resource.json',
             [$this, 'filterItemJsonLd']
@@ -215,40 +200,6 @@ DROP TABLE IF EXISTS mapping_marker');
     }
 
     /**
-     * Cache mapping and marker data for item API search/read.
-     *
-     * We cache mapping and marker data so self::filterItemJsonLd() doesn't have
-     * to make multiple queries to the database during one request.
-     *
-     * Event $event
-     */
-    public function cacheItemMappingData(Event $event)
-    {
-        $itemIds = [];
-        $content = $event->getParam('response')->getContent();
-        if (is_array($content)) {
-            // This is an API search.
-            foreach ($content as $item) {
-                $itemIds[] = $item->getId();
-            }
-        } else {
-            // This is an API read.
-            $itemIds[] = $content->getId();
-        }
-        $api = $this->getServiceLocator()->get('Omeka\ApiManager');
-        // Cache mappings
-        $response = $api->search('mappings', ['item_id' => $itemIds]);
-        foreach ($response->getContent() as $mapping) {
-            $this->cache['mappings'][$mapping->item()->id()] = $mapping;
-        }
-        // Cache markers
-        $response = $api->search('mapping_markers', ['item_id' => $itemIds]);
-        foreach ($response->getContent() as $marker) {
-            $this->cache['markers'][$marker->item()->id()][] = $marker;
-        }
-    }
-
-    /**
      * Add the mapping and marker data to the item JSON-LD.
      *
      * Event $event
@@ -257,12 +208,20 @@ DROP TABLE IF EXISTS mapping_marker');
     {
         $item = $event->getTarget();
         $jsonLd = $event->getParam('jsonLd');
-        if (isset($this->cache['markers'][$item->id()])) {
-            $jsonLd['o-module-mapping:marker'] = $this->cache['markers'][$item->id()];
+        $api = $this->getServiceLocator()->get('Omeka\ApiManager');
+        // Add mapping data.
+        $response = $api->search('mappings', ['item_id' => $item->id()]);
+        foreach ($response->getContent() as $mapping) {
+            // There's zero or one mapping per item.
+            $jsonLd['o-module-mapping:mapping'] = $mapping->getReference();
         }
-        if (isset($this->cache['mappings'][$item->id()])) {
-            $jsonLd['o-module-mapping:mapping'] = $this->cache['mappings'][$item->id()];
+        // Add marker data.
+        $response = $api->search('mapping_markers', ['item_id' => $item->id()]);
+        foreach ($response->getContent() as $marker) {
+            // There's zero or more markers per item.
+            $jsonLd['o-module-mapping:marker'][] = $marker->getReference();
         }
+
         $event->setParam('jsonLd', $jsonLd);
     }
 
