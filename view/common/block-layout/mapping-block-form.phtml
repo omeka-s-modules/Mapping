@@ -88,3 +88,19 @@ $wmsOverlayTemplate = '
     <button type="button" class="mapping-wms-edit" style="display:none;"><?php echo $this->translate('Save Changes'); ?></button>
     <button type="button" class="mapping-wms-clear"><?php echo $this->translate('Clear Inputs'); ?></button>
 </div>
+
+<h4><?php echo $this->translate('Timeline'); ?></h4>
+<?php
+echo $this->numericPropertySelect([
+    'name' => 'o:block[__blockIndex__][o:data][timeline][data_type_property]',
+    'attributes' => [
+        'class' => 'chosen-select',
+        'value' => isset($data['timeline']['data_type_property']) ? $data['timeline']['data_type_property'] : null,
+    ],
+    'options' => [
+        'numeric_data_type' => ['timestamp', 'interval'],
+        'numeric_data_type_disambiguate' => true,
+    ],
+]);
+?>
+

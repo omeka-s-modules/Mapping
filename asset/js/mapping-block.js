@@ -4,7 +4,24 @@ var mappingMaps = $('.mapping-map');
 
 mappingMaps.each(function() {
     var mappingMap = $(this);
+    var mappingTimeline = mappingMap.siblings('.mapping-timeline');
+
     var data = mappingMap.data('data');
+    var timelineData = mappingTimeline.data('data');
+    var timelineOptions = mappingTimeline.data('options');
+
+    if (timelineData.events.length) {
+        var timeline = new TL.Timeline(mappingTimeline[0], timelineData, timelineOptions);
+        var timelineFirst = timeline.getData(0);
+        console.log(timelineFirst);
+        // @todo: show markers belonging to item identified by timelineFirst.unique_id
+        // @todo: hide all other markers
+        // @todo: may have to change the way markers are loaded, i.e. load them one by one, depending on which event is selected
+        timeline.on('change', function(data) {
+            console.log('tl change');
+            console.log(data);
+        });
+    }
 
     // Build the marker feature group.
     var markers = L.markerClusterGroup();
