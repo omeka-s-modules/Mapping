@@ -92,10 +92,11 @@ $wmsOverlayTemplate = '
 <h4><?php echo $this->translate('Timeline'); ?></h4>
 <?php
 echo $this->numericPropertySelect([
-    'name' => 'o:block[__blockIndex__][o:data][timeline][data_type_property]',
+    'name' => 'o:block[__blockIndex__][o:data][timeline][data_type_properties]',
     'attributes' => [
         'class' => 'chosen-select',
-        'value' => isset($data['timeline']['data_type_property']) ? $data['timeline']['data_type_property'] : null,
+        'multiple' => true,
+        'value' => isset($data['timeline']['data_type_properties']) ? $data['timeline']['data_type_properties'] : null,
     ],
     'options' => [
         'numeric_data_type' => ['timestamp', 'interval'],

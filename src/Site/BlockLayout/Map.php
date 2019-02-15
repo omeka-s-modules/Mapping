@@ -1,6 +1,8 @@
 <?php
 namespace Mapping\Site\BlockLayout;
 
+use NumericDataTypes\DataType\Timestamp;
+use Omeka\Api\Exception\NotFoundException;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
@@ -63,16 +65,6 @@ class Map extends AbstractBlockLayout
     {
         $data = $this->filterBlockData($block->data());
 
-        $timeline = [];
-        if (isset($data['timeline']['data_type_property'])) {
-            $dataTypeProperty = explode(':', $data['timeline']['data_type_property']);
-            $timeline['data_type'] = sprintf('%s:%s', $dataTypeProperty[0], $dataTypeProperty[1]);
-            $timeline['property'] = $view->api()->read('properties', $dataTypeProperty[2])->getContent();
-        }
-        if (!isset($timeline['property'])) {
-            $timeline = [];
-        }
-
         // Get all markers from the attachment items.
         $allMarkers = [];
         $timelineEvents = [];
@@ -82,8 +74,8 @@ class Map extends AbstractBlockLayout
             if (!$item) {
                 continue;
             }
-            if ($timeline) {
-                $timelineEvents[] = $this->getTimelineEvent($item, $timeline['property'], $timeline['data_type']);
+            if ($data['timeline']['data_type_properties']) {
+                $timelineEvents[] = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
             }
             $markers = $view->api()->search(
                 'mapping_markers',
@@ -99,82 +91,10 @@ class Map extends AbstractBlockLayout
                 'events' => array_filter($timelineEvents),
             ],
             'timelineOptions' => [
-                'debug' => false,
+                'debug' => true,
                 'timenav_position' => 'top',
             ],
         ]);
-    }
-
-    /**
-     * Get a timeline event.
-     *
-     * @see https://timeline.knightlab.com/docs/json-format.html
-     * @param ItemRepresentation $item
-     * @param PropertyRepresentation $property
-     * @param string $dataType
-     * @return array
-     */
-    public function getTimelineEvent($item, $property, $dataType)
-    {
-        $value = $item->value($property->term(), ['type' => $dataType]);
-        if (!$value) {
-            return;
-        }
-
-        // Set the unique ID and "text" object.
-        $title = $item->value('dcterms:title');
-        $description = $item->value('dcterms:description');
-        $event = [
-            'unique_id' => (string) $item->id(), // must cast to string
-            'text' => [
-                'headline' => $title ? $title->value() : '', // must set empty string
-                'text' => $description ? $description->value() : '', // must set empty string
-            ],
-        ];
-
-        // Set the "media" object.
-        $media = $item->primaryMedia();
-        if ($media) {
-            $event['media'] = [
-                'url' => $media->thumbnailUrl('large'),
-                'thumbnail' => $media->thumbnailUrl('medium'),
-                'link' => $item->url(),
-            ];
-        }
-
-        // Set the start and end "date" objects.
-        if ('numeric:timestamp' === $dataType) {
-            $dateTime = \NumericDataTypes\DataType\Timestamp::getDateTimeFromValue($value->value());
-            $event['start_date'] = [
-                'year' => $dateTime['year'],
-                'month' => $dateTime['month'],
-                'day' => $dateTime['day'],
-                'hour' => $dateTime['hour'],
-                'minute' => $dateTime['minute'],
-                'second' => $dateTime['second'],
-            ];
-        } elseif ('numeric:interval' === $dataType) {
-            list($intervalStart, $intervalEnd) = explode('/', $value->value());
-            $dateTimeStart = \NumericDataTypes\DataType\Timestamp::getDateTimeFromValue($intervalStart);
-            $event['start_date'] = [
-                'year' => $dateTimeStart['year'],
-                'month' => $dateTimeStart['month'],
-                'day' => $dateTimeStart['day'],
-                'hour' => $dateTimeStart['hour'],
-                'minute' => $dateTimeStart['minute'],
-                'second' => $dateTimeStart['second'],
-            ];
-            $dateTimeEnd = \NumericDataTypes\DataType\Timestamp::getDateTimeFromValue($intervalEnd);
-            $event['end_date'] = [
-                'year' => $dateTimeEnd['year'],
-                'month' => $dateTimeEnd['month'],
-                'day' => $dateTimeEnd['day'],
-                'hour' => $dateTimeEnd['hour'],
-                'minute' => $dateTimeEnd['minute'],
-                'second' => $dateTimeEnd['second'],
-            ];
-        }
-        return $event;
     }
 
     /**
@@ -230,15 +150,24 @@ class Map extends AbstractBlockLayout
 
         // Filter the timeline data.
         $timeline = [
-            'data_type_property' => null,
+            'data_type_properties' => null,
         ];
-        if (isset($data['timeline'])) {
-            if (isset($data['timeline']['data_type_property'])) {
-                $property = explode(':', $data['timeline']['data_type_property']);
-                if (3 === count($property)) {
-                    list($namespace, $type, $propertyId) = $property;
-                    if ('numeric' === $namespace && is_string($type) && is_numeric($propertyId)) {
-                        $timeline['data_type_property'] = $data['timeline']['data_type_property'];
+        if (isset($data['timeline']) && is_array($data['timeline'])) {
+            if (isset($data['timeline']['data_type_properties'])
+                && is_array($data['timeline']['data_type_properties'])
+            ) {
+                foreach ($data['timeline']['data_type_properties'] as $dataTypeProperty) {
+                    if (is_string($dataTypeProperty)) {
+                        $dataTypeProperty = explode(':', $dataTypeProperty);
+                        if (3 === count($dataTypeProperty)) {
+                            list($namespace, $type, $propertyId) = $dataTypeProperty;
+                            if ('numeric' === $namespace
+                                && in_array($type, ['timestamp', 'interval'])
+                                && is_numeric($propertyId)
+                            ) {
+                                $timeline['data_type_properties'][] = sprintf('%s:%s:%s', $namespace, $type, $propertyId);
+                            }
+                        }
                     }
                 }
             }
@@ -249,5 +178,94 @@ class Map extends AbstractBlockLayout
             'wms' => $wmsOverlays,
             'timeline' => $timeline,
         ];
+    }
+
+    /**
+     * Get a timeline event.
+     *
+     * @see https://timeline.knightlab.com/docs/json-format.html
+     * @param ItemRepresentation $item
+     * @param array $dataTypeProperties
+     * @return array
+     */
+    public function getTimelineEvent($item, array $dataTypeProperties, $view)
+    {
+        $property = null;
+        $dataType = null;
+        $value = null;
+        foreach ($dataTypeProperties as $dataTypeProperty) {
+            $dataTypeProperty = explode(':', $dataTypeProperty);
+            try {
+                $property = $view->api()->read('properties', $dataTypeProperty[2])->getContent();
+            } catch (NotFoundException $e) {
+                // Invalid property.
+                continue;
+            }
+            $dataType = sprintf('%s:%s', $dataTypeProperty[0], $dataTypeProperty[1]);
+            $value = $item->value($property->term(), ['type' => $dataType]);
+            if ($value) {
+                // Set only the first matching numeric value.
+                break;
+            }
+        }
+        if (!$value) {
+            // This item has no numeric values.
+            return;
+        }
+
+        // Set the unique ID and "text" object.
+        $title = $item->value('dcterms:title');
+        $description = $item->value('dcterms:description');
+        $event = [
+            'unique_id' => (string) $item->id(), // must cast to string
+            'text' => [
+                'headline' => $title ? $title->value() : '', // must set empty string
+                'text' => $description ? $description->value() : '', // must set empty string
+            ],
+        ];
+
+        // Set the "media" object.
+        $media = $item->primaryMedia();
+        if ($media) {
+            $event['media'] = [
+                'url' => $media->thumbnailUrl('large'),
+                'thumbnail' => $media->thumbnailUrl('medium'),
+                'link' => $item->url(),
+            ];
+        }
+
+        // Set the start and end "date" objects.
+        if ('numeric:timestamp' === $dataType) {
+            $dateTime = Timestamp::getDateTimeFromValue($value->value());
+            $event['start_date'] = [
+                'year' => $dateTime['year'],
+                'month' => $dateTime['month'],
+                'day' => $dateTime['day'],
+                'hour' => $dateTime['hour'],
+                'minute' => $dateTime['minute'],
+                'second' => $dateTime['second'],
+            ];
+        } elseif ('numeric:interval' === $dataType) {
+            list($intervalStart, $intervalEnd) = explode('/', $value->value());
+            $dateTimeStart = Timestamp::getDateTimeFromValue($intervalStart);
+            $event['start_date'] = [
+                'year' => $dateTimeStart['year'],
+                'month' => $dateTimeStart['month'],
+                'day' => $dateTimeStart['day'],
+                'hour' => $dateTimeStart['hour'],
+                'minute' => $dateTimeStart['minute'],
+                'second' => $dateTimeStart['second'],
+            ];
+            $dateTimeEnd = Timestamp::getDateTimeFromValue($intervalEnd);
+            $event['end_date'] = [
+                'year' => $dateTimeEnd['year'],
+                'month' => $dateTimeEnd['month'],
+                'day' => $dateTimeEnd['day'],
+                'hour' => $dateTimeEnd['hour'],
+                'minute' => $dateTimeEnd['minute'],
+                'second' => $dateTimeEnd['second'],
+            ];
+        }
+        return $event;
     }
 }
