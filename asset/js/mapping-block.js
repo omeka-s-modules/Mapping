@@ -1,57 +1,97 @@
+var MappingBlock = {
+    /**
+     * Get markers belonging to an item.
+     *
+     * @param itemId
+     * @param mapMarkers
+     * @return []
+     */
+    getItemMarkers : function(itemId, mapMarkers) {
+        var itemMarkers = [];
+        $.each(mapMarkers, function(index, data) {
+            if (itemId == data['o:item']['o:id']) {
+                itemMarkers.push(data);
+            }
+        });
+        return itemMarkers;
+    },
+    /**
+     * Add markers to the map and set the default view.
+     *
+     * @param map
+     * @param mapData
+     * @param mapMarkers
+     * @param markerClusterGroup
+     */
+    loadMap : function(map, mapData, mapMarkers, markerClusterGroup) {
+        // Add markers to the map.
+        markerClusterGroup.clearLayers();
+        $.each(mapMarkers, function(index, data) {
+            var marker = L.marker(L.latLng(
+                data['o-module-mapping:lat'],
+                data['o-module-mapping:lng']
+            ));
+            var popupContent = $('.mapping-marker-popup-content[data-marker-id="' + data['o:id'] + '"]');
+            if (popupContent.length > 0) {
+                popupContent = popupContent.clone().show();
+                marker.bindPopup(popupContent[0]);
+            }
+            markerClusterGroup.addLayer(marker);
+        });
+        map.addLayer(markerClusterGroup);
+        // Set the default view.
+        if (mapData['bounds']) {
+            var bounds = mapData['bounds'].split(',');
+            var southWest = [bounds[1], bounds[0]];
+            var northEast = [bounds[3], bounds[2]];
+            map.fitBounds([southWest, northEast]);
+        } else {
+            var bounds = markerClusterGroup.getBounds();
+            if (bounds.isValid()) {
+                map.fitBounds(bounds);
+            } else {
+                map.setView([20, 0], 2);
+            }
+        }
+    }
+}
+
 $(document).ready( function() {
 
-var mappingMaps = $('.mapping-map');
+$('.mapping-block').each(function() {
+    var blockDiv = $(this);
+    var mapDiv = blockDiv.children('.mapping-map');
+    var timelineDiv = blockDiv.children('.mapping-timeline');
 
-mappingMaps.each(function() {
-    var mappingMap = $(this);
-    var mappingTimeline = mappingMap.siblings('.mapping-timeline');
+    var mapData = mapDiv.data('data');
+    var mapMarkers = mapDiv.data('markers');
 
-    var data = mappingMap.data('data');
-    var timelineData = mappingTimeline.data('data');
-    var timelineOptions = mappingTimeline.data('options');
+    // Initialize the map.
+    var map = L.map(mapDiv[0], {maxZoom: 18});
+    var markerClusterGroup = L.markerClusterGroup();
 
-    if (timelineData.events.length) {
-        var timeline = new TL.Timeline(mappingTimeline[0], timelineData, timelineOptions);
-        var timelineFirst = timeline.getData(0);
-        console.log(timelineFirst);
-        // @todo: show markers belonging to item identified by timelineFirst.unique_id
-        // @todo: hide all other markers
-        // @todo: may have to change the way markers are loaded, i.e. load them one by one, depending on which event is selected
+    if (timelineDiv.length) {
+        // Initialize the timeline.
+        var timeline = new TL.Timeline(
+            timelineDiv[0],
+            timelineDiv.data('data'),
+            timelineDiv.data('options')
+        );
+        mapMarkers = MappingBlock.getItemMarkers(
+            timeline.getData(0).unique_id,
+            mapDiv.data('markers')
+        );
+        // Reload the map when an event changes.
         timeline.on('change', function(data) {
-            console.log('tl change');
-            console.log(data);
+            mapMarkers = MappingBlock.getItemMarkers(
+                data.unique_id,
+                mapDiv.data('markers')
+            );
+            MappingBlock.loadMap(map, mapData, mapMarkers, markerClusterGroup);
         });
     }
 
-    // Build the marker feature group.
-    var markers = L.markerClusterGroup();
-    $.each(mappingMap.data('markers'), function(index, data) {
-        var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
-        var marker = L.marker(latLng);
-        var popupContent = $('.mapping-marker-popup-content[data-marker-id="' + data['o:id'] + '"]');
-        if (popupContent.length > 0) {
-            popupContent = popupContent.clone().show();
-            marker.bindPopup(popupContent[0]);
-        }
-        markers.addLayer(marker);
-    });
-
-    // Initialize the map, add markers, and set the default view.
-    var map = L.map(this, {maxZoom: 18});
-    map.addLayer(markers);
-    if (data['bounds']) {
-        var bounds = data['bounds'].split(',');
-        var southWest = [bounds[1], bounds[0]];
-        var northEast = [bounds[3], bounds[2]];
-        map.fitBounds([southWest, northEast]);
-    } else {
-        var bounds = markers.getBounds();
-        if (bounds.isValid()) {
-            map.fitBounds(bounds);
-        } else {
-            map.setView([20, 0], 2);
-        }
-    }
+    MappingBlock.loadMap(map, mapData, mapMarkers, markerClusterGroup);
 
     // Set base map and grouped overlay layers.
     var baseMaps = {
@@ -85,7 +125,7 @@ mappingMaps.each(function() {
     // Add base map and grouped WMS overlay layers.
     map.addLayer(baseMaps['Streets']);
     map.addLayer(noOverlayLayer);
-    $.each(data['wms'], function(index, data) {
+    $.each(mapData['wms'], function(index, data) {
         wmsLayer = L.tileLayer.wms(data.base_url, {
             layers: data.layers,
             styles: data.styles,

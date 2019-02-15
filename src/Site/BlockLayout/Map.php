@@ -88,10 +88,11 @@ class Map extends AbstractBlockLayout
             'data' => $data,
             'markers' => $allMarkers,
             'timelineData' => [
-                'events' => array_filter($timelineEvents),
+                // Remove empty events and reset the keys.
+                'events' => array_values(array_filter($timelineEvents)),
             ],
             'timelineOptions' => [
-                'debug' => true,
+                'debug' => false,
                 'timenav_position' => 'top',
             ],
         ]);

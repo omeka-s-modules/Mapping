@@ -90,15 +90,18 @@ $wmsOverlayTemplate = '
 </div>
 
 <h4><?php echo $this->translate('Timeline'); ?></h4>
+<p><?php echo $this->translate('To enable a timeline for this map, select the timestamp and/or interval properties to use when placing items on the timeline.'); ?></p>
 <?php
 echo $this->numericPropertySelect([
     'name' => 'o:block[__blockIndex__][o:data][timeline][data_type_properties]',
     'attributes' => [
         'class' => 'chosen-select',
+        'data-placeholder' => 'Select property(s)…', // @translate
         'multiple' => true,
         'value' => isset($data['timeline']['data_type_properties']) ? $data['timeline']['data_type_properties'] : null,
     ],
     'options' => [
+        'empty_option' => '',
         'numeric_data_type' => ['timestamp', 'interval'],
         'numeric_data_type_disambiguate' => true,
     ],
