@@ -9,10 +9,21 @@ use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Entity\SitePageBlock;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Stdlib\ErrorStore;
+use Omeka\Stdlib\HtmlPurifier;
 use Zend\View\Renderer\PhpRenderer;
 
 class Map extends AbstractBlockLayout
 {
+    /**
+     * @var HtmlPurifier
+     */
+    protected $htmlPurifier;
+
+    public function __construct(HtmlPurifier $htmlPurifier)
+    {
+        $this->htmlPurifier = $htmlPurifier;
+    }
+
     public function getLabel()
     {
         return 'Map'; // @translate
@@ -55,10 +66,11 @@ class Map extends AbstractBlockLayout
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
-        $data = $block ? $block->data() : [];
-        return $view->partial('common/block-layout/mapping-block-form', [
-            'data' => $this->filterBlockData($data),
-        ]) . $view->blockAttachmentsForm($block, true, ['has_markers' => true]);
+        $data = $this->filterBlockData($block->data());
+        return $view->partial(
+            'common/block-layout/mapping-block-form',
+            ['data' => $data]
+        ) . $view->blockAttachmentsForm($block, true, ['has_markers' => true]);
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
@@ -168,10 +180,10 @@ class Map extends AbstractBlockLayout
         ];
         if (isset($data['timeline']) && is_array($data['timeline'])) {
             if (isset($data['timeline']['title_headline'])) {
-                $timeline['title_headline'] = $data['timeline']['title_headline'];
+                $timeline['title_headline'] = $this->htmlPurifier->purify($data['timeline']['title_headline']);
             }
             if (isset($data['timeline']['title_text'])) {
-                $timeline['title_text'] = $data['timeline']['title_text'];
+                $timeline['title_text'] = $this->htmlPurifier->purify($data['timeline']['title_text']);
             }
             if (isset($data['timeline']['data_type_properties'])
                 && is_array($data['timeline']['data_type_properties'])
