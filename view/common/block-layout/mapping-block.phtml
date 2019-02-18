@@ -18,7 +18,7 @@ $this->headScript()->appendFile('https://cdn.knightlab.com/libs/timeline3/latest
         data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
     ></div>
     <?php if ($timelineData['events']): ?>
-    <div class='mapping-timeline' style="width: 100%; height: 600px"
+    <div class='mapping-timeline' style="width: 100%; height: 500px"
         data-data="<?php echo $this->escapeHtml(json_encode($timelineData)); ?>"
         data-options="<?php echo $this->escapeHtml(json_encode($timelineOptions)); ?>"
     ></div>

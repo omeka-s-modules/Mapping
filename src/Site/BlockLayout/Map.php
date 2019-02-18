@@ -84,10 +84,21 @@ class Map extends AbstractBlockLayout
             $allMarkers = array_merge($allMarkers, $markers);
         }
 
+        // Set the timeline title.
+        $timelineTitle = null;
+        if (isset($data['timeline']['title_headline']) || isset($data['timeline']['title_text'])) {
+            $timelineTitle = [
+                'text' => [
+                    'headline' => $data['timeline']['title_headline'],
+                    'text' => $data['timeline']['title_text'],
+                ],
+            ];
+        }
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
             'markers' => $allMarkers,
             'timelineData' => [
+                'title' => $timelineTitle,
                 // Remove empty events and reset the keys.
                 'events' => array_values(array_filter($timelineEvents)),
             ],
@@ -151,9 +162,17 @@ class Map extends AbstractBlockLayout
 
         // Filter the timeline data.
         $timeline = [
+            'title_headline' => null,
+            'title_text' => null,
             'data_type_properties' => null,
         ];
         if (isset($data['timeline']) && is_array($data['timeline'])) {
+            if (isset($data['timeline']['title_headline'])) {
+                $timeline['title_headline'] = $data['timeline']['title_headline'];
+            }
+            if (isset($data['timeline']['title_text'])) {
+                $timeline['title_text'] = $data['timeline']['title_text'];
+            }
             if (isset($data['timeline']['data_type_properties'])
                 && is_array($data['timeline']['data_type_properties'])
             ) {
