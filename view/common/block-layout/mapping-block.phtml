@@ -13,21 +13,15 @@ $this->headLink()->appendStylesheet('https://cdn.knightlab.com/libs/timeline3/la
 $this->headScript()->appendFile('https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js');
 ?>
 <div class="mapping-block">
-    <div class="mapping-map" style="height:500px;"
-        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
-        data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
-    ></div>
     <?php if ($timelineData['events']): ?>
-    <div class='mapping-timeline' style="width: 100%; height: 500px"
-        data-data="<?php echo $this->escapeHtml(json_encode($timelineData)); ?>"
-        data-options="<?php echo $this->escapeHtml(json_encode($timelineOptions)); ?>"
-    ></div>
+    <div class="mapping-map" style="height:400px;" data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>" data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"></div>
+    <div class='mapping-timeline' style="height: 350px" data-data="<?php echo $this->escapeHtml(json_encode($timelineData)); ?>" data-options="<?php echo $this->escapeHtml(json_encode($timelineOptions)); ?>"></div>
+    <?php else: ?>
+    <div class="mapping-map" style="height:500px;" data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>" data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"></div>
     <?php endif; ?>
+
     <?php foreach ($markers as $marker): ?>
-    <div class="mapping-marker-popup-content" style="display:none;"
-        data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>"
-        data-item-id="<?php echo $this->escapeHtml($marker->item()->id()); ?>"
-    >
+    <div class="mapping-marker-popup-content" style="display:none;" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>" data-item-id="<?php echo $this->escapeHtml($marker->item()->id()); ?>">
         <?php if ($marker->label()): ?>
         <h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
         <?php endif; ?>

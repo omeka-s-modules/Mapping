@@ -1,12 +1,14 @@
 <?php
 namespace Mapping\Site\BlockLayout;
 
+use Composer\Semver\Comparator;
 use NumericDataTypes\DataType\Timestamp;
 use Omeka\Api\Exception\NotFoundException;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Entity\SitePageBlock;
+use Omeka\Module\Manager as ModuleManager;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Stdlib\ErrorStore;
 use Omeka\Stdlib\HtmlPurifier;
@@ -19,9 +21,15 @@ class Map extends AbstractBlockLayout
      */
     protected $htmlPurifier;
 
-    public function __construct(HtmlPurifier $htmlPurifier)
+    /**
+     * @var ModuleManager
+     */
+    protected $moduleManager;
+
+    public function __construct(HtmlPurifier $htmlPurifier, ModuleManager $moduleManager)
     {
         $this->htmlPurifier = $htmlPurifier;
+        $this->moduleManager = $moduleManager;
     }
 
     public function getLabel()
@@ -67,33 +75,50 @@ class Map extends AbstractBlockLayout
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
         $data = $this->filterBlockData($block->data());
-        return $view->partial(
+        $form = $view->partial(
             'common/block-layout/mapping-block-form',
             ['data' => $data]
-        ) . $view->blockAttachmentsForm($block, true, ['has_markers' => true]);
+        );
+        if ($this->timelineIsAvailable()) {
+            $form .= $view->partial(
+                'common/block-layout/mapping-block-timeline-form',
+                ['data' => $data]
+            );
+        }
+        $form .= $view->blockAttachmentsForm($block, true, ['has_markers' => true]);
+        return $form;
     }
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
         $data = $this->filterBlockData($block->data());
+        $timelineIsAvailable = $this->timelineIsAvailable();
 
         // Get all markers from the attachment items.
         $allMarkers = [];
         $timelineEvents = [];
         foreach ($block->attachments() as $attachment) {
+
             // When an item was removed from the base, it should be skipped.
             $item = $attachment->item();
             if (!$item) {
                 continue;
             }
-            if ($data['timeline']['data_type_properties']) {
-                $timelineEvents[] = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
-            }
+
+            // Set the map markers.
             $markers = $view->api()->search(
                 'mapping_markers',
                 ['item_id' => $item->id()]
             )->getContent();
             $allMarkers = array_merge($allMarkers, $markers);
+
+            // Set the timeline events.
+            if ($timelineIsAvailable && $data['timeline']['data_type_properties']) {
+                $timelineEvent = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
+                if ($timelineEvent) {
+                    $timelineEvents[] = $timelineEvent;
+                }
+            }
         }
 
         // Set the timeline title.
@@ -106,13 +131,13 @@ class Map extends AbstractBlockLayout
                 ],
             ];
         }
+
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
             'markers' => $allMarkers,
             'timelineData' => [
                 'title' => $timelineTitle,
-                // Remove empty events and reset the keys.
-                'events' => array_values(array_filter($timelineEvents)),
+                'events' => $timelineEvents,
             ],
             'timelineOptions' => [
                 'debug' => false,
@@ -185,19 +210,24 @@ class Map extends AbstractBlockLayout
             if (isset($data['timeline']['title_text'])) {
                 $timeline['title_text'] = $this->htmlPurifier->purify($data['timeline']['title_text']);
             }
-            if (isset($data['timeline']['data_type_properties'])
-                && is_array($data['timeline']['data_type_properties'])
-            ) {
-                foreach ($data['timeline']['data_type_properties'] as $dataTypeProperty) {
-                    if (is_string($dataTypeProperty)) {
-                        $dataTypeProperty = explode(':', $dataTypeProperty);
-                        if (3 === count($dataTypeProperty)) {
-                            list($namespace, $type, $propertyId) = $dataTypeProperty;
-                            if ('numeric' === $namespace
-                                && in_array($type, ['timestamp', 'interval'])
-                                && is_numeric($propertyId)
-                            ) {
-                                $timeline['data_type_properties'][] = sprintf('%s:%s:%s', $namespace, $type, $propertyId);
+            if (isset($data['timeline']['data_type_properties'])) {
+                // Anticipate future use of multiple numeric properties per
+                // timeline by saving an array of properties.
+                if (is_string($data['timeline']['data_type_properties'])) {
+                    $data['timeline']['data_type_properties'] = [$data['timeline']['data_type_properties']];
+                }
+                if (is_array($data['timeline']['data_type_properties'])) {
+                    foreach ($data['timeline']['data_type_properties'] as $dataTypeProperty) {
+                        if (is_string($dataTypeProperty)) {
+                            $dataTypeProperty = explode(':', $dataTypeProperty);
+                            if (3 === count($dataTypeProperty)) {
+                                list($namespace, $type, $propertyId) = $dataTypeProperty;
+                                if ('numeric' === $namespace
+                                    && in_array($type, ['timestamp', 'interval'])
+                                    && is_numeric($propertyId)
+                                ) {
+                                    $timeline['data_type_properties'][] = sprintf('%s:%s:%s', $namespace, $type, $propertyId);
+                                }
                             }
                         }
                     }
@@ -251,8 +281,8 @@ class Map extends AbstractBlockLayout
         $event = [
             'unique_id' => (string) $item->id(), // must cast to string
             'text' => [
-                'headline' => $title ? $title->value() : '', // must set empty string
-                'text' => $description ? $description->value() : '', // must set empty string
+                'headline' => $item->displayTitle(),
+                'text' => $item->displayDescription(),
             ],
         ];
 
@@ -299,5 +329,22 @@ class Map extends AbstractBlockLayout
             ];
         }
         return $event;
+    }
+
+    /**
+     * Is the timeline feature available?
+     *
+     * @return bool
+     */
+    public function timelineIsAvailable()
+    {
+        // Available when the NumericDataTypes module is active and the version
+        // >= 1.1.0 (when it introduced interval data type).
+        $module = $this->moduleManager->getModule('NumericDataTypes');
+        return (
+            $module
+            && ModuleManager::STATE_ACTIVE === $module->getState()
+            && Comparator::greaterThanOrEqualTo($module->getDb('version'), '1.1.0')
+        );
     }
 }

@@ -9,6 +9,9 @@ class MapFactory implements FactoryInterface
 {
     public function __invoke(ContainerInterface $services, $requestedName, array $options = null)
     {
-        return new Map($services->get('Omeka\HtmlPurifier'));
+        return new Map(
+            $services->get('Omeka\HtmlPurifier'),
+            $services->get('Omeka\ModuleManager')
+        );
     }
 }
