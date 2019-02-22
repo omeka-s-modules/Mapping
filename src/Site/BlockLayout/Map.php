@@ -96,7 +96,7 @@ class Map extends AbstractBlockLayout
 
         // Get all markers from the attachment items.
         $items = [];
-        $allMarkers = [];
+        $markers = [];
         foreach ($block->attachments() as $attachment) {
             // When an item was removed from the base, it should be skipped.
             $item = $attachment->item();
@@ -105,13 +105,13 @@ class Map extends AbstractBlockLayout
             }
             $items[] = $item;
             // Set the map markers.
-            $markers = $view->api()->search('mapping_markers', ['item_id' => $item->id()])->getContent();
-            $allMarkers = array_merge($allMarkers, $markers);
+            $itemMarkers = $view->api()->search('mapping_markers', ['item_id' => $item->id()])->getContent();
+            $markers = array_merge($markers, $itemMarkers);
         }
 
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
-            'markers' => $allMarkers,
+            'markers' => $markers,
             'timelineData' => $this->getTimelineData($items, $data, $view),
             'timelineOptions' => $this->getTimelineOptions($data),
         ]);
