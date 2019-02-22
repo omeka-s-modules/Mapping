@@ -95,54 +95,25 @@ class Map extends AbstractBlockLayout
         $timelineIsAvailable = $this->timelineIsAvailable();
 
         // Get all markers from the attachment items.
+        $items = [];
         $allMarkers = [];
-        $timelineEvents = [];
         foreach ($block->attachments() as $attachment) {
-
             // When an item was removed from the base, it should be skipped.
             $item = $attachment->item();
             if (!$item) {
                 continue;
             }
-
+            $items[] = $item;
             // Set the map markers.
-            $markers = $view->api()->search(
-                'mapping_markers',
-                ['item_id' => $item->id()]
-            )->getContent();
+            $markers = $view->api()->search('mapping_markers', ['item_id' => $item->id()])->getContent();
             $allMarkers = array_merge($allMarkers, $markers);
-
-            // Set the timeline events.
-            if ($timelineIsAvailable && $data['timeline']['data_type_properties']) {
-                $timelineEvent = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
-                if ($timelineEvent) {
-                    $timelineEvents[] = $timelineEvent;
-                }
-            }
-        }
-
-        // Set the timeline title.
-        $timelineTitle = null;
-        if (isset($data['timeline']['title_headline']) || isset($data['timeline']['title_text'])) {
-            $timelineTitle = [
-                'text' => [
-                    'headline' => $data['timeline']['title_headline'],
-                    'text' => $data['timeline']['title_text'],
-                ],
-            ];
         }
 
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
             'markers' => $allMarkers,
-            'timelineData' => [
-                'title' => $timelineTitle,
-                'events' => $timelineEvents,
-            ],
-            'timelineOptions' => [
-                'debug' => false,
-                'timenav_position' => 'top',
-            ],
+            'timelineData' => $this->getTimelineData($items, $data, $view),
+            'timelineOptions' => $this->getTimelineOptions($data),
         ]);
     }
 
@@ -243,9 +214,82 @@ class Map extends AbstractBlockLayout
     }
 
     /**
-     * Get a timeline event.
+     * Is the timeline feature available?
+     *
+     * @return bool
+     */
+    public function timelineIsAvailable()
+    {
+        // Available when the NumericDataTypes module is active and the version
+        // >= 1.1.0 (when it introduced interval data type).
+        $module = $this->moduleManager->getModule('NumericDataTypes');
+        return (
+            $module
+            && ModuleManager::STATE_ACTIVE === $module->getState()
+            && Comparator::greaterThanOrEqualTo($module->getDb('version'), '1.1.0')
+        );
+    }
+
+    /**
+     * Get timeline options.
+     *
+     * @see https://timeline.knightlab.com/docs/options.html
+     * @param srray $data
+     * @return array
+     */
+    public function getTimelineOptions(array $data)
+    {
+        return [
+            'debug' => false,
+            'timenav_position' => 'top',
+        ];
+    }
+
+    /**
+     * Get timeline data.
      *
      * @see https://timeline.knightlab.com/docs/json-format.html
+     * @param array $items
+     * @param array $data
+     * @param PhpRenderer $view
+     * @return array
+     */
+    public function getTimelineData(array $items, array $data, PhpRenderer $view)
+    {
+        $timelineData = [
+            'title' => null,
+            'events' => [],
+        ];
+        if (!isset($data['timeline']['data_type_properties'])) {
+            return $timelineData;
+        }
+        if (!$this->timelineIsAvailable()) {
+            return $timelineData;
+        }
+        // Set the timeline title.
+        if (isset($data['timeline']['title_headline']) || isset($data['timeline']['title_text'])) {
+            $timelineData['title'] = [
+                'text' => [
+                    'headline' => $data['timeline']['title_headline'],
+                    'text' => $data['timeline']['title_text'],
+                ],
+            ];
+        }
+        // Set the timeline events.
+        $events = [];
+        foreach ($items as $item) {
+            $event = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
+            if ($event) {
+                $timelineData['events'][] = $event;
+            }
+        }
+        return $timelineData;
+    }
+
+    /**
+     * Get a timeline event.
+     *
+     * @see https://timeline.knightlab.com/docs/json-format.html#json-slide
      * @param ItemRepresentation $item
      * @param array $dataTypeProperties
      * @return array
@@ -329,22 +373,5 @@ class Map extends AbstractBlockLayout
             ];
         }
         return $event;
-    }
-
-    /**
-     * Is the timeline feature available?
-     *
-     * @return bool
-     */
-    public function timelineIsAvailable()
-    {
-        // Available when the NumericDataTypes module is active and the version
-        // >= 1.1.0 (when it introduced interval data type).
-        $module = $this->moduleManager->getModule('NumericDataTypes');
-        return (
-            $module
-            && ModuleManager::STATE_ACTIVE === $module->getState()
-            && Comparator::greaterThanOrEqualTo($module->getDb('version'), '1.1.0')
-        );
     }
 }
