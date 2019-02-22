@@ -362,15 +362,20 @@ class Map extends AbstractBlockLayout
                 'minute' => $dateTimeStart['minute'],
                 'second' => $dateTimeStart['second'],
             ];
-            $dateTimeEnd = Timestamp::getDateTimeFromValue($intervalEnd);
+            $dateTimeEnd = Timestamp::getDateTimeFromValue($intervalEnd, false);
             $event['end_date'] = [
                 'year' => $dateTimeEnd['year'],
-                'month' => $dateTimeEnd['month'],
-                'day' => $dateTimeEnd['day'],
-                'hour' => $dateTimeEnd['hour'],
-                'minute' => $dateTimeEnd['minute'],
-                'second' => $dateTimeEnd['second'],
+                'month' => $dateTimeEnd['month_normalized'],
+                'day' => $dateTimeEnd['day_normalized'],
+                'hour' => $dateTimeEnd['hour_normalized'],
+                'minute' => $dateTimeEnd['minute_normalized'],
+                'second' => $dateTimeEnd['second_normalized'],
             ];
+            $event['display_date'] = sprintf(
+                '%s — %s',
+                $dateTimeStart['date']->format($dateTimeStart['format_render']),
+                $dateTimeEnd['date']->format($dateTimeEnd['format_render'])
+            );
         }
         return $event;
     }
