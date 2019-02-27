@@ -94,17 +94,25 @@ class Map extends AbstractBlockLayout
         $data = $this->filterBlockData($block->data());
         $timelineIsAvailable = $this->timelineIsAvailable();
 
-        // Get all markers from the attachment items.
-        $items = [];
+        // Get markers (and events, if applicable) from the attached items.
+        $events = [];
         $markers = [];
         foreach ($block->attachments() as $attachment) {
-            // When an item was removed from the base, it should be skipped.
             $item = $attachment->item();
             if (!$item) {
+                // This attachment has no item. Do not add markers.
                 continue;
             }
-            $items[] = $item;
-            // Set the map markers.
+            if ($data['timeline']['data_type_properties']) {
+                // Set the timeline event for this item.
+                $event = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
+                if (!$event) {
+                    // No timeline event. Do not add markers.
+                    continue;
+                }
+                $events[] = $event;
+            }
+            // Set the map markers for this item.
             $itemMarkers = $view->api()->search('mapping_markers', ['item_id' => $item->id()])->getContent();
             $markers = array_merge($markers, $itemMarkers);
         }
@@ -112,7 +120,7 @@ class Map extends AbstractBlockLayout
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
             'markers' => $markers,
-            'timelineData' => $this->getTimelineData($items, $data, $view),
+            'timelineData' => $this->getTimelineData($events, $data, $view),
             'timelineOptions' => $this->getTimelineOptions($data),
         ]);
     }
@@ -249,16 +257,16 @@ class Map extends AbstractBlockLayout
      * Get timeline data.
      *
      * @see https://timeline.knightlab.com/docs/json-format.html
-     * @param array $items
+     * @param array $events
      * @param array $data
      * @param PhpRenderer $view
      * @return array
      */
-    public function getTimelineData(array $items, array $data, PhpRenderer $view)
+    public function getTimelineData(array $events, array $data, PhpRenderer $view)
     {
         $timelineData = [
             'title' => null,
-            'events' => [],
+            'events' => $events,
         ];
         if (!isset($data['timeline']['data_type_properties'])) {
             return $timelineData;
@@ -274,14 +282,6 @@ class Map extends AbstractBlockLayout
                     'text' => $data['timeline']['title_text'],
                 ],
             ];
-        }
-        // Set the timeline events.
-        $events = [];
-        foreach ($items as $item) {
-            $event = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
-            if ($event) {
-                $timelineData['events'][] = $event;
-            }
         }
         return $timelineData;
     }
