@@ -92,6 +92,7 @@ class Map extends AbstractBlockLayout
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
         $data = $this->filterBlockData($block->data());
+        $isTimeline = (bool) $data['timeline']['data_type_properties'];
         $timelineIsAvailable = $this->timelineIsAvailable();
 
         // Get markers (and events, if applicable) from the attached items.
@@ -103,7 +104,7 @@ class Map extends AbstractBlockLayout
                 // This attachment has no item. Do not add markers.
                 continue;
             }
-            if ($data['timeline']['data_type_properties']) {
+            if ($isTimeline && $timelineIsAvailable) {
                 // Set the timeline event for this item.
                 $event = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
                 if (!$event) {
@@ -120,6 +121,7 @@ class Map extends AbstractBlockLayout
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
             'markers' => $markers,
+            'isTimeline' => $isTimeline,
             'timelineData' => $this->getTimelineData($events, $data, $view),
             'timelineOptions' => $this->getTimelineOptions($data),
         ]);
@@ -268,12 +270,6 @@ class Map extends AbstractBlockLayout
             'title' => null,
             'events' => $events,
         ];
-        if (!isset($data['timeline']['data_type_properties'])) {
-            return $timelineData;
-        }
-        if (!$this->timelineIsAvailable()) {
-            return $timelineData;
-        }
         // Set the timeline title.
         if (isset($data['timeline']['title_headline']) || isset($data['timeline']['title_text'])) {
             $timelineData['title'] = [

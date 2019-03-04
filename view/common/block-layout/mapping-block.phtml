@@ -13,7 +13,7 @@ $this->headLink()->appendStylesheet('https://cdn.knightlab.com/libs/timeline3/la
 $this->headScript()->appendFile('https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js');
 ?>
 <div class="mapping-block">
-    <?php if ($timelineData['events']): ?>
+    <?php if ($isTimeline): ?>
     <div class="mapping-map" style="height:400px;" data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>" data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"></div>
     <div class='mapping-timeline' style="height: 400px" data-data="<?php echo $this->escapeHtml(json_encode($timelineData)); ?>" data-options="<?php echo $this->escapeHtml(json_encode($timelineOptions)); ?>"></div>
     <?php else: ?>
