@@ -249,7 +249,7 @@ class Map extends AbstractBlockLayout
     {
         return [
             'debug' => false,
-            'timenav_position' => 'top',
+            'timenav_position' => 'bottom',
         ];
     }
 
