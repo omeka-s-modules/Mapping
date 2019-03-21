@@ -107,11 +107,9 @@ class Map extends AbstractBlockLayout
             if ($isTimeline && $timelineIsAvailable) {
                 // Set the timeline event for this item.
                 $event = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
-                if (!$event) {
-                    // No timeline event. Do not add markers.
-                    continue;
+                if ($event) {
+                    $events[] = $event;
                 }
-                $events[] = $event;
             }
             // Set the map markers for this item.
             $itemMarkers = $view->api()->search('mapping_markers', ['item_id' => $item->id()])->getContent();

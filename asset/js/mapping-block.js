@@ -57,10 +57,7 @@ function MappingBlock(mapDiv, timelineDiv) {
         // Note that we must explicitly specify a new icon so a timeline's event
         // markers can be reset correctly.
         // @see https://github.com/Leaflet/Leaflet.markercluster/issues/786
-        var icon = new L.Icon.Default({
-            iconUrl: 'marker-icon-grey.png',
-            iconRetinaUrl: 'marker-icon-2x-grey.png'
-        });
+        var icon = new L.Icon.Default();
         var marker = L.marker(L.latLng(
             data['o-module-mapping:lat'],
             data['o-module-mapping:lng']
@@ -108,30 +105,26 @@ function MappingBlock(mapDiv, timelineDiv) {
         handleOpacityControl(e.layer, e.name);
     });
 
-    // Reload the map when an event changes.
-    timeline.on('change', function(data) {
-        markers.eachLayer(function(marker) {
-            marker.setIcon(new L.Icon.Default({
-                iconUrl: 'marker-icon-grey.png',
-                iiconRetinaUrl: 'marker-icon-2x-grey.png'
-            }));
-        });
-        if ($.isNumeric(data.unique_id)) {
-            // Changed to an event slide. Differentiate this event's markers
-            // from all other markers. Set the event view.
-            var eventMarkers = markersByItem[data.unique_id];
-            eventMarkers.eachLayer(function(marker) {
-                var icon = marker.options.icon;
-                icon.options.iconUrl = 'marker-icon.png';
-                icon.options.iconRetinaUrl = 'marker-icon-2x.png';
-                marker.setIcon(icon);
+    if (timeline) {
+        // Reload the map when an event changes.
+        timeline.on('change', function(data) {
+            $.each(markersByItem, function(itemId, itemMarkers) {
+                markers.removeLayer(itemMarkers);
             });
-            map.fitBounds(eventMarkers.getBounds(), {maxZoom: 16});
-        } else {
-            // Changed to the title slide. Set the default view.
-            setDefaultView();
-        }
-    });
+            if ($.isNumeric(data.unique_id)) {
+                // Changed to an event slide. Set the event's map view.
+                var eventMarkers = markersByItem[data.unique_id];
+                markers.addLayer(eventMarkers);
+                map.fitBounds(eventMarkers.getBounds(), {maxZoom: 16});
+            } else {
+                // Changed to the title slide. Set the default map view.
+                $.each(markersByItem, function(itemId, itemMarkers) {
+                    markers.addLayer(itemMarkers);
+                });
+                setDefaultView();
+            }
+        });
+    }
 }
 
 $(document).ready( function() {
