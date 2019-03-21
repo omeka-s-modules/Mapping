@@ -1,44 +1,22 @@
 function MappingBlock(mapDiv, timelineDiv) {
 
-    this.mapDiv = mapDiv;
-    this.mapData = mapDiv.data('data');
-    this.markerData = mapDiv.data('markers');
-    this.map = new L.map(mapDiv[0], {maxZoom: 18});
-
-    this.timelineDiv = timelineDiv;
-    this.timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
-    this.timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
-    this.timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], this.timelineData, this.timelineOptions) : null;
-
-    this.markers = new L.markerClusterGroup();
-    this.markersByItem = {};
-
-    var mapDiv = this.mapDiv;
-    var mapData = this.mapData;
-    var markerData = this.markerData;
-    var map = this.map;
-
-    var timeline = this.timeline;
-    var timelineData = this.timelineData;
-    var timelineOptions = this.timelineOptions;
-    var timeline = this.timeline;
-
-    var markers = this.markers;
-    var markersByItem = this.markersByItem;
+    var mapData = mapDiv.data('data');
+    var markerData = mapDiv.data('markers');
+    var map = new L.map(mapDiv[0], {maxZoom: 18});
+    var timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
+    var timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
+    var timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], timelineData, timelineOptions) : null;
+    var markers = new L.markerClusterGroup();
+    var markersByItem = {};
 
     // Set base map and grouped overlay layers.
     var baseMaps = {
         'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
-        'Grayscale': L.tileLayer.provider('OpenStreetMap.BlackAndWhite'),
         'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
         'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
     };
     var noOverlayLayer = new L.GridLayer();
-    var groupedOverlays = {
-        'Overlays': {
-            'No overlay': noOverlayLayer,
-        },
-    };
+    var groupedOverlays = {'Overlays': {'No overlay': noOverlayLayer}};
 
     // Set and prepare opacity control.
     var opacityControl;
@@ -79,18 +57,14 @@ function MappingBlock(mapDiv, timelineDiv) {
         // Note that we must explicitly specify a new icon so a timeline's event
         // markers can be reset correctly.
         // @see https://github.com/Leaflet/Leaflet.markercluster/issues/786
-        var marker = L.marker(
-            L.latLng(
-                data['o-module-mapping:lat'],
-                data['o-module-mapping:lng']
-            ),
-            {
-                icon: new L.Icon.Default({
-                    iconUrl: 'marker-icon-grey.png',
-                    iiconRetinaUrl: 'marker-icon-2x-grey.png'
-                })
-            }
-        );
+        var icon = new L.Icon.Default({
+            iconUrl: 'marker-icon-grey.png',
+            iconRetinaUrl: 'marker-icon-2x-grey.png'
+        });
+        var marker = L.marker(L.latLng(
+            data['o-module-mapping:lat'],
+            data['o-module-mapping:lng']
+        ), {icon: icon});
         var popupContent = $('.mapping-marker-popup-content[data-marker-id="' + markerId + '"]');
         if (popupContent.length > 0) {
             popupContent = popupContent.clone().show();
