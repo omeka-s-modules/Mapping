@@ -64,7 +64,7 @@ class MappingAdapter extends AbstractEntityAdapter
             if ($items) {
                 $itemAlias = $this->createAlias();
                 $qb->innerJoin(
-                    $this->getEntityClass() . '.item', $itemAlias,
+                    'omeka_root.item', $itemAlias,
                     'WITH', $qb->expr()->in("$itemAlias.id", $this->createNamedParameter($qb, $items))
                 );
             }

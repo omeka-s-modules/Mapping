@@ -79,7 +79,7 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
             if ($items) {
                 $itemAlias = $this->createAlias();
                 $qb->innerJoin(
-                    $this->getEntityClass() . '.item', $itemAlias,
+                    'omeka_root.item', $itemAlias,
                     'WITH', $qb->expr()->in("$itemAlias.id", $this->createNamedParameter($qb, $items))
                 );
             }
@@ -94,7 +94,7 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
             if ($media) {
                 $mediaAlias = $this->createAlias();
                 $qb->innerJoin(
-                    $this->getEntityClass() . '.media', $mediaAlias,
+                    'omeka_root.media', $mediaAlias,
                     'WITH', $qb->expr()->in("$mediaAlias.id", $this->createNamedParameter($qb, $media))
                 );
             }
@@ -135,12 +135,12 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                         (%1$s * acos(
                             (
                                 cos(radians(%2$s)) *
-                                cos(radians(Mapping\Entity\MappingMarker.lat)) *
+                                cos(radians(omeka_root.lat)) *
                                 cos(
-                                    (radians(Mapping\Entity\MappingMarker.lng) - radians(%3$s))
+                                    (radians(omeka_root.lng) - radians(%3$s))
                                 ) +
                                 sin(radians(%2$s)) *
-                                sin(radians(Mapping\Entity\MappingMarker.lat))
+                                sin(radians(omeka_root.lat))
                             )
                         )) AS HIDDEN distance',
                         $unitConst,
