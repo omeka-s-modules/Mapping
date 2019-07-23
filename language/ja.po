@@ -3,13 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+# Translators:
+# Naosuke Okamoto, 2018
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-22 13:54-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2019-07-23 11:20-0400\n"
+"PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Naosuke Okamoto, 2018\n"
 "Language-Team: Japanese (https://www.transifex.com/omeka/teams/14184/ja/)\n"
 "MIME-Version: 1.0\n"
@@ -18,19 +21,19 @@ msgstr ""
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: Module.php:193 view/mapping/index/form.phtml:27
+#: Module.php:198 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr "マッピング"
 
-#: view/admin/csv-mapping.phtml:2 view/mapping/index/form.phtml:33
-msgid "Close Me"
-msgstr "閉じる"
+#: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
+msgid "Resource location"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:3
-msgid "Mapping Info"
-msgstr "地図情報"
+#: view/admin/csv-mapping.phtml:7 view/admin/csv-mapping.phtml:21
+msgid "Select below"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:6
+#: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
 msgstr "緯度"
 
@@ -38,86 +41,96 @@ msgstr "緯度"
 msgid "Longitude"
 msgstr "経度"
 
-#: view/admin/csv-mapping.phtml:12
+#: view/admin/csv-mapping.phtml:10
 msgid "Latitude/Longitude"
 msgstr "緯度/経度"
 
-#: view/admin/csv-mapping.phtml:16
-msgid "Default View Settings"
-msgstr "デフォルトの表示設定"
-
-#: view/admin/csv-mapping.phtml:19
-msgid "Default Latitude"
-msgstr "デフォルトの緯度"
+#: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
+msgid "Default map view"
+msgstr ""
 
 #: view/admin/csv-mapping.phtml:22
-msgid "Default Longitude"
-msgstr "デフォルトの経度"
+msgid "Map center latitude"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:25
-msgid "Default Zoom"
-msgstr "デフォルトの拡大倍率"
+#: view/admin/csv-mapping.phtml:23
+msgid "Map center longitude"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:31
-msgid "Use multivalue separator"
-msgstr "多値セパレータを使用する"
+#: view/admin/csv-mapping.phtml:24
+msgid "Default zoom"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:32
-msgid "(Only applies to Latitude/Longitude)"
-msgstr "（緯度/経度 にのみ適用されます）"
-
-#: view/common/block-layout/mapping-block-form.phtml:17
+#: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
 msgstr "デフォルトの表示"
 
-#: view/common/block-layout/mapping-block-form.phtml:19
+#: view/common/block-layout/mapping-block-form.phtml:23
 msgid "Set the default view using the in-map controls."
 msgstr "マップ内のコントロールを使用して、デフォルトのビューを設定します。"
 
-#: view/common/block-layout/mapping-block-form.phtml:25
+#: view/common/block-layout/mapping-block-form.phtml:29
 msgid "WMS Overlays"
 msgstr "WMS オーバーレイ／地理参照マップイメージのオーバーレイ"
 
-#: view/common/block-layout/mapping-block-form.phtml:27
+#: view/common/block-layout/mapping-block-form.phtml:31
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr "以下のWebマップサービス（WMS）オーバーレイを追加、編集、および削除します。 既定で開くオーバーレイを確認することができます。"
 
-#: view/common/block-layout/mapping-block-form.phtml:57
+#: view/common/block-layout/mapping-block-form.phtml:65
 msgid "Base URL"
 msgstr "ベースURL"
 
-#: view/common/block-layout/mapping-block-form.phtml:66
+#: view/common/block-layout/mapping-block-form.phtml:74
 msgid "Layers"
 msgstr "レイヤー"
 
-#: view/common/block-layout/mapping-block-form.phtml:68
+#: view/common/block-layout/mapping-block-form.phtml:76
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "WMS層（ある場合）（コンマ区切り）。"
 
-#: view/common/block-layout/mapping-block-form.phtml:79
+#: view/common/block-layout/mapping-block-form.phtml:87
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "WMSスタイル（存在する場合）（コンマ区切り）。"
 
-#: view/common/block-layout/mapping-block-form.phtml:87
+#: view/common/block-layout/mapping-block-form.phtml:95
 msgid "Add Overlay"
 msgstr "オーバーレイを追加"
 
-#: view/common/block-layout/mapping-block-form.phtml:88
+#: view/common/block-layout/mapping-block-form.phtml:96
 msgid "Save Changes"
 msgstr "変更を保存"
 
-#: view/common/block-layout/mapping-block-form.phtml:89
+#: view/common/block-layout/mapping-block-form.phtml:97
 msgid "Clear Inputs"
 msgstr "入力をクリア"
 
-#: view/common/block-layout/mapping-block.phtml:29
+#: view/common/block-layout/mapping-block-timeline-form.phtml:1
+msgid "Timeline"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:5
+msgid "Title headline"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:20
+msgid "Title text"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:37
+msgid ""
+"Select the timestamp or interval property to use when populating the "
+"timeline."
+msgstr ""
+
+#: view/common/block-layout/mapping-block.phtml:31
 #: view/mapping/site/index/browse.phtml:32
 msgid "View media"
 msgstr "メディアを表示"
 
-#: view/common/block-layout/mapping-block.phtml:33
+#: view/common/block-layout/mapping-block.phtml:35
 #: view/mapping/site/index/browse.phtml:36
 msgid "View item"
 msgstr "アイテムを表示"
@@ -142,19 +155,23 @@ msgstr "地理的半径"
 msgid "Geographic Radius Unit"
 msgstr "地理的半径単位"
 
-#: view/mapping/index/form.phtml:34
+#: view/mapping/index/form.phtml:32
+msgid "Close Me"
+msgstr "閉じる"
+
+#: view/mapping/index/form.phtml:33
 msgid "Marker Image"
 msgstr "マーカー画像"
 
-#: view/mapping/index/form.phtml:35
+#: view/mapping/index/form.phtml:34
 msgid " No Image"
 msgstr "画像なし"
 
-#: view/mapping/index/form.phtml:56
+#: view/mapping/index/form.phtml:55
 msgid "Marker Label"
 msgstr "マーカーのラベル"
 
-#: view/mapping/index/form.phtml:59
+#: view/mapping/index/form.phtml:58
 msgid "Select Marker Image"
 msgstr "マーカー画像を選択"
 
@@ -179,3 +196,11 @@ msgstr "地図上の場所を選択する必要があります。"
 #: src/Site/Navigation/Link/MapBrowse.php:12
 msgid "Map Browse"
 msgstr "地図を閲覧"
+
+#: src/Api/Adapter/MappingAdapter.php:45
+msgid "A marker must have an item."
+msgstr ""
+
+#: src/Api/Adapter/MappingAdapter.php:51
+msgid "Map bounds must contain four numbers separated by commas"
+msgstr ""
