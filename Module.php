@@ -79,69 +79,41 @@ class Module extends AbstractModule
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.add.form.after',
-            function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/form');
-            }
+            [$this, 'handleViewFormAfter']
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.edit.form.after',
-            function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/form');
-            }
+            [$this, 'handleViewFormAfter']
         );
         // Add the map to the item show page.
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.show.after',
-            function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/show');
-            }
+            [$this, 'handleViewShowAfter']
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Site\Item',
             'view.show.after',
-            function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/show');
-            }
+            [$this, 'handleViewShowAfter']
         );
         // Add the mapping fields to the site's map browse page.
         $sharedEventManager->attach(
             'Mapping\Controller\Site\Index',
             'view.advanced_search',
-            function (Event $event) {
-                $partials = $event->getParam('partials');
-                $partials[] = 'mapping/index/advanced-search';
-                $event->setParam('partials', $partials);
-            }
+            [$this, 'filterViewAdvancedSearch']
         );
         // Add the "has_markers" filter to item search.
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.search.query',
-            function (Event $event) {
-                $query = $event->getParam('request')->getContent();
-                if (isset($query['has_markers'])) {
-                    $qb = $event->getParam('queryBuilder');
-                    $itemAdapter = $event->getTarget();
-                    $mappingMarkerAlias = $itemAdapter->createAlias();
-                    $itemAlias = $itemAdapter->getEntityClass();
-                    $qb->innerJoin(
-                        'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
-                        'WITH', "$mappingMarkerAlias.item = $itemAlias.id"
-                    );
-                }
-            }
+            [$this, 'handleApiSearchQuery']
         );
         // Add the Mapping term definition.
         $sharedEventManager->attach(
             '*',
             'api.context',
-            function (Event $event) {
-                $context = $event->getParam('context');
-                $context['o-module-mapping'] = 'http://omeka.org/s/vocabs/module/mapping#';
-                $event->setParam('context', $context);
-            }
+            [$this, 'filterApiContext']
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
@@ -173,6 +145,45 @@ class Module extends AbstractModule
             'api.hydrate.post',
             [$this, 'handleMarkers']
         );
+    }
+
+    public function handleViewFormAfter(Event $event)
+    {
+        echo $event->getTarget()->partial('mapping/index/form');
+    }
+
+    public function handleViewShowAfter(Event $event)
+    {
+        echo $event->getTarget()->partial('mapping/index/show');
+    }
+
+    public function filterViewAdvancedSearch(Event $event)
+    {
+        $partials = $event->getParam('partials');
+        $partials[] = 'mapping/index/advanced-search';
+        $event->setParam('partials', $partials);
+    }
+
+    public function handleApiSearchQuery(Event $event)
+    {
+        $query = $event->getParam('request')->getContent();
+        if (isset($query['has_markers'])) {
+            $qb = $event->getParam('queryBuilder');
+            $itemAdapter = $event->getTarget();
+            $mappingMarkerAlias = $itemAdapter->createAlias();
+            $itemAlias = $itemAdapter->getEntityClass();
+            $qb->innerJoin(
+                'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
+                'WITH', "$mappingMarkerAlias.item = $itemAlias.id"
+            );
+        }
+    }
+
+    public function filterApiContext(Event $event)
+    {
+        $context = $event->getParam('context');
+        $context['o-module-mapping'] = 'http://omeka.org/s/vocabs/module/mapping#';
+        $event->setParam('context', $context);
     }
 
     /**
