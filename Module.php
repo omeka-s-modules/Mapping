@@ -59,20 +59,18 @@ class Module extends AbstractModule
     public function install(ServiceLocatorInterface $serviceLocator)
     {
         $conn = $serviceLocator->get('Omeka\Connection');
-        $conn->exec('
-CREATE TABLE mapping_marker (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, media_id INT DEFAULT NULL, lat DOUBLE PRECISION NOT NULL, lng DOUBLE PRECISION NOT NULL, `label` VARCHAR(255) DEFAULT NULL, INDEX IDX_667C9244126F525E (item_id), INDEX IDX_667C9244EA9FDD75 (media_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-CREATE TABLE mapping (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, bounds VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_49E62C8A126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;
-ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;
-ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244EA9FDD75 FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE SET NULL;
-ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;');
+        $conn->exec('CREATE TABLE mapping_marker (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, media_id INT DEFAULT NULL, lat DOUBLE PRECISION NOT NULL, lng DOUBLE PRECISION NOT NULL, `label` VARCHAR(255) DEFAULT NULL, INDEX IDX_667C9244126F525E (item_id), INDEX IDX_667C9244EA9FDD75 (media_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
+        $conn->exec('CREATE TABLE mapping (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, bounds VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_49E62C8A126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
+        $conn->exec('ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;');
+        $conn->exec('ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244EA9FDD75 FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE SET NULL;');
+        $conn->exec('ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;');
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
         $conn = $serviceLocator->get('Omeka\Connection');
-        $conn->exec('
-DROP TABLE IF EXISTS mapping;
-DROP TABLE IF EXISTS mapping_marker');
+        $conn->exec('DROP TABLE IF EXISTS mapping;');
+        $conn->exec('DROP TABLE IF EXISTS mapping_marker');
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
@@ -81,69 +79,41 @@ DROP TABLE IF EXISTS mapping_marker');
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.add.form.after',
-            function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/form');
-            }
+            [$this, 'handleViewFormAfter']
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.edit.form.after',
-            function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/form');
-            }
+            [$this, 'handleViewFormAfter']
         );
         // Add the map to the item show page.
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.show.after',
-            function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/show');
-            }
+            [$this, 'handleViewShowAfter']
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Site\Item',
             'view.show.after',
-            function (Event $event) {
-                echo $event->getTarget()->partial('mapping/index/show');
-            }
+            [$this, 'handleViewShowAfter']
         );
         // Add the mapping fields to the site's map browse page.
         $sharedEventManager->attach(
             'Mapping\Controller\Site\Index',
             'view.advanced_search',
-            function (Event $event) {
-                $partials = $event->getParam('partials');
-                $partials[] = 'mapping/index/advanced-search';
-                $event->setParam('partials', $partials);
-            }
+            [$this, 'filterViewAdvancedSearch']
         );
         // Add the "has_markers" filter to item search.
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.search.query',
-            function (Event $event) {
-                $query = $event->getParam('request')->getContent();
-                if (isset($query['has_markers'])) {
-                    $qb = $event->getParam('queryBuilder');
-                    $itemAdapter = $event->getTarget();
-                    $mappingMarkerAlias = $itemAdapter->createAlias();
-                    $itemAlias = $itemAdapter->getEntityClass();
-                    $qb->innerJoin(
-                        'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
-                        'WITH', "$mappingMarkerAlias.item = $itemAlias.id"
-                    );
-                }
-            }
+            [$this, 'handleApiSearchQuery']
         );
         // Add the Mapping term definition.
         $sharedEventManager->attach(
             '*',
             'api.context',
-            function (Event $event) {
-                $context = $event->getParam('context');
-                $context['o-module-mapping'] = 'http://omeka.org/s/vocabs/module/mapping#';
-                $event->setParam('context', $context);
-            }
+            [$this, 'filterApiContext']
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
@@ -175,6 +145,45 @@ DROP TABLE IF EXISTS mapping_marker');
             'api.hydrate.post',
             [$this, 'handleMarkers']
         );
+    }
+
+    public function handleViewFormAfter(Event $event)
+    {
+        echo $event->getTarget()->partial('mapping/index/form');
+    }
+
+    public function handleViewShowAfter(Event $event)
+    {
+        echo $event->getTarget()->partial('mapping/index/show');
+    }
+
+    public function filterViewAdvancedSearch(Event $event)
+    {
+        $partials = $event->getParam('partials');
+        $partials[] = 'mapping/index/advanced-search';
+        $event->setParam('partials', $partials);
+    }
+
+    public function handleApiSearchQuery(Event $event)
+    {
+        $query = $event->getParam('request')->getContent();
+        if (isset($query['has_markers'])) {
+            $qb = $event->getParam('queryBuilder');
+            $itemAdapter = $event->getTarget();
+            $mappingMarkerAlias = $itemAdapter->createAlias();
+            $itemAlias = $itemAdapter->getEntityClass();
+            $qb->innerJoin(
+                'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
+                'WITH', "$mappingMarkerAlias.item = $itemAlias.id"
+            );
+        }
+    }
+
+    public function filterApiContext(Event $event)
+    {
+        $context = $event->getParam('context');
+        $context['o-module-mapping'] = 'http://omeka.org/s/vocabs/module/mapping#';
+        $event->setParam('context', $context);
     }
 
     /**

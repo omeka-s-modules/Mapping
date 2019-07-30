@@ -3,13 +3,16 @@
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
+# Translators:
+# Khaidav T. <khaidaw@yahoo.com>, 2018
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2017-08-22 13:54-0400\n"
-"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"POT-Creation-Date: 2019-07-23 11:20-0400\n"
+"PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Khaidav T. <khaidaw@yahoo.com>, 2018\n"
 "Language-Team: Mongolian (https://www.transifex.com/omeka/teams/14184/mn/)\n"
 "MIME-Version: 1.0\n"
@@ -18,19 +21,19 @@ msgstr ""
 "Language: mn\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:193 view/mapping/index/form.phtml:27
+#: Module.php:198 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:2 view/mapping/index/form.phtml:33
-msgid "Close Me"
+#: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
+msgid "Resource location"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:3
-msgid "Mapping Info"
+#: view/admin/csv-mapping.phtml:7 view/admin/csv-mapping.phtml:21
+msgid "Select below"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:6
+#: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
 msgstr ""
 
@@ -38,86 +41,96 @@ msgstr ""
 msgid "Longitude"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:12
+#: view/admin/csv-mapping.phtml:10
 msgid "Latitude/Longitude"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:16
-msgid "Default View Settings"
-msgstr ""
-
-#: view/admin/csv-mapping.phtml:19
-msgid "Default Latitude"
+#: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
+msgid "Default map view"
 msgstr ""
 
 #: view/admin/csv-mapping.phtml:22
-msgid "Default Longitude"
+msgid "Map center latitude"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:25
-msgid "Default Zoom"
+#: view/admin/csv-mapping.phtml:23
+msgid "Map center longitude"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:31
-msgid "Use multivalue separator"
+#: view/admin/csv-mapping.phtml:24
+msgid "Default zoom"
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:32
-msgid "(Only applies to Latitude/Longitude)"
-msgstr ""
-
-#: view/common/block-layout/mapping-block-form.phtml:17
+#: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:19
+#: view/common/block-layout/mapping-block-form.phtml:23
 msgid "Set the default view using the in-map controls."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:25
+#: view/common/block-layout/mapping-block-form.phtml:29
 msgid "WMS Overlays"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:27
+#: view/common/block-layout/mapping-block-form.phtml:31
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:57
+#: view/common/block-layout/mapping-block-form.phtml:65
 msgid "Base URL"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:66
+#: view/common/block-layout/mapping-block-form.phtml:74
 msgid "Layers"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:68
+#: view/common/block-layout/mapping-block-form.phtml:76
 msgid "The WMS layers, if any (comma-separated)."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:79
+#: view/common/block-layout/mapping-block-form.phtml:87
 msgid "The WMS styles, if any (comma-separated)."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:87
+#: view/common/block-layout/mapping-block-form.phtml:95
 msgid "Add Overlay"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:88
+#: view/common/block-layout/mapping-block-form.phtml:96
 msgid "Save Changes"
 msgstr "Өөрчлөлтийг хадгалах"
 
-#: view/common/block-layout/mapping-block-form.phtml:89
+#: view/common/block-layout/mapping-block-form.phtml:97
 msgid "Clear Inputs"
 msgstr ""
 
-#: view/common/block-layout/mapping-block.phtml:29
+#: view/common/block-layout/mapping-block-timeline-form.phtml:1
+msgid "Timeline"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:5
+msgid "Title headline"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:20
+msgid "Title text"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:37
+msgid ""
+"Select the timestamp or interval property to use when populating the "
+"timeline."
+msgstr ""
+
+#: view/common/block-layout/mapping-block.phtml:31
 #: view/mapping/site/index/browse.phtml:32
 msgid "View media"
 msgstr ""
 
-#: view/common/block-layout/mapping-block.phtml:33
+#: view/common/block-layout/mapping-block.phtml:35
 #: view/mapping/site/index/browse.phtml:36
 msgid "View item"
 msgstr ""
@@ -142,19 +155,23 @@ msgstr ""
 msgid "Geographic Radius Unit"
 msgstr ""
 
-#: view/mapping/index/form.phtml:34
+#: view/mapping/index/form.phtml:32
+msgid "Close Me"
+msgstr ""
+
+#: view/mapping/index/form.phtml:33
 msgid "Marker Image"
 msgstr ""
 
-#: view/mapping/index/form.phtml:35
+#: view/mapping/index/form.phtml:34
 msgid " No Image"
 msgstr "Зураггүй"
 
-#: view/mapping/index/form.phtml:56
+#: view/mapping/index/form.phtml:55
 msgid "Marker Label"
 msgstr ""
 
-#: view/mapping/index/form.phtml:59
+#: view/mapping/index/form.phtml:58
 msgid "Select Marker Image"
 msgstr ""
 
@@ -178,4 +195,12 @@ msgstr ""
 
 #: src/Site/Navigation/Link/MapBrowse.php:12
 msgid "Map Browse"
+msgstr ""
+
+#: src/Api/Adapter/MappingAdapter.php:45
+msgid "A marker must have an item."
+msgstr ""
+
+#: src/Api/Adapter/MappingAdapter.php:51
+msgid "Map bounds must contain four numbers separated by commas"
 msgstr ""
