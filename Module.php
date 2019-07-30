@@ -171,10 +171,9 @@ class Module extends AbstractModule
             $qb = $event->getParam('queryBuilder');
             $itemAdapter = $event->getTarget();
             $mappingMarkerAlias = $itemAdapter->createAlias();
-            $itemAlias = $itemAdapter->getEntityClass();
             $qb->innerJoin(
                 'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
-                'WITH', "$mappingMarkerAlias.item = $itemAlias.id"
+                'WITH', "$mappingMarkerAlias.item = omeka_root.id"
             );
         }
     }
