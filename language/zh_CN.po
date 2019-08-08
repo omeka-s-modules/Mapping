@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-23 11:20-0400\n"
+"POT-Creation-Date: 2019-08-06 09:56-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Hong Zhang <zhangh@unlv.nevada.edu>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/omeka/teams/14184/zh_CN/)\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: Module.php:198 view/mapping/index/form.phtml:26
+#: Module.php:206 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr "制图"
 
@@ -61,76 +61,58 @@ msgstr ""
 msgid "Default zoom"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:21
+#: view/common/block-layout/mapping-block-form.phtml:17
 msgid "Default View"
 msgstr "默认视图"
 
-#: view/common/block-layout/mapping-block-form.phtml:23
+#: view/common/block-layout/mapping-block-form.phtml:19
 msgid "Set the default view using the in-map controls."
 msgstr "使用图内控制来设置默认视图。"
 
-#: view/common/block-layout/mapping-block-form.phtml:29
+#: view/common/block-layout/mapping-block-form.phtml:25
 msgid "WMS Overlays"
 msgstr "WMS叠加图"
 
-#: view/common/block-layout/mapping-block-form.phtml:31
+#: view/common/block-layout/mapping-block-form.phtml:27
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr "在下面添加、编辑、删除网络地图服务（WMS）叠加图。您可以点选您想默认打开的叠加图。"
 
-#: view/common/block-layout/mapping-block-form.phtml:65
+#: view/common/block-layout/mapping-block-form.phtml:57
 msgid "Base URL"
 msgstr "基础URL"
 
-#: view/common/block-layout/mapping-block-form.phtml:74
+#: view/common/block-layout/mapping-block-form.phtml:66
 msgid "Layers"
 msgstr "图层"
 
-#: view/common/block-layout/mapping-block-form.phtml:76
+#: view/common/block-layout/mapping-block-form.phtml:68
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "WMS图层，如果有的话（逗号分隔的）。"
 
-#: view/common/block-layout/mapping-block-form.phtml:87
+#: view/common/block-layout/mapping-block-form.phtml:79
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "WMS样式，如果有的话（逗号分隔的）。"
 
-#: view/common/block-layout/mapping-block-form.phtml:95
+#: view/common/block-layout/mapping-block-form.phtml:87
 msgid "Add Overlay"
 msgstr "添加叠加图"
 
-#: view/common/block-layout/mapping-block-form.phtml:96
+#: view/common/block-layout/mapping-block-form.phtml:88
 msgid "Save Changes"
 msgstr "保存修改"
 
-#: view/common/block-layout/mapping-block-form.phtml:97
+#: view/common/block-layout/mapping-block-form.phtml:89
 msgid "Clear Inputs"
 msgstr "清空输入"
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:1
-msgid "Timeline"
-msgstr ""
-
-#: view/common/block-layout/mapping-block-timeline-form.phtml:5
-msgid "Title headline"
-msgstr ""
-
-#: view/common/block-layout/mapping-block-timeline-form.phtml:20
-msgid "Title text"
-msgstr ""
-
-#: view/common/block-layout/mapping-block-timeline-form.phtml:37
-msgid ""
-"Select the timestamp or interval property to use when populating the "
-"timeline."
-msgstr ""
-
-#: view/common/block-layout/mapping-block.phtml:31
+#: view/common/block-layout/mapping-block.phtml:29
 #: view/mapping/site/index/browse.phtml:32
 msgid "View media"
 msgstr "查看媒体"
 
-#: view/common/block-layout/mapping-block.phtml:35
+#: view/common/block-layout/mapping-block.phtml:33
 #: view/mapping/site/index/browse.phtml:36
 msgid "View item"
 msgstr "查看条目"

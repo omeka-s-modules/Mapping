@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-07-23 11:20-0400\n"
+"POT-Creation-Date: 2019-08-06 09:56-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Naosuke Okamoto, 2018\n"
 "Language-Team: Japanese (https://www.transifex.com/omeka/teams/14184/ja/)\n"
@@ -21,7 +21,7 @@ msgstr ""
 "Language: ja\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: Module.php:198 view/mapping/index/form.phtml:26
+#: Module.php:206 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr "マッピング"
 
@@ -61,76 +61,58 @@ msgstr ""
 msgid "Default zoom"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:21
+#: view/common/block-layout/mapping-block-form.phtml:17
 msgid "Default View"
 msgstr "デフォルトの表示"
 
-#: view/common/block-layout/mapping-block-form.phtml:23
+#: view/common/block-layout/mapping-block-form.phtml:19
 msgid "Set the default view using the in-map controls."
 msgstr "マップ内のコントロールを使用して、デフォルトのビューを設定します。"
 
-#: view/common/block-layout/mapping-block-form.phtml:29
+#: view/common/block-layout/mapping-block-form.phtml:25
 msgid "WMS Overlays"
 msgstr "WMS オーバーレイ／地理参照マップイメージのオーバーレイ"
 
-#: view/common/block-layout/mapping-block-form.phtml:31
+#: view/common/block-layout/mapping-block-form.phtml:27
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr "以下のWebマップサービス（WMS）オーバーレイを追加、編集、および削除します。 既定で開くオーバーレイを確認することができます。"
 
-#: view/common/block-layout/mapping-block-form.phtml:65
+#: view/common/block-layout/mapping-block-form.phtml:57
 msgid "Base URL"
 msgstr "ベースURL"
 
-#: view/common/block-layout/mapping-block-form.phtml:74
+#: view/common/block-layout/mapping-block-form.phtml:66
 msgid "Layers"
 msgstr "レイヤー"
 
-#: view/common/block-layout/mapping-block-form.phtml:76
+#: view/common/block-layout/mapping-block-form.phtml:68
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "WMS層（ある場合）（コンマ区切り）。"
 
-#: view/common/block-layout/mapping-block-form.phtml:87
+#: view/common/block-layout/mapping-block-form.phtml:79
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "WMSスタイル（存在する場合）（コンマ区切り）。"
 
-#: view/common/block-layout/mapping-block-form.phtml:95
+#: view/common/block-layout/mapping-block-form.phtml:87
 msgid "Add Overlay"
 msgstr "オーバーレイを追加"
 
-#: view/common/block-layout/mapping-block-form.phtml:96
+#: view/common/block-layout/mapping-block-form.phtml:88
 msgid "Save Changes"
 msgstr "変更を保存"
 
-#: view/common/block-layout/mapping-block-form.phtml:97
+#: view/common/block-layout/mapping-block-form.phtml:89
 msgid "Clear Inputs"
 msgstr "入力をクリア"
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:1
-msgid "Timeline"
-msgstr ""
-
-#: view/common/block-layout/mapping-block-timeline-form.phtml:5
-msgid "Title headline"
-msgstr ""
-
-#: view/common/block-layout/mapping-block-timeline-form.phtml:20
-msgid "Title text"
-msgstr ""
-
-#: view/common/block-layout/mapping-block-timeline-form.phtml:37
-msgid ""
-"Select the timestamp or interval property to use when populating the "
-"timeline."
-msgstr ""
-
-#: view/common/block-layout/mapping-block.phtml:31
+#: view/common/block-layout/mapping-block.phtml:29
 #: view/mapping/site/index/browse.phtml:32
 msgid "View media"
 msgstr "メディアを表示"
 
-#: view/common/block-layout/mapping-block.phtml:35
+#: view/common/block-layout/mapping-block.phtml:33
 #: view/mapping/site/index/browse.phtml:36
 msgid "View item"
 msgstr "アイテムを表示"
