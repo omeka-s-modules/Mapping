@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-08 11:13-0400\n"
+"POT-Creation-Date: 2019-08-17 13:14-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -57,58 +57,128 @@ msgstr ""
 msgid "Default zoom"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:17
+#: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:19
+#: view/common/block-layout/mapping-block-form.phtml:23
 msgid "Set the default view using the in-map controls."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:25
+#: view/common/block-layout/mapping-block-form.phtml:29
 msgid "WMS Overlays"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:27
+#: view/common/block-layout/mapping-block-form.phtml:31
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:57
+#: view/common/block-layout/mapping-block-form.phtml:65
 msgid "Base URL"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:66
+#: view/common/block-layout/mapping-block-form.phtml:74
 msgid "Layers"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:68
+#: view/common/block-layout/mapping-block-form.phtml:76
 msgid "The WMS layers, if any (comma-separated)."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:79
+#: view/common/block-layout/mapping-block-form.phtml:87
 msgid "The WMS styles, if any (comma-separated)."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:87
+#: view/common/block-layout/mapping-block-form.phtml:95
 msgid "Add Overlay"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:88
+#: view/common/block-layout/mapping-block-form.phtml:96
 msgid "Save Changes"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:89
+#: view/common/block-layout/mapping-block-form.phtml:97
 msgid "Clear Inputs"
 msgstr ""
 
-#: view/common/block-layout/mapping-block.phtml:29
+#: view/common/block-layout/mapping-block-timeline-form.phtml:1
+msgid "Timeline"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:5
+msgid "Title headline"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:20
+msgid "Title text"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:36
+msgid "Fly to"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:37
+msgid "Select the map view to fly to when navigating between events."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:43
+msgid "Default view"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:44
+msgid "Event marker, zoom 0"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:45
+msgid "Event marker, zoom 2"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:46
+msgid "Event marker, zoom 4"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:47
+msgid "Event marker, zoom 6"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:48
+msgid "Event marker, zoom 8"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:49
+msgid "Event marker, zoom 10"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:50
+msgid "Event marker, zoom 12"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:51
+msgid "Event marker, zoom 14"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:52
+msgid "Event marker, zoom 16"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:53
+msgid "Event marker, zoom 18"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-timeline-form.phtml:65
+msgid ""
+"Select the timestamp or interval property to use when populating the "
+"timeline."
+msgstr ""
+
+#: view/common/block-layout/mapping-block.phtml:31
 #: view/mapping/site/index/browse.phtml:32
 msgid "View media"
 msgstr ""
 
-#: view/common/block-layout/mapping-block.phtml:33
+#: view/common/block-layout/mapping-block.phtml:35
 #: view/mapping/site/index/browse.phtml:36
 msgid "View item"
 msgstr ""
