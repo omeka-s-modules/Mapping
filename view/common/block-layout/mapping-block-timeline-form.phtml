@@ -33,6 +33,34 @@
     </div>
     <div class="field">
         <div class="field-meta">
+            <label><?php echo $this->translate('Fly to'); ?></label>
+            <div class="field-description"><?php echo $this->translate('Select the map view to fly to when navigating between events.'); ?></div>
+        </div>
+        <div class="inputs">
+            <?php
+            $flyTo = new \Zend\Form\Element\Select("o:block[__blockIndex__][o:data][timeline][fly_to]");
+            $flyTo->setValueOptions([
+                '' => $this->translate('Default view'),
+                '0' => $this->translate('Event marker, zoom 0'),
+                '2' => $this->translate('Event marker, zoom 2'),
+                '4' => $this->translate('Event marker, zoom 4'),
+                '6' => $this->translate('Event marker, zoom 6'),
+                '8' => $this->translate('Event marker, zoom 8'),
+                '10' => $this->translate('Event marker, zoom 10'),
+                '12' => $this->translate('Event marker, zoom 12'),
+                '14' => $this->translate('Event marker, zoom 14'),
+                '16' => $this->translate('Event marker, zoom 16'),
+                '18' => $this->translate('Event marker, zoom 18'),
+            ]);
+            $flyTo->setAttributes([
+                'value' => isset($data['timeline']['fly_to']) ? $data['timeline']['fly_to'] : '',
+            ]);
+            echo $this->formElement($flyTo);
+            ?>
+        </div>
+    </div>
+    <div class="field">
+        <div class="field-meta">
             <label><?php echo $this->translate('Property'); ?></label>
             <div class="field-description"><?php echo $this->translate('Select the timestamp or interval property to use when populating the timeline.'); ?></div>
         </div>

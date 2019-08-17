@@ -180,6 +180,7 @@ class Map extends AbstractBlockLayout
         $timeline = [
             'title_headline' => null,
             'title_text' => null,
+            'fly_to' => null,
             'data_type_properties' => null,
         ];
         if (isset($data['timeline']) && is_array($data['timeline'])) {
@@ -188,6 +189,9 @@ class Map extends AbstractBlockLayout
             }
             if (isset($data['timeline']['title_text'])) {
                 $timeline['title_text'] = $this->htmlPurifier->purify($data['timeline']['title_text']);
+            }
+            if (isset($data['timeline']['fly_to']) && is_numeric($data['timeline']['fly_to'])) {
+                $timeline['fly_to'] = $data['timeline']['fly_to'];
             }
             if (isset($data['timeline']['data_type_properties'])) {
                 // Anticipate future use of multiple numeric properties per
@@ -319,7 +323,7 @@ class Map extends AbstractBlockLayout
         $event = [
             'unique_id' => (string) $item->id(), // must cast to string
             'text' => [
-                'headline' => $item->displayTitle(),
+                'headline' => $item->link($item->displayTitle(), null, ['target' => '_blank']),
                 'text' => $item->displayDescription(),
             ],
         ];

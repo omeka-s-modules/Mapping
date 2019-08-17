@@ -115,7 +115,11 @@ function MappingBlock(mapDiv, timelineDiv) {
                 // Changed to an event slide. Set the event's map view.
                 var eventMarkers = markersByItem[data.unique_id];
                 markers.addLayer(eventMarkers);
-                map.flyToBounds(eventMarkers.getBounds(), {maxZoom: 16});
+                if ($.isNumeric(mapData['timeline']['fly_to'])) {
+                    map.flyToBounds(eventMarkers.getBounds(), {maxZoom: parseInt(mapData['timeline']['fly_to'])});
+                } else {
+                    setDefaultView();
+                }
             } else {
                 // Changed to the title slide. Set the default map view.
                 $.each(markersByItem, function(itemId, itemMarkers) {
