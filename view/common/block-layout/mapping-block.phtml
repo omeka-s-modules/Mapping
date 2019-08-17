@@ -9,28 +9,31 @@ $this->headLink()->appendStylesheet($this->assetUrl('vendor/leaflet.groupedlayer
 $this->headScript()->appendFile($this->assetUrl('vendor/leaflet.groupedlayercontrol/leaflet.groupedlayercontrol.min.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.opacity.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-block.js', 'Mapping'));
-
+$this->headLink()->appendStylesheet('https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css');
+$this->headScript()->appendFile('https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js');
 ?>
-<div class="mapping-map" style="height:500px;"
-    data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
-    data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
-></div>
+<div class="mapping-block">
+    <?php if ($isTimeline): ?>
+    <div class='mapping-timeline' style="height: 400px" data-data="<?php echo $this->escapeHtml(json_encode($timelineData)); ?>" data-options="<?php echo $this->escapeHtml(json_encode($timelineOptions)); ?>"></div>
+    <div class="mapping-map" style="height:400px;" data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>" data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"></div>
+    <?php else: ?>
+    <div class="mapping-map" style="height:500px;" data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>" data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"></div>
+    <?php endif; ?>
 
-<?php foreach ($markers as $marker): ?>
-<div class="mapping-marker-popup-content" style="display:none;"
-    data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>"
->
-    <?php if ($marker->label()): ?>
-    <h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
-    <?php endif; ?>
-    <?php if ($marker->media()): ?>
-    <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
-    <div>
-        <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>"><?php echo $this->translate('View media'); ?></a>
+    <?php foreach ($markers as $marker): ?>
+    <div class="mapping-marker-popup-content" style="display:none;" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>" data-item-id="<?php echo $this->escapeHtml($marker->item()->id()); ?>">
+        <?php if ($marker->label()): ?>
+        <h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
+        <?php endif; ?>
+        <?php if ($marker->media()): ?>
+        <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
+        <div>
+            <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>"><?php echo $this->translate('View media'); ?></a>
+        </div>
+        <?php endif; ?>
+        <div>
+            <a href="<?php echo $this->escapeHtml($marker->item()->url()); ?>"><?php echo $this->translate('View item'); ?></a>
+        </div>
     </div>
-    <?php endif; ?>
-    <div>
-        <a href="<?php echo $this->escapeHtml($marker->item()->url()); ?>"><?php echo $this->translate('View item'); ?></a>
-    </div>
+    <?php endforeach; ?>
 </div>
-<?php endforeach; ?>

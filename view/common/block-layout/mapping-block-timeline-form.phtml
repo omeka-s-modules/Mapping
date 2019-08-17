@@ -1,0 +1,85 @@
+<a href="#" class="expand"><h4><?php echo $this->translate('Timeline'); ?></h4></a>
+<div class="collapsible" style="overflow: visible;">
+    <div class="field">
+        <div class="field-meta">
+            <label><?php echo $this->translate('Title headline'); ?></label>
+            <div class="field-description"></div>
+        </div>
+        <div class="inputs">
+            <?php
+            $titleHeadline = new \Zend\Form\Element\Text("o:block[__blockIndex__][o:data][timeline][title_headline]");
+            $titleHeadline->setAttributes([
+                'value' => isset($data['timeline']['title_headline']) ? $data['timeline']['title_headline'] : null,
+            ]);
+            echo $this->formElement($titleHeadline);
+            ?>
+        </div>
+    </div>
+    <div class="field">
+        <div class="field-meta">
+            <label><?php echo $this->translate('Title text'); ?></label>
+            <div class="field-description"></div>
+        </div>
+        <div class="inputs">
+            <?php
+            $titleText = new \Zend\Form\Element\Textarea("o:block[__blockIndex__][o:data][timeline][title_text]");
+            $titleText->setAttributes([
+                'class' => 'block-html full wysiwyg',
+                'value' => isset($data['timeline']['title_text']) ? $data['timeline']['title_text'] : null,
+            ]);
+            echo $this->formElement($titleText);
+            ?>
+        </div>
+    </div>
+    <div class="field">
+        <div class="field-meta">
+            <label><?php echo $this->translate('Fly to'); ?></label>
+            <div class="field-description"><?php echo $this->translate('Select the map view to fly to when navigating between events.'); ?></div>
+        </div>
+        <div class="inputs">
+            <?php
+            $flyTo = new \Zend\Form\Element\Select("o:block[__blockIndex__][o:data][timeline][fly_to]");
+            $flyTo->setValueOptions([
+                '' => $this->translate('Default view'),
+                '0' => $this->translate('Event marker, zoom 0'),
+                '2' => $this->translate('Event marker, zoom 2'),
+                '4' => $this->translate('Event marker, zoom 4'),
+                '6' => $this->translate('Event marker, zoom 6'),
+                '8' => $this->translate('Event marker, zoom 8'),
+                '10' => $this->translate('Event marker, zoom 10'),
+                '12' => $this->translate('Event marker, zoom 12'),
+                '14' => $this->translate('Event marker, zoom 14'),
+                '16' => $this->translate('Event marker, zoom 16'),
+                '18' => $this->translate('Event marker, zoom 18'),
+            ]);
+            $flyTo->setAttributes([
+                'value' => isset($data['timeline']['fly_to']) ? $data['timeline']['fly_to'] : '',
+            ]);
+            echo $this->formElement($flyTo);
+            ?>
+        </div>
+    </div>
+    <div class="field">
+        <div class="field-meta">
+            <label><?php echo $this->translate('Property'); ?></label>
+            <div class="field-description"><?php echo $this->translate('Select the timestamp or interval property to use when populating the timeline.'); ?></div>
+        </div>
+        <div class="inputs">
+            <?php
+            echo $this->numericPropertySelect([
+                'name' => 'o:block[__blockIndex__][o:data][timeline][data_type_properties]',
+                'attributes' => [
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Select property…', // @translate
+                    'value' => isset($data['timeline']['data_type_properties']) ? $data['timeline']['data_type_properties'][0] : null,
+                ],
+                'options' => [
+                    'empty_option' => '',
+                    'numeric_data_type' => ['timestamp', 'interval'],
+                    'numeric_data_type_disambiguate' => true,
+                ],
+            ]);
+            ?>
+        </div>
+    </div>
+</div>

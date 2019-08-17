@@ -118,7 +118,7 @@ $('#blocks').on('click', '.mapping-wms-add', function(e) {
     var block = $(this).closest('.block');
     block.find('.mapping-wms-add').show();
     block.find('.mapping-wms-edit').hide();
-    var wmsOverlays = block.find('ul.mapping-wms-overlays');
+    var wmsOverlays = block.find('.mapping-wms-overlays');
     var wmsOverlay = $($.parseHTML(wmsOverlays.data('wmsOverlayTemplate')));
 
     if (setWmsData(block, wmsOverlay)) {
@@ -135,7 +135,7 @@ $('#blocks').on('click', '.mapping-wms-edit', function(e) {
     var block = $(this).closest('.block');
     block.find('.mapping-wms-add').show();
     block.find('.mapping-wms-edit').hide();
-    var wmsOverlay = block.find('li.mapping-wms-overlay-editing');
+    var wmsOverlay = block.find('.mapping-wms-overlay-editing');
     wmsOverlay.removeClass('mapping-wms-overlay-editing');
 
     if (!setWmsData(block, wmsOverlay)) {
