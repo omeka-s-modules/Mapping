@@ -1,0 +1,23 @@
+.tl-timeline,
+.tl-text .tl-headline-date, 
+.tl-text h3.tl-headline-date {
+    font-family: inherit;
+}
+
+.tl-timemarker.tl-timemarker-active {
+  opacity: 1;
+}
+
+.tl-timemarker {
+  opacity: .5;
+}
+
+.mapping-block.timeline {
+  width: 100%;
+  display: flex;
+}
+
+.mapping-block.timeline .tl-timeline,
+.mapping-block.timeline  .mapping-map {
+  width: 50%;
+}
