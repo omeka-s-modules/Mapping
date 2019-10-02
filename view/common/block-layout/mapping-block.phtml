@@ -11,6 +11,7 @@ $this->headScript()->appendFile($this->assetUrl('js/control.opacity.js', 'Mappin
 $this->headScript()->appendFile($this->assetUrl('js/mapping-block.js', 'Mapping'));
 $this->headLink()->appendStylesheet('https://cdn.knightlab.com/libs/timeline3/latest/css/timeline.css');
 $this->headScript()->appendFile('https://cdn.knightlab.com/libs/timeline3/latest/js/timeline.js');
+$this->headLink()->appendStylesheet($this->assetUrl('css/timeline.css', 'Mapping'));
 ?>
 <div class="mapping-block">
     <?php if ($isTimeline): ?>
