@@ -21,3 +21,14 @@
 .mapping-block.timeline  .mapping-map {
   width: 50%;
 }
+
+@media screen and (max-width:640px) {
+  .mapping-block.timeline {
+    display: block;
+  }
+  
+  .mapping-block.timeline .tl-timeline,
+  .mapping-block.timeline  .mapping-map {
+    width: 100%;
+  }
+}
