@@ -1,15 +1,7 @@
 .tl-timeline,
 .tl-text .tl-headline-date, 
 .tl-text h3.tl-headline-date {
-    font-family: inherit;
-}
-
-.tl-timemarker.tl-timemarker-active {
-  opacity: 1;
-}
-
-.tl-timemarker {
-  opacity: .5;
+  font-family: inherit;
 }
 
 .mapping-block.timeline {
