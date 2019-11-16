@@ -176,6 +176,27 @@ class Map extends AbstractBlockLayout
             }
         }
 
+        // Filter the WMTS overlay data.
+        $wmtsOverlays = [];
+        if (isset($data['wmts']) && is_array($data['wmts'])) {
+            foreach ($data['wmts'] as $wmtsOverlay) {
+                // WMTS data must have label, URL, tile matrix set, and style.
+                if (is_array($wmtsOverlay)
+                    && isset($wmtsOverlay['label'])
+                    && isset($wmtsOverlay['url'])
+                    && isset($wmtsOverlay['tile_matrix_set'])
+                    && isset($wmtsOverlay['style'])
+                ) {
+                    $open = null;
+                    if (isset($wmtsOverlay['open']) && $wmtsOverlay['open']) {
+                        $open = true;
+                    }
+                    $wmtsOverlay['open'] = $open;
+                    $wmtsOverlays[] = $wmtsOverlay;
+                }
+            }
+        }
+
         // Filter the timeline data.
         $timeline = [
             'title_headline' => null,
@@ -221,6 +242,7 @@ class Map extends AbstractBlockLayout
         return [
             'bounds' => $bounds,
             'wms' => $wmsOverlays,
+            'wmts' => $wmtsOverlays,
             'timeline' => $timeline,
         ];
     }

@@ -96,6 +96,13 @@ function MappingBlock(mapDiv, timelineDiv) {
         }
         groupedOverlays['Overlays'][data.label] = wmsLayer;
     });
+    $.each(mapData['wmts'], function(index, data) {
+        wmtsLayer = new L.TileLayer.WMTS(data.url, {
+            tilematrixSet: data.tile_matrix_set,
+            style: data.style,
+        });
+        groupedOverlays['Overlays'][data.label] = wmtsLayer;
+    });
     L.control.groupedLayers(baseMaps, groupedOverlays, {
         exclusiveGroups: ['Overlays']
     }).addTo(map);

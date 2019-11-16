@@ -17,6 +17,24 @@ $wmsOverlayTemplate = '
         </ul>
     </td>
 </tr>';
+$wmtsOverlayTemplate = '
+<tr class="mapping-wmts-overlay">
+    <td>
+        <input type="checkbox" class="mapping-wmts-open">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wmts][__mappingWmtsIndex__][label]">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wmts][__mappingWmtsIndex__][url]">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wmts][__mappingWmtsIndex__][tile_matrix_set]">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wmts][__mappingWmtsIndex__][style]">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wmts][__mappingWmtsIndex__][open]">
+        <span class="mapping-wmts-overlay-title"></span>
+    </td>
+    <td>
+        <ul class="actions">
+            <a href="#" class="mapping-wmts-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
+            <a href="#" class="mapping-wmts-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
+        </ul>
+    </td>
+</tr>';
 ?>
 <a href="#" class="mapping-map-expander expand"><h4><?php echo $this->translate('Default View'); ?></h4></a>
 <div class="collapsible">
@@ -95,4 +113,75 @@ $wmsOverlayTemplate = '
     <button type="button" class="mapping-wms-add"><?php echo $this->translate('Add Overlay'); ?></button>
     <button type="button" class="mapping-wms-edit" style="display:none;"><?php echo $this->translate('Save Changes'); ?></button>
     <button type="button" class="mapping-wms-clear"><?php echo $this->translate('Clear Inputs'); ?></button>
+</div>
+
+<a href="#" class="expand"><h4><?php echo $this->translate('WMTS Overlays'); ?></h4></a>
+<div class="collapsible">
+    <p><?php echo $this->translate('Add, edit, and delete Web Map Tile Service (WMTS) overlays below. You may check which overlay you want open by default.'); ?></p>
+    <table class="tablesaw mapping-wmts-overlays" data-wmts-overlay-template="<?php echo $this->escapeHtml($wmtsOverlayTemplate); ?>">
+        <?php foreach ($data['wmts'] as $wmtsOverlay): ?>
+        <tr class="mapping-wmts-overlay">
+            <td>
+                <input type="checkbox" class="mapping-wmts-open"<?php echo $wmtsOverlay['open'] ? ' checked="checked"' : '' ?>>
+                <input type="hidden" name="o:block[__blockIndex__][o:data][wmts][__mappingWmtsIndex__][label]" value="<?php echo $this->escapeHtml($wmtsOverlay['label']); ?>">
+                <input type="hidden" name="o:block[__blockIndex__][o:data][wmts][__mappingWmtsIndex__][url]" value="<?php echo $this->escapeHtml($wmtsOverlay['url']); ?>">
+                <input type="hidden" name="o:block[__blockIndex__][o:data][wmts][__mappingWmtsIndex__][tile_matrix_set]" value="<?php echo $this->escapeHtml($wmtsOverlay['tile_matrix_set']); ?>">
+                <input type="hidden" name="o:block[__blockIndex__][o:data][wmts][__mappingWmtsIndex__][style]" value="<?php echo $this->escapeHtml($wmtsOverlay['style']); ?>">
+                <input type="hidden" name="o:block[__blockIndex__][o:data][wmts][__mappingWmtsIndex__][open]" value="<?php echo $this->escapeHtml($wmtsOverlay['open']); ?>">
+                <span class="mapping-wmts-overlay-title"><?php echo $wmtsOverlay['label']; ?></span>
+            </td>
+            <td>
+                <ul class="actions">
+                    <a href="#" class="mapping-wmts-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
+                    <a href="#" class="mapping-wmts-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
+                </ul>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+    <div class="mapping-wmts-fields">
+        <div class="field">
+            <div class="field-meta">
+                <label><?php echo $this->translate('Label'); ?></label>
+                <div class="field-description"></div>
+            </div>
+            <div class="inputs">
+                <input type="text" class="mapping-wmts-label">
+            </div>
+        </div>
+        <div class="field">
+            <div class="field-meta">
+                <label><?php echo $this->translate('URL'); ?></label>
+                <div class="field-description"></div>
+            </div>
+            <div class="inputs">
+                <input type="text" class="mapping-wmts-url">
+            </div>
+        </div>
+        <div class="field">
+            <div class="field-meta">
+                <label><?php echo $this->translate('Tile matrix set'); ?></label><a href="#" class="expand"></a>
+                <div class="collapsible">
+                    <div class="field-description"><?php echo $this->translate('The WMTS tile matrix set.'); ?></div>
+                </div>
+            </div>
+            <div class="inputs">
+                <input type="text" class="mapping-wmts-tile-matrix-set">
+            </div>
+        </div>
+        <div class="field">
+            <div class="field-meta">
+                <label>Style</label><a href="#" class="expand"></a>
+                <div class="collapsible">
+                    <div class="field-description"><?php echo $this->translate('The WMTS style.'); ?></div>
+                </div>
+            </div>
+            <div class="inputs">
+                <input type="text" class="mapping-wmts-style">
+            </div>
+        </div>
+    </div>
+    <button type="button" class="mapping-wmts-add"><?php echo $this->translate('Add Overlay'); ?></button>
+    <button type="button" class="mapping-wmts-edit" style="display:none;"><?php echo $this->translate('Save Changes'); ?></button>
+    <button type="button" class="mapping-wmts-clear"><?php echo $this->translate('Clear Inputs'); ?></button>
 </div>
