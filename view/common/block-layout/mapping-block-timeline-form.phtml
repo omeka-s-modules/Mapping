@@ -61,6 +61,21 @@
     </div>
     <div class="field">
         <div class="field-meta">
+            <label><?php echo $this->translate('Show contemporaneous events?'); ?></label>
+            <div class="field-description"><?php echo $this->translate('Check this if you want to show all events on the map that exist in the same time period as the current event (default view only).'); ?></div>
+        </div>
+        <div class="inputs">
+            <?php
+            $showContemporaneous = new \Zend\Form\Element\Checkbox("o:block[__blockIndex__][o:data][timeline][show_contemporaneous]");
+            $showContemporaneous->setAttributes([
+                'value' => isset($data['timeline']['show_contemporaneous']) ? $data['timeline']['show_contemporaneous'] : '',
+            ]);
+            echo $this->formElement($showContemporaneous);
+            ?>
+        </div>
+    </div>
+    <div class="field">
+        <div class="field-meta">
             <label><?php echo $this->translate('Property'); ?></label>
             <div class="field-description"><?php echo $this->translate('Select the timestamp or interval property to use when populating the timeline.'); ?></div>
         </div>

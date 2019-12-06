@@ -107,17 +107,39 @@ function MappingBlock(mapDiv, timelineDiv) {
 
     if (timeline) {
         // Reload the map when an event changes.
-        timeline.on('change', function(data) {
+        timeline.on('change', function(e) {
             $.each(markersByItem, function(itemId, itemMarkers) {
                 markers.removeLayer(itemMarkers);
             });
-            if ($.isNumeric(data.unique_id)) {
+            if ($.isNumeric(e.unique_id)) {
                 // Changed to an event slide. Set the event's map view.
-                var eventMarkers = markersByItem[data.unique_id];
+                var currentEvent = this.config.event_dict[e.unique_id];
+                var currentEventStart = currentEvent.start_date.data.date_obj;
+                var currentEventEnd = ('undefined' === typeof currentEvent.end_date) ? null : currentEvent.end_date.data.date_obj;
+                var eventMarkers = markersByItem[currentEvent.unique_id];
                 markers.addLayer(eventMarkers);
                 if ($.isNumeric(mapData['timeline']['fly_to'])) {
                     map.flyToBounds(eventMarkers.getBounds(), {maxZoom: parseInt(mapData['timeline']['fly_to'])});
                 } else {
+                    if (mapData['timeline']['show_contemporaneous']) {
+                        // Show all event markers that are contemporaneous with the current event.
+                        $.each(this.config.event_dict, function(index, event) {
+                            if ($.isNumeric(index) && (index != currentEvent.unique_id)) {
+                                var eventStart = event.start_date.data.date_obj;
+                                var eventEnd = ('undefined' === typeof event.end_date) ? null : event.end_date.data.date_obj;
+                                // For a timeline using intervals, a portion of this event
+                                // must fall within the interval of the current event.
+                                if (currentEventEnd && eventStart <= currentEventEnd && eventEnd >= currentEventStart) {
+                                    markers.addLayer(markersByItem[event.unique_id])
+                                }
+                                // For a timeline using timestamps, this event must have
+                                // the same timestamp as the current event.
+                                if (!currentEventEnd && currentEventStart.getTime() == eventStart.getTime()) {
+                                    markers.addLayer(markersByItem[event.unique_id])
+                                }
+                            }
+                        });
+                    }
                     setDefaultView();
                 }
             } else {
