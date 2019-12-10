@@ -7,6 +7,7 @@
 .mapping-block.timeline {
   width: 100%;
   display: flex;
+  padding-bottom: 165px;
 }
 
 .mapping-block.timeline .tl-timeline,
@@ -14,7 +15,30 @@
   width: 50%;
 }
 
-@media screen and (max-width:640px) {
+@media screen and (min-width:640px) {
+  .tl-timeline {
+    position: static !important;
+  }
+  
+  .tl-timeline,
+  .mapping-map,
+  .tl-storyslider {
+    min-height: 60vh !important;
+  }
+  
+  .tl-timenav {
+    position: absolute;
+    bottom: 0;
+  }
+  
+  .tl-menubar {
+    top: auto !important;
+    bottom: 82.5px;
+    transform: translateY(25%);
+  }
+}
+
+@media screen and (max-width:639px) {
   .mapping-block.timeline {
     display: block;
   }
