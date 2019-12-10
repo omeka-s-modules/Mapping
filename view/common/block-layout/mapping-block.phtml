@@ -15,7 +15,7 @@ if ($isTimeline) {
     $this->headLink()->appendStylesheet($this->assetUrl('css/timeline.css', 'Mapping'));  
 }
 ?>
-<div class="mapping-block <?php echo ($isTimeline) ? 'timeline' : ''; ?>">
+<div class="mapping-block <?php echo ($isTimeline) ? 'full-width timeline' : ''; ?>">
     <?php if ($isTimeline): ?>
     <div class='mapping-timeline' style="height: 400px" data-data="<?php echo $this->escapeHtml(json_encode($timelineData)); ?>" data-options="<?php echo $this->escapeHtml(json_encode($timelineOptions)); ?>"></div>
     <div class="mapping-map" style="height:400px;" data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>" data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"></div>

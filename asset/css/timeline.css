@@ -7,8 +7,11 @@
 .mapping-block.timeline {
   width: 100%;
   display: flex;
+}
+
+.mapping-block.full-width.timeline {
   padding-bottom: 165px;
-  position: relative;
+  position: relative;  
 }
 
 .mapping-block.timeline .tl-timeline,
@@ -17,22 +20,22 @@
 }
 
 @media screen and (min-width:640px) {
-  .tl-timeline {
+  .full-width.timeline .tl-timeline {
     position: static !important;
   }
   
-  .tl-timeline,
-  .mapping-map,
-  .tl-storyslider {
+  .full-width.timeline .tl-timeline,
+  .full-width.timeline .mapping-map,
+  .full-width.timeline .tl-storyslider {
     min-height: 60vh !important;
   }
   
-  .tl-timenav {
+  .full-width.timeline .tl-timenav {
     position: absolute;
     bottom: 0;
   }
   
-  .tl-menubar {
+  .full-width.timeline .tl-menubar {
     top: auto !important;
     bottom: 82.5px;
     transform: translateY(25%);
