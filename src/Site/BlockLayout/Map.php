@@ -194,10 +194,10 @@ class Map extends AbstractBlockLayout
             if (isset($data['timeline']['fly_to']) && is_numeric($data['timeline']['fly_to'])) {
                 $timeline['fly_to'] = $data['timeline']['fly_to'];
             }
-            if (isset($data['timeline']['timenav_position']) && in_array($data['timeline']['timenav_position'], ['full_width_below'])) {
+            if (isset($data['timeline']['timenav_position']) && in_array($data['timeline']['timenav_position'], ['full_width_below', 'full_width_above'])) {
                 $timeline['timenav_position'] = $data['timeline']['timenav_position'];
             }
-            if (isset($data['timeline']['data_type_properties'])) {
+            if (isset($data['timeline']['data_type_properties'])) { 
                 // Anticipate future use of multiple numeric properties per
                 // timeline by saving an array of properties.
                 if (is_string($data['timeline']['data_type_properties'])) {

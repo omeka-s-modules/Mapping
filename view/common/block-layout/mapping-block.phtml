@@ -18,8 +18,13 @@ if ($isTimeline) {
 $mappingBlockClasses = ['mapping-block'];
 if ($isTimeline) {
     $mappingBlockClasses[] = 'timeline';
-    if ('full_width_below' === $data['timeline']['timenav_position']) {
+    $timenavPosition = $data['timeline']['timenav_position'];
+    $mappingBlockClasses[] = $timenavPosition;
+    if ('full_width_below' === $timenavPosition) {
         $mappingBlockClasses[] = 'timenav-full-width-below';
+    }
+    if ('full_width_above' === $timenavPosition) {
+        $mappingBlockClasses[] = 'timenav-full-width-above';        
     }
 }
 ?>
