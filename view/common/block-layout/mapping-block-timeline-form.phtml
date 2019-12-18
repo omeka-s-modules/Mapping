@@ -82,6 +82,29 @@
     </div>
     <div class="field">
         <div class="field-meta">
+            <label><?php echo $this->translate('Timeline navigation position'); ?></label>
+            <a href="#" class="expand"></a>
+            <div class="collapsible">
+                <div class="field-description"><?php echo $this->translate('Select the position of the timeline navigation.'); ?></div>
+            </div>
+        </div>
+        <div class="inputs">
+            <?php
+            $timenavPosition = new \Zend\Form\Element\Select("o:block[__blockIndex__][o:data][timeline][timenav_position]");
+            $timenavPosition->setEmptyOption('Default position');
+            $timenavPosition->setValueOptions([
+                'full_width_below' => 'Full width, below story slider and map',
+                'full_width_above' => 'Full width, above story slider and map',
+            ]);
+            $timenavPosition->setAttributes([
+                'value' => isset($data['timeline']['timenav_position']) ? $data['timeline']['timenav_position'] : '',
+            ]);
+            echo $this->formElement($timenavPosition);
+            ?>
+        </div>
+    </div>
+    <div class="field">
+        <div class="field-meta">
             <label><?php echo $this->translate('Property'); ?></label>
             <a href="#" class="expand"></a>
             <div class="collapsible">
