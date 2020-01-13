@@ -236,8 +236,8 @@ map.on('draw:deleted', function(e) {
 });
 
 // Handle adding a geocoded marker.
-map.on('geosearch_showlocation', function(e) {
-    addMarker(new L.Marker([e.Location.Y, e.Location.X]), null, e.Location.Label);
+map.on('geosearch/showlocation', function(e) {
+    addMarker(new L.Marker([e.location.y, e.location.x]), null, e.location.label);
 });
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
