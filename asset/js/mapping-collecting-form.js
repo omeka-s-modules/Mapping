@@ -42,6 +42,11 @@ $(document).ready(function() {
             }
         });
 
+        // Prevent click-throughs (otherwise clicks will add markers).
+        $('.geosearch').on('click', function(e) {
+            e.stopPropagation();
+        });
+
         // Add an existing marker to the map.
         var lat = inputLat.val();
         var lng = inputLng.val();
