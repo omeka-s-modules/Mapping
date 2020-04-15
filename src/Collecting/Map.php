@@ -18,8 +18,8 @@ class Map implements MediaTypeInterface
         $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/leaflet.css', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/leaflet.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/mapping-collecting-form.js', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet.geosearch/leaflet.css', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.geosearch/bundle.min.js', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet.geosearch/assets/css/leaflet.css', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.geosearch/dist/bundle.min.js', 'Mapping'));
         $view->headLink()->appendStylesheet($view->assetUrl('css/mapping.css', 'Mapping'));
         $view->formElement()->addType('promptMap', 'formPromptMap');
     }
