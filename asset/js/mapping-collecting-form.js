@@ -8,7 +8,7 @@ $(document).ready(function() {
         var map = L.map(this);
         var marker;
 
-        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+        L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
             attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
         }).addTo(map);
         map.setView([20, 0], 2);
