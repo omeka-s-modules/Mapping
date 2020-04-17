@@ -39,5 +39,14 @@ class DetachOrphanMappings
                 }
             }
         }
+
+        $insertions = $uow->getScheduledEntityInsertions();
+        foreach ($insertions as $entity) {
+            if (($entity instanceof Mapping && !$em->contains($entity->getItem()))
+                || ($entity instanceof MappingMarker && (!$em->contains($entity->getItem()) || ($entity->getMedia() && !$em->contains($entity->getMedia()))))
+            ) {
+                $em->detach($entity);
+            }
+        }
     }
 }
