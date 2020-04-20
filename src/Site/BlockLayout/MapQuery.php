@@ -60,8 +60,13 @@ class MapQuery extends AbstractMap
         $events = [];
         $markers = [];
         parse_str($data['query'], $query);
-        $query['has_markers'] = true; // Search only for items with markers.
-        $query['limit'] = 500; // Set a reasonable item limit.
+        // Search only for items with markers that are in the current site, and
+        // set a reasonable item limit.
+        $query = array_merge($query, [
+            'site_id' => $block->page()->site()->id(),
+            'has_markers' => true,
+            'limit' => 1000,
+        ]);
         $response = $view->api()->search('items', $query);
         foreach ($response->getContent() as $item) {
             if ($isTimeline && $timelineIsAvailable) {
