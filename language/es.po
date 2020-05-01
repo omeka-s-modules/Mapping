@@ -4,7 +4,8 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Matti Lassila <matti.lassila@gmail.com>, 2018
+# Darío Hereñú, 2019
+# Josu Aramberri <jaramberri@i2basque.es>, 2019
 # 
 #, fuzzy
 msgid ""
@@ -13,17 +14,17 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-01 16:09-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Matti Lassila <matti.lassila@gmail.com>, 2018\n"
-"Language-Team: Finnish (Finland) (https://www.transifex.com/omeka/teams/14184/fi_FI/)\n"
+"Last-Translator: Josu Aramberri <jaramberri@i2basque.es>, 2019\n"
+"Language-Team: Spanish (https://www.transifex.com/omeka/teams/14184/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi_FI\n"
+"Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: Module.php:206 view/mapping/index/form.phtml:26
 msgid "Mapping"
-msgstr "Kartta"
+msgstr "Mapeado"
 
 #: src/Site/BlockLayout/MapQuery.php:42
 msgid "Attach items using this query."
@@ -39,15 +40,15 @@ msgstr ""
 
 #: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
-msgstr "Leveyskoordinaatti (lat)"
+msgstr "Latitud"
 
 #: view/admin/csv-mapping.phtml:9
 msgid "Longitude"
-msgstr "Pituuskoordinaatti (lon)"
+msgstr "Longitud"
 
 #: view/admin/csv-mapping.phtml:10
 msgid "Latitude/Longitude"
-msgstr "lat/lon"
+msgstr "Latitud/Longitud"
 
 #: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
 msgid "Default map view"
@@ -67,51 +68,51 @@ msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
-msgstr "Oletusnäkymä"
+msgstr "Vista predeterminada"
 
 #: view/common/block-layout/mapping-block-form.phtml:23
 msgid "Set the default view using the in-map controls."
-msgstr "Määritä oletusnäkymä käyttäen kartan asetuksia"
+msgstr "Definir la vista por defecto utilizando los controles del mapa"
 
 #: view/common/block-layout/mapping-block-form.phtml:29
 msgid "WMS Overlays"
-msgstr "WMS-tasot"
+msgstr "Capas superpuestas WMS"
 
 #: view/common/block-layout/mapping-block-form.phtml:31
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr ""
-"Lisää, muokkaa ja poista Web Map Service (WMS) tasoja. Voit valita, mitkä "
-"tasot näytetään oletuksena."
+"Añadir, editar, y borrar capas de Web   Map Service (WMS). Marque las que "
+"quiere abrir por defecto."
 
 #: view/common/block-layout/mapping-block-form.phtml:65
 msgid "Base URL"
-msgstr "WMS-palvelun URL"
+msgstr "URL de base"
 
 #: view/common/block-layout/mapping-block-form.phtml:74
 msgid "Layers"
-msgstr "Tasot"
+msgstr "Capas"
 
 #: view/common/block-layout/mapping-block-form.phtml:76
 msgid "The WMS layers, if any (comma-separated)."
-msgstr "WMS-tasot pilkulla erotettuna"
+msgstr "Capas WMS, si existen (separadas por comas)"
 
 #: view/common/block-layout/mapping-block-form.phtml:87
 msgid "The WMS styles, if any (comma-separated)."
-msgstr "WMS-tyylit pilkulla erotettuna"
+msgstr "Estilos WMS, si existen (separados por comas)"
 
 #: view/common/block-layout/mapping-block-form.phtml:95
 msgid "Add Overlay"
-msgstr "Lisää WMS-taso"
+msgstr "Agregar capa"
 
 #: view/common/block-layout/mapping-block-form.phtml:96
 msgid "Save Changes"
-msgstr "Tallenna muutokset"
+msgstr "Guardar cambios"
 
 #: view/common/block-layout/mapping-block-form.phtml:97
 msgid "Clear Inputs"
-msgstr "Poista valinnat"
+msgstr "Limpiar entradas"
 
 #: view/common/block-layout/mapping-block-form.phtml:101
 msgid "Timeline"
@@ -205,73 +206,73 @@ msgstr ""
 #: view/mapping/index/show.phtml:41
 #, php-format
 msgid "Item: %s"
-msgstr "Aineisto: %s"
+msgstr "Elemento: %s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
 #: view/mapping/index/show.phtml:37
 #, php-format
 msgid "Media: %s"
-msgstr "Tiedosto: %s"
+msgstr "Medio: %s"
 
 #: view/mapping/index/advanced-search.phtml:5
 msgid "Kilometers"
-msgstr "Kilometri"
+msgstr "Kilómetros"
 
 #: view/mapping/index/advanced-search.phtml:5
 msgid "Miles"
-msgstr "Maili"
+msgstr "Millas"
 
 #: view/mapping/index/advanced-search.phtml:9
 msgid "Geographic Address"
-msgstr "Osoite"
+msgstr "Dirección geográfica"
 
 #: view/mapping/index/advanced-search.phtml:17
 msgid "Geographic Radius"
-msgstr "Maksimietäisyys"
+msgstr "Radio geográfico"
 
 #: view/mapping/index/advanced-search.phtml:25
 msgid "Geographic Radius Unit"
-msgstr "Etäisyyden yksikkö"
+msgstr "Unidades en Radio geográfico"
 
 #: view/mapping/index/form.phtml:32
 msgid "Close Me"
-msgstr "Sulje"
+msgstr "Cerrar"
 
 #: view/mapping/index/form.phtml:33
 msgid "Marker Image"
-msgstr "Sijaintimerkin kuva"
+msgstr "Marcador de imagen"
 
 #: view/mapping/index/form.phtml:34
 msgid " No Image"
-msgstr "Ei kuvaa"
+msgstr "Sin imagen"
 
 #: view/mapping/index/form.phtml:55
 msgid "Marker Label"
-msgstr "Kuvateksti"
+msgstr "Etiqueta de marcador"
 
 #: view/mapping/index/form.phtml:58
 msgid "Select Marker Image"
-msgstr "Valitse kuva"
+msgstr "Seleccionar imagen de marcador"
 
 #: view/mapping/site/index/browse.phtml:17
 msgid "Search Map"
-msgstr "Hae"
+msgstr "Buscar en mapa"
 
 #: view/mapping/site/index/browse.phtml:32
 msgid "View media"
-msgstr "Näytä aineisto"
+msgstr "Ver media"
 
 #: view/mapping/site/index/browse.phtml:36
 msgid "View item"
-msgstr "Näytä kuvailutiedot"
+msgstr "Ver elemento"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
-msgstr "Valitse sijainti kartalta."
+msgstr "Debe seleccionar una ubicación en el mapa."
 
 #: src/Site/Navigation/Link/MapBrowse.php:12
 msgid "Map Browse"
-msgstr "Karttaselaus"
+msgstr "Navegar mapa"
 
 #: src/Site/BlockLayout/MapQuery.php:15
 msgid "Map by query"

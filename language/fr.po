@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-06 09:56-0400\n"
+"POT-Creation-Date: 2020-05-01 16:09-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Daniel Berthereau <daniel.transifex@berthereau.net>, 2019\n"
 "Language-Team: French (https://www.transifex.com/omeka/teams/14184/fr/)\n"
@@ -26,6 +26,10 @@ msgstr ""
 #: Module.php:206 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr "Carte"
+
+#: src/Site/BlockLayout/MapQuery.php:42
+msgid "Attach items using this query."
+msgstr ""
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
 msgid "Resource location"
@@ -63,19 +67,19 @@ msgstr "Latitude du centre de la carte"
 msgid "Default zoom"
 msgstr "Zoom par défaut"
 
-#: view/common/block-layout/mapping-block-form.phtml:17
+#: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
 msgstr "Vue par défaut"
 
-#: view/common/block-layout/mapping-block-form.phtml:19
+#: view/common/block-layout/mapping-block-form.phtml:23
 msgid "Set the default view using the in-map controls."
 msgstr "Définir la vue par défaut à l'aide des contrôles intégrés à la carte."
 
-#: view/common/block-layout/mapping-block-form.phtml:25
+#: view/common/block-layout/mapping-block-form.phtml:29
 msgid "WMS Overlays"
 msgstr "Couches WMS"
 
-#: view/common/block-layout/mapping-block-form.phtml:27
+#: view/common/block-layout/mapping-block-form.phtml:31
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
@@ -83,43 +87,133 @@ msgstr ""
 "Ajouter, modifier et supprimer les couches Web Map Service (WMS) ci-dessous."
 " Vous pouvez cocher quelles couches vous voulez ouvrir par défaut."
 
-#: view/common/block-layout/mapping-block-form.phtml:57
+#: view/common/block-layout/mapping-block-form.phtml:65
 msgid "Base URL"
 msgstr "URL de base"
 
-#: view/common/block-layout/mapping-block-form.phtml:66
+#: view/common/block-layout/mapping-block-form.phtml:74
 msgid "Layers"
 msgstr "Couches"
 
-#: view/common/block-layout/mapping-block-form.phtml:68
+#: view/common/block-layout/mapping-block-form.phtml:76
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "Les couches WMS, le cas échéant (séparées par des virgules)."
 
-#: view/common/block-layout/mapping-block-form.phtml:79
+#: view/common/block-layout/mapping-block-form.phtml:87
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "Les styles WMS, le cas échéant (séparées par des virgules)."
 
-#: view/common/block-layout/mapping-block-form.phtml:87
+#: view/common/block-layout/mapping-block-form.phtml:95
 msgid "Add Overlay"
 msgstr "Ajouter une couche"
 
-#: view/common/block-layout/mapping-block-form.phtml:88
+#: view/common/block-layout/mapping-block-form.phtml:96
 msgid "Save Changes"
 msgstr "Sauvegarder les changements"
 
-#: view/common/block-layout/mapping-block-form.phtml:89
+#: view/common/block-layout/mapping-block-form.phtml:97
 msgid "Clear Inputs"
 msgstr "Supprimer les entrées"
 
-#: view/common/block-layout/mapping-block.phtml:29
-#: view/mapping/site/index/browse.phtml:32
-msgid "View media"
-msgstr "Voir les médias"
+#: view/common/block-layout/mapping-block-form.phtml:101
+msgid "Timeline"
+msgstr ""
 
-#: view/common/block-layout/mapping-block.phtml:33
-#: view/mapping/site/index/browse.phtml:36
-msgid "View item"
-msgstr "Voir le contenu"
+#: view/common/block-layout/mapping-block-form.phtml:105
+msgid "Title headline"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:120
+msgid "Title text"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:136
+msgid "Fly to"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:139
+msgid "Select the map view to fly to when navigating between events."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:146
+msgid "Default view"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:147
+msgid "Event marker, zoom 0"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:148
+msgid "Event marker, zoom 2"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:149
+msgid "Event marker, zoom 4"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:150
+msgid "Event marker, zoom 6"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:151
+msgid "Event marker, zoom 8"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:152
+msgid "Event marker, zoom 10"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:153
+msgid "Event marker, zoom 12"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:154
+msgid "Event marker, zoom 14"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:155
+msgid "Event marker, zoom 16"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:156
+msgid "Event marker, zoom 18"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:167
+msgid "Show contemporaneous events?"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:170
+msgid ""
+"Check this if you want to show all events on the map that exist in the same "
+"time period as the current event (default view only)."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:185
+msgid "Timeline navigation position"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:188
+msgid "Select the position of the timeline navigation."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:211
+msgid ""
+"Select the timestamp or interval property to use when populating the "
+"timeline."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-popup-content.phtml:12
+#: view/mapping/index/show.phtml:41
+#, php-format
+msgid "Item: %s"
+msgstr "Contenu : “%s”"
+
+#: view/common/block-layout/mapping-block-popup-content.phtml:16
+#: view/mapping/index/show.phtml:37
+#, php-format
+msgid "Media: %s"
+msgstr "Média : “%s”"
 
 #: view/mapping/index/advanced-search.phtml:5
 msgid "Kilometers"
@@ -161,19 +255,17 @@ msgstr "Étiquette de la fenêtre contextuelle"
 msgid "Select Marker Image"
 msgstr "Sélectionner l'image de la fenêtre contextuelle"
 
-#: view/mapping/index/show.phtml:37
-#, php-format
-msgid "Media: %s"
-msgstr "Média : “%s”"
-
-#: view/mapping/index/show.phtml:41
-#, php-format
-msgid "Item: %s"
-msgstr "Contenu : “%s”"
-
 #: view/mapping/site/index/browse.phtml:17
 msgid "Search Map"
 msgstr "Rechercher une carte"
+
+#: view/mapping/site/index/browse.phtml:32
+msgid "View media"
+msgstr "Voir les médias"
+
+#: view/mapping/site/index/browse.phtml:36
+msgid "View item"
+msgstr "Voir le contenu"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
@@ -182,6 +274,14 @@ msgstr "Vous devez sélectionner un emplacement sur la carte."
 #: src/Site/Navigation/Link/MapBrowse.php:12
 msgid "Map Browse"
 msgstr "Parcourir la carte"
+
+#: src/Site/BlockLayout/MapQuery.php:15
+msgid "Map by query"
+msgstr ""
+
+#: src/Site/BlockLayout/Map.php:15
+msgid "Map by attachments"
+msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A marker must have an item."

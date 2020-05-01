@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-17 13:14-0400\n"
+"POT-Creation-Date: 2020-05-01 16:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -19,6 +19,10 @@ msgstr ""
 
 #: Module.php:206 view/mapping/index/form.phtml:26
 msgid "Mapping"
+msgstr ""
+
+#: src/Site/BlockLayout/MapQuery.php:42
+msgid "Attach items using this query."
 msgstr ""
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
@@ -103,84 +107,104 @@ msgstr ""
 msgid "Clear Inputs"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:1
+#: view/common/block-layout/mapping-block-form.phtml:101
 msgid "Timeline"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:5
+#: view/common/block-layout/mapping-block-form.phtml:105
 msgid "Title headline"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:20
+#: view/common/block-layout/mapping-block-form.phtml:120
 msgid "Title text"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:36
+#: view/common/block-layout/mapping-block-form.phtml:136
 msgid "Fly to"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:37
+#: view/common/block-layout/mapping-block-form.phtml:139
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:43
+#: view/common/block-layout/mapping-block-form.phtml:146
 msgid "Default view"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:44
+#: view/common/block-layout/mapping-block-form.phtml:147
 msgid "Event marker, zoom 0"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:45
+#: view/common/block-layout/mapping-block-form.phtml:148
 msgid "Event marker, zoom 2"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:46
+#: view/common/block-layout/mapping-block-form.phtml:149
 msgid "Event marker, zoom 4"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:47
+#: view/common/block-layout/mapping-block-form.phtml:150
 msgid "Event marker, zoom 6"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:48
+#: view/common/block-layout/mapping-block-form.phtml:151
 msgid "Event marker, zoom 8"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:49
+#: view/common/block-layout/mapping-block-form.phtml:152
 msgid "Event marker, zoom 10"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:50
+#: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Event marker, zoom 12"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:51
+#: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 14"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:52
+#: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 16"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:53
+#: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 18"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-timeline-form.phtml:65
+#: view/common/block-layout/mapping-block-form.phtml:167
+msgid "Show contemporaneous events?"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:170
+msgid ""
+"Check this if you want to show all events on the map that exist in the same "
+"time period as the current event (default view only)."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:185
+msgid "Timeline navigation position"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:188
+msgid "Select the position of the timeline navigation."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:211
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
 msgstr ""
 
-#: view/common/block-layout/mapping-block.phtml:31
-#: view/mapping/site/index/browse.phtml:32
-msgid "View media"
+#: view/common/block-layout/mapping-block-popup-content.phtml:12
+#: view/mapping/index/show.phtml:41
+#, php-format
+msgid "Item: %s"
 msgstr ""
 
-#: view/common/block-layout/mapping-block.phtml:35
-#: view/mapping/site/index/browse.phtml:36
-msgid "View item"
+#: view/common/block-layout/mapping-block-popup-content.phtml:16
+#: view/mapping/index/show.phtml:37
+#, php-format
+msgid "Media: %s"
 msgstr ""
 
 #: view/mapping/index/advanced-search.phtml:5
@@ -223,18 +247,16 @@ msgstr ""
 msgid "Select Marker Image"
 msgstr ""
 
-#: view/mapping/index/show.phtml:37
-#, php-format
-msgid "Media: %s"
-msgstr ""
-
-#: view/mapping/index/show.phtml:41
-#, php-format
-msgid "Item: %s"
-msgstr ""
-
 #: view/mapping/site/index/browse.phtml:17
 msgid "Search Map"
+msgstr ""
+
+#: view/mapping/site/index/browse.phtml:32
+msgid "View media"
+msgstr ""
+
+#: view/mapping/site/index/browse.phtml:36
+msgid "View item"
 msgstr ""
 
 #: src/Collecting/PromptMap.php:26
@@ -243,6 +265,14 @@ msgstr ""
 
 #: src/Site/Navigation/Link/MapBrowse.php:12
 msgid "Map Browse"
+msgstr ""
+
+#: src/Site/BlockLayout/MapQuery.php:15
+msgid "Map by query"
+msgstr ""
+
+#: src/Site/BlockLayout/Map.php:15
+msgid "Map by attachments"
 msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:45

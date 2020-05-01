@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-06 09:56-0400\n"
+"POT-Creation-Date: 2020-05-01 16:09-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Hong Zhang <zhangh@unlv.nevada.edu>, 2018\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/omeka/teams/14184/zh_CN/)\n"
@@ -24,6 +24,10 @@ msgstr ""
 #: Module.php:206 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr "制图"
+
+#: src/Site/BlockLayout/MapQuery.php:42
+msgid "Attach items using this query."
+msgstr ""
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
 msgid "Resource location"
@@ -61,61 +65,151 @@ msgstr ""
 msgid "Default zoom"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:17
+#: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
 msgstr "默认视图"
 
-#: view/common/block-layout/mapping-block-form.phtml:19
+#: view/common/block-layout/mapping-block-form.phtml:23
 msgid "Set the default view using the in-map controls."
 msgstr "使用图内控制来设置默认视图。"
 
-#: view/common/block-layout/mapping-block-form.phtml:25
+#: view/common/block-layout/mapping-block-form.phtml:29
 msgid "WMS Overlays"
 msgstr "WMS叠加图"
 
-#: view/common/block-layout/mapping-block-form.phtml:27
+#: view/common/block-layout/mapping-block-form.phtml:31
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr "在下面添加、编辑、删除网络地图服务（WMS）叠加图。您可以点选您想默认打开的叠加图。"
 
-#: view/common/block-layout/mapping-block-form.phtml:57
+#: view/common/block-layout/mapping-block-form.phtml:65
 msgid "Base URL"
 msgstr "基础URL"
 
-#: view/common/block-layout/mapping-block-form.phtml:66
+#: view/common/block-layout/mapping-block-form.phtml:74
 msgid "Layers"
 msgstr "图层"
 
-#: view/common/block-layout/mapping-block-form.phtml:68
+#: view/common/block-layout/mapping-block-form.phtml:76
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "WMS图层，如果有的话（逗号分隔的）。"
 
-#: view/common/block-layout/mapping-block-form.phtml:79
+#: view/common/block-layout/mapping-block-form.phtml:87
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "WMS样式，如果有的话（逗号分隔的）。"
 
-#: view/common/block-layout/mapping-block-form.phtml:87
+#: view/common/block-layout/mapping-block-form.phtml:95
 msgid "Add Overlay"
 msgstr "添加叠加图"
 
-#: view/common/block-layout/mapping-block-form.phtml:88
+#: view/common/block-layout/mapping-block-form.phtml:96
 msgid "Save Changes"
 msgstr "保存修改"
 
-#: view/common/block-layout/mapping-block-form.phtml:89
+#: view/common/block-layout/mapping-block-form.phtml:97
 msgid "Clear Inputs"
 msgstr "清空输入"
 
-#: view/common/block-layout/mapping-block.phtml:29
-#: view/mapping/site/index/browse.phtml:32
-msgid "View media"
-msgstr "查看媒体"
+#: view/common/block-layout/mapping-block-form.phtml:101
+msgid "Timeline"
+msgstr ""
 
-#: view/common/block-layout/mapping-block.phtml:33
-#: view/mapping/site/index/browse.phtml:36
-msgid "View item"
-msgstr "查看条目"
+#: view/common/block-layout/mapping-block-form.phtml:105
+msgid "Title headline"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:120
+msgid "Title text"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:136
+msgid "Fly to"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:139
+msgid "Select the map view to fly to when navigating between events."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:146
+msgid "Default view"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:147
+msgid "Event marker, zoom 0"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:148
+msgid "Event marker, zoom 2"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:149
+msgid "Event marker, zoom 4"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:150
+msgid "Event marker, zoom 6"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:151
+msgid "Event marker, zoom 8"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:152
+msgid "Event marker, zoom 10"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:153
+msgid "Event marker, zoom 12"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:154
+msgid "Event marker, zoom 14"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:155
+msgid "Event marker, zoom 16"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:156
+msgid "Event marker, zoom 18"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:167
+msgid "Show contemporaneous events?"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:170
+msgid ""
+"Check this if you want to show all events on the map that exist in the same "
+"time period as the current event (default view only)."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:185
+msgid "Timeline navigation position"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:188
+msgid "Select the position of the timeline navigation."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:211
+msgid ""
+"Select the timestamp or interval property to use when populating the "
+"timeline."
+msgstr ""
+
+#: view/common/block-layout/mapping-block-popup-content.phtml:12
+#: view/mapping/index/show.phtml:41
+#, php-format
+msgid "Item: %s"
+msgstr "条目：%s"
+
+#: view/common/block-layout/mapping-block-popup-content.phtml:16
+#: view/mapping/index/show.phtml:37
+#, php-format
+msgid "Media: %s"
+msgstr "媒体：%s"
 
 #: view/mapping/index/advanced-search.phtml:5
 msgid "Kilometers"
@@ -157,19 +251,17 @@ msgstr "标记标签"
 msgid "Select Marker Image"
 msgstr "选择标记图像"
 
-#: view/mapping/index/show.phtml:37
-#, php-format
-msgid "Media: %s"
-msgstr "媒体：%s"
-
-#: view/mapping/index/show.phtml:41
-#, php-format
-msgid "Item: %s"
-msgstr "条目：%s"
-
 #: view/mapping/site/index/browse.phtml:17
 msgid "Search Map"
 msgstr "搜索地图"
+
+#: view/mapping/site/index/browse.phtml:32
+msgid "View media"
+msgstr "查看媒体"
+
+#: view/mapping/site/index/browse.phtml:36
+msgid "View item"
+msgstr "查看条目"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
@@ -178,6 +270,14 @@ msgstr "您必须在地图上选择一个地点。"
 #: src/Site/Navigation/Link/MapBrowse.php:12
 msgid "Map Browse"
 msgstr "地图浏览"
+
+#: src/Site/BlockLayout/MapQuery.php:15
+msgid "Map by query"
+msgstr ""
+
+#: src/Site/BlockLayout/Map.php:15
+msgid "Map by attachments"
+msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A marker must have an item."
