@@ -140,7 +140,7 @@ if (mappingData && mappingData['o-module-mapping:bounds'] !== null) {
 // Add layers and controls to the map.
 var baseMaps = {
     'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
-    'Grayscale': L.tileLayer.provider('OpenStreetMap.BlackAndWhite'),
+    'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
     'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
     'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
 };
