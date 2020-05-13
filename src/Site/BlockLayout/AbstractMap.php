@@ -40,6 +40,20 @@ abstract class AbstractMap extends AbstractBlockLayout
         $view->headScript()->appendFile($view->assetUrl('js/control.default-view.js', 'Mapping'));
     }
 
+    public function form(PhpRenderer $view, SiteRepresentation $site,
+        SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
+    ) {
+        $data = $this->filterBlockData($block ? $block->data() : []);
+        $form = $view->partial(
+            'common/block-layout/mapping-block-form',
+            [
+                'data' => $data,
+                'timelineIsAvailable' => $this->timelineIsAvailable(),
+            ]
+        );
+        return $form;
+    }
+
     /**
      * Filter Map block data.
      *

@@ -23,14 +23,8 @@ class MapQuery extends AbstractMap
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
-        $data = $block ? $block->data() : [];
-        $form = $view->partial(
-            'common/block-layout/mapping-block-form',
-            [
-                'data' => $this->filterBlockData($data),
-                'timelineIsAvailable' => $this->timelineIsAvailable(),
-            ]
-        );
+        $form = parent::form($view, $site, $page, $block);
+        $data = $this->filterBlockData($block ? $block->data() : []);
         $form .= '
 <a href="#" class="mapping-map-expander collapse"><h4>' . $view->translate('Query') . '</h4></a>
 <div class="collapsible">

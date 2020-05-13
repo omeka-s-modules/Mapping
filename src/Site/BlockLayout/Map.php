@@ -44,14 +44,7 @@ class Map extends AbstractMap
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
-        $data = $block ? $block->data() : [];
-        $form = $view->partial(
-            'common/block-layout/mapping-block-form',
-            [
-                'data' => $this->filterBlockData($data),
-                'timelineIsAvailable' => $this->timelineIsAvailable(),
-            ]
-        );
+        $form = parent::form($view, $site, $page, $block);
         $form .= $view->blockAttachmentsForm($block, true, ['has_markers' => true]);
         return $form;
     }
