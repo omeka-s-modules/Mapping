@@ -8,37 +8,16 @@ use Omeka\Entity\SitePageBlock;
 use Omeka\Stdlib\ErrorStore;
 use Zend\View\Renderer\PhpRenderer;
 
-class Map extends AbstractMap
+class MapQuery extends AbstractMap
 {
     public function getLabel()
     {
-        return 'Map by attachments'; // @translate
+        return 'Map by query'; // @translate
     }
 
     public function onHydrate(SitePageBlock $block, ErrorStore $errorStore)
     {
         $block->setData($this->filterBlockData($block->getData()));
-
-        // Validate attachments.
-        $itemIds = [];
-        $attachments = $block->getAttachments();
-        foreach ($attachments as $attachment) {
-            // When an item was removed from the base, it should be removed.
-            $item = $attachment->getItem();
-            if (!$item) {
-                $attachments->removeElement($attachment);
-                continue;
-            }
-            // Duplicate items are redundant, so remove them.
-            $itemId = $item->getId();
-            if (in_array($itemId, $itemIds)) {
-                $attachments->removeElement($attachment);
-            }
-            $itemIds[] = $itemId;
-            // Media and caption are unneeded.
-            $attachment->setMedia(null);
-            $attachment->setCaption('');
-        }
     }
 
     public function form(PhpRenderer $view, SiteRepresentation $site,
@@ -52,7 +31,22 @@ class Map extends AbstractMap
                 'timelineIsAvailable' => $this->timelineIsAvailable(),
             ]
         );
-        $form .= $view->blockAttachmentsForm($block, true, ['has_markers' => true]);
+        $form .= '
+<a href="#" class="mapping-map-expander collapse"><h4>' . $view->translate('Query') . '</h4></a>
+<div class="collapsible">
+    <div class="field">
+        <div class="field-meta">
+            <label>' . $view->translate('Query') . '</label>
+            <a href="#" class="expand"></a>
+            <div class="collapsible">
+                <div class="field-description">' . $view->translate('Attach items using this query.') . '</div>
+            </div>
+        </div>
+        <div class="inputs">
+            <input type="text" name="o:block[__blockIndex__][o:data][query]" value="' . ($data['query'] ?? null) . '">
+        </div>
+    </div>
+</div>';
         return $form;
     }
 
@@ -65,12 +59,16 @@ class Map extends AbstractMap
         // Get markers (and events, if applicable) from the attached items.
         $events = [];
         $markers = [];
-        foreach ($block->attachments() as $attachment) {
-            $item = $attachment->item();
-            if (!$item) {
-                // This attachment has no item. Do not add markers.
-                continue;
-            }
+        parse_str($data['query'], $query);
+        // Search only for items with markers that are in the current site, and
+        // set a reasonable item limit.
+        $query = array_merge($query, [
+            'site_id' => $block->page()->site()->id(),
+            'has_markers' => true,
+            'limit' => 1000,
+        ]);
+        $response = $view->api()->search('items', $query);
+        foreach ($response->getContent() as $item) {
             if ($isTimeline && $timelineIsAvailable) {
                 // Set the timeline event for this item.
                 $event = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
@@ -90,5 +88,13 @@ class Map extends AbstractMap
             'timelineData' => $this->getTimelineData($events, $data, $view),
             'timelineOptions' => $this->getTimelineOptions($data),
         ]);
+    }
+
+    protected function filterBlockData($data)
+    {
+        $query = $data['query'] ?? null;
+        $data = parent::filterBlockData($data);
+        $data['query'] = $query;
+        return $data;
     }
 }

@@ -37,6 +37,7 @@ return [
     'block_layouts' => [
         'factories' => [
             'mappingMap' => Service\BlockLayout\MapFactory::class,
+            'mappingMapQuery' => Service\BlockLayout\MapFactory::class,
         ],
     ],
     'navigation_links' => [

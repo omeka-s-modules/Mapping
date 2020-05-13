@@ -1,0 +1,18 @@
+<?php
+$item = $marker->item();
+$media = $marker->media();
+?>
+<?php if ($marker->label()): ?>
+<h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
+<?php endif; ?>
+<?php if ($media): ?>
+<img src="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>">
+<?php endif; ?>
+<div>
+    <?php echo sprintf($this->translate('Item: %s'), $item->link($item->displayTitle(), null, ['target' => '_blank'])); ?>
+</div>
+<?php if ($media): ?>
+<div>
+    <?php echo sprintf($this->translate('Media: %s'), $media->link($media->displayTitle(), null, ['target' => '_blank'])); ?>
+</div>
+<?php endif; ?>

@@ -38,18 +38,7 @@ if ($isTimeline) {
 
     <?php foreach ($markers as $marker): ?>
     <div class="mapping-marker-popup-content" style="display:none;" data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>" data-item-id="<?php echo $this->escapeHtml($marker->item()->id()); ?>">
-        <?php if ($marker->label()): ?>
-        <h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
-        <?php endif; ?>
-        <?php if ($marker->media()): ?>
-        <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
-        <div>
-            <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>"><?php echo $this->translate('View media'); ?></a>
-        </div>
-        <?php endif; ?>
-        <div>
-            <a href="<?php echo $this->escapeHtml($marker->item()->url()); ?>"><?php echo $this->translate('View item'); ?></a>
-        </div>
+        <?php echo $this->partial('/common/block-layout/mapping-block-popup-content', ['marker' => $marker]); ?>
     </div>
     <?php endforeach; ?>
 </div>

@@ -75,12 +75,12 @@ var setWmsData = function(block, wmsOverlay) {
 }
 
 // Handle setting the map for added blocks.
-$('#blocks').on('o:block-added', '.block[data-block-layout="mappingMap"]', function(e) {
+$('#blocks').on('o:block-added', '.block[data-block-layout^="mappingMap"]', function(e) {
     setMap($(this));
 });
 
 // Handle setting the map for existing blocks.
-$('.block[data-block-layout="mappingMap"]').each(function() {
+$('.block[data-block-layout^="mappingMap"]').each(function() {
     setMap($(this));
 });
 
@@ -99,7 +99,7 @@ $('form').submit(function(e) {
     // Unfortunately the only way to get the blockIndex at this stage is to
     // extract it from the layout input's name (ideally the index would be set
     // to a data attribute, but that doesn't exist at the time of this fix).
-    $('.block[data-block-layout="mappingMap"]').each(function() {
+    $('.block[data-block-layout^="mappingMap"]').each(function() {
         var thisBlock = $(this);
         var layoutInput = thisBlock.find('input[type="hidden"][name$="[o:layout]"]');
         var index = /\[(\d)\]/.exec(layoutInput.attr('name'))[1];
