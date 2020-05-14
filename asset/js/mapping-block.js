@@ -10,8 +10,14 @@ function MappingBlock(mapDiv, timelineDiv) {
     var markersByItem = {};
 
     // Set base map and grouped overlay layers.
+    var defaultProvider;
+    try {
+        defaultProvider = L.tileLayer.provider(mapData['basemap_provider']);
+    } catch (error) {
+        defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
+    }
     var baseMaps = {
-        'Default': L.tileLayer.provider(mapData['basemap_provider']),
+        'Default': defaultProvider,
         'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
         'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
         'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
