@@ -1,6 +1,7 @@
 <?php
 namespace Mapping\Site\Navigation\Link;
 
+use Mapping\Module;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Site\Navigation\Link\LinkInterface;
 use Omeka\Stdlib\ErrorStore;
@@ -35,6 +36,7 @@ class MapBrowse implements LinkInterface
             'params' => [
                 'site-slug' => $site->slug(),
             ],
+            'query' => ['basemap_provider' => self::getBasemapProvider($data)],
         ];
     }
 
@@ -42,6 +44,16 @@ class MapBrowse implements LinkInterface
     {
         return [
             'label' => $data['label'],
+            'basemap_provider' => self::getBasemapProvider($data),
         ];
+    }
+
+    public static function getBasemapProvider(array $data)
+    {
+        $basemapProvider = Module::DEFAULT_BASEMAP_PROVIDER;
+        if (isset($data['basemap_provider']) && in_array($data['basemap_provider'], Module::BASEMAP_PROVIDERS)) {
+            $basemapProvider = $data['basemap_provider'];
+        }
+        return $basemapProvider;
     }
 }

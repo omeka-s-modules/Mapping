@@ -1,8 +1,17 @@
 $(document).ready( function() {
 
+const urlParams = new URLSearchParams(window.location.search);
+var defaultProvider;
+try {
+    defaultProvider = L.tileLayer.provider(urlParams.get('basemap_provider'));
+} catch (error) {
+    defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
+}
+
 var map = L.map('mapping-map');
 var markers = L.markerClusterGroup();
 var baseMaps = {
+    'Default': defaultProvider,
     'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
     'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
     'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
@@ -17,7 +26,7 @@ $('.mapping-marker-popup-content').each(function() {
     markers.addLayer(marker);
 });
 
-map.addLayer(baseMaps['Streets']);
+map.addLayer(baseMaps['Default']);
 map.addLayer(markers);
 map.addControl(new L.Control.Layers(baseMaps));
 map.addControl(new L.Control.FitBounds(markers));
