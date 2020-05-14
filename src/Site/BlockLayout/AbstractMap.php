@@ -12,6 +12,7 @@ use Omeka\Module\Manager as ModuleManager;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Stdlib\ErrorStore;
 use Omeka\Stdlib\HtmlPurifier;
+use Zend\Form\Element;
 use Zend\View\Renderer\PhpRenderer;
 
 abstract class AbstractMap extends AbstractBlockLayout
@@ -26,6 +27,61 @@ abstract class AbstractMap extends AbstractBlockLayout
      */
     protected $moduleManager;
 
+    protected $basemapProvider = 'OpenStreetMap.Mapnik';
+
+    /**
+     * @var array Basemap providers
+     *
+     * Excludes providers that require API keys, access tokens, etc. Excludes
+     * providers with limited bounds.
+     */
+    protected $basemapProviders = [
+        'OpenStreetMap.Mapnik' => 'OpenStreetMap.Mapnik',
+        'OpenStreetMap.DE' => 'OpenStreetMap.DE',
+        'OpenStreetMap.France' => 'OpenStreetMap.France',
+        'OpenStreetMap.HOT' => 'OpenStreetMap.HOT',
+        'OpenTopoMap' => 'OpenTopoMap',
+        'CyclOSM' => 'CyclOSM',
+        'OpenMapSurfer.Roads' => 'OpenMapSurfer.Roads',
+        'OpenMapSurfer.Hybrid' => 'OpenMapSurfer.Hybrid',
+        'OpenMapSurfer.AdminBounds' => 'OpenMapSurfer.AdminBounds',
+        'OpenMapSurfer.Hillshade' => 'OpenMapSurfer.Hillshade',
+        'Stamen.Toner' => 'Stamen.Toner',
+        'Stamen.TonerBackground' => 'Stamen.TonerBackground',
+        'Stamen.TonerHybrid' => 'Stamen.TonerHybrid',
+        'Stamen.TonerLines' => 'Stamen.TonerLines',
+        'Stamen.TonerLabels' => 'Stamen.TonerLabels',
+        'Stamen.TonerLite' => 'Stamen.TonerLite',
+        'Stamen.Watercolor' => 'Stamen.Watercolor',
+        'Stamen.Terrain' => 'Stamen.Terrain',
+        'Stamen.TerrainBackground' => 'Stamen.TerrainBackground',
+        'Stamen.TerrainLabels' => 'Stamen.TerrainLabels',
+        'Esri.WorldStreetMap' => 'Esri.WorldStreetMap',
+        'Esri.DeLorme' => 'Esri.DeLorme',
+        'Esri.WorldTopoMap' => 'Esri.WorldTopoMap',
+        'Esri.WorldImagery' => 'Esri.WorldImagery',
+        'Esri.WorldTerrain' => 'Esri.WorldTerrain',
+        'Esri.WorldShadedRelief' => 'Esri.WorldShadedRelief',
+        'Esri.WorldPhysical' => 'Esri.WorldPhysical',
+        'Esri.OceanBasemap' => 'Esri.OceanBasemap',
+        'Esri.NatGeoWorldMap' => 'Esri.NatGeoWorldMap',
+        'Esri.WorldGrayCanvas' => 'Esri.WorldGrayCanvas',
+        'MtbMap' => 'MtbMap',
+        'CartoDB.Positron' => 'CartoDB.Positron',
+        'CartoDB.PositronNoLabels' => 'CartoDB.PositronNoLabels',
+        'CartoDB.PositronOnlyLabels' => 'CartoDB.PositronOnlyLabels',
+        'CartoDB.DarkMatter' => 'CartoDB.DarkMatter',
+        'CartoDB.DarkMatterNoLabels' => 'CartoDB.DarkMatterNoLabels',
+        'CartoDB.DarkMatterOnlyLabels' => 'CartoDB.DarkMatterOnlyLabels',
+        'CartoDB.Voyager' => 'CartoDB.Voyager',
+        'CartoDB.VoyagerNoLabels' => 'CartoDB.VoyagerNoLabels',
+        'CartoDB.VoyagerOnlyLabels' => 'CartoDB.VoyagerOnlyLabels',
+        'CartoDB.VoyagerLabelsUnder' => 'CartoDB.VoyagerLabelsUnder',
+        'HikeBike.HikeBike' => 'HikeBike.HikeBike',
+        'HikeBike.HillShading' => 'HikeBike.HillShading',
+        'Wikimedia' => 'Wikimedia',
+    ];
+
     public function __construct(HtmlPurifier $htmlPurifier, ModuleManager $moduleManager)
     {
         $this->htmlPurifier = $htmlPurifier;
@@ -38,17 +94,25 @@ abstract class AbstractMap extends AbstractBlockLayout
         $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/leaflet.css', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/leaflet.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.default-view.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.providers/leaflet-providers.js', 'Mapping'));
     }
 
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
         $data = $this->filterBlockData($block ? $block->data() : []);
+        $basemapProviderSelect = (new Element\Select('o:block[__blockIndex__][o:data][basemap_provider]'))
+            ->setLabel($view->translate('Basemap provider'))
+            ->setOption('info', $view->translate('Select the default basemap provider. These are provided as-is: there is no guarantee of service or speed.'))
+            ->setValue($data['basemap_provider'])
+            ->setValueOptions($this->basemapProviders)
+            ->setAttribute('class', 'basemap-provider');
         $form = $view->partial(
             'common/block-layout/mapping-block-form',
             [
                 'data' => $data,
                 'timelineIsAvailable' => $this->timelineIsAvailable(),
+                'basemapProviderSelect' => $basemapProviderSelect,
             ]
         );
         return $form;
@@ -66,6 +130,10 @@ abstract class AbstractMap extends AbstractBlockLayout
     protected function filterBlockData($data)
     {
         // Filter the defualt view data.
+        $basemapProvider = $this->basemapProvider;
+        if (isset($data['basemap_provider']) && array_key_exists($data['basemap_provider'], $this->basemapProviders)) {
+            $basemapProvider = $data['basemap_provider'];
+        }
         $bounds = null;
         if (isset($data['bounds'])
             && 4 === count(array_filter(explode(',', $data['bounds']), 'is_numeric'))
@@ -156,6 +224,7 @@ abstract class AbstractMap extends AbstractBlockLayout
         }
 
         return [
+            'basemap_provider' => $basemapProvider,
             'bounds' => $bounds,
             'wms' => $wmsOverlays,
             'timeline' => $timeline,
