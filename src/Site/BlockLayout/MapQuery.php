@@ -59,7 +59,7 @@ class MapQuery extends AbstractMap
         $query = array_merge($query, [
             'site_id' => $block->page()->site()->id(),
             'has_markers' => true,
-            'limit' => 1000,
+            'limit' => 5000,
         ]);
         $response = $view->api()->search('items', $query);
         foreach ($response->getContent() as $item) {
