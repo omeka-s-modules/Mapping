@@ -2,6 +2,7 @@
 namespace Mapping\Site\BlockLayout;
 
 use Composer\Semver\Comparator;
+use Mapping\Module;
 use NumericDataTypes\DataType\Timestamp;
 use Omeka\Api\Exception\NotFoundException;
 use Omeka\Api\Representation\SiteRepresentation;
@@ -12,6 +13,7 @@ use Omeka\Module\Manager as ModuleManager;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Stdlib\ErrorStore;
 use Omeka\Stdlib\HtmlPurifier;
+use Zend\Form\Element;
 use Zend\View\Renderer\PhpRenderer;
 
 abstract class AbstractMap extends AbstractBlockLayout
@@ -38,17 +40,26 @@ abstract class AbstractMap extends AbstractBlockLayout
         $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/leaflet.css', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/leaflet.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.default-view.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.providers/leaflet-providers.js', 'Mapping'));
     }
 
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
         $data = $this->filterBlockData($block ? $block->data() : []);
+        $basemapProviderSelect = (new Element\Select('o:block[__blockIndex__][o:data][basemap_provider]'))
+            ->setLabel($view->translate('Basemap provider'))
+            ->setOption('info', $view->translate('Select the default basemap provider. These are provided as-is: there is no guarantee of service or speed.'))
+            ->setValue($data['basemap_provider'])
+            ->setValueOptions(Module::BASEMAP_PROVIDERS)
+            ->setEmptyOption('[Default provider]') // @translate
+            ->setAttribute('class', 'basemap-provider');
         $form = $view->partial(
             'common/block-layout/mapping-block-form',
             [
                 'data' => $data,
                 'timelineIsAvailable' => $this->timelineIsAvailable(),
+                'basemapProviderSelect' => $basemapProviderSelect,
             ]
         );
         return $form;
@@ -66,6 +77,10 @@ abstract class AbstractMap extends AbstractBlockLayout
     protected function filterBlockData($data)
     {
         // Filter the defualt view data.
+        $basemapProvider = null;
+        if (isset($data['basemap_provider']) && array_key_exists($data['basemap_provider'], Module::BASEMAP_PROVIDERS)) {
+            $basemapProvider = $data['basemap_provider'];
+        }
         $bounds = null;
         if (isset($data['bounds'])
             && 4 === count(array_filter(explode(',', $data['bounds']), 'is_numeric'))
@@ -156,6 +171,7 @@ abstract class AbstractMap extends AbstractBlockLayout
         }
 
         return [
+            'basemap_provider' => $basemapProvider,
             'bounds' => $bounds,
             'wms' => $wmsOverlays,
             'timeline' => $timeline,

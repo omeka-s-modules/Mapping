@@ -12,6 +12,57 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class Module extends AbstractModule
 {
+    /**
+     * Excludes providers that require API keys, access tokens, etc. Excludes
+     * providers with limited bounds.
+     */
+    const BASEMAP_PROVIDERS = [
+        'OpenStreetMap.Mapnik' => 'OpenStreetMap.Mapnik',
+        'OpenStreetMap.DE' => 'OpenStreetMap.DE',
+        'OpenStreetMap.France' => 'OpenStreetMap.France',
+        'OpenStreetMap.HOT' => 'OpenStreetMap.HOT',
+        'OpenTopoMap' => 'OpenTopoMap',
+        'CyclOSM' => 'CyclOSM',
+        'OpenMapSurfer.Roads' => 'OpenMapSurfer.Roads',
+        'OpenMapSurfer.Hybrid' => 'OpenMapSurfer.Hybrid',
+        'OpenMapSurfer.AdminBounds' => 'OpenMapSurfer.AdminBounds',
+        'OpenMapSurfer.Hillshade' => 'OpenMapSurfer.Hillshade',
+        'Stamen.Toner' => 'Stamen.Toner',
+        'Stamen.TonerBackground' => 'Stamen.TonerBackground',
+        'Stamen.TonerHybrid' => 'Stamen.TonerHybrid',
+        'Stamen.TonerLines' => 'Stamen.TonerLines',
+        'Stamen.TonerLabels' => 'Stamen.TonerLabels',
+        'Stamen.TonerLite' => 'Stamen.TonerLite',
+        'Stamen.Watercolor' => 'Stamen.Watercolor',
+        'Stamen.Terrain' => 'Stamen.Terrain',
+        'Stamen.TerrainBackground' => 'Stamen.TerrainBackground',
+        'Stamen.TerrainLabels' => 'Stamen.TerrainLabels',
+        'Esri.WorldStreetMap' => 'Esri.WorldStreetMap',
+        'Esri.DeLorme' => 'Esri.DeLorme',
+        'Esri.WorldTopoMap' => 'Esri.WorldTopoMap',
+        'Esri.WorldImagery' => 'Esri.WorldImagery',
+        'Esri.WorldTerrain' => 'Esri.WorldTerrain',
+        'Esri.WorldShadedRelief' => 'Esri.WorldShadedRelief',
+        'Esri.WorldPhysical' => 'Esri.WorldPhysical',
+        'Esri.OceanBasemap' => 'Esri.OceanBasemap',
+        'Esri.NatGeoWorldMap' => 'Esri.NatGeoWorldMap',
+        'Esri.WorldGrayCanvas' => 'Esri.WorldGrayCanvas',
+        'MtbMap' => 'MtbMap',
+        'CartoDB.Positron' => 'CartoDB.Positron',
+        'CartoDB.PositronNoLabels' => 'CartoDB.PositronNoLabels',
+        'CartoDB.PositronOnlyLabels' => 'CartoDB.PositronOnlyLabels',
+        'CartoDB.DarkMatter' => 'CartoDB.DarkMatter',
+        'CartoDB.DarkMatterNoLabels' => 'CartoDB.DarkMatterNoLabels',
+        'CartoDB.DarkMatterOnlyLabels' => 'CartoDB.DarkMatterOnlyLabels',
+        'CartoDB.Voyager' => 'CartoDB.Voyager',
+        'CartoDB.VoyagerNoLabels' => 'CartoDB.VoyagerNoLabels',
+        'CartoDB.VoyagerOnlyLabels' => 'CartoDB.VoyagerOnlyLabels',
+        'CartoDB.VoyagerLabelsUnder' => 'CartoDB.VoyagerLabelsUnder',
+        'HikeBike.HikeBike' => 'HikeBike.HikeBike',
+        'HikeBike.HillShading' => 'HikeBike.HillShading',
+        'Wikimedia' => 'Wikimedia',
+    ];
+
     public function getConfig()
     {
         return include __DIR__ . '/config/module.config.php';

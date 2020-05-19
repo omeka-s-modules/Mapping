@@ -7,6 +7,7 @@ $(document).ready( function() {
  */
 var setMap = function(block) {
     var mapDiv = block.find('.mapping-map');
+    var basemapProviderSelect = block.find('select.basemap-provider');
 
     var map = L.map(mapDiv[0]);
     var defaultBounds = null;
@@ -18,9 +19,13 @@ var setMap = function(block) {
         defaultBounds = [southWest, northEast];
     }
 
-    L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-        attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a>'
-    }).addTo(map);
+    var layer;
+    try {
+        layer = L.tileLayer.provider(basemapProviderSelect.val());
+    } catch (error) {
+        layer = L.tileLayer.provider('OpenStreetMap.Mapnik');
+    }
+    map.addLayer(layer);
 
     map.addControl(new L.Control.DefaultView(
         function(e) {
@@ -44,6 +49,16 @@ var setMap = function(block) {
         map.invalidateSize();
         defaultBounds ? map.fitBounds(defaultBounds) : map.setView([20, 0], 2);
     })
+
+    basemapProviderSelect.on('change', function(e) {
+        map.removeLayer(layer);
+        try {
+            layer = L.tileLayer.provider(basemapProviderSelect.val());
+        } catch (error) {
+            layer = L.tileLayer.provider('OpenStreetMap.Mapnik');
+        }
+        map.addLayer(layer);
+    });
 };
 
 /**
