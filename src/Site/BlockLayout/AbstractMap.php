@@ -52,6 +52,7 @@ abstract class AbstractMap extends AbstractBlockLayout
             ->setOption('info', $view->translate('Select the default basemap provider. These are provided as-is: there is no guarantee of service or speed.'))
             ->setValue($data['basemap_provider'])
             ->setValueOptions(Module::BASEMAP_PROVIDERS)
+            ->setEmptyOption('[Default provider]') // @translate
             ->setAttribute('class', 'basemap-provider');
         $form = $view->partial(
             'common/block-layout/mapping-block-form',
@@ -76,7 +77,7 @@ abstract class AbstractMap extends AbstractBlockLayout
     protected function filterBlockData($data)
     {
         // Filter the defualt view data.
-        $basemapProvider = Module::DEFAULT_BASEMAP_PROVIDER;
+        $basemapProvider = null;
         if (isset($data['basemap_provider']) && array_key_exists($data['basemap_provider'], Module::BASEMAP_PROVIDERS)) {
             $basemapProvider = $data['basemap_provider'];
         }

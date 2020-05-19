@@ -31,12 +31,16 @@ class MapBrowse implements LinkInterface
 
     public function toZend(array $data, SiteRepresentation $site)
     {
+        $query = [];
+        if ($basemapProvider = self::getBasemapProvider($data)) {
+            $query['basemap_provider'] = $basemapProvider;
+        }
         return [
             'route' => 'site/mapping-map-browse',
             'params' => [
                 'site-slug' => $site->slug(),
             ],
-            'query' => ['basemap_provider' => self::getBasemapProvider($data)],
+            'query' => $query,
         ];
     }
 
@@ -50,7 +54,7 @@ class MapBrowse implements LinkInterface
 
     public static function getBasemapProvider(array $data)
     {
-        $basemapProvider = Module::DEFAULT_BASEMAP_PROVIDER;
+        $basemapProvider = null;
         if (isset($data['basemap_provider']) && in_array($data['basemap_provider'], Module::BASEMAP_PROVIDERS)) {
             $basemapProvider = $data['basemap_provider'];
         }

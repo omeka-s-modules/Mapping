@@ -19,7 +19,12 @@ var setMap = function(block) {
         defaultBounds = [southWest, northEast];
     }
 
-    var layer = L.tileLayer.provider(basemapProviderSelect.val());
+    var layer;
+    try {
+        layer = L.tileLayer.provider(basemapProviderSelect.val());
+    } catch (error) {
+        layer = L.tileLayer.provider('OpenStreetMap.Mapnik');
+    }
     map.addLayer(layer);
 
     map.addControl(new L.Control.DefaultView(
@@ -47,7 +52,11 @@ var setMap = function(block) {
 
     basemapProviderSelect.on('change', function(e) {
         map.removeLayer(layer);
-        layer = L.tileLayer.provider(basemapProviderSelect.val());
+        try {
+            layer = L.tileLayer.provider(basemapProviderSelect.val());
+        } catch (error) {
+            layer = L.tileLayer.provider('OpenStreetMap.Mapnik');
+        }
         map.addLayer(layer);
     });
 };

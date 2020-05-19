@@ -12,8 +12,6 @@ use Zend\ServiceManager\ServiceLocatorInterface;
 
 class Module extends AbstractModule
 {
-    const DEFAULT_BASEMAP_PROVIDER = 'OpenStreetMap.Mapnik';
-
     /**
      * Excludes providers that require API keys, access tokens, etc. Excludes
      * providers with limited bounds.
