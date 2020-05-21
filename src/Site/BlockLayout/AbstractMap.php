@@ -49,17 +49,35 @@ abstract class AbstractMap extends AbstractBlockLayout
         $data = $this->filterBlockData($block ? $block->data() : []);
         $basemapProviderSelect = (new Element\Select('o:block[__blockIndex__][o:data][basemap_provider]'))
             ->setLabel($view->translate('Basemap provider'))
-            ->setOption('info', $view->translate('Select the default basemap provider. These are provided as-is: there is no guarantee of service or speed.'))
+            ->setOption('info', $view->translate('Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed.'))
             ->setValue($data['basemap_provider'])
             ->setValueOptions(Module::BASEMAP_PROVIDERS)
             ->setEmptyOption('[Default provider]') // @translate
             ->setAttribute('class', 'basemap-provider');
+        $minZoomInput = (new Element\Number('o:block[__blockIndex__][o:data][min_zoom]'))
+            ->setLabel($view->translate('Minimum zoom level'))
+            ->setOption('info', $view->translate('The minimum zoom level down to which the map will be displayed. The default is 0.'))
+            ->setValue($data['min_zoom'])
+            ->setAttribute('class', 'min-zoom')
+            ->setAttribute('min', 0)
+            ->setAttribute('step', 1)
+            ->setAttribute('placeholder', '0');
+        $maxZoomInput = (new Element\Number('o:block[__blockIndex__][o:data][max_zoom]'))
+            ->setLabel($view->translate('Maximum zoom level'))
+            ->setOption('info', $view->translate('Set the maximum zoom level up to which the map will be displayed. The default is 19.'))
+            ->setValue($data['max_zoom'])
+            ->setAttribute('class', 'max-zoom')
+            ->setAttribute('min', 0)
+            ->setAttribute('step', 1)
+            ->setAttribute('placeholder', '19');
         $form = $view->partial(
             'common/block-layout/mapping-block-form',
             [
                 'data' => $data,
                 'timelineIsAvailable' => $this->timelineIsAvailable(),
                 'basemapProviderSelect' => $basemapProviderSelect,
+                'minZoomInput' => $minZoomInput,
+                'maxZoomInput' => $maxZoomInput,
             ]
         );
         return $form;
@@ -80,6 +98,14 @@ abstract class AbstractMap extends AbstractBlockLayout
         $basemapProvider = null;
         if (isset($data['basemap_provider']) && array_key_exists($data['basemap_provider'], Module::BASEMAP_PROVIDERS)) {
             $basemapProvider = $data['basemap_provider'];
+        }
+        $minZoom = null;
+        if (isset($data['min_zoom']) && is_numeric($data['min_zoom'])) {
+            $minZoom = $data['min_zoom'];
+        }
+        $maxZoom = null;
+        if (isset($data['max_zoom']) && is_numeric($data['max_zoom'])) {
+            $maxZoom = $data['max_zoom'];
         }
         $bounds = null;
         if (isset($data['bounds'])
@@ -172,6 +198,8 @@ abstract class AbstractMap extends AbstractBlockLayout
 
         return [
             'basemap_provider' => $basemapProvider,
+            'max_zoom' => $maxZoom,
+            'min_zoom' => $minZoom,
             'bounds' => $bounds,
             'wms' => $wmsOverlays,
             'timeline' => $timeline,
