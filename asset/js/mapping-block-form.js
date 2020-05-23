@@ -8,6 +8,7 @@ $(document).ready( function() {
 var setMap = function(block) {
     var mapDiv = block.find('.mapping-map');
     var basemapProviderSelect = block.find('select.basemap-provider');
+    var currentZoomLevelSpan = block.find('span.current-zoom');
 
     var map = L.map(mapDiv[0]);
     var defaultBounds = null;
@@ -58,6 +59,10 @@ var setMap = function(block) {
             layer = L.tileLayer.provider('OpenStreetMap.Mapnik');
         }
         map.addLayer(layer);
+    });
+
+    map.on('zoom', function(e) {
+        currentZoomLevelSpan.text(this.getZoom());
     });
 };
 

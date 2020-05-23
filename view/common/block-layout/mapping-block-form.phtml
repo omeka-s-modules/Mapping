@@ -23,7 +23,10 @@ $wmsOverlayTemplate = '
     <?php echo $this->formRow($basemapProviderSelect); ?>
     <?php echo $this->formRow($minZoomInput); ?>
     <?php echo $this->formRow($maxZoomInput); ?>
-    <p><?php echo $this->translate('Set the default view using the in-map controls.'); ?></p>
+    <p><?php echo sprintf(
+        $this->translate('Set the default view using the in-map controls. The current zoom level is %s.'),
+        '<span class="current-zoom"></span>'
+    ); ?></p>
     <div class="mapping-map" style="height:300px;">
         <input type="hidden" name="o:block[__blockIndex__][o:data][bounds]" value="<?php echo $this->escapeHtml($data['bounds']); ?>">
     </div>
