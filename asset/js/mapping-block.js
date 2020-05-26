@@ -2,7 +2,10 @@ function MappingBlock(mapDiv, timelineDiv) {
 
     var mapData = mapDiv.data('data');
     var markerData = mapDiv.data('markers');
-    var map = new L.map(mapDiv[0], {maxZoom: 18});
+    var map = new L.map(mapDiv[0], {
+        minZoom: mapData.min_zoom ?? 0,
+        maxZoom: mapData.max_zoom ?? 19,
+    });
     var timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
     var timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
     var timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], timelineData, timelineOptions) : null;
