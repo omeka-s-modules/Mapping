@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-01 16:09-0400\n"
+"POT-Creation-Date: 2020-05-27 16:43-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Josu Aramberri <jaramberri@i2basque.es>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/omeka/teams/14184/es/)\n"
@@ -22,11 +22,42 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:206 view/mapping/index/form.phtml:26
+#: Module.php:257 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr "Mapeado"
 
-#: src/Site/BlockLayout/MapQuery.php:42
+#: src/Site/BlockLayout/AbstractMap.php:51
+#: view/common/navigation-link-form/mapping-map-browse.phtml:16
+msgid "Basemap provider"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:52
+msgid ""
+"Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
+"providers are offered AS-IS. There is no guarantee of service or speed."
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:58
+msgid "Minimum zoom level"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:59
+msgid ""
+"The minimum zoom level down to which the map will be displayed. The default "
+"is 0."
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:66
+msgid "Maximum zoom level"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:67
+msgid ""
+"Set the maximum zoom level up to which the map will be displayed. The "
+"default is 19."
+msgstr ""
+
+#: src/Site/BlockLayout/MapQuery.php:36
 msgid "Attach items using this query."
 msgstr ""
 
@@ -70,15 +101,18 @@ msgstr ""
 msgid "Default View"
 msgstr "Vista predeterminada"
 
-#: view/common/block-layout/mapping-block-form.phtml:23
-msgid "Set the default view using the in-map controls."
-msgstr "Definir la vista por defecto utilizando los controles del mapa"
+#: view/common/block-layout/mapping-block-form.phtml:27
+#, php-format
+msgid ""
+"Set the default view using the in-map controls. The current zoom level is "
+"%s."
+msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:29
+#: view/common/block-layout/mapping-block-form.phtml:35
 msgid "WMS Overlays"
 msgstr "Capas superpuestas WMS"
 
-#: view/common/block-layout/mapping-block-form.phtml:31
+#: view/common/block-layout/mapping-block-form.phtml:37
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
@@ -86,117 +120,117 @@ msgstr ""
 "Añadir, editar, y borrar capas de Web   Map Service (WMS). Marque las que "
 "quiere abrir por defecto."
 
-#: view/common/block-layout/mapping-block-form.phtml:65
+#: view/common/block-layout/mapping-block-form.phtml:71
 msgid "Base URL"
 msgstr "URL de base"
 
-#: view/common/block-layout/mapping-block-form.phtml:74
+#: view/common/block-layout/mapping-block-form.phtml:80
 msgid "Layers"
 msgstr "Capas"
 
-#: view/common/block-layout/mapping-block-form.phtml:76
+#: view/common/block-layout/mapping-block-form.phtml:82
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "Capas WMS, si existen (separadas por comas)"
 
-#: view/common/block-layout/mapping-block-form.phtml:87
+#: view/common/block-layout/mapping-block-form.phtml:93
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "Estilos WMS, si existen (separados por comas)"
 
-#: view/common/block-layout/mapping-block-form.phtml:95
+#: view/common/block-layout/mapping-block-form.phtml:101
 msgid "Add Overlay"
 msgstr "Agregar capa"
 
-#: view/common/block-layout/mapping-block-form.phtml:96
+#: view/common/block-layout/mapping-block-form.phtml:102
 msgid "Save Changes"
 msgstr "Guardar cambios"
 
-#: view/common/block-layout/mapping-block-form.phtml:97
+#: view/common/block-layout/mapping-block-form.phtml:103
 msgid "Clear Inputs"
 msgstr "Limpiar entradas"
 
-#: view/common/block-layout/mapping-block-form.phtml:101
+#: view/common/block-layout/mapping-block-form.phtml:107
 msgid "Timeline"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:105
+#: view/common/block-layout/mapping-block-form.phtml:111
 msgid "Title headline"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:120
+#: view/common/block-layout/mapping-block-form.phtml:126
 msgid "Title text"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:136
+#: view/common/block-layout/mapping-block-form.phtml:142
 msgid "Fly to"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:139
+#: view/common/block-layout/mapping-block-form.phtml:145
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:146
+#: view/common/block-layout/mapping-block-form.phtml:152
 msgid "Default view"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:147
+#: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Event marker, zoom 0"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:148
+#: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 2"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:149
+#: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 4"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:150
+#: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 6"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:151
+#: view/common/block-layout/mapping-block-form.phtml:157
 msgid "Event marker, zoom 8"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:152
+#: view/common/block-layout/mapping-block-form.phtml:158
 msgid "Event marker, zoom 10"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:153
+#: view/common/block-layout/mapping-block-form.phtml:159
 msgid "Event marker, zoom 12"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:154
+#: view/common/block-layout/mapping-block-form.phtml:160
 msgid "Event marker, zoom 14"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:155
+#: view/common/block-layout/mapping-block-form.phtml:161
 msgid "Event marker, zoom 16"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:156
+#: view/common/block-layout/mapping-block-form.phtml:162
 msgid "Event marker, zoom 18"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:167
+#: view/common/block-layout/mapping-block-form.phtml:173
 msgid "Show contemporaneous events?"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:170
+#: view/common/block-layout/mapping-block-form.phtml:176
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:185
+#: view/common/block-layout/mapping-block-form.phtml:191
 msgid "Timeline navigation position"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:188
+#: view/common/block-layout/mapping-block-form.phtml:194
 msgid "Select the position of the timeline navigation."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:211
+#: view/common/block-layout/mapping-block-form.phtml:217
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
@@ -258,19 +292,24 @@ msgstr "Seleccionar imagen de marcador"
 msgid "Search Map"
 msgstr "Buscar en mapa"
 
-#: view/mapping/site/index/browse.phtml:32
+#: view/mapping/site/index/browse.phtml:33
 msgid "View media"
 msgstr "Ver media"
 
-#: view/mapping/site/index/browse.phtml:36
+#: view/mapping/site/index/browse.phtml:37
 msgid "View item"
 msgstr "Ver elemento"
+
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11
+#: src/Site/BlockLayout/AbstractMap.php:55
+msgid "[Default provider]"
+msgstr ""
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
 msgstr "Debe seleccionar una ubicación en el mapa."
 
-#: src/Site/Navigation/Link/MapBrowse.php:12
+#: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
 msgstr "Navegar mapa"
 
