@@ -33,7 +33,7 @@ class MapBrowse implements LinkInterface
     {
         $query = [];
         if ($basemapProvider = self::getBasemapProvider($data)) {
-            $query['basemap_provider'] = $basemapProvider;
+            $query['mapping_basemap_provider'] = $basemapProvider;
         }
         return [
             'route' => 'site/mapping-map-browse',

@@ -15,7 +15,7 @@ $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'
 <form id="advanced-search">
     <?php echo $this->partial('common/advanced-search', ['query' => $query, 'resourceType' => 'item']); ?>
     <button><?php echo $this->translate('Search Map'); ?></button>
-    <input type="hidden" name="basemap_provider" value="<?php echo $this->escapeHtml($query['basemap_provider']); ?>">
+    <input type="hidden" name="mapping_basemap_provider" value="<?php echo $this->escapeHtml($query['mapping_basemap_provider']); ?>">
 </form>
 
 <?php foreach ($markers as $marker): ?>

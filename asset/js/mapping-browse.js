@@ -3,7 +3,7 @@ $(document).ready( function() {
 const urlParams = new URLSearchParams(window.location.search);
 var defaultProvider;
 try {
-    defaultProvider = L.tileLayer.provider(urlParams.get('basemap_provider'));
+    defaultProvider = L.tileLayer.provider(urlParams.get('mapping_basemap_provider'));
 } catch (error) {
     defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
 }
