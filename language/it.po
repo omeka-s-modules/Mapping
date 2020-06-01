@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-27 16:43-0400\n"
+"POT-Creation-Date: 2020-06-01 16:48-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Giorgio Comai <g@giorgiocomai.eu>, 2020\n"
 "Language-Team: Italian (https://www.transifex.com/omeka/teams/14184/it/)\n"
@@ -29,33 +29,40 @@ msgstr "Mappatura"
 #: src/Site/BlockLayout/AbstractMap.php:51
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
-msgstr ""
+msgstr "Fornitore della mappa di base"
 
 #: src/Site/BlockLayout/AbstractMap.php:52
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
 msgstr ""
+"Seleziona il fornitore della mappa di base. La mappa di base predefinita è "
+"OpenStreetMap.Mapnik. Queste mappe sono fornite come sono, senza alcuna "
+"garanzia di servizio o velocità."
 
 #: src/Site/BlockLayout/AbstractMap.php:58
 msgid "Minimum zoom level"
-msgstr ""
+msgstr "Livello di zoom minimo"
 
 #: src/Site/BlockLayout/AbstractMap.php:59
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
 msgstr ""
+"Il livello di zoom minimo fino al quale può essere mostrata la mappa. Il "
+"valore predefinito è 0."
 
 #: src/Site/BlockLayout/AbstractMap.php:66
 msgid "Maximum zoom level"
-msgstr ""
+msgstr "Massimo livello di zoom"
 
 #: src/Site/BlockLayout/AbstractMap.php:67
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
 msgstr ""
+"Imposta il livello di zoom massimo fino al quale può essere mostrata la "
+"mappa. Il valore predefinito è 19."
 
 #: src/Site/BlockLayout/MapQuery.php:36
 msgid "Attach items using this query."
@@ -107,6 +114,8 @@ msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
 "%s."
 msgstr ""
+"Imposta la visualizzazione predefinita utilizzando i controlli presenti "
+"sulla mappa. L'attuale livello di zoom è %s."
 
 #: view/common/block-layout/mapping-block-form.phtml:35
 msgid "WMS Overlays"
@@ -311,7 +320,7 @@ msgstr "Visualizza contenuto"
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 #: src/Site/BlockLayout/AbstractMap.php:55
 msgid "[Default provider]"
-msgstr ""
+msgstr "[Fornitore predefinito]"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
