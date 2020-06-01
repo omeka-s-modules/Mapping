@@ -53,14 +53,16 @@ var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
             .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o:id]')
             .val(markerId));
     }
+    // Account for markers placed outside the CRS's bounds.
+    var latLng = marker.getLatLng().wrap();
     mappingForm.append($('<input>')
         .attr('type', 'hidden')
         .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:lat]')
-        .val(marker.getLatLng().lat));
+        .val(latLng.lat));
     mappingForm.append($('<input>')
         .attr('type', 'hidden')
         .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:lng]')
-        .val(marker.getLatLng().lng));
+        .val(latLng.lng));
     mappingForm.append($('<input>')
         .attr('type', 'hidden')
         .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:label]')

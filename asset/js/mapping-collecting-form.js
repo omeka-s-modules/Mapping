@@ -24,8 +24,10 @@ $(document).ready(function() {
                 map.removeLayer(marker);
             }
             marker = new L.marker(e.latlng).addTo(map);
-            inputLat.val(e.latlng.lat);
-            inputLng.val(e.latlng.lng);
+            // Account for markers placed outside the CRS's bounds.
+            var latLng = marker.getLatLng().wrap();
+            inputLat.val(latLng.lat);
+            inputLng.val(latLng.lng);
         });
 
         // Remove the marker if it's clicked.
