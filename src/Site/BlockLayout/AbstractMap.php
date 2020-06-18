@@ -13,8 +13,8 @@ use Omeka\Module\Manager as ModuleManager;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Stdlib\ErrorStore;
 use Omeka\Stdlib\HtmlPurifier;
-use Zend\Form\Element;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\Form\Element;
+use Laminas\View\Renderer\PhpRenderer;
 
 abstract class AbstractMap extends AbstractBlockLayout
 {

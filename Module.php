@@ -5,10 +5,10 @@ use Doctrine\ORM\Events;
 use Mapping\Db\Event\Listener\DetachOrphanMappings;
 use Omeka\Module\AbstractModule;
 use Omeka\Permissions\Acl;
-use Zend\EventManager\Event;
-use Zend\EventManager\SharedEventManagerInterface;
-use Zend\Mvc\MvcEvent;
-use Zend\ServiceManager\ServiceLocatorInterface;
+use Laminas\EventManager\Event;
+use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\Mvc\MvcEvent;
+use Laminas\ServiceManager\ServiceLocatorInterface;
 
 class Module extends AbstractModule
 {

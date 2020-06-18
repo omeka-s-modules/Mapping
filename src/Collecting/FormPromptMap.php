@@ -1,8 +1,8 @@
 <?php
 namespace Mapping\Collecting;
 
-use Zend\Form\View\Helper\AbstractHelper;
-use Zend\Form\ElementInterface;
+use Laminas\Form\View\Helper\AbstractHelper;
+use Laminas\Form\ElementInterface;
 
 class FormPromptMap extends AbstractHelper
 {

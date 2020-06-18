@@ -2,8 +2,8 @@
 namespace Mapping\Collecting;
 
 use Collecting\Form\Element\PromptIsRequiredTrait;
-use Zend\Form\Element;
-use Zend\InputFilter\InputProviderInterface;
+use Laminas\Form\Element;
+use Laminas\InputFilter\InputProviderInterface;
 
 class PromptMap extends Element implements InputProviderInterface
 {

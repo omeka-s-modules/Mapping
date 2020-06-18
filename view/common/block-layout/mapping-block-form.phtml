@@ -113,7 +113,7 @@ $wmsOverlayTemplate = '
         </div>
         <div class="inputs">
             <?php
-            $titleHeadline = new \Zend\Form\Element\Text("o:block[__blockIndex__][o:data][timeline][title_headline]");
+            $titleHeadline = new \Laminas\Form\Element\Text("o:block[__blockIndex__][o:data][timeline][title_headline]");
             $titleHeadline->setAttributes([
                 'value' => isset($data['timeline']['title_headline']) ? $data['timeline']['title_headline'] : null,
             ]);
@@ -128,7 +128,7 @@ $wmsOverlayTemplate = '
         </div>
         <div class="inputs">
             <?php
-            $titleText = new \Zend\Form\Element\Textarea("o:block[__blockIndex__][o:data][timeline][title_text]");
+            $titleText = new \Laminas\Form\Element\Textarea("o:block[__blockIndex__][o:data][timeline][title_text]");
             $titleText->setAttributes([
                 'class' => 'block-html full wysiwyg',
                 'value' => isset($data['timeline']['title_text']) ? $data['timeline']['title_text'] : null,
@@ -147,7 +147,7 @@ $wmsOverlayTemplate = '
         </div>
         <div class="inputs">
             <?php
-            $flyTo = new \Zend\Form\Element\Select("o:block[__blockIndex__][o:data][timeline][fly_to]");
+            $flyTo = new \Laminas\Form\Element\Select("o:block[__blockIndex__][o:data][timeline][fly_to]");
             $flyTo->setValueOptions([
                 '' => $this->translate('Default view'),
                 '0' => $this->translate('Event marker, zoom 0'),
@@ -178,7 +178,7 @@ $wmsOverlayTemplate = '
         </div>
         <div class="inputs">
             <?php
-            $showContemporaneous = new \Zend\Form\Element\Checkbox("o:block[__blockIndex__][o:data][timeline][show_contemporaneous]");
+            $showContemporaneous = new \Laminas\Form\Element\Checkbox("o:block[__blockIndex__][o:data][timeline][show_contemporaneous]");
             $showContemporaneous->setAttributes([
                 'value' => isset($data['timeline']['show_contemporaneous']) ? $data['timeline']['show_contemporaneous'] : '',
             ]);
@@ -196,7 +196,7 @@ $wmsOverlayTemplate = '
         </div>
         <div class="inputs">
             <?php
-            $timenavPosition = new \Zend\Form\Element\Select("o:block[__blockIndex__][o:data][timeline][timenav_position]");
+            $timenavPosition = new \Laminas\Form\Element\Select("o:block[__blockIndex__][o:data][timeline][timenav_position]");
             $timenavPosition->setEmptyOption('Default position');
             $timenavPosition->setValueOptions([
                 'full_width_below' => 'Full width, below story slider and map',
