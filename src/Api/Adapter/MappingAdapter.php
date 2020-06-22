@@ -42,7 +42,7 @@ class MappingAdapter extends AbstractEntityAdapter
     public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
     {
         if (!$entity->getItem()) {
-            $errorStore->addError('o:item', 'A marker must have an item.'); // @translate
+            $errorStore->addError('o:item', 'A mapping zone must have an item.'); // @translate
         }
         $bounds = $entity->getBounds();
         if (null !== $bounds
