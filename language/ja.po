@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-01 16:48-0400\n"
+"POT-Creation-Date: 2020-07-07 13:16-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Naosuke Okamoto, 2019\n"
 "Language-Team: Japanese (https://www.transifex.com/omeka/teams/14184/ja/)\n"
@@ -285,15 +285,15 @@ msgstr "マーカーのラベル"
 msgid "Select Marker Image"
 msgstr "マーカー画像を選択"
 
-#: view/mapping/site/index/browse.phtml:17
+#: view/mapping/site/index/browse.phtml:18
 msgid "Search Map"
 msgstr "地図を検索"
 
-#: view/mapping/site/index/browse.phtml:33
+#: view/mapping/site/index/browse.phtml:34
 msgid "View media"
 msgstr "メディアを表示"
 
-#: view/mapping/site/index/browse.phtml:37
+#: view/mapping/site/index/browse.phtml:38
 msgid "View item"
 msgstr "アイテムを表示"
 
@@ -319,7 +319,7 @@ msgid "Map by attachments"
 msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:45
-msgid "A marker must have an item."
+msgid "A mapping zone must have an item."
 msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:51

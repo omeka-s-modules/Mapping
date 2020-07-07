@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-01 16:48-0400\n"
+"POT-Creation-Date: 2020-07-07 13:16-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2020\n"
 "Language-Team: Estonian (https://www.transifex.com/omeka/teams/14184/et/)\n"
@@ -288,15 +288,15 @@ msgstr "Markeri silt"
 msgid "Select Marker Image"
 msgstr "Vali markeri pilt"
 
-#: view/mapping/site/index/browse.phtml:17
+#: view/mapping/site/index/browse.phtml:18
 msgid "Search Map"
 msgstr "Otsi kaardilt"
 
-#: view/mapping/site/index/browse.phtml:33
+#: view/mapping/site/index/browse.phtml:34
 msgid "View media"
 msgstr "Vaata meediat"
 
-#: view/mapping/site/index/browse.phtml:37
+#: view/mapping/site/index/browse.phtml:38
 msgid "View item"
 msgstr "Vaata ühikut"
 
@@ -322,7 +322,7 @@ msgid "Map by attachments"
 msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:45
-msgid "A marker must have an item."
+msgid "A mapping zone must have an item."
 msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:51

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-06-01 16:48-0400\n"
+"POT-Creation-Date: 2020-07-07 13:16-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -280,15 +280,15 @@ msgstr ""
 msgid "Select Marker Image"
 msgstr ""
 
-#: view/mapping/site/index/browse.phtml:17
+#: view/mapping/site/index/browse.phtml:18
 msgid "Search Map"
 msgstr ""
 
-#: view/mapping/site/index/browse.phtml:33
+#: view/mapping/site/index/browse.phtml:34
 msgid "View media"
 msgstr ""
 
-#: view/mapping/site/index/browse.phtml:37
+#: view/mapping/site/index/browse.phtml:38
 msgid "View item"
 msgstr ""
 
@@ -314,7 +314,7 @@ msgid "Map by attachments"
 msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:45
-msgid "A marker must have an item."
+msgid "A mapping zone must have an item."
 msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:51
