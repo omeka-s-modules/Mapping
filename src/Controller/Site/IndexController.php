@@ -29,15 +29,19 @@ class IndexController extends AbstractActionController
         }
         unset($items);
 
-        $markersQuery = ['item_id' => $itemIds];
-        if (isset($query['mapping_address']) && isset($query['mapping_radius'])) {
-            $markersQuery['address'] = $query['mapping_address'];
-            $markersQuery['radius'] = $query['mapping_radius'];
-            $markersQuery['radius_unit'] = isset($query['mapping_radius_unit'])
-                ? $query['mapping_radius_unit'] : null;
+        // Get all markers for all items that match the query, if any.
+        $markers = [];
+        if ($itemIds) {
+            $markersQuery = ['item_id' => $itemIds];
+            if (isset($query['mapping_address']) && isset($query['mapping_radius'])) {
+                $markersQuery['address'] = $query['mapping_address'];
+                $markersQuery['radius'] = $query['mapping_radius'];
+                $markersQuery['radius_unit'] = isset($query['mapping_radius_unit'])
+                    ? $query['mapping_radius_unit'] : null;
+            }
+            $response = $this->api()->search('mapping_markers', $markersQuery);
+            $markers = $response->getContent();
         }
-        $response = $this->api()->search('mapping_markers', $markersQuery);
-        $markers = $response->getContent();
 
         $view = new ViewModel;
         $view->setVariable('query', $query);
