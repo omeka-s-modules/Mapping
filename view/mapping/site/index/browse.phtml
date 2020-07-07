@@ -8,6 +8,7 @@ $this->headScript()->appendFile($this->assetUrl('vendor/leaflet.providers/leafle
 $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-browse.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'));
+$query['mapping_basemap_provider'] = $query['mapping_basemap_provider'] ?? '';
 ?>
 
 <div id="mapping-map" style="height:500px; width: 80%; margin:0 auto;"></div>
