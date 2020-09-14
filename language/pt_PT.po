@@ -4,9 +4,9 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Caroline Derauw <caroline.derauw@uclouvain.be>, 2017
-# BADEY Sylvain <mali2003@free.fr>, 2018
-# Daniel Berthereau <daniel.transifex@berthereau.net>, 2019
+# Bruna Santiago <bruna.santiago@campus.fcsh.unl.pt>, 2020
+# Ângela Pité <angelaimp05@gmail.com>, 2020
+# Daniel Alves <daniel_r_alves@hotmail.com>, 2020
 # 
 #, fuzzy
 msgid ""
@@ -15,60 +15,67 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-09-14 18:09-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Daniel Berthereau <daniel.transifex@berthereau.net>, 2019\n"
-"Language-Team: French (https://www.transifex.com/omeka/teams/14184/fr/)\n"
+"Last-Translator: Daniel Alves <daniel_r_alves@hotmail.com>, 2020\n"
+"Language-Team: Portuguese (Portugal) (https://www.transifex.com/omeka/teams/14184/pt_PT/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: pt_PT\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: Module.php:257 view/mapping/index/form.phtml:26
 msgid "Mapping"
-msgstr "Carte"
+msgstr "Mapeamento"
 
 #: src/Site/BlockLayout/AbstractMap.php:51
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
-msgstr ""
+msgstr "Fornecedor de mapa base"
 
 #: src/Site/BlockLayout/AbstractMap.php:52
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
 msgstr ""
+"Seleccione o fornecedor do mapa base. O predefinido é OpenStreetMap.Mapnik. "
+"Estes fornecedores são disponibilizados \"tal como estão\". Não há garantia "
+"de serviço ou velocidade."
 
 #: src/Site/BlockLayout/AbstractMap.php:58
 msgid "Minimum zoom level"
-msgstr ""
+msgstr "Nível de zoom mínimo"
 
 #: src/Site/BlockLayout/AbstractMap.php:59
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
 msgstr ""
+"O nível de zoom mínimo até ao qual o mapa será exibido. O valor por defeito "
+"é 0."
 
 #: src/Site/BlockLayout/AbstractMap.php:66
 msgid "Maximum zoom level"
-msgstr ""
+msgstr "Nível de zoom máximo"
 
 #: src/Site/BlockLayout/AbstractMap.php:67
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
 msgstr ""
+"Defina o nível de zoom máximo até ao qual o mapa será exibido. O valor por "
+"defeito é 19."
 
 #: src/Site/BlockLayout/MapQuery.php:36
 msgid "Attach items using this query."
-msgstr ""
+msgstr "Anexe itens usando esta consulta."
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
 msgid "Resource location"
-msgstr "Localisation de la ressource"
+msgstr "Localização do recurso"
 
 #: view/admin/csv-mapping.phtml:7 view/admin/csv-mapping.phtml:21
 msgid "Select below"
-msgstr "Choisir ci-dessous"
+msgstr "Seleccione abaixo"
 
 #: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
@@ -84,23 +91,23 @@ msgstr "Latitude/Longitude"
 
 #: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
 msgid "Default map view"
-msgstr "Vue par défaut de la carte"
+msgstr "Vista de mapa predefinida"
 
 #: view/admin/csv-mapping.phtml:22
 msgid "Map center latitude"
-msgstr "Latitude du centre de la carte"
+msgstr "Latitude do centro do mapa"
 
 #: view/admin/csv-mapping.phtml:23
 msgid "Map center longitude"
-msgstr "Latitude du centre de la carte"
+msgstr "Longitude do centro do mapa"
 
 #: view/admin/csv-mapping.phtml:24
 msgid "Default zoom"
-msgstr "Zoom par défaut"
+msgstr "Zoom predefinido"
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
-msgstr "Vue par défaut"
+msgstr "Visualização predefinida"
 
 #: view/common/block-layout/mapping-block-form.phtml:27
 #, php-format
@@ -108,18 +115,20 @@ msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
 "%s."
 msgstr ""
+"Defina a visualização predefinida utilizando os controlos no mapa. O nível "
+"de zoom actual é %s."
 
 #: view/common/block-layout/mapping-block-form.phtml:35
 msgid "WMS Overlays"
-msgstr "Couches WMS"
+msgstr "Sobreposições WMS"
 
 #: view/common/block-layout/mapping-block-form.phtml:37
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr ""
-"Ajouter, modifier et supprimer les couches Web Map Service (WMS) ci-dessous."
-" Vous pouvez cocher quelles couches vous voulez ouvrir par défaut."
+"Adicione, edite e elimine as sobreposições Web Map Service (WMS) abaixo. "
+"Pode verificar que sobreposições pretende que abram por defeito."
 
 #: view/common/block-layout/mapping-block-form.phtml:71
 msgid "Base URL"
@@ -127,207 +136,211 @@ msgstr "URL de base"
 
 #: view/common/block-layout/mapping-block-form.phtml:80
 msgid "Layers"
-msgstr "Couches"
+msgstr "Camadas"
 
 #: view/common/block-layout/mapping-block-form.phtml:82
 msgid "The WMS layers, if any (comma-separated)."
-msgstr "Les couches WMS, le cas échéant (séparées par des virgules)."
+msgstr "As camadas WMS, se houver (separadas por vírgulas)."
 
 #: view/common/block-layout/mapping-block-form.phtml:93
 msgid "The WMS styles, if any (comma-separated)."
-msgstr "Les styles WMS, le cas échéant (séparées par des virgules)."
+msgstr "Os estilos WMS, se houver (separados por vírgulas)."
 
 #: view/common/block-layout/mapping-block-form.phtml:101
 msgid "Add Overlay"
-msgstr "Ajouter une couche"
+msgstr "Adicionar sobreposição"
 
 #: view/common/block-layout/mapping-block-form.phtml:102
 msgid "Save Changes"
-msgstr "Sauvegarder les changements"
+msgstr "Guardar alterações"
 
 #: view/common/block-layout/mapping-block-form.phtml:103
 msgid "Clear Inputs"
-msgstr "Supprimer les entrées"
+msgstr "Remover Entradas"
 
 #: view/common/block-layout/mapping-block-form.phtml:107
 msgid "Timeline"
-msgstr ""
+msgstr "Linha do tempo"
 
 #: view/common/block-layout/mapping-block-form.phtml:111
 msgid "Title headline"
-msgstr ""
+msgstr "Título do cabeçalho"
 
 #: view/common/block-layout/mapping-block-form.phtml:126
 msgid "Title text"
-msgstr ""
+msgstr "Texto do título"
 
 #: view/common/block-layout/mapping-block-form.phtml:142
 msgid "Fly to"
-msgstr ""
+msgstr "Voar para"
 
 #: view/common/block-layout/mapping-block-form.phtml:145
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
+"Seleccione a visualização do mapa para voar para quando se navega entre "
+"eventos."
 
 #: view/common/block-layout/mapping-block-form.phtml:152
 msgid "Default view"
-msgstr ""
+msgstr "Visualização predefinida"
 
 #: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Event marker, zoom 0"
-msgstr ""
+msgstr "Marcador de evento, zoom 0"
 
 #: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 2"
-msgstr ""
+msgstr "Marcador de evento, zoom 2"
 
 #: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 4"
-msgstr ""
+msgstr "Marcador de evento, zoom 4"
 
 #: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 6"
-msgstr ""
+msgstr "Marcador de evento, zoom 6"
 
 #: view/common/block-layout/mapping-block-form.phtml:157
 msgid "Event marker, zoom 8"
-msgstr ""
+msgstr "Marcador de evento, zoom 8"
 
 #: view/common/block-layout/mapping-block-form.phtml:158
 msgid "Event marker, zoom 10"
-msgstr ""
+msgstr "Marcador de evento, zoom 10"
 
 #: view/common/block-layout/mapping-block-form.phtml:159
 msgid "Event marker, zoom 12"
-msgstr ""
+msgstr "Marcador de evento, zoom 12"
 
 #: view/common/block-layout/mapping-block-form.phtml:160
 msgid "Event marker, zoom 14"
-msgstr ""
+msgstr "Marcador de evento, zoom 14"
 
 #: view/common/block-layout/mapping-block-form.phtml:161
 msgid "Event marker, zoom 16"
-msgstr ""
+msgstr "Marcador de evento, zoom 16"
 
 #: view/common/block-layout/mapping-block-form.phtml:162
 msgid "Event marker, zoom 18"
-msgstr ""
+msgstr "Marcador de evento, zoom 18"
 
 #: view/common/block-layout/mapping-block-form.phtml:173
 msgid "Show contemporaneous events?"
-msgstr ""
+msgstr "Mostrar eventos contemporâneos?"
 
 #: view/common/block-layout/mapping-block-form.phtml:176
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
 msgstr ""
+"Escolha esta opção se quiser mostrar todos os eventos no mapa que existem no"
+" mesmo período que o evento actual (apenas na visualização predefinida)."
 
 #: view/common/block-layout/mapping-block-form.phtml:191
 msgid "Timeline navigation position"
-msgstr ""
+msgstr "Posição de navegação na linha do tempo"
 
 #: view/common/block-layout/mapping-block-form.phtml:194
 msgid "Select the position of the timeline navigation."
-msgstr ""
+msgstr "Seleccione a posição de navegação na linha do tempo."
 
 #: view/common/block-layout/mapping-block-form.phtml:217
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
 msgstr ""
+"Seleccione o registo da data ou propriedade do intervalo temporal a utilizar"
+" ao preencher a linha do tempo. "
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:12
 #: view/mapping/index/show.phtml:41
 #, php-format
 msgid "Item: %s"
-msgstr "Contenu : “%s”"
+msgstr "Item: %s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
 #: view/mapping/index/show.phtml:37
 #, php-format
 msgid "Media: %s"
-msgstr "Média : “%s”"
+msgstr "Media: %s"
 
 #: view/mapping/index/advanced-search.phtml:5
 msgid "Kilometers"
-msgstr "Kilomètres"
+msgstr "Quilómetros"
 
 #: view/mapping/index/advanced-search.phtml:5
 msgid "Miles"
-msgstr "Miles"
+msgstr "Milhas"
 
 #: view/mapping/index/advanced-search.phtml:9
 msgid "Geographic Address"
-msgstr "Adresse géographique"
+msgstr "Endereço Geográfico"
 
 #: view/mapping/index/advanced-search.phtml:17
 msgid "Geographic Radius"
-msgstr "Rayon géographique"
+msgstr "Raio Geográfico"
 
 #: view/mapping/index/advanced-search.phtml:25
 msgid "Geographic Radius Unit"
-msgstr "Unité du rayon géographique"
+msgstr "Unidade de Raio Geográfico"
 
 #: view/mapping/index/form.phtml:32
 msgid "Close Me"
-msgstr "Fermer"
+msgstr "Fechar"
 
 #: view/mapping/index/form.phtml:33
 msgid "Marker Image"
-msgstr "Image de la fenêtre contextuelle"
+msgstr "Imagem de marcador"
 
 #: view/mapping/index/form.phtml:34
 msgid " No Image"
-msgstr "Pas d'image"
+msgstr "Sem imagem"
 
 #: view/mapping/index/form.phtml:55
 msgid "Marker Label"
-msgstr "Étiquette de la fenêtre contextuelle"
+msgstr "Etiqueta de marcador"
 
 #: view/mapping/index/form.phtml:58
 msgid "Select Marker Image"
-msgstr "Sélectionner l'image de la fenêtre contextuelle"
+msgstr "Seleccione imagem de marcador"
 
 #: view/mapping/site/index/browse.phtml:18
 msgid "Search Map"
-msgstr "Rechercher une carte"
+msgstr "Pesquisar o mapa"
 
 #: view/mapping/site/index/browse.phtml:34
 msgid "View media"
-msgstr "Voir les médias"
+msgstr "Ver multimédia"
 
 #: view/mapping/site/index/browse.phtml:38
 msgid "View item"
-msgstr "Voir le contenu"
+msgstr "Ver item"
 
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
-msgstr "Parcourir la carte"
+msgstr "Explorar o mapa"
 
 #: src/Site/BlockLayout/Map.php:15
 msgid "Map by attachments"
-msgstr ""
+msgstr "Mapear por anexos"
 
 #: src/Site/BlockLayout/AbstractMap.php:55
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
-msgstr ""
+msgstr "[Fornecedor predefinido]"
 
 #: src/Site/BlockLayout/MapQuery.php:15
 msgid "Map by query"
-msgstr ""
+msgstr "Mapear por consulta"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
-msgstr "Vous devez sélectionner un emplacement sur la carte."
+msgstr "Deve seleccionar uma localização no mapa."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."
-msgstr ""
+msgstr "Uma zona de mapeamento deve ter um item."
 
 #: src/Api/Adapter/MappingAdapter.php:51
 msgid "Map bounds must contain four numbers separated by commas"
-msgstr ""
-"Les limites de la carte doivent contenir quatre nombres séparés par une "
-"virgule."
+msgstr "Os limites do mapa devem conter quatro números separados por vírgulas"

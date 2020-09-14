@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-07 13:16-0400\n"
+"POT-Creation-Date: 2020-09-14 18:09-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2020\n"
 "Language-Team: Estonian (https://www.transifex.com/omeka/teams/14184/et/)\n"
@@ -300,26 +300,26 @@ msgstr "Vaata meediat"
 msgid "View item"
 msgstr "Vaata ühikut"
 
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11
-#: src/Site/BlockLayout/AbstractMap.php:55
-msgid "[Default provider]"
-msgstr "[Vaikimisi teenusepakkuja]"
-
-#: src/Collecting/PromptMap.php:26
-msgid "You must select a location on the map."
-msgstr "Sa pead valima kaardilt asukoha."
-
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
 msgstr "Kaardi sirvimine"
+
+#: src/Site/BlockLayout/Map.php:15
+msgid "Map by attachments"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:55
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11
+msgid "[Default provider]"
+msgstr "[Vaikimisi teenusepakkuja]"
 
 #: src/Site/BlockLayout/MapQuery.php:15
 msgid "Map by query"
 msgstr ""
 
-#: src/Site/BlockLayout/Map.php:15
-msgid "Map by attachments"
-msgstr ""
+#: src/Collecting/PromptMap.php:26
+msgid "You must select a location on the map."
+msgstr "Sa pead valima kaardilt asukoha."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."

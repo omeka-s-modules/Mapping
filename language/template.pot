@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-07 13:16-0400\n"
+"POT-Creation-Date: 2020-09-14 18:09-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -292,25 +292,25 @@ msgstr ""
 msgid "View item"
 msgstr ""
 
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11
-#: src/Site/BlockLayout/AbstractMap.php:55
-msgid "[Default provider]"
-msgstr ""
-
-#: src/Collecting/PromptMap.php:26
-msgid "You must select a location on the map."
-msgstr ""
-
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
+msgstr ""
+
+#: src/Site/BlockLayout/Map.php:15
+msgid "Map by attachments"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:55
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11
+msgid "[Default provider]"
 msgstr ""
 
 #: src/Site/BlockLayout/MapQuery.php:15
 msgid "Map by query"
 msgstr ""
 
-#: src/Site/BlockLayout/Map.php:15
-msgid "Map by attachments"
+#: src/Collecting/PromptMap.php:26
+msgid "You must select a location on the map."
 msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:45

@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-07-07 13:16-0400\n"
+"POT-Creation-Date: 2020-09-14 18:09-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Josu Aramberri <jaramberri@i2basque.es>, 2019\n"
 "Language-Team: Spanish (https://www.transifex.com/omeka/teams/14184/es/)\n"
@@ -300,26 +300,26 @@ msgstr "Ver media"
 msgid "View item"
 msgstr "Ver elemento"
 
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11
-#: src/Site/BlockLayout/AbstractMap.php:55
-msgid "[Default provider]"
-msgstr ""
-
-#: src/Collecting/PromptMap.php:26
-msgid "You must select a location on the map."
-msgstr "Debe seleccionar una ubicación en el mapa."
-
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
 msgstr "Navegar mapa"
+
+#: src/Site/BlockLayout/Map.php:15
+msgid "Map by attachments"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:55
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11
+msgid "[Default provider]"
+msgstr ""
 
 #: src/Site/BlockLayout/MapQuery.php:15
 msgid "Map by query"
 msgstr ""
 
-#: src/Site/BlockLayout/Map.php:15
-msgid "Map by attachments"
-msgstr ""
+#: src/Collecting/PromptMap.php:26
+msgid "You must select a location on the map."
+msgstr "Debe seleccionar una ubicación en el mapa."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."
