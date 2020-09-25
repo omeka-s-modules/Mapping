@@ -396,4 +396,3 @@ class Module extends AbstractModule
         }
     }
 }
-

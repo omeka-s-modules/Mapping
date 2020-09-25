@@ -8,10 +8,8 @@ use Omeka\Api\Exception\NotFoundException;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
-use Omeka\Entity\SitePageBlock;
 use Omeka\Module\Manager as ModuleManager;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
-use Omeka\Stdlib\ErrorStore;
 use Omeka\Stdlib\HtmlPurifier;
 use Laminas\Form\Element;
 use Laminas\View\Renderer\PhpRenderer;
@@ -171,7 +169,7 @@ abstract class AbstractMap extends AbstractBlockLayout
             if (isset($data['timeline']['timenav_position']) && in_array($data['timeline']['timenav_position'], ['full_width_below', 'full_width_above'])) {
                 $timeline['timenav_position'] = $data['timeline']['timenav_position'];
             }
-            if (isset($data['timeline']['data_type_properties'])) { 
+            if (isset($data['timeline']['data_type_properties'])) {
                 // Anticipate future use of multiple numeric properties per
                 // timeline by saving an array of properties.
                 if (is_string($data['timeline']['data_type_properties'])) {

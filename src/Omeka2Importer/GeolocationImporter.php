@@ -17,8 +17,8 @@ class GeolocationImporter extends AbstractImporter
         $geolocationsData = json_decode($response->getBody(), true);
         $resourceJson['o-module-mapping:marker'][] = [
             'o-module-mapping:lat' => $geolocationsData['latitude'],
-            'o-module-mapping:lng' => $geolocationsData['longitude']
-            
+            'o-module-mapping:lng' => $geolocationsData['longitude'],
+
         ];
         return $resourceJson;
     }
