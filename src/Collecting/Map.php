@@ -3,8 +3,8 @@ namespace Mapping\Collecting;
 
 use Collecting\Api\Representation\CollectingPromptRepresentation;
 use Collecting\MediaType\MediaTypeInterface;
-use Zend\Form\Form;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\Form\Form;
+use Laminas\View\Renderer\PhpRenderer;
 
 class Map implements MediaTypeInterface
 {

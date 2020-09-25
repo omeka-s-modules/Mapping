@@ -2,7 +2,7 @@
 namespace Mapping\CsvMapping;
 
 use CSVImport\Mapping\AbstractMapping;
-use Zend\View\Renderer\PhpRenderer;
+use Laminas\View\Renderer\PhpRenderer;
 
 class CsvMapping extends AbstractMapping
 {

@@ -4,7 +4,7 @@ namespace Mapping\Service\BlockLayout;
 use Interop\Container\ContainerInterface;
 use Mapping\Site\BlockLayout\Map;
 use Mapping\Site\BlockLayout\MapQuery;
-use Zend\ServiceManager\Factory\FactoryInterface;
+use Laminas\ServiceManager\Factory\FactoryInterface;
 
 class MapFactory implements FactoryInterface
 {
