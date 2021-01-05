@@ -142,16 +142,13 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                                 sin(radians(%2$s)) *
                                 sin(radians(omeka_root.lat))
                             )
-                        )) AS HIDDEN distance',
+                        )) <= %4$s',
                         $unitConst,
                         $this->createNamedParameter($qb, $results[0]['lat']),
-                        $this->createNamedParameter($qb, $results[0]['lon'])
-                    );
-                    $qb->addSelect($dql);
-                    $qb->having(sprintf(
-                        'distance <= %s',
+                        $this->createNamedParameter($qb, $results[0]['lon']),
                         $this->createNamedParameter($qb, $query['radius'])
-                    ));
+                    );
+                    $qb->andWhere($dql);
                 }
             }
             if (!$addressFound) {
