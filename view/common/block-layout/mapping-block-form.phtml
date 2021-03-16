@@ -199,8 +199,8 @@ $wmsOverlayTemplate = '
             $timenavPosition = new \Laminas\Form\Element\Select("o:block[__blockIndex__][o:data][timeline][timenav_position]");
             $timenavPosition->setEmptyOption('Default position');
             $timenavPosition->setValueOptions([
-                'full_width_below' => 'Full width, below story slider and map',
-                'full_width_above' => 'Full width, above story slider and map',
+                'full_width_below' => $this->translate('Full width, below story slider and map'),
+                'full_width_above' => $this->translate('Full width, above story slider and map'),
             ]);
             $timenavPosition->setAttributes([
                 'value' => isset($data['timeline']['timenav_position']) ? $data['timeline']['timenav_position'] : '',
