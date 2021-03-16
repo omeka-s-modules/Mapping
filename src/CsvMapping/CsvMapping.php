@@ -32,6 +32,9 @@ class CsvMapping extends AbstractMapping
         $defaultLngMap = isset($this->args['column-default-lng']) ? array_keys($this->args['column-default-lng']) : [];
         $defaultZoomMap = isset($this->args['column-default-zoom']) ? array_keys($this->args['column-default-zoom']) : [];
 
+        $multivalueMap = isset($this->args['column-multivalue']) ? $this->args['column-multivalue'] : [];
+        $multivalueSeparator = $this->args['multivalue_separator'];
+
         // Set default values.
         $markerJson = [];
         $mappingJson = ['o-module-mapping:default_zoom' => 1];
@@ -44,9 +47,21 @@ class CsvMapping extends AbstractMapping
                 $markerJson['o-module-mapping:lng'] = $value;
             }
             if (in_array($index, $latLngMap)) {
-                $latLng = array_map('trim', explode('/', $value));
-                $markerJson['o-module-mapping:lat'] = $latLng[0];
-                $markerJson['o-module-mapping:lng'] = $latLng[1];
+                if (empty($multivalueMap[$index])) {
+                    $latLngs = [$value];
+                } else {
+                    $latLngs = explode($multivalueSeparator, $value);
+                }
+                foreach ($latLngs as $latLngString) {
+                    $latLng = array_map('trim', explode('/', $latLngString));
+                    if (count($latLng) !== 2) {
+                        continue;
+                    }
+                    $json['o-module-mapping:marker'][] = [
+                        'o-module-mapping:lat' => $latLng[0],
+                        'o-module-mapping:lng' => $latLng[1],
+                    ];
+                }
             }
 
             if (in_array($index, $defaultLatMap)) {
