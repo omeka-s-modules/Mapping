@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-14 18:09-0400\n"
+"POT-Creation-Date: 2021-07-23 12:43-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Daniel Alves <daniel_r_alves@hotmail.com>, 2020\n"
 "Language-Team: Portuguese (Portugal) (https://www.transifex.com/omeka/teams/14184/pt_PT/)\n"
@@ -27,12 +27,12 @@ msgstr ""
 msgid "Mapping"
 msgstr "Mapeamento"
 
-#: src/Site/BlockLayout/AbstractMap.php:51
+#: src/Site/BlockLayout/AbstractMap.php:49
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
 msgstr "Fornecedor de mapa base"
 
-#: src/Site/BlockLayout/AbstractMap.php:52
+#: src/Site/BlockLayout/AbstractMap.php:50
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
@@ -41,11 +41,11 @@ msgstr ""
 "Estes fornecedores são disponibilizados \"tal como estão\". Não há garantia "
 "de serviço ou velocidade."
 
-#: src/Site/BlockLayout/AbstractMap.php:58
+#: src/Site/BlockLayout/AbstractMap.php:56
 msgid "Minimum zoom level"
 msgstr "Nível de zoom mínimo"
 
-#: src/Site/BlockLayout/AbstractMap.php:59
+#: src/Site/BlockLayout/AbstractMap.php:57
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
@@ -53,11 +53,11 @@ msgstr ""
 "O nível de zoom mínimo até ao qual o mapa será exibido. O valor por defeito "
 "é 0."
 
-#: src/Site/BlockLayout/AbstractMap.php:66
+#: src/Site/BlockLayout/AbstractMap.php:64
 msgid "Maximum zoom level"
 msgstr "Nível de zoom máximo"
 
-#: src/Site/BlockLayout/AbstractMap.php:67
+#: src/Site/BlockLayout/AbstractMap.php:65
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
@@ -244,6 +244,14 @@ msgstr "Posição de navegação na linha do tempo"
 msgid "Select the position of the timeline navigation."
 msgstr "Seleccione a posição de navegação na linha do tempo."
 
+#: view/common/block-layout/mapping-block-form.phtml:202
+msgid "Full width, below story slider and map"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:203
+msgid "Full width, above story slider and map"
+msgstr ""
+
 #: view/common/block-layout/mapping-block-form.phtml:217
 msgid ""
 "Select the timestamp or interval property to use when populating the "
@@ -316,22 +324,22 @@ msgstr "Ver multimédia"
 msgid "View item"
 msgstr "Ver item"
 
-#: src/Site/Navigation/Link/MapBrowse.php:13
-msgid "Map Browse"
-msgstr "Explorar o mapa"
-
 #: src/Site/BlockLayout/Map.php:15
 msgid "Map by attachments"
 msgstr "Mapear por anexos"
 
-#: src/Site/BlockLayout/AbstractMap.php:55
+#: src/Site/BlockLayout/MapQuery.php:15
+msgid "Map by query"
+msgstr "Mapear por consulta"
+
+#: src/Site/BlockLayout/AbstractMap.php:53
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
 msgstr "[Fornecedor predefinido]"
 
-#: src/Site/BlockLayout/MapQuery.php:15
-msgid "Map by query"
-msgstr "Mapear por consulta"
+#: src/Site/Navigation/Link/MapBrowse.php:13
+msgid "Map Browse"
+msgstr "Explorar o mapa"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."

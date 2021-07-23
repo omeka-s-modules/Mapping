@@ -4,7 +4,8 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Matti Lassila <matti.lassila@gmail.com>, 2018
+# Josip Ilic <josip.ilic@ericsson.com>, 2021
+# Angela-Marina Batarelo <angela-marina.batarelo@ericsson.com>, 2021
 # 
 #, fuzzy
 msgid ""
@@ -13,92 +14,118 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-23 12:43-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Matti Lassila <matti.lassila@gmail.com>, 2018\n"
-"Language-Team: Finnish (Finland) (https://www.transifex.com/omeka/teams/14184/fi_FI/)\n"
+"Last-Translator: Angela-Marina Batarelo <angela-marina.batarelo@ericsson.com>, 2021\n"
+"Language-Team: Croatian (https://www.transifex.com/omeka/teams/14184/hr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi_FI\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Language: hr\n"
+"Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
 #: Module.php:257 view/mapping/index/form.phtml:26
 msgid "Mapping"
-msgstr "Kartta"
+msgstr ""
+"Mapiranje\n"
+" \n"
+"\n"
+" \n"
+" \n"
+"  "
 
 #: src/Site/BlockLayout/AbstractMap.php:49
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
 msgstr ""
+"Davatelj basemapa\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: src/Site/BlockLayout/AbstractMap.php:50
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
 msgstr ""
+"Odaberite pružatelja basemapa. Zadana postavka je OpenStreetMap.Mapnik. Ovi se pružatelji nude AS-IS. Ne postoji jamstvo usluge ili brzine.\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: src/Site/BlockLayout/AbstractMap.php:56
 msgid "Minimum zoom level"
-msgstr ""
+msgstr "Minimalna razina zumiranja"
 
 #: src/Site/BlockLayout/AbstractMap.php:57
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
 msgstr ""
+"Minimalna razina zumiranja do kojeg će karta biti prikazana. Zadana "
+"vrijednost je 0."
 
 #: src/Site/BlockLayout/AbstractMap.php:64
 msgid "Maximum zoom level"
-msgstr ""
+msgstr "Maksimalna razina zumiranja"
 
 #: src/Site/BlockLayout/AbstractMap.php:65
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
 msgstr ""
+"Maksimalna razina zumiranja do kojeg će karta biti prikazana. Zadana "
+"vrijednost je 19."
 
 #: src/Site/BlockLayout/MapQuery.php:36
 msgid "Attach items using this query."
-msgstr ""
+msgstr "Priložite predmete koristeći ovaj upit."
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
 msgid "Resource location"
-msgstr ""
+msgstr "Lokacija resursa"
 
 #: view/admin/csv-mapping.phtml:7 view/admin/csv-mapping.phtml:21
 msgid "Select below"
-msgstr ""
+msgstr "Odaberite u nastavku"
 
 #: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
-msgstr "Leveyskoordinaatti (lat)"
+msgstr "Zemljopisna širina"
 
 #: view/admin/csv-mapping.phtml:9
 msgid "Longitude"
-msgstr "Pituuskoordinaatti (lon)"
+msgstr "Zemljopisna dužina"
 
 #: view/admin/csv-mapping.phtml:10
 msgid "Latitude/Longitude"
-msgstr "lat/lon"
+msgstr "Zemljopisna širina/dužina"
 
 #: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
 msgid "Default map view"
-msgstr ""
+msgstr "Zadani prikaz karte"
 
 #: view/admin/csv-mapping.phtml:22
 msgid "Map center latitude"
-msgstr ""
+msgstr "Središnja zemljopisna širina karte"
 
 #: view/admin/csv-mapping.phtml:23
 msgid "Map center longitude"
-msgstr ""
+msgstr "Središnja zemljopisna dužina karte"
 
 #: view/admin/csv-mapping.phtml:24
 msgid "Default zoom"
-msgstr ""
+msgstr "Zadani zum"
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
-msgstr "Oletusnäkymä"
+msgstr "Zadani Prikaz"
 
 #: view/common/block-layout/mapping-block-form.phtml:27
 #, php-format
@@ -106,128 +133,256 @@ msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
 "%s."
 msgstr ""
+"Postavite zadani prikaz koristeći kontrole na karti. Trenutna razina "
+"zumiranja je %s."
 
 #: view/common/block-layout/mapping-block-form.phtml:35
 msgid "WMS Overlays"
-msgstr "WMS-tasot"
+msgstr "WMS sloj"
 
 #: view/common/block-layout/mapping-block-form.phtml:37
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr ""
-"Lisää, muokkaa ja poista Web Map Service (WMS) tasoja. Voit valita, mitkä "
-"tasot näytetään oletuksena."
+"U nastavku dodajte, uredite i izbrišite slojeve usluge web-mapa (WMS). Možete prema zadanim postavkama provjeriti koji sloj želite otvoriti.\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:71
 msgid "Base URL"
-msgstr "WMS-palvelun URL"
+msgstr "Osnovni URL"
 
 #: view/common/block-layout/mapping-block-form.phtml:80
 msgid "Layers"
-msgstr "Tasot"
+msgstr "Slojevi"
 
 #: view/common/block-layout/mapping-block-form.phtml:82
 msgid "The WMS layers, if any (comma-separated)."
-msgstr "WMS-tasot pilkulla erotettuna"
+msgstr "WMS slojevi, ako ih ima (razdvojeni zarezima)."
 
 #: view/common/block-layout/mapping-block-form.phtml:93
 msgid "The WMS styles, if any (comma-separated)."
-msgstr "WMS-tyylit pilkulla erotettuna"
+msgstr "WMS stilovi, ako ih ima (razdvojeni zarezima)."
 
 #: view/common/block-layout/mapping-block-form.phtml:101
 msgid "Add Overlay"
-msgstr "Lisää WMS-taso"
+msgstr "Dodajte sloj"
 
 #: view/common/block-layout/mapping-block-form.phtml:102
 msgid "Save Changes"
-msgstr "Tallenna muutokset"
+msgstr "Spremite Promjene"
 
 #: view/common/block-layout/mapping-block-form.phtml:103
 msgid "Clear Inputs"
-msgstr "Poista valinnat"
+msgstr "Očisti Unose"
 
 #: view/common/block-layout/mapping-block-form.phtml:107
 msgid "Timeline"
-msgstr ""
+msgstr "Vremenski Okvir"
 
 #: view/common/block-layout/mapping-block-form.phtml:111
 msgid "Title headline"
 msgstr ""
+"Naslov naslova\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:126
 msgid "Title text"
-msgstr ""
+msgstr "Tekst naslova"
 
 #: view/common/block-layout/mapping-block-form.phtml:142
 msgid "Fly to"
-msgstr ""
+msgstr "Odletite do"
 
 #: view/common/block-layout/mapping-block-form.phtml:145
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
+"Odaberite prikaz karte na koji ćete letjeti tijekom navigacije između događaja.\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:152
 msgid "Default view"
-msgstr ""
+msgstr "Zadani prikaz"
 
 #: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Event marker, zoom 0"
 msgstr ""
+"Oznaka događaja, zoom 0\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 2"
 msgstr ""
+"Oznaka događaja, zoom 2\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" Oznaka događaja, zoom"
 
 #: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 4"
 msgstr ""
+"Oznaka događaja, zoom 4\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 6"
 msgstr ""
+"Oznaka događaja, zoom 6\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:157
 msgid "Event marker, zoom 8"
 msgstr ""
+"Oznaka događaja, zoom 8\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:158
 msgid "Event marker, zoom 10"
 msgstr ""
+"Oznaka događaja, zoom 10\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:159
 msgid "Event marker, zoom 12"
 msgstr ""
+"Oznaka događaja, zoom 12\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:160
 msgid "Event marker, zoom 14"
 msgstr ""
+"Oznaka događaja, zoom 14\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:161
 msgid "Event marker, zoom 16"
 msgstr ""
+"Oznaka događaja, zoom 16\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:162
 msgid "Event marker, zoom 18"
 msgstr ""
+"Oznaka događaja, zoom 18\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:173
 msgid "Show contemporaneous events?"
-msgstr ""
+msgstr "Prikaži istovremene događaje?"
 
 #: view/common/block-layout/mapping-block-form.phtml:176
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
 msgstr ""
+"Označite ovo ako želite na karti prikazati sve događaje koji postoje u istom vremenskom razdoblju kao i trenutni događaj (samo zadani prikaz).\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:191
 msgid "Timeline navigation position"
 msgstr ""
+"Položaj navigacije vremenskom trakom\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:194
 msgid "Select the position of the timeline navigation."
 msgstr ""
+"Odaberite položaj navigacije vremenskom trakom.\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-form.phtml:202
 msgid "Full width, below story slider and map"
@@ -242,18 +397,26 @@ msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
 msgstr ""
+"Odaberite svojstvo vremenske oznake ili intervala koje ćete koristiti prilikom popunjavanja vremenske trake.\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:12
 #: view/mapping/index/show.phtml:41
 #, php-format
 msgid "Item: %s"
-msgstr "Aineisto: %s"
+msgstr "Predmet: %s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
 #: view/mapping/index/show.phtml:37
 #, php-format
 msgid "Media: %s"
-msgstr "Tiedosto: %s"
+msgstr "Medij: %s"
 
 #: view/mapping/index/advanced-search.phtml:5
 msgid "Kilometers"
@@ -261,77 +424,93 @@ msgstr "Kilometri"
 
 #: view/mapping/index/advanced-search.phtml:5
 msgid "Miles"
-msgstr "Maili"
+msgstr "Milje"
 
 #: view/mapping/index/advanced-search.phtml:9
 msgid "Geographic Address"
-msgstr "Osoite"
+msgstr "Geografska Adresa"
 
 #: view/mapping/index/advanced-search.phtml:17
 msgid "Geographic Radius"
-msgstr "Maksimietäisyys"
+msgstr "Geografski Radijus"
 
 #: view/mapping/index/advanced-search.phtml:25
 msgid "Geographic Radius Unit"
-msgstr "Etäisyyden yksikkö"
+msgstr "Jedinica Geografskog Radijusa"
 
 #: view/mapping/index/form.phtml:32
 msgid "Close Me"
-msgstr "Sulje"
+msgstr "Zatvorite Me"
 
 #: view/mapping/index/form.phtml:33
 msgid "Marker Image"
-msgstr "Sijaintimerkin kuva"
+msgstr "Slika oznake"
 
 #: view/mapping/index/form.phtml:34
 msgid " No Image"
-msgstr "Ei kuvaa"
+msgstr "Nema Slike"
 
 #: view/mapping/index/form.phtml:55
 msgid "Marker Label"
-msgstr "Kuvateksti"
+msgstr "Oznaka"
 
 #: view/mapping/index/form.phtml:58
 msgid "Select Marker Image"
-msgstr "Valitse kuva"
+msgstr "Odaberite sliku oznake"
 
 #: view/mapping/site/index/browse.phtml:18
 msgid "Search Map"
-msgstr "Hae"
+msgstr ""
+"Pretraži kartu\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: view/mapping/site/index/browse.phtml:34
 msgid "View media"
-msgstr "Näytä aineisto"
+msgstr "Pogledajte medij"
 
 #: view/mapping/site/index/browse.phtml:38
 msgid "View item"
-msgstr "Näytä kuvailutiedot"
+msgstr "Pogledajte predmet"
 
 #: src/Site/BlockLayout/Map.php:15
 msgid "Map by attachments"
-msgstr ""
+msgstr "Mapirajte po prilozima"
 
 #: src/Site/BlockLayout/MapQuery.php:15
 msgid "Map by query"
-msgstr ""
+msgstr "Mapirajte po upitu"
 
 #: src/Site/BlockLayout/AbstractMap.php:53
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
-msgstr ""
+msgstr "[Zadani davatelj]"
 
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
-msgstr "Karttaselaus"
+msgstr ""
+"Pregledavanje karte\n"
+" \n"
+"\n"
+" \n"
+" \n"
+" \n"
+" \n"
+" "
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
-msgstr "Valitse sijainti kartalta."
+msgstr "Morate odabrati lokaciju na karti."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."
-msgstr ""
+msgstr "Zona mapiranja mora imati predmet."
 
 #: src/Api/Adapter/MappingAdapter.php:51
 msgid "Map bounds must contain four numbers separated by commas"
-msgstr ""
+msgstr "Granice karte moraju sadržavati četiri broja odvojeni zagradama."

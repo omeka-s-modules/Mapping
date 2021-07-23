@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Matti Lassila <matti.lassila@gmail.com>, 2018
+# Tzvetan Tzvetanski <ceibg.org@gmail.com>, 2021
 # 
 #, fuzzy
 msgid ""
@@ -13,92 +13,99 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-23 12:43-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Matti Lassila <matti.lassila@gmail.com>, 2018\n"
-"Language-Team: Finnish (Finland) (https://www.transifex.com/omeka/teams/14184/fi_FI/)\n"
+"Last-Translator: Tzvetan Tzvetanski <ceibg.org@gmail.com>, 2021\n"
+"Language-Team: Bulgarian (Bulgaria) (https://www.transifex.com/omeka/teams/14184/bg_BG/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fi_FI\n"
+"Language: bg_BG\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: Module.php:257 view/mapping/index/form.phtml:26
 msgid "Mapping"
-msgstr "Kartta"
+msgstr "Обозначаване на карта/картографиране"
 
 #: src/Site/BlockLayout/AbstractMap.php:49
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
-msgstr ""
+msgstr "Доставчик на базови карти"
 
 #: src/Site/BlockLayout/AbstractMap.php:50
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
 msgstr ""
+"Изберете доставчика на основната карта. По подразбиране е "
+"OpenStreetMap.Mapnik. Тези доставчици се предлагат такива, каквито са. Няма "
+"гаранция за обслужване или скорост."
 
 #: src/Site/BlockLayout/AbstractMap.php:56
 msgid "Minimum zoom level"
-msgstr ""
+msgstr "Минимално ниво на увеличаването"
 
 #: src/Site/BlockLayout/AbstractMap.php:57
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
 msgstr ""
+"Минималното ниво на увеличението, до което ще бъде показана картата. По "
+"подразбиране е 0."
 
 #: src/Site/BlockLayout/AbstractMap.php:64
 msgid "Maximum zoom level"
-msgstr ""
+msgstr "Максимално ниво на увеличаването"
 
 #: src/Site/BlockLayout/AbstractMap.php:65
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
 msgstr ""
+"Задайте максималното ниво на увеличение, до което картата ще се показва. По "
+"подразбиране е 19."
 
 #: src/Site/BlockLayout/MapQuery.php:36
 msgid "Attach items using this query."
-msgstr ""
+msgstr "Прикачете елементи, използвайки тази заявка."
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
 msgid "Resource location"
-msgstr ""
+msgstr "Местонахождение на ресурса"
 
 #: view/admin/csv-mapping.phtml:7 view/admin/csv-mapping.phtml:21
 msgid "Select below"
-msgstr ""
+msgstr "Изберете по-долу"
 
 #: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
-msgstr "Leveyskoordinaatti (lat)"
+msgstr "Географска ширина"
 
 #: view/admin/csv-mapping.phtml:9
 msgid "Longitude"
-msgstr "Pituuskoordinaatti (lon)"
+msgstr "Географска дължина"
 
 #: view/admin/csv-mapping.phtml:10
 msgid "Latitude/Longitude"
-msgstr "lat/lon"
+msgstr "Ширина/дължина"
 
 #: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
 msgid "Default map view"
-msgstr ""
+msgstr "Изглед на картата по подразбиране"
 
 #: view/admin/csv-mapping.phtml:22
 msgid "Map center latitude"
-msgstr ""
+msgstr "Географска ширина на центъра на картата"
 
 #: view/admin/csv-mapping.phtml:23
 msgid "Map center longitude"
-msgstr ""
+msgstr "Географска дължина на центъра на картата"
 
 #: view/admin/csv-mapping.phtml:24
 msgid "Default zoom"
-msgstr ""
+msgstr "Увеличение по подразбиране"
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
-msgstr "Oletusnäkymä"
+msgstr "Изглед по подразбиране"
 
 #: view/common/block-layout/mapping-block-form.phtml:27
 #, php-format
@@ -106,128 +113,135 @@ msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
 "%s."
 msgstr ""
+"Задайте изгледа по подразбиране, като използвате контролите в картата. "
+"Текущото ниво на увеличение е %s."
 
 #: view/common/block-layout/mapping-block-form.phtml:35
 msgid "WMS Overlays"
-msgstr "WMS-tasot"
+msgstr "WMS наслагвания"
 
 #: view/common/block-layout/mapping-block-form.phtml:37
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr ""
-"Lisää, muokkaa ja poista Web Map Service (WMS) tasoja. Voit valita, mitkä "
-"tasot näytetään oletuksena."
+"Добавяне, редактиране и изтриване на слоеве за уеб карти (WMS) по-долу. "
+"Можете да проверите кое наслагване искате да се отвори по подразбиране."
 
 #: view/common/block-layout/mapping-block-form.phtml:71
 msgid "Base URL"
-msgstr "WMS-palvelun URL"
+msgstr "Базов URL"
 
 #: view/common/block-layout/mapping-block-form.phtml:80
 msgid "Layers"
-msgstr "Tasot"
+msgstr "Слоеве"
 
 #: view/common/block-layout/mapping-block-form.phtml:82
 msgid "The WMS layers, if any (comma-separated)."
-msgstr "WMS-tasot pilkulla erotettuna"
+msgstr "WMS слоевете, ако има такива (разделени със запетая)."
 
 #: view/common/block-layout/mapping-block-form.phtml:93
 msgid "The WMS styles, if any (comma-separated)."
-msgstr "WMS-tyylit pilkulla erotettuna"
+msgstr "WMS стилове, ако има такива (разделени със запетая)."
 
 #: view/common/block-layout/mapping-block-form.phtml:101
 msgid "Add Overlay"
-msgstr "Lisää WMS-taso"
+msgstr "Добавяне на наслагване"
 
 #: view/common/block-layout/mapping-block-form.phtml:102
 msgid "Save Changes"
-msgstr "Tallenna muutokset"
+msgstr "Запазване на промените"
 
 #: view/common/block-layout/mapping-block-form.phtml:103
 msgid "Clear Inputs"
-msgstr "Poista valinnat"
+msgstr "Изчистване на входираното"
 
 #: view/common/block-layout/mapping-block-form.phtml:107
 msgid "Timeline"
-msgstr ""
+msgstr "Хронология"
 
 #: view/common/block-layout/mapping-block-form.phtml:111
 msgid "Title headline"
-msgstr ""
+msgstr "Главно заглавие"
 
 #: view/common/block-layout/mapping-block-form.phtml:126
 msgid "Title text"
-msgstr ""
+msgstr "Заглавие на текста"
 
 #: view/common/block-layout/mapping-block-form.phtml:142
 msgid "Fly to"
-msgstr ""
+msgstr "отиди до"
 
 #: view/common/block-layout/mapping-block-form.phtml:145
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
+"Изберете изгледа на картата, до който да отидете, когато навигирате между "
+"събития."
 
 #: view/common/block-layout/mapping-block-form.phtml:152
 msgid "Default view"
-msgstr ""
+msgstr "Изглед по подразбиране"
 
 #: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Event marker, zoom 0"
-msgstr ""
+msgstr "Маркер за събитие, мащабиране 0"
 
 #: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 2"
-msgstr ""
+msgstr "Маркер за събитие, мащабиране 2"
 
 #: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 4"
-msgstr ""
+msgstr "Маркер за събитие, мащабиране 4"
 
 #: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 6"
-msgstr ""
+msgstr "Маркер за събитие, мащабиране 6"
 
 #: view/common/block-layout/mapping-block-form.phtml:157
 msgid "Event marker, zoom 8"
-msgstr ""
+msgstr "Маркер за събитие, мащабиране 8"
 
 #: view/common/block-layout/mapping-block-form.phtml:158
 msgid "Event marker, zoom 10"
-msgstr ""
+msgstr "Маркер за събитие, мащабиране 10"
 
 #: view/common/block-layout/mapping-block-form.phtml:159
 msgid "Event marker, zoom 12"
-msgstr ""
+msgstr "Маркер за събитие, мащабиране 12"
 
 #: view/common/block-layout/mapping-block-form.phtml:160
 msgid "Event marker, zoom 14"
-msgstr ""
+msgstr "Маркер за събитие, мащабиране 14"
 
 #: view/common/block-layout/mapping-block-form.phtml:161
 msgid "Event marker, zoom 16"
-msgstr ""
+msgstr "Маркер за събитие, мащабиране 16"
 
 #: view/common/block-layout/mapping-block-form.phtml:162
 msgid "Event marker, zoom 18"
-msgstr ""
+msgstr "Маркер за събитие, мащабиране 18"
 
 #: view/common/block-layout/mapping-block-form.phtml:173
 msgid "Show contemporaneous events?"
-msgstr ""
+msgstr "Показване на съвременни събития?"
 
 #: view/common/block-layout/mapping-block-form.phtml:176
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
 msgstr ""
+"Проверете това, ако искате да покажете всички събития на картата, които "
+"съществуват в същия период от време като текущото събитие (само изглед по "
+"подразбиране)."
 
 #: view/common/block-layout/mapping-block-form.phtml:191
 msgid "Timeline navigation position"
-msgstr ""
+msgstr "Позиция за навигация по времевата линия"
 
 #: view/common/block-layout/mapping-block-form.phtml:194
 msgid "Select the position of the timeline navigation."
-msgstr ""
+msgstr "Изберете позицията на навигацията по времевата линия."
 
 #: view/common/block-layout/mapping-block-form.phtml:202
 msgid "Full width, below story slider and map"
@@ -242,96 +256,99 @@ msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
 msgstr ""
+"Изберете свойството за клеймо или интервал, което да използвате при "
+"попълване на времевата линия."
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:12
 #: view/mapping/index/show.phtml:41
 #, php-format
 msgid "Item: %s"
-msgstr "Aineisto: %s"
+msgstr "Елемент: %s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
 #: view/mapping/index/show.phtml:37
 #, php-format
 msgid "Media: %s"
-msgstr "Tiedosto: %s"
+msgstr "Медия: %s"
 
 #: view/mapping/index/advanced-search.phtml:5
 msgid "Kilometers"
-msgstr "Kilometri"
+msgstr "Километри"
 
 #: view/mapping/index/advanced-search.phtml:5
 msgid "Miles"
-msgstr "Maili"
+msgstr "Мили"
 
 #: view/mapping/index/advanced-search.phtml:9
 msgid "Geographic Address"
-msgstr "Osoite"
+msgstr "Географски адрес"
 
 #: view/mapping/index/advanced-search.phtml:17
 msgid "Geographic Radius"
-msgstr "Maksimietäisyys"
+msgstr "Географски радиус"
 
 #: view/mapping/index/advanced-search.phtml:25
 msgid "Geographic Radius Unit"
-msgstr "Etäisyyden yksikkö"
+msgstr "Географски радиус"
 
 #: view/mapping/index/form.phtml:32
 msgid "Close Me"
-msgstr "Sulje"
+msgstr "Затвори ме"
 
 #: view/mapping/index/form.phtml:33
 msgid "Marker Image"
-msgstr "Sijaintimerkin kuva"
+msgstr "Изображение на маркер"
 
 #: view/mapping/index/form.phtml:34
 msgid " No Image"
-msgstr "Ei kuvaa"
+msgstr "Без изображение"
 
 #: view/mapping/index/form.phtml:55
 msgid "Marker Label"
-msgstr "Kuvateksti"
+msgstr "Етикет на маркер"
 
 #: view/mapping/index/form.phtml:58
 msgid "Select Marker Image"
-msgstr "Valitse kuva"
+msgstr "избери изображение на маркер"
 
 #: view/mapping/site/index/browse.phtml:18
 msgid "Search Map"
-msgstr "Hae"
+msgstr "Търсене на карта"
 
 #: view/mapping/site/index/browse.phtml:34
 msgid "View media"
-msgstr "Näytä aineisto"
+msgstr "Преглед на медия"
 
 #: view/mapping/site/index/browse.phtml:38
 msgid "View item"
-msgstr "Näytä kuvailutiedot"
+msgstr "Преглед на елемент"
 
 #: src/Site/BlockLayout/Map.php:15
 msgid "Map by attachments"
-msgstr ""
+msgstr "Карта по прикачени файлове"
 
 #: src/Site/BlockLayout/MapQuery.php:15
 msgid "Map by query"
-msgstr ""
+msgstr "Карта по заявка"
 
 #: src/Site/BlockLayout/AbstractMap.php:53
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
-msgstr ""
+msgstr "[Доставчик по подразбиране]"
 
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
-msgstr "Karttaselaus"
+msgstr "Преглед на картата"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
-msgstr "Valitse sijainti kartalta."
+msgstr "Трябва да изберете местоположение на картата."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."
-msgstr ""
+msgstr "Зоната за картографиране трябва да има елемент."
 
 #: src/Api/Adapter/MappingAdapter.php:51
 msgid "Map bounds must contain four numbers separated by commas"
 msgstr ""
+"Границите на картата трябва да съдържат четири числа, разделени със запетаи"

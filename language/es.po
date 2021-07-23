@@ -6,15 +6,16 @@
 # Translators:
 # Darío Hereñú, 2019
 # Josu Aramberri <jaramberri@i2basque.es>, 2019
+# Alfonso Luis Montejo Ráez <almontejor@gmail.com>, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-14 18:09-0400\n"
+"POT-Creation-Date: 2021-07-23 12:43-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Josu Aramberri <jaramberri@i2basque.es>, 2019\n"
+"Last-Translator: Alfonso Luis Montejo Ráez <almontejor@gmail.com>, 2021\n"
 "Language-Team: Spanish (https://www.transifex.com/omeka/teams/14184/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,50 +25,55 @@ msgstr ""
 
 #: Module.php:257 view/mapping/index/form.phtml:26
 msgid "Mapping"
-msgstr "Mapeado"
+msgstr "Cartografía"
 
-#: src/Site/BlockLayout/AbstractMap.php:51
+#: src/Site/BlockLayout/AbstractMap.php:49
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
-msgstr ""
+msgstr "Proveedor de cartografía base"
 
-#: src/Site/BlockLayout/AbstractMap.php:52
+#: src/Site/BlockLayout/AbstractMap.php:50
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
 msgstr ""
+"Seleccionar el proveedor de la cartografía base. Por defecto es "
+"OpenStreetMap Mapnik. Estos servicios se ofrecen tal y como son, no existe "
+"garantía de calidad o velocidad."
 
-#: src/Site/BlockLayout/AbstractMap.php:58
+#: src/Site/BlockLayout/AbstractMap.php:56
 msgid "Minimum zoom level"
-msgstr ""
+msgstr "Nivel de acercamiento mínimo"
 
-#: src/Site/BlockLayout/AbstractMap.php:59
+#: src/Site/BlockLayout/AbstractMap.php:57
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
 msgstr ""
+"El nivel de zum mínimo al que se podrá escalar el mapa. Por defecto es 0."
 
-#: src/Site/BlockLayout/AbstractMap.php:66
+#: src/Site/BlockLayout/AbstractMap.php:64
 msgid "Maximum zoom level"
-msgstr ""
+msgstr "Nivel de alejamiento máximo"
 
-#: src/Site/BlockLayout/AbstractMap.php:67
+#: src/Site/BlockLayout/AbstractMap.php:65
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
 msgstr ""
+"El nivel de zum máximo al que se podrá escalar el mapa. Por defecto es 19."
 
 #: src/Site/BlockLayout/MapQuery.php:36
 msgid "Attach items using this query."
-msgstr ""
+msgstr "Añadir elementos usando esta consulta."
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
 msgid "Resource location"
-msgstr ""
+msgstr "Localización del recurso"
 
 #: view/admin/csv-mapping.phtml:7 view/admin/csv-mapping.phtml:21
 msgid "Select below"
-msgstr ""
+msgstr "Seleccionar a continuación"
 
 #: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
@@ -83,19 +89,19 @@ msgstr "Latitud/Longitud"
 
 #: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
 msgid "Default map view"
-msgstr ""
+msgstr "Vista por defecto del mapa"
 
 #: view/admin/csv-mapping.phtml:22
 msgid "Map center latitude"
-msgstr ""
+msgstr "Latitud del centro del mapa"
 
 #: view/admin/csv-mapping.phtml:23
 msgid "Map center longitude"
-msgstr ""
+msgstr "Longitud del centro del mapa"
 
 #: view/admin/csv-mapping.phtml:24
 msgid "Default zoom"
-msgstr ""
+msgstr "Zum por defecto"
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
@@ -107,22 +113,24 @@ msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
 "%s."
 msgstr ""
+"Definir la vista por defecto usando los controles del mapa. El nivel de zum "
+"actual es %s."
 
 #: view/common/block-layout/mapping-block-form.phtml:35
 msgid "WMS Overlays"
-msgstr "Capas superpuestas WMS"
+msgstr "Superposiciones WMS"
 
 #: view/common/block-layout/mapping-block-form.phtml:37
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr ""
-"Añadir, editar, y borrar capas de Web   Map Service (WMS). Marque las que "
-"quiere abrir por defecto."
+"Añadir, editar, y eliminar capas Web Map Service (WMS). Deben señalarse "
+"aquellas que se cargarán por defecto."
 
 #: view/common/block-layout/mapping-block-form.phtml:71
 msgid "Base URL"
-msgstr "URL de base"
+msgstr "URL base"
 
 #: view/common/block-layout/mapping-block-form.phtml:80
 msgid "Layers"
@@ -130,11 +138,11 @@ msgstr "Capas"
 
 #: view/common/block-layout/mapping-block-form.phtml:82
 msgid "The WMS layers, if any (comma-separated)."
-msgstr "Capas WMS, si existen (separadas por comas)"
+msgstr "Capas WMS, de haberlas (separadas por comas)"
 
 #: view/common/block-layout/mapping-block-form.phtml:93
 msgid "The WMS styles, if any (comma-separated)."
-msgstr "Estilos WMS, si existen (separados por comas)"
+msgstr "Estilos WMS, de haberlos (separados por comas)"
 
 #: view/common/block-layout/mapping-block-form.phtml:101
 msgid "Add Overlay"
@@ -150,84 +158,98 @@ msgstr "Limpiar entradas"
 
 #: view/common/block-layout/mapping-block-form.phtml:107
 msgid "Timeline"
-msgstr ""
+msgstr "Cronología"
 
 #: view/common/block-layout/mapping-block-form.phtml:111
 msgid "Title headline"
-msgstr ""
+msgstr "Encabezamiento del título"
 
 #: view/common/block-layout/mapping-block-form.phtml:126
 msgid "Title text"
-msgstr ""
+msgstr "Texto del título"
 
 #: view/common/block-layout/mapping-block-form.phtml:142
 msgid "Fly to"
-msgstr ""
+msgstr "Ir a"
 
 #: view/common/block-layout/mapping-block-form.phtml:145
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
+"Seleccionar la vista del mapa a la que se irá cuando se navegue entre los "
+"eventos."
 
 #: view/common/block-layout/mapping-block-form.phtml:152
 msgid "Default view"
-msgstr ""
+msgstr "Vista por defecto"
 
 #: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Event marker, zoom 0"
-msgstr ""
+msgstr "Marcador de evento, zum 0"
 
 #: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 2"
-msgstr ""
+msgstr "Marcador de evento, zum 2"
 
 #: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 4"
-msgstr ""
+msgstr "Marcador de evento, zum 4"
 
 #: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 6"
-msgstr ""
+msgstr "Marcador de evento, zum 6"
 
 #: view/common/block-layout/mapping-block-form.phtml:157
 msgid "Event marker, zoom 8"
-msgstr ""
+msgstr "Marcador de evento, zum 8"
 
 #: view/common/block-layout/mapping-block-form.phtml:158
 msgid "Event marker, zoom 10"
-msgstr ""
+msgstr "Marcador de evento, zum 10"
 
 #: view/common/block-layout/mapping-block-form.phtml:159
 msgid "Event marker, zoom 12"
-msgstr ""
+msgstr "Marcador de evento, zum 12"
 
 #: view/common/block-layout/mapping-block-form.phtml:160
 msgid "Event marker, zoom 14"
-msgstr ""
+msgstr "Marcador de evento, zum 14"
 
 #: view/common/block-layout/mapping-block-form.phtml:161
 msgid "Event marker, zoom 16"
-msgstr ""
+msgstr "Marcador de evento, zum 16"
 
 #: view/common/block-layout/mapping-block-form.phtml:162
 msgid "Event marker, zoom 18"
-msgstr ""
+msgstr "Marcador de evento, zum 18"
 
 #: view/common/block-layout/mapping-block-form.phtml:173
 msgid "Show contemporaneous events?"
-msgstr ""
+msgstr "¿Mostrar eventos coetáneos?"
 
 #: view/common/block-layout/mapping-block-form.phtml:176
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
 msgstr ""
+"Marcar esta casilla para mostrar en el mapa todos los eventos que coexisten "
+"en el mismo periodo de tiempo con el evento actual (sólo para la vista por "
+"defecto)."
 
 #: view/common/block-layout/mapping-block-form.phtml:191
 msgid "Timeline navigation position"
-msgstr ""
+msgstr "Posición de navegación de la cronología"
 
 #: view/common/block-layout/mapping-block-form.phtml:194
 msgid "Select the position of the timeline navigation."
+msgstr ""
+"Seleccionar la posición de navegación de la cronología o línea de tiempo."
+
+#: view/common/block-layout/mapping-block-form.phtml:202
+msgid "Full width, below story slider and map"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:203
+msgid "Full width, above story slider and map"
 msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:217
@@ -235,12 +257,14 @@ msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
 msgstr ""
+"Seleccionar la marca de tiempo o la propiedad de intervalo que se utilizará "
+"para generar la línea de tiempo."
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:12
 #: view/mapping/index/show.phtml:41
 #, php-format
 msgid "Item: %s"
-msgstr "Elemento: %s"
+msgstr "Ficha: %s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
 #: view/mapping/index/show.phtml:37
@@ -262,11 +286,11 @@ msgstr "Dirección geográfica"
 
 #: view/mapping/index/advanced-search.phtml:17
 msgid "Geographic Radius"
-msgstr "Radio geográfico"
+msgstr "Radio geográfico o área"
 
 #: view/mapping/index/advanced-search.phtml:25
 msgid "Geographic Radius Unit"
-msgstr "Unidades en Radio geográfico"
+msgstr "Unidades del radio geográfico"
 
 #: view/mapping/index/form.phtml:32
 msgid "Close Me"
@@ -282,49 +306,51 @@ msgstr "Sin imagen"
 
 #: view/mapping/index/form.phtml:55
 msgid "Marker Label"
-msgstr "Etiqueta de marcador"
+msgstr "Etiqueta del marcador"
 
 #: view/mapping/index/form.phtml:58
 msgid "Select Marker Image"
-msgstr "Seleccionar imagen de marcador"
+msgstr "Seleccionar imagen del marcador"
 
 #: view/mapping/site/index/browse.phtml:18
 msgid "Search Map"
-msgstr "Buscar en mapa"
+msgstr "Buscar mapa"
 
 #: view/mapping/site/index/browse.phtml:34
 msgid "View media"
-msgstr "Ver media"
+msgstr "Ver medios"
 
 #: view/mapping/site/index/browse.phtml:38
 msgid "View item"
-msgstr "Ver elemento"
-
-#: src/Site/Navigation/Link/MapBrowse.php:13
-msgid "Map Browse"
-msgstr "Navegar mapa"
+msgstr "Ver fichas"
 
 #: src/Site/BlockLayout/Map.php:15
 msgid "Map by attachments"
-msgstr ""
-
-#: src/Site/BlockLayout/AbstractMap.php:55
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11
-msgid "[Default provider]"
-msgstr ""
+msgstr "Mapa con elementos adjuntos"
 
 #: src/Site/BlockLayout/MapQuery.php:15
 msgid "Map by query"
-msgstr ""
+msgstr "Mapa por consulta"
+
+#: src/Site/BlockLayout/AbstractMap.php:53
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11
+msgid "[Default provider]"
+msgstr "[Proveedor por defecto]"
+
+#: src/Site/Navigation/Link/MapBrowse.php:13
+msgid "Map Browse"
+msgstr "Explorar mapa"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
-msgstr "Debe seleccionar una ubicación en el mapa."
+msgstr "Debe seleccionarse una ubicación en el mapa."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."
-msgstr ""
+msgstr "Un área de mapa debe tener un elemento."
 
 #: src/Api/Adapter/MappingAdapter.php:51
 msgid "Map bounds must contain four numbers separated by commas"
 msgstr ""
+"Los límites del mapa deben definirse mediante cuatro números separados por "
+"comas"

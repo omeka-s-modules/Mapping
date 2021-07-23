@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-09-14 18:09-0400\n"
+"POT-Creation-Date: 2021-07-23 12:43-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -21,32 +21,32 @@ msgstr ""
 msgid "Mapping"
 msgstr ""
 
-#: src/Site/BlockLayout/AbstractMap.php:51
+#: src/Site/BlockLayout/AbstractMap.php:49
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
 msgstr ""
 
-#: src/Site/BlockLayout/AbstractMap.php:52
+#: src/Site/BlockLayout/AbstractMap.php:50
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
 msgstr ""
 
-#: src/Site/BlockLayout/AbstractMap.php:58
+#: src/Site/BlockLayout/AbstractMap.php:56
 msgid "Minimum zoom level"
 msgstr ""
 
-#: src/Site/BlockLayout/AbstractMap.php:59
+#: src/Site/BlockLayout/AbstractMap.php:57
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
 msgstr ""
 
-#: src/Site/BlockLayout/AbstractMap.php:66
+#: src/Site/BlockLayout/AbstractMap.php:64
 msgid "Maximum zoom level"
 msgstr ""
 
-#: src/Site/BlockLayout/AbstractMap.php:67
+#: src/Site/BlockLayout/AbstractMap.php:65
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
@@ -222,6 +222,14 @@ msgstr ""
 msgid "Select the position of the timeline navigation."
 msgstr ""
 
+#: view/common/block-layout/mapping-block-form.phtml:202
+msgid "Full width, below story slider and map"
+msgstr ""
+
+#: view/common/block-layout/mapping-block-form.phtml:203
+msgid "Full width, above story slider and map"
+msgstr ""
+
 #: view/common/block-layout/mapping-block-form.phtml:217
 msgid ""
 "Select the timestamp or interval property to use when populating the "
@@ -292,21 +300,21 @@ msgstr ""
 msgid "View item"
 msgstr ""
 
-#: src/Site/Navigation/Link/MapBrowse.php:13
-msgid "Map Browse"
-msgstr ""
-
 #: src/Site/BlockLayout/Map.php:15
 msgid "Map by attachments"
 msgstr ""
 
-#: src/Site/BlockLayout/AbstractMap.php:55
+#: src/Site/BlockLayout/MapQuery.php:15
+msgid "Map by query"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:53
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
 msgstr ""
 
-#: src/Site/BlockLayout/MapQuery.php:15
-msgid "Map by query"
+#: src/Site/Navigation/Link/MapBrowse.php:13
+msgid "Map Browse"
 msgstr ""
 
 #: src/Collecting/PromptMap.php:26
