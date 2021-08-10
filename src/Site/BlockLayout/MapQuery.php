@@ -25,22 +25,13 @@ class MapQuery extends AbstractMap
     ) {
         $form = parent::form($view, $site, $page, $block);
         $data = $this->filterBlockData($block ? $block->data() : []);
+        $element = new \Omeka\Form\Element\Query('o:block[__blockIndex__][o:data][query]');
+        $element->setValue($data['query'] ?? null)
+            ->setLabel($view->translate('Query'))
+            ->setOption('info', $view->translate('Attach items using this query. No query means all items.'));
         $form .= '
 <a href="#" class="mapping-map-expander collapse"><h4>' . $view->translate('Query') . '</h4></a>
-<div class="collapsible">
-    <div class="field">
-        <div class="field-meta">
-            <label>' . $view->translate('Query') . '</label>
-            <a href="#" class="expand"></a>
-            <div class="collapsible">
-                <div class="field-description">' . $view->translate('Attach items using this query.') . '</div>
-            </div>
-        </div>
-        <div class="inputs">
-            <input type="text" name="o:block[__blockIndex__][o:data][query]" value="' . ($data['query'] ?? null) . '">
-        </div>
-    </div>
-</div>';
+<div class="collapsible">' . $view->formRow($element) . '</div>';
         return $form;
     }
 
