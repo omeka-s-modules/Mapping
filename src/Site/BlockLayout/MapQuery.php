@@ -5,6 +5,7 @@ use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Entity\SitePageBlock;
+use Omeka\Form\Element;
 use Omeka\Stdlib\ErrorStore;
 use Laminas\View\Renderer\PhpRenderer;
 
@@ -25,7 +26,7 @@ class MapQuery extends AbstractMap
     ) {
         $form = parent::form($view, $site, $page, $block);
         $data = $this->filterBlockData($block ? $block->data() : []);
-        $element = new \Omeka\Form\Element\Query('o:block[__blockIndex__][o:data][query]');
+        $element = new Element\Query('o:block[__blockIndex__][o:data][query]');
         $element->setValue($data['query'] ?? null)
             ->setLabel($view->translate('Query'))
             ->setOption('info', $view->translate('Attach items using this query. No query means all items.'));
