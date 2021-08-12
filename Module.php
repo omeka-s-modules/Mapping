@@ -72,6 +72,12 @@ class Module extends AbstractModule
     {
         parent::onBootstrap($event);
 
+        // Set the corresponding visibility rules on Mapping resources.
+        $em = $this->getServiceLocator()->get('Omeka\EntityManager');
+        $filter = $em->getFilters()->getFilter('resource_visibility');
+        $filter->addRelatedEntity('Mapping\Entity\Mapping', 'item_id');
+        $filter->addRelatedEntity('Mapping\Entity\MappingMarker', 'item_id');
+
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
         $acl->allow(
             null,
