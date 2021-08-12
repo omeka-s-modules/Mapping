@@ -6,16 +6,16 @@
 # Translators:
 # Darío Hereñú, 2019
 # Josu Aramberri <jaramberri@i2basque.es>, 2019
-# Alfonso Luis Montejo Ráez <almontejor@gmail.com>, 2021
+# Alfonso <almontejor@gmail.com>, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-23 12:43-0400\n"
+"POT-Creation-Date: 2021-08-12 17:30-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Alfonso Luis Montejo Ráez <almontejor@gmail.com>, 2021\n"
+"Last-Translator: Alfonso <almontejor@gmail.com>, 2021\n"
 "Language-Team: Spanish (https://www.transifex.com/omeka/teams/14184/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Language: es\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:257 view/mapping/index/form.phtml:26
+#: Module.php:263 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr "Cartografía"
 
@@ -63,9 +63,9 @@ msgid ""
 msgstr ""
 "El nivel de zum máximo al que se podrá escalar el mapa. Por defecto es 19."
 
-#: src/Site/BlockLayout/MapQuery.php:36
-msgid "Attach items using this query."
-msgstr "Añadir elementos usando esta consulta."
+#: src/Site/BlockLayout/MapQuery.php:32
+msgid "Attach items using this query. No query means all items."
+msgstr ""
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
 msgid "Resource location"
@@ -246,11 +246,11 @@ msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:202
 msgid "Full width, below story slider and map"
-msgstr ""
+msgstr "Ancho completo, deslizador debajo de la historia, y mapa"
 
 #: view/common/block-layout/mapping-block-form.phtml:203
 msgid "Full width, above story slider and map"
-msgstr ""
+msgstr "Ancho completo, deslizador encima de la historia, y mapa"
 
 #: view/common/block-layout/mapping-block-form.phtml:217
 msgid ""
@@ -328,7 +328,7 @@ msgstr "Ver fichas"
 msgid "Map by attachments"
 msgstr "Mapa con elementos adjuntos"
 
-#: src/Site/BlockLayout/MapQuery.php:15
+#: src/Site/BlockLayout/MapQuery.php:16
 msgid "Map by query"
 msgstr "Mapa por consulta"
 

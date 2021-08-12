@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-23 12:43-0400\n"
+"POT-Creation-Date: 2021-08-12 17:30-0400\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:257 view/mapping/index/form.phtml:26
+#: Module.php:263 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr ""
 
@@ -52,8 +52,8 @@ msgid ""
 "default is 19."
 msgstr ""
 
-#: src/Site/BlockLayout/MapQuery.php:36
-msgid "Attach items using this query."
+#: src/Site/BlockLayout/MapQuery.php:32
+msgid "Attach items using this query. No query means all items."
 msgstr ""
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
@@ -304,7 +304,7 @@ msgstr ""
 msgid "Map by attachments"
 msgstr ""
 
-#: src/Site/BlockLayout/MapQuery.php:15
+#: src/Site/BlockLayout/MapQuery.php:16
 msgid "Map by query"
 msgstr ""
 

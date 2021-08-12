@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-07-23 12:43-0400\n"
+"POT-Creation-Date: 2021-08-12 17:30-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Daniel Berthereau <daniel.transifex@berthereau.net>, 2019\n"
 "Language-Team: French (https://www.transifex.com/omeka/teams/14184/fr/)\n"
@@ -23,7 +23,7 @@ msgstr ""
 "Language: fr\n"
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
-#: Module.php:257 view/mapping/index/form.phtml:26
+#: Module.php:263 view/mapping/index/form.phtml:26
 msgid "Mapping"
 msgstr "Carte"
 
@@ -58,8 +58,8 @@ msgid ""
 "default is 19."
 msgstr ""
 
-#: src/Site/BlockLayout/MapQuery.php:36
-msgid "Attach items using this query."
+#: src/Site/BlockLayout/MapQuery.php:32
+msgid "Attach items using this query. No query means all items."
 msgstr ""
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
@@ -313,7 +313,7 @@ msgstr "Voir le contenu"
 msgid "Map by attachments"
 msgstr ""
 
-#: src/Site/BlockLayout/MapQuery.php:15
+#: src/Site/BlockLayout/MapQuery.php:16
 msgid "Map by query"
 msgstr ""
 
