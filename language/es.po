@@ -6,16 +6,16 @@
 # Translators:
 # Darío Hereñú, 2019
 # Josu Aramberri <jaramberri@i2basque.es>, 2019
-# Alfonso <almontejor@gmail.com>, 2021
+# Alfonso Montejo <almontejor@gmail.com>, 2021
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-12 17:30-0400\n"
+"POT-Creation-Date: 2021-08-27 11:32-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Alfonso <almontejor@gmail.com>, 2021\n"
+"Last-Translator: Alfonso Montejo <almontejor@gmail.com>, 2021\n"
 "Language-Team: Spanish (https://www.transifex.com/omeka/teams/14184/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -66,6 +66,8 @@ msgstr ""
 #: src/Site/BlockLayout/MapQuery.php:32
 msgid "Attach items using this query. No query means all items."
 msgstr ""
+"Añadir fichas a través de esta consulta. Si se deja en blanco, significará "
+"todas las fichas."
 
 #: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
 msgid "Resource location"
