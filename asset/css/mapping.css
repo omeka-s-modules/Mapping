@@ -1,3 +1,7 @@
+.mapping-block {
+  position: relative;
+  z-index: 0;
+}
 .leaflet-control-geosearch form input {
   border: 0 !important;
 }

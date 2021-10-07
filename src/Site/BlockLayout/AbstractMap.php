@@ -41,6 +41,11 @@ abstract class AbstractMap extends AbstractBlockLayout
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.providers/leaflet-providers.js', 'Mapping'));
     }
 
+    public function prepareRender(PhpRenderer $view)
+    {
+        $view->headLink()->appendStylesheet($view->assetUrl('css/mapping.css', 'Mapping'));
+    }
+
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
