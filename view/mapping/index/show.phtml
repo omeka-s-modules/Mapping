@@ -32,7 +32,7 @@ $media = $marker->media();
     <h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
     <?php endif; ?>
     <?php if ($media): ?>
-    <img src="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>">
+    <?php echo $this->thumbnail($media, 'medium'); ?>
     <div>
         <?php echo sprintf($this->translate('Media: %s'), $media->link($media->displayTitle())); ?>
     </div>
