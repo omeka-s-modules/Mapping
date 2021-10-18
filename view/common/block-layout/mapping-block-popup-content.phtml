@@ -6,7 +6,7 @@ $media = $marker->media();
 <h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
 <?php endif; ?>
 <?php if ($media): ?>
-<img src="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>">
+<?php echo $this->thumbnail($media, 'medium'); ?>
 <?php endif; ?>
 <div>
     <?php echo sprintf($this->translate('Item: %s'), $item->link($item->displayTitle(), null, ['target' => '_blank'])); ?>
