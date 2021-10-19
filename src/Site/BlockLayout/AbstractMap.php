@@ -319,6 +319,7 @@ abstract class AbstractMap extends AbstractBlockLayout
                 'url' => $media->thumbnailUrl('large'),
                 'thumbnail' => $media->thumbnailUrl('medium'),
                 'link' => $item->url(),
+                'alt' => $media->altText(),
             ];
         }
 
