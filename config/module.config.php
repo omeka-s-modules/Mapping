@@ -1,6 +1,8 @@
 <?php
 namespace Mapping;
 
+use Osii\Service\ResourceMapper\ResourceMapperFactory;
+
 return [
     'api_adapters' => [
         'invokables' => [
@@ -33,6 +35,11 @@ return [
     ],
     'omeka2_importer_classes' => [
         Omeka2Importer\GeolocationImporter::class,
+    ],
+    'osii_resource_mappers' => [
+        'factories' => [
+            Osii\ResourceMapper\ItemMapping::class => ResourceMapperFactory::class,
+        ],
     ],
     'block_layouts' => [
         'factories' => [
