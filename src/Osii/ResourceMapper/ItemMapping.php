@@ -16,6 +16,8 @@ class ItemMapping extends AbstractResourceMapper
         }
 
         if (isset($remoteResource['o-module-mapping:mapping'])) {
+            // Get  the JSON-LD representation of the remote mappings resource
+            // and set it to the local resource.
             try {
                 $mapping = $this->getApiOutput($remoteResource['o-module-mapping:mapping']['@id']);
                 $remoteResource['o-module-mapping:mapping'] = $mapping;
@@ -29,6 +31,8 @@ class ItemMapping extends AbstractResourceMapper
         }
 
         if (isset($remoteResource['o-module-mapping:marker'])) {
+            // Get  the JSON-LD representations of the remote marker resources
+            // and set them to the local resource.
             $markers = [];
             foreach ($remoteResource['o-module-mapping:marker'] as $marker) {
                 try {
@@ -49,17 +53,55 @@ class ItemMapping extends AbstractResourceMapper
 
     public function mapResource(array $localResource, array $remoteResource) : array
     {
-        $resourceName = $this->getJob()->getResourceName($remoteResource);
-        $mappings = $this->getJob()->getMappings();
+        $job = $this->getJob();
+        $resourceName = $job->getResourceName($remoteResource);
 
         if ('items' !== $resourceName) {
-            return $remoteResource;
+            return $localResource;
         }
 
-        // There's NO WAY to map mappings and markers because they are their own
-        // resources. This means that they would need to cached during snapshot
-        // and created during import (like items) so this mapper could map their
-        // remote o:id to the local o:id.
+        $entityManager = $job->getEntityManager();
+
+        // Delete all Mapping entities that belong to this local item.
+        $dql = 'DELETE Mapping\Entity\Mapping m WHERE m.item = :itemId';
+        $query = $entityManager->createQuery($dql);
+        $query->setParameter('itemId', $localResource['o:id']);
+        $query->execute();
+
+        // Delete all MappingMarker entities that belong to this local item.
+        $dql = 'DELETE Mapping\Entity\MappingMarker m WHERE m.item = :itemId';
+        $query = $entityManager->createQuery($dql);
+        $query->setParameter('itemId', $localResource['o:id']);
+        $query->execute();
+
+        // Set the local bounds.
+        $remoteBounds = $remoteResource['o-module-mapping:mapping']['o-module-mapping:bounds'] ?? null;
+        if ($remoteBounds) {
+            $localResource['o-module-mapping:mapping'] = [
+                'o-module-mapping:bounds' => $remoteBounds,
+            ];
+        }
+
+        $mappings = $job->getMappings();
+
+        // Set the local markers.
+        $remoteMarkers = $remoteResource['o-module-mapping:marker'] ?? null;
+        if ($remoteMarkers) {
+            foreach ($remoteMarkers as $remoteMarker) {
+                $localMarker = [
+                    'o-module-mapping:lat' => $remoteMarker['o-module-mapping:lat'],
+                    'o-module-mapping:lng' => $remoteMarker['o-module-mapping:lng'],
+                    'o-module-mapping:label' => $remoteMarker['o-module-mapping:label'],
+                    'o:media' => null,
+                ];
+                if (isset($remoteMarker['o:media']['o:id'])) {
+                    $localMarker['o:media'] = [
+                        'o:id' => $mappings->get('media', $remoteMarker['o:media']['o:id']),
+                    ];
+                }
+                $localResource['o-module-mapping:marker'][] = $localMarker;
+            }
+        }
 
         return $localResource;
     }
