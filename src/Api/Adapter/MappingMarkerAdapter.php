@@ -119,7 +119,7 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
 
                     // Set the radius unit constant needed for the distance
                     // calcluation below.
-                    $unit = isset($query['radius_unit']) ? $query['radius_unit'] : 'km';
+                    $unit = $query['radius_unit'] ?? 'km';
                     switch ($unit) {
                         case 'mile':
                             $unitConst = 3959;

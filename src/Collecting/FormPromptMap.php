@@ -15,9 +15,9 @@ class FormPromptMap extends AbstractHelper
     {
         $view = $this->getView();
         $value = $element->getValue();
-        $lat = isset($value['lat']) ? $value['lat'] : '';
-        $lng = isset($value['lng']) ? $value['lng'] : '';
-        $label = isset($value['label']) ? $value['label'] : '';
+        $lat = $value['lat'] ?? '';
+        $lng = $value['lng'] ?? '';
+        $label = $value['label'] ?? '';
         return sprintf('
             <input type="hidden" class="collecting-map-lat" name="%1$s[lat]" value="%2$s">
             <input type="hidden" class="collecting-map-lng" name="%1$s[lng]" value="%3$s">
