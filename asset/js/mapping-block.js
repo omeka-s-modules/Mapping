@@ -43,6 +43,9 @@ function MappingBlock(mapDiv, timelineDiv) {
         }
     };
 
+    // Add fullscreen control
+    map.addControl(new L.Control.Fullscreen());
+
     // Set the default view.
     var setDefaultView = function() {
         if (mapData['bounds']) {

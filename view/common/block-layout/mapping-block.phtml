@@ -7,6 +7,8 @@ $this->headScript()->appendFile($this->assetUrl('vendor/leaflet.markercluster/le
 $this->headScript()->appendFile($this->assetUrl('vendor/leaflet.providers/leaflet-providers.js', 'Mapping'));
 $this->headLink()->appendStylesheet($this->assetUrl('vendor/leaflet.groupedlayercontrol/leaflet.groupedlayercontrol.min.css', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('vendor/leaflet.groupedlayercontrol/leaflet.groupedlayercontrol.min.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('vendor/leaflet.fullscreen/dist/Leaflet.fullscreen.min.js', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('vendor/leaflet.fullscreen/dist/leaflet.fullscreen.css', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.opacity.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-block.js', 'Mapping'));
 if ($isTimeline) {
