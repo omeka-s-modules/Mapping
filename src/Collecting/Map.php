@@ -37,18 +37,25 @@ class Map implements MediaTypeInterface
     ) {
         $lat = null;
         $lng = null;
+        // Set the dcterms:title value as the default label. One caveat: the
+        // title prompt must come before the map prompt or $itemData will not
+        // include the title property.
+        $label = @$itemData['dcterms:title'][0]['@value'];
         if (isset($postedPrompt['lat']) && is_numeric($postedPrompt['lat'])) {
             $lat = trim($postedPrompt['lat']);
         }
         if (isset($postedPrompt['lng']) && is_numeric($postedPrompt['lng'])) {
             $lng = trim($postedPrompt['lng']);
         }
+        if (isset($postedPrompt['label']) && '' !== trim($postedPrompt['label'])) {
+            $label = trim($postedPrompt['label']);
+        }
         if ($lat && $lng) {
             // Add marker data only when latitude and longitude are valid.
             $itemData['o-module-mapping:marker'][] = [
                 'o-module-mapping:lat' => $lat,
                 'o-module-mapping:lng' => $lng,
-                'o-module-mapping:label' => $prompt->text(),
+                'o-module-mapping:label' => $label,
             ];
         }
         return $itemData;

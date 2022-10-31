@@ -5,6 +5,8 @@ $(document).ready(function() {
         var inputLat = mapDiv.siblings('input.collecting-map-lat');
         var inputLng = mapDiv.siblings('input.collecting-map-lng');
 
+        mapDiv.css('cursor', 'crosshair');
+
         var map = L.map(this);
         var marker;
 
