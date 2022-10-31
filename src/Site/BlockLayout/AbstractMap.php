@@ -185,7 +185,7 @@ abstract class AbstractMap extends AbstractBlockLayout
                         if (is_string($dataTypeProperty)) {
                             $dataTypeProperty = explode(':', $dataTypeProperty);
                             if (3 === count($dataTypeProperty)) {
-                                list($namespace, $type, $propertyId) = $dataTypeProperty;
+                                [$namespace, $type, $propertyId] = $dataTypeProperty;
                                 if ('numeric' === $namespace
                                     && in_array($type, ['timestamp', 'interval'])
                                     && is_numeric($propertyId)
@@ -335,7 +335,7 @@ abstract class AbstractMap extends AbstractBlockLayout
                 'second' => $dateTime['second'],
             ];
         } elseif ('numeric:interval' === $dataType) {
-            list($intervalStart, $intervalEnd) = explode('/', $value->value());
+            [$intervalStart, $intervalEnd] = explode('/', $value->value());
             $dateTimeStart = Timestamp::getDateTimeFromValue($intervalStart);
             $event['start_date'] = [
                 'year' => $dateTimeStart['year'],

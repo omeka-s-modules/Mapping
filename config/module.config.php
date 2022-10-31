@@ -91,4 +91,14 @@ return [
             ],
         ],
     ],
+    'resource_page_block_layouts' => [
+        'invokables' => [
+            'mapping' => Site\ResourcePageBlockLayout\Mapping::class,
+        ],
+    ],
+    'resource_page_blocks_default' => [
+        'items' => [
+            'main' => ['mapping'],
+        ],
+    ],
 ];
