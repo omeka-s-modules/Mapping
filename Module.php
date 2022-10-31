@@ -149,11 +149,6 @@ class Module extends AbstractModule
             'view.show.after',
             [$this, 'handleViewShowAfter']
         );
-        $sharedEventManager->attach(
-            'Omeka\Controller\Site\Item',
-            'view.show.after',
-            [$this, 'handleViewShowAfter']
-        );
         // Add the mapping fields to the site's map browse page.
         $sharedEventManager->attach(
             'Mapping\Controller\Site\Index',
