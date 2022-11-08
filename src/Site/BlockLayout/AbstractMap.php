@@ -34,11 +34,13 @@ abstract class AbstractMap extends AbstractBlockLayout
 
     public function prepareForm(PhpRenderer $view)
     {
+        $this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
+
+        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet/dist/leaflet.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet-providers/leaflet-providers.js', 'Mapping'));
+
         $view->headScript()->appendFile($view->assetUrl('js/mapping-block-form.js', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/leaflet.css', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/leaflet.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.default-view.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.providers/leaflet-providers.js', 'Mapping'));
     }
 
     public function prepareRender(PhpRenderer $view)
