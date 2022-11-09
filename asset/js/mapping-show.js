@@ -3,7 +3,9 @@ $(document).ready( function() {
 var mappingMap = $('#mapping-map');
 var mappingData = mappingMap.data('mapping');
 
-var map = L.map('mapping-map');
+var map = L.map('mapping-map', {
+    fullscreenControl: true
+});
 var markers = new L.FeatureGroup();
 var baseMaps = {
     'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),

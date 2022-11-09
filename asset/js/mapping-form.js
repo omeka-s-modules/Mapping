@@ -128,7 +128,9 @@ var mappingData = mappingMap.data('mapping');
 var markersData = mappingMap.data('markers');
 
 // Initialize the map and set default view.
-var map = L.map('mapping-map');
+var map = L.map('mapping-map', {
+    fullscreenControl: true
+});
 map.setView([20, 0], 2);
 var mapMoved = false;
 var defaultBounds = null;

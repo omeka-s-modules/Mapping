@@ -7,7 +7,9 @@ $(document).ready(function() {
 
         mapDiv.css('cursor', 'crosshair');
 
-        var map = L.map(this);
+        var map = L.map(this, {
+            fullscreenControl: true
+        });
         var marker;
 
         L.tileLayer('https://{s}.tile.osm.org/{z}/{x}/{y}.png', {

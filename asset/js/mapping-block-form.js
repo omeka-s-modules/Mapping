@@ -10,7 +10,9 @@ var setMap = function(block) {
     var basemapProviderSelect = block.find('select.basemap-provider');
     var currentZoomLevelSpan = block.find('span.current-zoom');
 
-    var map = L.map(mapDiv[0]);
+    var map = L.map(mapDiv[0], {
+        fullscreenControl: true
+    });
     var defaultBounds = null;
     var defaultBoundsData = mapDiv.find('input[name$="[bounds]"]').val();
     if (defaultBoundsData) {

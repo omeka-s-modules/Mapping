@@ -5,6 +5,7 @@ function MappingBlock(mapDiv, timelineDiv) {
     var map = new L.map(mapDiv[0], {
         minZoom: mapData.min_zoom ? mapData.min_zoom : 0,
         maxZoom: mapData.max_zoom ? mapData.max_zoom : 19,
+        fullscreenControl: true
     });
     var timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
     var timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
