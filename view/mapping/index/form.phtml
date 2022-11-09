@@ -1,11 +1,15 @@
 <?php
-$this->headLink()->appendStylesheet($this->assetUrl('vendor/leaflet/leaflet.css', 'Mapping'));
-$this->headScript()->appendFile($this->assetUrl('vendor/leaflet/leaflet.js', 'Mapping'));
-$this->headLink()->appendStylesheet($this->assetUrl('vendor/leaflet.draw/leaflet.draw.css', 'Mapping'));
-$this->headScript()->appendFile($this->assetUrl('vendor/leaflet.draw/leaflet.draw.js', 'Mapping'));
-$this->headScript()->appendFile($this->assetUrl('vendor/leaflet.providers/leaflet-providers.js', 'Mapping'));
-$this->headLink()->appendStylesheet($this->assetUrl('vendor/leaflet.geosearch/assets/css/leaflet.css', 'Mapping'));
-$this->headScript()->appendFile($this->assetUrl('vendor/leaflet.geosearch/dist/bundle.min.js', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet-draw/dist/leaflet.draw.css', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet-geosearch/dist/geosearch.css', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
+
+$this->headScript()->appendFile($this->assetUrl('node_modules/leaflet/dist/leaflet.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('node_modules/leaflet-draw/dist/leaflet.draw.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('node_modules/leaflet-providers/leaflet-providers.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('node_modules/leaflet-geosearch/dist/bundle.min.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
+
 $this->headScript()->appendFile($this->assetUrl('js/mapping-form.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.opacity.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Mapping'));

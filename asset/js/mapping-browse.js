@@ -8,7 +8,9 @@ try {
     defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
 }
 
-var map = L.map('mapping-map');
+var map = L.map('mapping-map', {
+    fullscreenControl: true
+});
 var markers = L.markerClusterGroup();
 var baseMaps = {
     'Default': defaultProvider,
