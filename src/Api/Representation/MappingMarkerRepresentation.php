@@ -29,8 +29,15 @@ class MappingMarkerRepresentation extends AbstractEntityRepresentation
 
     public function media()
     {
-        return $this->getAdapter('media')
-            ->getRepresentation($this->resource->getMedia());
+        // The media may not be public, so fetch the media directly from the
+        // entity manager to leverage the resource visibility filter. Otherwise,
+        // an EntityNotFound exception will be raised when attempting to fetch
+        // data from the Doctrine proxy returned from getMedia().
+        $media = $this->getServiceLocator()
+            ->get('Omeka\EntityManager')
+            ->getRepository('Omeka\Entity\Media')
+            ->findOneBy(['id' => $this->resource->getMedia()]);
+        return $this->getAdapter('media')->getRepresentation($media);
     }
 
     public function lat()
