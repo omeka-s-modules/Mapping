@@ -27,17 +27,14 @@ class CsvMapping extends AbstractMapping
         $latMap = isset($this->args['column-map-lat']) ? array_keys($this->args['column-map-lat']) : [];
         $lngMap = isset($this->args['column-map-lng']) ? array_keys($this->args['column-map-lng']) : [];
         $latLngMap = isset($this->args['column-map-latlng']) ? array_keys($this->args['column-map-latlng']) : [];
-
-        $defaultLatMap = isset($this->args['column-default-lat']) ? array_keys($this->args['column-default-lat']) : [];
-        $defaultLngMap = isset($this->args['column-default-lng']) ? array_keys($this->args['column-default-lng']) : [];
-        $defaultZoomMap = isset($this->args['column-default-zoom']) ? array_keys($this->args['column-default-zoom']) : [];
+        $boundsMap = isset($this->args['column-map-bounds']) ? array_keys($this->args['column-map-bounds']) : [];
 
         $multivalueMap = $this->args['column-multivalue'] ?? [];
         $multivalueSeparator = $this->args['multivalue_separator'];
 
         // Set default values.
         $markerJson = [];
-        $mappingJson = ['o-module-mapping:default_zoom' => 1];
+        $mappingJson = [];
 
         foreach ($row as $index => $value) {
             if (in_array($index, $latMap)) {
@@ -63,23 +60,17 @@ class CsvMapping extends AbstractMapping
                     ];
                 }
             }
-
-            if (in_array($index, $defaultLatMap)) {
-                $mappingJson['o-module-mapping:default_lat'] = $value;
-            }
-            if (in_array($index, $defaultLngMap)) {
-                $mappingJson['o-module-mapping:default_lng'] = $value;
-            }
-            if (in_array($index, $defaultZoomMap)) {
-                $mappingJson['o-module-mapping:default_zoom'] = $value;
+            if (in_array($index, $boundsMap)) {
+                $mappingJson['o-module-mapping:bounds'] = $value;
             }
         }
 
         if (isset($markerJson['o-module-mapping:lat']) && isset($markerJson['o-module-mapping:lng'])) {
             $json['o-module-mapping:marker'][] = $markerJson;
         }
-
-        $json['o-module-mapping:mapping'] = $mappingJson;
+        if (isset($mappingJson['o-module-mapping:bounds'])) {
+            $json['o-module-mapping:mapping'] = $mappingJson;
+        }
         return $json;
     }
 }

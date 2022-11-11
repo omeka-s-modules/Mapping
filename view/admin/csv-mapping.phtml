@@ -1,27 +1,14 @@
 <div id='mapping-module' class='mapping-group'>
     <a href="#" class="expand" aria-label="<?php echo $this->translate('Expand'); ?>" title="Expand">
-        <h4><?php echo $this->translate('Resource location'); ?></h4>
+        <h4><?php echo $this->translate('Mapping'); ?></h4>
     </a>
     <div class="collapsible">
-        <select name="mapping-module" data-flag-class="mapping-module" data-flag-label="<?php echo $this->translate('Resource location'); ?>">
+        <select name="mapping-module" data-flag-class="mapping-module" data-flag-label="<?php echo $this->translate('Mapping'); ?>">
             <option value="default"><?php echo $this->translate('Select below'); ?></option>
             <option data-flag-name="column-map-lat" value="1"><?php echo $this->translate('Latitude'); ?></option>
             <option data-flag-name="column-map-lng" value="1"><?php echo $this->translate('Longitude'); ?></option>
             <option data-flag-name="column-map-latlng" value="1"><?php echo $this->translate('Latitude/Longitude'); ?></option>
-        </select>
-    </div>
-</div>
-
-<div id='default-view' class='mapping-group'>
-    <a href="#" class="expand" aria-label="<?php echo $this->translate('Expand'); ?>" title="Expand">
-        <h4><?php echo $this->translate('Default map view'); ?></h4>
-    </a>
-    <div class="collapsible">
-        <select name="default-view" data-flag-class="default-view" data-flag-label="<?php echo $this->translate('Default map view'); ?>">
-            <option value="default"><?php echo $this->translate('Select below'); ?></option>
-            <option data-flag-name="column-default-lat" value="1"><?php echo $this->translate('Map center latitude'); ?></option>
-            <option data-flag-name="column-default-lng" value="1"><?php echo $this->translate('Map center longitude'); ?></option>
-            <option data-flag-name="column-default-zoom" value="1"><?php echo $this->translate('Default zoom'); ?></option>
+            <option data-flag-name="column-map-bounds" value="1"><?php echo $this->translate('Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)'); ?></option>
         </select>
     </div>
 </div>
