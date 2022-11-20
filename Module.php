@@ -149,7 +149,7 @@ class Module extends AbstractModule
             'view.show.after',
             [$this, 'handleViewShowAfter']
         );
-        // Add the mapping fields to the site's map browse page.
+        // Add the mapping fields to advanced search pages.
         $sharedEventManager->attach(
             'Mapping\Controller\Site\Index',
             'view.advanced_search',
@@ -157,6 +157,11 @@ class Module extends AbstractModule
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
+            'view.advanced_search',
+            [$this, 'filterItemAdvancedSearch']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Site\Item',
             'view.advanced_search',
             [$this, 'filterItemAdvancedSearch']
         );
