@@ -18,10 +18,7 @@ class CsvMapping extends AbstractMapping
     {
         // Reset the data and the map between rows.
         $this->setHasErr(false);
-        $json = [
-            'o-module-mapping:marker' => [],
-            'o-module-mapping:mapping' => [],
-        ];
+        $json = [];
 
         // Set columns.
         $latMap = isset($this->args['column-map-lat']) ? array_keys($this->args['column-map-lat']) : [];
