@@ -1,34 +1,25 @@
 <?php
-$address = isset($query['mapping_address']) ? $query['mapping_address'] : null;
-$radius = isset($query['mapping_radius']) ? $query['mapping_radius'] : null;
-$radiusUnit = isset($query['mapping_radius_unit']) ? $query['mapping_radius_unit'] : null;
-$units = ['km' => $this->translate('Kilometers'), 'miles' => $this->translate('Miles')];
+use Laminas\Form;
+
+$elementAddress = (new Form\Element\Text('mapping_address'))
+    ->setLabel($this->translate('Geographic Address'))
+    ->setValue($query['mapping_address'] ?? '');
+$elementRadius = (new Form\Element\Text('mapping_radius'))
+    ->setLabel($this->translate('Geographic Radius'))
+    ->setValue($query['mapping_radius'] ?? '');
+$elementRadiusUnit = (new Form\Element\Select('mapping_radius_unit'))
+    ->setLabel($this->translate('Geographic Radius Unit'))
+    ->setValueOptions([
+        'km' => $this->translate('Kilometers'),
+        'miles' => $this->translate('Miles'),
+    ])
+    ->setValue($query['mapping_radius_unit'] ?? '');
+
+$fieldset = (new Form\Fieldset('mapping'))
+    ->setLabel($this->translate('Geographic location'));
+$fieldset->add($elementAddress);
+$fieldset->add($elementRadius);
+$fieldset->add($elementRadiusUnit);
+
+echo $this->formCollection($fieldset);
 ?>
-<div class="field">
-    <div class="field-meta">
-        <legend><?php echo $this->translate('Geographic Address'); ?></legend>
-    </div>
-    <div class="inputs">
-        <input type="text" name="mapping_address" value="<?php echo $this->escapeHtml($address); ?>">
-    </div>
-</div>
-<div class="field">
-    <div class="field-meta">
-        <legend><?php echo $this->translate('Geographic Radius'); ?></legend>
-    </div>
-    <div class="inputs">
-        <input type="text" name="mapping_radius" value="<?php echo $this->escapeHtml($radius); ?>">
-    </div>
-</div>
-<div class="field">
-    <div class="field-meta">
-        <legend><?php echo $this->translate('Geographic Radius Unit'); ?></legend>
-    </div>
-    <div class="inputs">
-        <select name="mapping_radius_unit">
-            <?php foreach ($units as $key => $value): ?>
-            <option value="<?php echo $this->escapeHtml($key); ?>"<?php echo $key === $radiusUnit ? ' selected' : null; ?>><?php echo $this->escapeHtml($value); ?></option>
-            <?php endforeach; ?>
-        </select>
-    </div>
-</div>

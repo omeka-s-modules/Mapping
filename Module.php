@@ -212,7 +212,11 @@ class Module extends AbstractModule
     public function filterViewAdvancedSearch(Event $event)
     {
         $partials = $event->getParam('partials');
-        $partials[] = 'mapping/index/advanced-search';
+        // Remove any unneeded partials.
+        $removePartials = ['common/advanced-search/sort'];
+        $partials = array_diff($partials, $removePartials);
+        // Put geographic location fields at the beginning of the form.
+        array_unshift($partials, 'mapping/index/advanced-search');
         $event->setParam('partials', $partials);
     }
 
