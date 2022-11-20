@@ -153,7 +153,12 @@ class Module extends AbstractModule
         $sharedEventManager->attach(
             'Mapping\Controller\Site\Index',
             'view.advanced_search',
-            [$this, 'filterViewAdvancedSearch']
+            [$this, 'filterMapBrowseAdvancedSearch']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            'view.advanced_search',
+            [$this, 'filterItemAdvancedSearch']
         );
         // Add the "has_markers" filter to item search.
         $sharedEventManager->attach(
@@ -209,28 +214,42 @@ class Module extends AbstractModule
         echo $event->getTarget()->partial('mapping/index/show');
     }
 
-    public function filterViewAdvancedSearch(Event $event)
+    public function filterMapBrowseAdvancedSearch(Event $event)
     {
         $partials = $event->getParam('partials');
         // Remove any unneeded partials.
         $removePartials = ['common/advanced-search/sort'];
         $partials = array_diff($partials, $removePartials);
         // Put geographic location fields at the beginning of the form.
-        array_unshift($partials, 'mapping/index/advanced-search');
+        array_unshift($partials, 'common/advanced-search/mapping-map-browse-advanced-search');
+        $event->setParam('partials', $partials);
+    }
+
+    public function filterItemAdvancedSearch(Event $event)
+    {
+        $partials = $event->getParam('partials');
+        $partials[] = 'common/advanced-search/mapping-item-advanced-search';
         $event->setParam('partials', $partials);
     }
 
     public function handleApiSearchQuery(Event $event)
     {
         $query = $event->getParam('request')->getContent();
-        if (isset($query['has_markers'])) {
+        if (isset($query['has_markers']) && (is_numeric($query['has_markers']) || is_bool($query['has_markers']))) {
             $qb = $event->getParam('queryBuilder');
-            $itemAdapter = $event->getTarget();
-            $mappingMarkerAlias = $itemAdapter->createAlias();
-            $qb->innerJoin(
-                'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
-                'WITH', "$mappingMarkerAlias.item = omeka_root.id"
-            );
+            $mappingMarkerAlias = $event->getTarget()->createAlias();
+            if ($query['has_markers']) {
+                $qb->innerJoin(
+                    'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
+                    'WITH', "$mappingMarkerAlias.item = omeka_root.id"
+                );
+            } else {
+                $qb->leftJoin(
+                    'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
+                    'WITH', "$mappingMarkerAlias.item = omeka_root.id"
+                );
+                $qb->andWhere($qb->expr()->isNull($mappingMarkerAlias));
+            }
         }
     }
 
