@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-27 11:32-0400\n"
+"POT-Creation-Date: 2022-11-29 12:25-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Hong Zhang <zhangh@unlv.nevada.edu>, 2021\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/omeka/teams/14184/zh_CN/)\n"
@@ -21,36 +21,41 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: Module.php:263 view/mapping/index/form.phtml:26
+#: Module.php:286 view/admin/csv-mapping.phtml:3
+#: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
 msgstr "制图"
 
-#: src/Site/BlockLayout/AbstractMap.php:49
+#: src/Collecting/FormPromptMap.php:30
+msgid "Enter a marker label"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:58
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
 msgstr "基准图提供者"
 
-#: src/Site/BlockLayout/AbstractMap.php:50
+#: src/Site/BlockLayout/AbstractMap.php:59
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
 msgstr "选择基准图提供者。默认为OpenStreetMap.Mapnik。这些提供者是按原样提供。对服务或速度没有任何保证。"
 
-#: src/Site/BlockLayout/AbstractMap.php:56
+#: src/Site/BlockLayout/AbstractMap.php:65
 msgid "Minimum zoom level"
 msgstr "最小缩放级数"
 
-#: src/Site/BlockLayout/AbstractMap.php:57
+#: src/Site/BlockLayout/AbstractMap.php:66
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
 msgstr "地图能被显示的最小缩放级数。默认值为0。"
 
-#: src/Site/BlockLayout/AbstractMap.php:64
+#: src/Site/BlockLayout/AbstractMap.php:73
 msgid "Maximum zoom level"
 msgstr "最大缩放级数"
 
-#: src/Site/BlockLayout/AbstractMap.php:65
+#: src/Site/BlockLayout/AbstractMap.php:74
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
@@ -60,11 +65,7 @@ msgstr "设定地图能被显示的最大缩放级数。默认值为19。"
 msgid "Attach items using this query. No query means all items."
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
-msgid "Resource location"
-msgstr "资源位置"
-
-#: view/admin/csv-mapping.phtml:7 view/admin/csv-mapping.phtml:21
+#: view/admin/csv-mapping.phtml:7
 msgid "Select below"
 msgstr "在下面选择"
 
@@ -80,21 +81,49 @@ msgstr "经度"
 msgid "Latitude/Longitude"
 msgstr "纬度/经度"
 
-#: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
-msgid "Default map view"
-msgstr "默认地图视图"
+#: view/admin/csv-mapping.phtml:11
+msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:22
-msgid "Map center latitude"
-msgstr "地图中心纬度"
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:3
+msgid "Search by map marker presence"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:23
-msgid "Map center longitude"
-msgstr "地图中心经度"
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:5
+msgid "Has map markers"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:24
-msgid "Default zoom"
-msgstr "默认缩放"
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:6
+msgid "Has no map markers"
+msgstr ""
+
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:8
+msgid "Select map marker presence…"
+msgstr ""
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:5
+msgid "Geographic Address"
+msgstr "地理地址"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:8
+msgid "Geographic Radius"
+msgstr "地理半径"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:11
+msgid "Geographic Radius Unit"
+msgstr "地理半径单位"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:13
+msgid "Kilometers"
+msgstr "公里"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:14
+msgid "Miles"
+msgstr "英哩"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:19
+msgid "Geographic location"
+msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
@@ -242,66 +271,46 @@ msgid ""
 msgstr ""
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:12
-#: view/mapping/index/show.phtml:41
+#: view/mapping/index/show.phtml:45
 #, php-format
 msgid "Item: %s"
 msgstr "条目：%s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
-#: view/mapping/index/show.phtml:37
+#: view/mapping/index/show.phtml:41
 #, php-format
 msgid "Media: %s"
 msgstr "媒介：%s"
 
-#: view/mapping/index/advanced-search.phtml:5
-msgid "Kilometers"
-msgstr "公里"
-
-#: view/mapping/index/advanced-search.phtml:5
-msgid "Miles"
-msgstr "英哩"
-
-#: view/mapping/index/advanced-search.phtml:9
-msgid "Geographic Address"
-msgstr "地理地址"
-
-#: view/mapping/index/advanced-search.phtml:17
-msgid "Geographic Radius"
-msgstr "地理半径"
-
-#: view/mapping/index/advanced-search.phtml:25
-msgid "Geographic Radius Unit"
-msgstr "地理半径单位"
-
-#: view/mapping/index/form.phtml:32
+#: view/mapping/index/form.phtml:36
 msgid "Close Me"
 msgstr "关闭我"
 
-#: view/mapping/index/form.phtml:33
+#: view/mapping/index/form.phtml:37
 msgid "Marker Image"
 msgstr "标记图像"
 
-#: view/mapping/index/form.phtml:34
+#: view/mapping/index/form.phtml:38
 msgid " No Image"
 msgstr "无图像"
 
-#: view/mapping/index/form.phtml:55
+#: view/mapping/index/form.phtml:59
 msgid "Marker Label"
 msgstr "标记标签"
 
-#: view/mapping/index/form.phtml:58
+#: view/mapping/index/form.phtml:62
 msgid "Select Marker Image"
 msgstr "选择标记图像"
 
-#: view/mapping/site/index/browse.phtml:18
+#: view/mapping/site/index/browse.phtml:23
 msgid "Search Map"
 msgstr "搜索地图"
 
-#: view/mapping/site/index/browse.phtml:34
+#: view/mapping/site/index/browse.phtml:39
 msgid "View media"
 msgstr "查看媒介"
 
-#: view/mapping/site/index/browse.phtml:38
+#: view/mapping/site/index/browse.phtml:43
 msgid "View item"
 msgstr "查看条目"
 
@@ -313,7 +322,7 @@ msgstr ""
 msgid "Map by query"
 msgstr ""
 
-#: src/Site/BlockLayout/AbstractMap.php:53
+#: src/Site/BlockLayout/AbstractMap.php:62
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
 msgstr "【默认提供者】"

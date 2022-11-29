@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Naosuke Okamoto, 2018
+# Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2022
 # 
 #, fuzzy
 msgid ""
@@ -13,22 +13,22 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-29 12:25-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Naosuke Okamoto, 2018\n"
-"Language-Team: Japanese (https://www.transifex.com/omeka/teams/14184/ja/)\n"
+"Last-Translator: Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2022\n"
+"Language-Team: Catalan (Spain) (https://www.transifex.com/omeka/teams/14184/ca_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: ca_ES\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: Module.php:286 view/admin/csv-mapping.phtml:3
 #: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
-msgstr "マッピング"
+msgstr "Mapping"
 
 #: src/Collecting/FormPromptMap.php:30
 msgid "Enter a marker label"
-msgstr ""
+msgstr "Etiqueta del marcador"
 
 #: src/Site/BlockLayout/AbstractMap.php:58
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
@@ -43,7 +43,7 @@ msgstr ""
 
 #: src/Site/BlockLayout/AbstractMap.php:65
 msgid "Minimum zoom level"
-msgstr ""
+msgstr "Nivell mínim del zoom"
 
 #: src/Site/BlockLayout/AbstractMap.php:66
 msgid ""
@@ -53,7 +53,7 @@ msgstr ""
 
 #: src/Site/BlockLayout/AbstractMap.php:73
 msgid "Maximum zoom level"
-msgstr ""
+msgstr "Nivell màxim del zoom"
 
 #: src/Site/BlockLayout/AbstractMap.php:74
 msgid ""
@@ -67,19 +67,19 @@ msgstr ""
 
 #: view/admin/csv-mapping.phtml:7
 msgid "Select below"
-msgstr ""
+msgstr "Selecciona"
 
 #: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
-msgstr "緯度"
+msgstr "Latitud"
 
 #: view/admin/csv-mapping.phtml:9
 msgid "Longitude"
-msgstr "経度"
+msgstr "Longitud"
 
 #: view/admin/csv-mapping.phtml:10
 msgid "Latitude/Longitude"
-msgstr "緯度/経度"
+msgstr "Latitud/Longitud"
 
 #: view/admin/csv-mapping.phtml:11
 msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
@@ -103,23 +103,23 @@ msgstr ""
 
 #: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:5
 msgid "Geographic Address"
-msgstr "地理的住所"
+msgstr "Adreça geogràfica"
 
 #: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:8
 msgid "Geographic Radius"
-msgstr "地理的半径"
+msgstr "Radi geogràfic"
 
 #: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:11
 msgid "Geographic Radius Unit"
-msgstr "地理的半径単位"
+msgstr ""
 
 #: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:13
 msgid "Kilometers"
-msgstr "キロメートル"
+msgstr "Kilòmetres"
 
 #: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:14
 msgid "Miles"
-msgstr "マイル"
+msgstr "Milles"
 
 #: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:19
 msgid "Geographic location"
@@ -127,7 +127,7 @@ msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
-msgstr "デフォルトの表示"
+msgstr "Vista per defecte"
 
 #: view/common/block-layout/mapping-block-form.phtml:27
 #, php-format
@@ -135,56 +135,60 @@ msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
 "%s."
 msgstr ""
+"Determina la vista per defecta mitjançant els controls del mapa. El nivell "
+"de zoom per defecte és %s."
 
 #: view/common/block-layout/mapping-block-form.phtml:35
 msgid "WMS Overlays"
-msgstr "WMS オーバーレイ／地理参照マップイメージのオーバーレイ"
+msgstr "Capes WMS"
 
 #: view/common/block-layout/mapping-block-form.phtml:37
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
-msgstr "以下のWebマップサービス（WMS）オーバーレイを追加、編集、および削除します。 既定で開くオーバーレイを確認することができます。"
+msgstr ""
+"Afegeix, edita i suprimeix les capes Web Map Service (WMS). Podeu "
+"seleccionar la capa que voleu obrir per defecte."
 
 #: view/common/block-layout/mapping-block-form.phtml:71
 msgid "Base URL"
-msgstr "ベースURL"
+msgstr "URL base"
 
 #: view/common/block-layout/mapping-block-form.phtml:80
 msgid "Layers"
-msgstr "レイヤー"
+msgstr "Capes"
 
 #: view/common/block-layout/mapping-block-form.phtml:82
 msgid "The WMS layers, if any (comma-separated)."
-msgstr "WMS層（ある場合）（コンマ区切り）。"
+msgstr "Capes WMS (separades per coma)"
 
 #: view/common/block-layout/mapping-block-form.phtml:93
 msgid "The WMS styles, if any (comma-separated)."
-msgstr "WMSスタイル（存在する場合）（コンマ区切り）。"
+msgstr "Estils WMS (separats per coma)"
 
 #: view/common/block-layout/mapping-block-form.phtml:101
 msgid "Add Overlay"
-msgstr "オーバーレイを追加"
+msgstr "Afegeix una capa"
 
 #: view/common/block-layout/mapping-block-form.phtml:102
 msgid "Save Changes"
-msgstr "変更を保存"
+msgstr "Desa els canvis"
 
 #: view/common/block-layout/mapping-block-form.phtml:103
 msgid "Clear Inputs"
-msgstr "入力をクリア"
+msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:107
 msgid "Timeline"
-msgstr ""
+msgstr "Línia de temps"
 
 #: view/common/block-layout/mapping-block-form.phtml:111
 msgid "Title headline"
-msgstr ""
+msgstr "Titular"
 
 #: view/common/block-layout/mapping-block-form.phtml:126
 msgid "Title text"
-msgstr ""
+msgstr "Títol"
 
 #: view/common/block-layout/mapping-block-form.phtml:142
 msgid "Fly to"
@@ -274,45 +278,45 @@ msgstr ""
 #: view/mapping/index/show.phtml:45
 #, php-format
 msgid "Item: %s"
-msgstr "アイテム： %s"
+msgstr "Recurs: %s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
 #: view/mapping/index/show.phtml:41
 #, php-format
 msgid "Media: %s"
-msgstr "メディア： %s"
+msgstr "Fitxer: %s"
 
 #: view/mapping/index/form.phtml:36
 msgid "Close Me"
-msgstr "閉じる"
+msgstr "A prop meu"
 
 #: view/mapping/index/form.phtml:37
 msgid "Marker Image"
-msgstr "マーカー画像"
+msgstr ""
 
 #: view/mapping/index/form.phtml:38
 msgid " No Image"
-msgstr "画像なし"
+msgstr "Sense imatge"
 
 #: view/mapping/index/form.phtml:59
 msgid "Marker Label"
-msgstr "マーカーのラベル"
+msgstr ""
 
 #: view/mapping/index/form.phtml:62
 msgid "Select Marker Image"
-msgstr "マーカー画像を選択"
+msgstr ""
 
 #: view/mapping/site/index/browse.phtml:23
 msgid "Search Map"
-msgstr "地図を検索"
+msgstr ""
 
 #: view/mapping/site/index/browse.phtml:39
 msgid "View media"
-msgstr "メディアを表示"
+msgstr ""
 
 #: view/mapping/site/index/browse.phtml:43
 msgid "View item"
-msgstr "アイテムを表示"
+msgstr ""
 
 #: src/Site/BlockLayout/Map.php:15
 msgid "Map by attachments"
@@ -329,11 +333,11 @@ msgstr ""
 
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
-msgstr "地図を閲覧"
+msgstr ""
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
-msgstr "地図上の場所を選択する必要があります。"
+msgstr ""
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."

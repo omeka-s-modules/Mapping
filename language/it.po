@@ -5,33 +5,38 @@
 # 
 # Translators:
 # Latino Imparato <latino.imparato@gmail.com>, 2018
-# Giorgio Comai <g@giorgiocomai.eu>, 2021
+# Giorgio Comai <g@giorgiocomai.eu>, 2022
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-27 11:32-0400\n"
+"POT-Creation-Date: 2022-11-29 12:25-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Giorgio Comai <g@giorgiocomai.eu>, 2021\n"
+"Last-Translator: Giorgio Comai <g@giorgiocomai.eu>, 2022\n"
 "Language-Team: Italian (https://www.transifex.com/omeka/teams/14184/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: it\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-#: Module.php:263 view/mapping/index/form.phtml:26
+#: Module.php:286 view/admin/csv-mapping.phtml:3
+#: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
 msgstr "Mappatura"
 
-#: src/Site/BlockLayout/AbstractMap.php:49
+#: src/Collecting/FormPromptMap.php:30
+msgid "Enter a marker label"
+msgstr "Inserisci un'etichetta per il marcatore"
+
+#: src/Site/BlockLayout/AbstractMap.php:58
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
 msgstr "Fornitore della mappa di base"
 
-#: src/Site/BlockLayout/AbstractMap.php:50
+#: src/Site/BlockLayout/AbstractMap.php:59
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
@@ -40,11 +45,11 @@ msgstr ""
 "OpenStreetMap.Mapnik. Queste mappe sono fornite come sono, senza alcuna "
 "garanzia di servizio o velocità."
 
-#: src/Site/BlockLayout/AbstractMap.php:56
+#: src/Site/BlockLayout/AbstractMap.php:65
 msgid "Minimum zoom level"
 msgstr "Livello di zoom minimo"
 
-#: src/Site/BlockLayout/AbstractMap.php:57
+#: src/Site/BlockLayout/AbstractMap.php:66
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
@@ -52,11 +57,11 @@ msgstr ""
 "Il livello di zoom minimo fino al quale può essere mostrata la mappa. Il "
 "valore predefinito è 0."
 
-#: src/Site/BlockLayout/AbstractMap.php:64
+#: src/Site/BlockLayout/AbstractMap.php:73
 msgid "Maximum zoom level"
 msgstr "Massimo livello di zoom"
 
-#: src/Site/BlockLayout/AbstractMap.php:65
+#: src/Site/BlockLayout/AbstractMap.php:74
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
@@ -67,12 +72,10 @@ msgstr ""
 #: src/Site/BlockLayout/MapQuery.php:32
 msgid "Attach items using this query. No query means all items."
 msgstr ""
+"Allega contenuti utilizzando questa query. Se non viene specificata alcuna "
+"query, verranno aggiunti tutti i contenuti."
 
-#: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
-msgid "Resource location"
-msgstr "Locazione della risorsa"
-
-#: view/admin/csv-mapping.phtml:7 view/admin/csv-mapping.phtml:21
+#: view/admin/csv-mapping.phtml:7
 msgid "Select below"
 msgstr "Seleziona dalla lista"
 
@@ -88,21 +91,49 @@ msgstr "Longitudine"
 msgid "Latitude/Longitude"
 msgstr "Latitudine/Longitudine"
 
-#: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
-msgid "Default map view"
-msgstr "Vista della mappa predefinita"
+#: view/admin/csv-mapping.phtml:11
+msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:22
-msgid "Map center latitude"
-msgstr "Latitudine del centro della mappa"
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:3
+msgid "Search by map marker presence"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:23
-msgid "Map center longitude"
-msgstr "Longitudine del centro della mappa"
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:5
+msgid "Has map markers"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:24
-msgid "Default zoom"
-msgstr "Zoom predefinito"
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:6
+msgid "Has no map markers"
+msgstr ""
+
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:8
+msgid "Select map marker presence…"
+msgstr ""
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:5
+msgid "Geographic Address"
+msgstr "Posizione geografica"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:8
+msgid "Geographic Radius"
+msgstr "Raggio geografico"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:11
+msgid "Geographic Radius Unit"
+msgstr "Unità di raggio geografico"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:13
+msgid "Kilometers"
+msgstr "Kilometri"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:14
+msgid "Miles"
+msgstr "Miglia"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:19
+msgid "Geographic location"
+msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
@@ -262,66 +293,46 @@ msgstr ""
 "linea temporale"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:12
-#: view/mapping/index/show.phtml:41
+#: view/mapping/index/show.phtml:45
 #, php-format
 msgid "Item: %s"
 msgstr "Contenuto: %s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
-#: view/mapping/index/show.phtml:37
+#: view/mapping/index/show.phtml:41
 #, php-format
 msgid "Media: %s"
 msgstr "Media: %s"
 
-#: view/mapping/index/advanced-search.phtml:5
-msgid "Kilometers"
-msgstr "Kilometri"
-
-#: view/mapping/index/advanced-search.phtml:5
-msgid "Miles"
-msgstr "Miglia"
-
-#: view/mapping/index/advanced-search.phtml:9
-msgid "Geographic Address"
-msgstr "Posizione geografica"
-
-#: view/mapping/index/advanced-search.phtml:17
-msgid "Geographic Radius"
-msgstr "Raggio geografico"
-
-#: view/mapping/index/advanced-search.phtml:25
-msgid "Geographic Radius Unit"
-msgstr "Unità di raggio geografico"
-
-#: view/mapping/index/form.phtml:32
+#: view/mapping/index/form.phtml:36
 msgid "Close Me"
 msgstr "Chiudi"
 
-#: view/mapping/index/form.phtml:33
+#: view/mapping/index/form.phtml:37
 msgid "Marker Image"
 msgstr "Immagine del marcatore"
 
-#: view/mapping/index/form.phtml:34
+#: view/mapping/index/form.phtml:38
 msgid " No Image"
 msgstr "Nessuna immagine"
 
-#: view/mapping/index/form.phtml:55
+#: view/mapping/index/form.phtml:59
 msgid "Marker Label"
 msgstr "Etichetta del marcatore"
 
-#: view/mapping/index/form.phtml:58
+#: view/mapping/index/form.phtml:62
 msgid "Select Marker Image"
 msgstr "Seleziona immagine del marcatore"
 
-#: view/mapping/site/index/browse.phtml:18
+#: view/mapping/site/index/browse.phtml:23
 msgid "Search Map"
 msgstr "Cerca sulla mappa"
 
-#: view/mapping/site/index/browse.phtml:34
+#: view/mapping/site/index/browse.phtml:39
 msgid "View media"
 msgstr "Visualizza media"
 
-#: view/mapping/site/index/browse.phtml:38
+#: view/mapping/site/index/browse.phtml:43
 msgid "View item"
 msgstr "Visualizza contenuto"
 
@@ -333,7 +344,7 @@ msgstr "Mappa sulla base degli allegati"
 msgid "Map by query"
 msgstr "Mappa sulla base di query"
 
-#: src/Site/BlockLayout/AbstractMap.php:53
+#: src/Site/BlockLayout/AbstractMap.php:62
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
 msgstr "[Fornitore predefinito]"

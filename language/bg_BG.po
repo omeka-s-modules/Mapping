@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-08-27 11:32-0400\n"
+"POT-Creation-Date: 2022-11-29 12:25-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Tzvetan Tzvetanski <ceibg.org@gmail.com>, 2021\n"
 "Language-Team: Bulgarian (Bulgaria) (https://www.transifex.com/omeka/teams/14184/bg_BG/)\n"
@@ -21,16 +21,21 @@ msgstr ""
 "Language: bg_BG\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:263 view/mapping/index/form.phtml:26
+#: Module.php:286 view/admin/csv-mapping.phtml:3
+#: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
 msgstr "Обозначаване на карта/картографиране"
 
-#: src/Site/BlockLayout/AbstractMap.php:49
+#: src/Collecting/FormPromptMap.php:30
+msgid "Enter a marker label"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:58
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
 msgstr "Доставчик на базови карти"
 
-#: src/Site/BlockLayout/AbstractMap.php:50
+#: src/Site/BlockLayout/AbstractMap.php:59
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
@@ -39,11 +44,11 @@ msgstr ""
 "OpenStreetMap.Mapnik. Тези доставчици се предлагат такива, каквито са. Няма "
 "гаранция за обслужване или скорост."
 
-#: src/Site/BlockLayout/AbstractMap.php:56
+#: src/Site/BlockLayout/AbstractMap.php:65
 msgid "Minimum zoom level"
 msgstr "Минимално ниво на увеличаването"
 
-#: src/Site/BlockLayout/AbstractMap.php:57
+#: src/Site/BlockLayout/AbstractMap.php:66
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
@@ -51,11 +56,11 @@ msgstr ""
 "Минималното ниво на увеличението, до което ще бъде показана картата. По "
 "подразбиране е 0."
 
-#: src/Site/BlockLayout/AbstractMap.php:64
+#: src/Site/BlockLayout/AbstractMap.php:73
 msgid "Maximum zoom level"
 msgstr "Максимално ниво на увеличаването"
 
-#: src/Site/BlockLayout/AbstractMap.php:65
+#: src/Site/BlockLayout/AbstractMap.php:74
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
@@ -67,11 +72,7 @@ msgstr ""
 msgid "Attach items using this query. No query means all items."
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
-msgid "Resource location"
-msgstr "Местонахождение на ресурса"
-
-#: view/admin/csv-mapping.phtml:7 view/admin/csv-mapping.phtml:21
+#: view/admin/csv-mapping.phtml:7
 msgid "Select below"
 msgstr "Изберете по-долу"
 
@@ -87,21 +88,49 @@ msgstr "Географска дължина"
 msgid "Latitude/Longitude"
 msgstr "Ширина/дължина"
 
-#: view/admin/csv-mapping.phtml:17 view/admin/csv-mapping.phtml:20
-msgid "Default map view"
-msgstr "Изглед на картата по подразбиране"
+#: view/admin/csv-mapping.phtml:11
+msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:22
-msgid "Map center latitude"
-msgstr "Географска ширина на центъра на картата"
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:3
+msgid "Search by map marker presence"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:23
-msgid "Map center longitude"
-msgstr "Географска дължина на центъра на картата"
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:5
+msgid "Has map markers"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:24
-msgid "Default zoom"
-msgstr "Увеличение по подразбиране"
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:6
+msgid "Has no map markers"
+msgstr ""
+
+#: view/common/advanced-search/mapping-item-advanced-search.phtml:8
+msgid "Select map marker presence…"
+msgstr ""
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:5
+msgid "Geographic Address"
+msgstr "Географски адрес"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:8
+msgid "Geographic Radius"
+msgstr "Географски радиус"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:11
+msgid "Geographic Radius Unit"
+msgstr "Географски радиус"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:13
+msgid "Kilometers"
+msgstr "Километри"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:14
+msgid "Miles"
+msgstr "Мили"
+
+#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:19
+msgid "Geographic location"
+msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
@@ -260,66 +289,46 @@ msgstr ""
 "попълване на времевата линия."
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:12
-#: view/mapping/index/show.phtml:41
+#: view/mapping/index/show.phtml:45
 #, php-format
 msgid "Item: %s"
 msgstr "Елемент: %s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
-#: view/mapping/index/show.phtml:37
+#: view/mapping/index/show.phtml:41
 #, php-format
 msgid "Media: %s"
 msgstr "Медия: %s"
 
-#: view/mapping/index/advanced-search.phtml:5
-msgid "Kilometers"
-msgstr "Километри"
-
-#: view/mapping/index/advanced-search.phtml:5
-msgid "Miles"
-msgstr "Мили"
-
-#: view/mapping/index/advanced-search.phtml:9
-msgid "Geographic Address"
-msgstr "Географски адрес"
-
-#: view/mapping/index/advanced-search.phtml:17
-msgid "Geographic Radius"
-msgstr "Географски радиус"
-
-#: view/mapping/index/advanced-search.phtml:25
-msgid "Geographic Radius Unit"
-msgstr "Географски радиус"
-
-#: view/mapping/index/form.phtml:32
+#: view/mapping/index/form.phtml:36
 msgid "Close Me"
 msgstr "Затвори ме"
 
-#: view/mapping/index/form.phtml:33
+#: view/mapping/index/form.phtml:37
 msgid "Marker Image"
 msgstr "Изображение на маркер"
 
-#: view/mapping/index/form.phtml:34
+#: view/mapping/index/form.phtml:38
 msgid " No Image"
 msgstr "Без изображение"
 
-#: view/mapping/index/form.phtml:55
+#: view/mapping/index/form.phtml:59
 msgid "Marker Label"
 msgstr "Етикет на маркер"
 
-#: view/mapping/index/form.phtml:58
+#: view/mapping/index/form.phtml:62
 msgid "Select Marker Image"
 msgstr "избери изображение на маркер"
 
-#: view/mapping/site/index/browse.phtml:18
+#: view/mapping/site/index/browse.phtml:23
 msgid "Search Map"
 msgstr "Търсене на карта"
 
-#: view/mapping/site/index/browse.phtml:34
+#: view/mapping/site/index/browse.phtml:39
 msgid "View media"
 msgstr "Преглед на медия"
 
-#: view/mapping/site/index/browse.phtml:38
+#: view/mapping/site/index/browse.phtml:43
 msgid "View item"
 msgstr "Преглед на елемент"
 
@@ -331,7 +340,7 @@ msgstr "Карта по прикачени файлове"
 msgid "Map by query"
 msgstr "Карта по заявка"
 
-#: src/Site/BlockLayout/AbstractMap.php:53
+#: src/Site/BlockLayout/AbstractMap.php:62
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
 msgstr "[Доставчик по подразбиране]"
