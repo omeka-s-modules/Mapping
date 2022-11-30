@@ -234,15 +234,17 @@ class Module extends AbstractModule
     {
         $partials = $event->getParam('partials');
         $partials[] = 'common/advanced-search/mapping-item-advanced-search';
+        $partials[] = 'common/advanced-search/mapping-map-browse-advanced-search';
         $event->setParam('partials', $partials);
     }
 
     public function handleApiSearchQuery(Event $event)
     {
+        $itemAdapter = $event->getTarget();
+        $qb = $event->getParam('queryBuilder');
         $query = $event->getParam('request')->getContent();
         if (isset($query['has_markers']) && (is_numeric($query['has_markers']) || is_bool($query['has_markers']))) {
-            $qb = $event->getParam('queryBuilder');
-            $mappingMarkerAlias = $event->getTarget()->createAlias();
+            $mappingMarkerAlias = $itemAdapter->createAlias();
             if ($query['has_markers']) {
                 $qb->innerJoin(
                     'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
@@ -254,6 +256,70 @@ class Module extends AbstractModule
                     'WITH', "$mappingMarkerAlias.item = omeka_root.id"
                 );
                 $qb->andWhere($qb->expr()->isNull($mappingMarkerAlias));
+            }
+        }
+        if (isset($query['mapping_address']) && '' !== trim($query['mapping_address'])
+            && isset($query['mapping_radius']) && is_numeric($query['mapping_radius'])
+        ) {
+            $mappingMarkerAlias = $itemAdapter->createAlias();
+            // Get the address' latitude and longitude from OpenStreetMap.
+            $client = $this->getServiceLocator()->get('Omeka\HttpClient')
+                ->setUri('http://nominatim.openstreetmap.org/search')
+                ->setParameterGet([
+                    'q' => $query['mapping_address'],
+                    'format' => 'json',
+                ]);
+            $response = $client->send();
+
+            $addressFound = false;
+            if ($response->isSuccess()) {
+                $results = json_decode($response->getBody(), true);
+                if (isset($results[0]['lat']) && isset($results[0]['lon'])) {
+                    $addressFound = true;
+
+                    // Set the radius unit constant needed for the distance
+                    // calcluation below.
+                    $unit = $query['mapping_radius_unit'] ?? 'km';
+                    switch ($unit) {
+                        case 'mile':
+                            $unitConst = 3959;
+                            break;
+                        case 'km':
+                        default:
+                            $unitConst = 6371;
+                    }
+
+                    // Calculate the distance of markers from center coordinates
+                    // using the Haversine formula.
+                    $dql = sprintf('
+                        (%1$s * acos(
+                            (
+                                cos(radians(%2$s)) *
+                                cos(radians(%5$s.lat)) *
+                                cos(
+                                    (radians(%5$s.lng) - radians(%3$s))
+                                ) +
+                                sin(radians(%2$s)) *
+                                sin(radians(%5$s.lat))
+                            )
+                        )) <= %4$s',
+                        $unitConst,
+                        $itemAdapter->createNamedParameter($qb, $results[0]['lat']),
+                        $itemAdapter->createNamedParameter($qb, $results[0]['lon']),
+                        $itemAdapter->createNamedParameter($qb, $query['mapping_radius']),
+                        $mappingMarkerAlias
+                    );
+                    $qb->innerJoin(
+                        'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
+                        'WITH', "$mappingMarkerAlias.item = omeka_root.id"
+                    );
+                    $qb->andWhere($dql);
+                }
+            }
+            if (!$addressFound) {
+                // If no address is found there are no results. This WHERE
+                // statement will always have no results.
+                $qb->andWhere('omeka_root.id = 0');
             }
         }
     }
