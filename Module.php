@@ -226,7 +226,7 @@ class Module extends AbstractModule
         $removePartials = ['common/advanced-search/sort'];
         $partials = array_diff($partials, $removePartials);
         // Put geographic location fields at the beginning of the form.
-        array_unshift($partials, 'common/advanced-search/mapping-map-browse-advanced-search');
+        array_unshift($partials, 'common/advanced-search/mapping-item-geographic-location');
         $event->setParam('partials', $partials);
     }
 
@@ -234,7 +234,7 @@ class Module extends AbstractModule
     {
         $partials = $event->getParam('partials');
         $partials[] = 'common/advanced-search/mapping-item-advanced-search';
-        $partials[] = 'common/advanced-search/mapping-map-browse-advanced-search';
+        $partials[] = 'common/advanced-search/mapping-item-geographic-location';
         $event->setParam('partials', $partials);
     }
 
