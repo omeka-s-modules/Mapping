@@ -9,7 +9,7 @@ class GeolocationImporter extends AbstractImporter
     public function import($itemData, $resourceJson)
     {
         $logger = $this->getServiceLocator()->get('Omeka\Logger');
-        $geolocationId = $itemData['extended_resources']['geolocations']['id'];
+        $geolocationId = $itemData['extended_resources']['geolocations']['id'] ?? null;
         if (empty($geolocationId)) {
             return $resourceJson;
         }
