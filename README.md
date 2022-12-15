@@ -10,8 +10,9 @@ for user documentation.
 
 See general end user documentation for [Installing a module](http://omeka.org/s/docs/user-manual/install/)
 
-To develop on this repository, you must first install dependencies. Run `$ npm install`
-in the the module's /asset directory.
+We've pushed dependencies to /asset/node_modules, so there's no need to install
+them prior to testing or development. Remember to update dependencies before packaging
+this repository for release. Run `$ npm install` in the the module's /asset directory.
 
 # Copyright
 
