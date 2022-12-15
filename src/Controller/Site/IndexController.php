@@ -8,42 +8,42 @@ class IndexController extends AbstractActionController
 {
     public function browseAction()
     {
-        // Get all markers in this site's item pool and render them on a map.
-        $site = $this->currentSite();
+        $itemsQuery = $this->params()->fromQuery();
 
-        $query = $this->params()->fromQuery();
-        $query['site_id'] = $site->id();
         if ($this->siteSettings()->get('browse_attached_items', false)) {
-            $query['site_attachments_only'] = true;
+            // Respect the browse_attached_items setting.
+            $itemsQuery['site_attachments_only'] = true;
         }
 
+        // Only get items that are in this site's item pool.
+        $itemsQuery['site_id'] = $this->currentSite()->id();
+        // Only get items that have markers.
+        $itemsQuery['has_markers'] = true;
         // Limit to a reasonable amount of items that have markers to avoid
         // reaching the server memory limit and to improve client performance.
-        $query['limit'] = 5000;
-        $query['has_markers'] = true;
-
-        $items = $this->api()->search('items', $query)->getContent();
-        $itemIds = [];
-        foreach ($items as $item) {
-            $itemIds[] = $item->id();
-        }
-        unset($items);
+        $itemsQuery['limit'] = 5000;
+        // Do not include geographic location query when searching items.
+        unset(
+            $itemsQuery['mapping_address'],
+            $itemsQuery['mapping_radius'],
+            $itemsQuery['mapping_radius_unit'],
+        );
+        $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
 
         // Get all markers for all items that match the query, if any.
         $markers = [];
         if ($itemIds) {
-            $markersQuery = ['item_id' => $itemIds];
-            if (isset($query['mapping_address']) && isset($query['mapping_radius'])) {
-                $markersQuery['address'] = $query['mapping_address'];
-                $markersQuery['radius'] = $query['mapping_radius'];
-                $markersQuery['radius_unit'] = $query['mapping_radius_unit'] ?? null;
-            }
-            $response = $this->api()->search('mapping_markers', $markersQuery);
-            $markers = $response->getContent();
+            $markersQuery = [
+                'item_id' => $itemIds,
+                'address' => $this->params()->fromQuery('mapping_address'),
+                'radius' => $this->params()->fromQuery('mapping_radius'),
+                'radius_unit' => $this->params()->fromQuery('mapping_radius_unit'),
+            ];
+            $markers = $this->api()->search('mapping_markers', $markersQuery)->getContent();
         }
 
         $view = new ViewModel;
-        $view->setVariable('query', $query);
+        $view->setVariable('query', $this->params()->fromQuery());
         $view->setVariable('markers', $markers);
         return $view;
     }

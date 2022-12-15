@@ -99,63 +99,81 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                 );
             }
         }
-        if (isset($query['address']) && '' !== trim($query['address'])
-            && isset($query['radius']) && is_numeric($query['radius'])
-        ) {
-            // Get the address' latitude and longitude from OpenStreetMap.
-            $client = $this->getServiceLocator()->get('Omeka\HttpClient')
-                ->setUri('http://nominatim.openstreetmap.org/search')
-                ->setParameterGet([
-                    'q' => $query['address'],
-                    'format' => 'json',
-                ]);
-            $response = $client->send();
+        $address = $query['address'] ?? null;
+        $radius = $query['radius'] ?? null;
+        $radiusUnit = $query['radius_unit'] ?? null;
+        if (isset($address) && '' !== trim($address) && isset($radius) && is_numeric($radius)) {
+            $this->buildGeographicLocationQuery($qb, 'omeka_root', $address, $radius, $radiusUnit);
+        }
+    }
 
-            $addressFound = false;
-            if ($response->isSuccess()) {
-                $results = json_decode($response->getBody(), true);
-                if (isset($results[0]['lat']) && isset($results[0]['lon'])) {
-                    $addressFound = true;
+    /**
+     * Build a geographic location query.
+     *
+     * @param QueryBuilder $qb
+     * @param string $tableAlias
+     * @param string $address
+     * @param string $radius
+     * @param string $radiusUnit
+     * @return bool Whether an address was found
+     */
+    public function buildGeographicLocationQuery($qb, $tableAlias, $address, $radius, $radiusUnit)
+    {
+        // Get the address' latitude and longitude from OpenStreetMap.
+        $client = $this->getServiceLocator()->get('Omeka\HttpClient')
+            ->setUri('http://nominatim.openstreetmap.org/search')
+            ->setParameterGet([
+                'q' => $address,
+                'format' => 'json',
+            ]);
+        $response = $client->send();
 
-                    // Set the radius unit constant needed for the distance
-                    // calcluation below.
-                    $unit = $query['radius_unit'] ?? 'km';
-                    switch ($unit) {
-                        case 'mile':
-                            $unitConst = 3959;
-                            break;
-                        case 'km':
-                        default:
-                            $unitConst = 6371;
-                    }
+        $addressFound = false;
+        if ($response->isSuccess()) {
+            $results = json_decode($response->getBody(), true);
+            if (isset($results[0]['lat']) && isset($results[0]['lon'])) {
+                $addressFound = true;
 
-                    // Calculate the distance of markers from center coordinates
-                    // using the Haversine formula.
-                    $dql = sprintf('
-                        (%1$s * acos(
-                            (
-                                cos(radians(%2$s)) *
-                                cos(radians(omeka_root.lat)) *
-                                cos(
-                                    (radians(omeka_root.lng) - radians(%3$s))
-                                ) +
-                                sin(radians(%2$s)) *
-                                sin(radians(omeka_root.lat))
-                            )
-                        )) <= %4$s',
-                        $unitConst,
-                        $this->createNamedParameter($qb, $results[0]['lat']),
-                        $this->createNamedParameter($qb, $results[0]['lon']),
-                        $this->createNamedParameter($qb, $query['radius'])
-                    );
-                    $qb->andWhere($dql);
+                // Set the radius unit constant needed for the distance
+                // calcluation below.
+                $unit = $radiusUnit ?? 'km';
+                switch ($unit) {
+                    case 'mile':
+                        $unitConst = 3959;
+                        break;
+                    case 'km':
+                    default:
+                        $unitConst = 6371;
                 }
-            }
-            if (!$addressFound) {
-                // If no address is found there are no results. This WHERE
-                // statement will always have no results.
-                $qb->andWhere('1 = 0');
+
+                // Calculate the distance of markers from center coordinates
+                // using the Haversine formula.
+                $dql = sprintf('
+                    (%1$s * acos(
+                        (
+                            cos(radians(%2$s)) *
+                            cos(radians(%5$s.lat)) *
+                            cos(
+                                (radians(%5$s.lng) - radians(%3$s))
+                            ) +
+                            sin(radians(%2$s)) *
+                            sin(radians(%5$s.lat))
+                        )
+                    )) <= %4$s',
+                    $unitConst,
+                    $this->createNamedParameter($qb, $results[0]['lat']),
+                    $this->createNamedParameter($qb, $results[0]['lon']),
+                    $this->createNamedParameter($qb, $radius),
+                    $tableAlias
+                );
+                $qb->andWhere($dql);
             }
         }
+        if (!$addressFound) {
+            // If no address is found there are no results. This WHERE
+            // statement will always have no results.
+            $qb->andWhere(sprintf('%s.id = 0', $tableAlias));
+        }
+        return $addressFound;
     }
 }
