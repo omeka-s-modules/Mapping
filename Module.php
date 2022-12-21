@@ -342,16 +342,8 @@ class Module extends AbstractModule
         $radius = $query['mapping_radius'] ?? null;
         $radiusUnit = $query['mapping_radius_unit'] ?? null;
         if (isset($address) && '' !== trim($address) && isset($radius) && is_numeric($radius)) {
-            $mappingMarkerAlias = $itemAdapter->createAlias();
             $mappingMarkerAdapter = $itemAdapter->getAdapter('mapping_markers');
-            $addressFound = $mappingMarkerAdapter->buildGeographicLocationQuery($qb, $mappingMarkerAlias, $address, $radius, $radiusUnit);
-            if ($addressFound) {
-                // Be sure to join against MappingMarker.
-                $qb->innerJoin(
-                    'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
-                    'WITH', "$mappingMarkerAlias.item = omeka_root.id"
-                );
-            }
+            $mappingMarkerAdapter->buildGeographicLocationQuery($qb, $address, $radius, $radiusUnit, $itemAdapter);
         }
     }
 

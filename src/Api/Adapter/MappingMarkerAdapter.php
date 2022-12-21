@@ -3,6 +3,7 @@ namespace Mapping\Api\Adapter;
 
 use Doctrine\ORM\QueryBuilder;
 use Omeka\Api\Adapter\AbstractEntityAdapter;
+use Omeka\Api\Adapter\ItemAdapter;
 use Omeka\Api\Request;
 use Omeka\Entity\EntityInterface;
 use Omeka\Stdlib\ErrorStore;
@@ -103,7 +104,7 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
         $radius = $query['radius'] ?? null;
         $radiusUnit = $query['radius_unit'] ?? null;
         if (isset($address) && '' !== trim($address) && isset($radius) && is_numeric($radius)) {
-            $this->buildGeographicLocationQuery($qb, 'omeka_root', $address, $radius, $radiusUnit);
+            $this->buildGeographicLocationQuery($qb, $address, $radius, $radiusUnit);
         }
     }
 
@@ -111,13 +112,13 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
      * Build a geographic location query.
      *
      * @param QueryBuilder $qb
-     * @param string $tableAlias
-     * @param string $address
-     * @param string $radius
-     * @param string $radiusUnit
+     * @param string $address A geographic address
+     * @param string $radius The radius within which to search
+     * @param string $radiusUnit The radius unit, "km" or "mile"
+     * @param ItemAdapter|null $itemAdapter The item adapter, if searching items
      * @return bool Whether an address was found
      */
-    public function buildGeographicLocationQuery($qb, $tableAlias, $address, $radius, $radiusUnit)
+    public function buildGeographicLocationQuery($qb, $address, $radius, $radiusUnit, ItemAdapter $itemAdapter = null)
     {
         // Get the address' latitude and longitude from OpenStreetMap.
         $client = $this->getServiceLocator()->get('Omeka\HttpClient')
@@ -132,7 +133,23 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
         if ($response->isSuccess()) {
             $results = json_decode($response->getBody(), true);
             if (isset($results[0]['lat']) && isset($results[0]['lon'])) {
+
+                // Address coordinates were found.
                 $addressFound = true;
+
+                // The adapter and alias depend on whether an item adapter was
+                // passed. If not, assume this is a direct marker search. If so,
+                // assume this is an indirect item search.
+                $adapter = $this;
+                $mappingMarkerAlias = 'omeka_root';
+                if ($itemAdapter) {
+                    $adapter = $itemAdapter;
+                    $mappingMarkerAlias = $itemAdapter->createAlias();
+                    $qb->innerJoin(
+                        'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
+                        'WITH', "$mappingMarkerAlias.item = omeka_root.id"
+                    );
+                }
 
                 // Set the radius unit constant needed for the distance
                 // calcluation below.
@@ -161,10 +178,10 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
                         )
                     )) <= %4$s',
                     $unitConst,
-                    $this->createNamedParameter($qb, $results[0]['lat']),
-                    $this->createNamedParameter($qb, $results[0]['lon']),
-                    $this->createNamedParameter($qb, $radius),
-                    $tableAlias
+                    $adapter->createNamedParameter($qb, $results[0]['lat']),
+                    $adapter->createNamedParameter($qb, $results[0]['lon']),
+                    $adapter->createNamedParameter($qb, $radius),
+                    $mappingMarkerAlias
                 );
                 $qb->andWhere($dql);
             }
@@ -172,7 +189,7 @@ class MappingMarkerAdapter extends AbstractEntityAdapter
         if (!$addressFound) {
             // If no address is found there are no results. This WHERE
             // statement will always have no results.
-            $qb->andWhere(sprintf('%s.id = 0', $tableAlias));
+            $qb->andWhere(sprintf('%s.id = 0', $mappingMarkerAlias));
         }
         return $addressFound;
     }
