@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-12 13:56-0500\n"
+"POT-Creation-Date: 2023-01-19 10:20-0500\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,7 +17,26 @@ msgstr ""
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: Module.php:286 view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
+#: Module.php:307
+msgid "Map marker presence"
+msgstr ""
+
+#: Module.php:308
+#: view/common/advanced-search/mapping-item-marker-presence.phtml:5
+msgid "Has map markers"
+msgstr ""
+
+#: Module.php:308
+#: view/common/advanced-search/mapping-item-marker-presence.phtml:6
+msgid "Has no map markers"
+msgstr ""
+
+#: Module.php:315
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:19
+msgid "Geographic location"
+msgstr ""
+
+#: Module.php:375 view/admin/csv-mapping.phtml:3 view/admin/csv-mapping.phtml:6
 #: view/mapping/index/form.phtml:30
 msgid "Mapping"
 msgstr ""
@@ -81,44 +100,32 @@ msgstr ""
 msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
 msgstr ""
 
-#: view/common/advanced-search/mapping-item-advanced-search.phtml:3
-msgid "Search by map marker presence"
-msgstr ""
-
-#: view/common/advanced-search/mapping-item-advanced-search.phtml:5
-msgid "Has map markers"
-msgstr ""
-
-#: view/common/advanced-search/mapping-item-advanced-search.phtml:6
-msgid "Has no map markers"
-msgstr ""
-
-#: view/common/advanced-search/mapping-item-advanced-search.phtml:8
-msgid "Select map marker presence…"
-msgstr ""
-
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:5
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:5
 msgid "Geographic Address"
 msgstr ""
 
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:8
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:8
 msgid "Geographic Radius"
 msgstr ""
 
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:11
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:11
 msgid "Geographic Radius Unit"
 msgstr ""
 
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:13
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:13
 msgid "Kilometers"
 msgstr ""
 
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:14
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:14
 msgid "Miles"
 msgstr ""
 
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:19
-msgid "Geographic location"
+#: view/common/advanced-search/mapping-item-marker-presence.phtml:3
+msgid "Search by map marker presence"
+msgstr ""
+
+#: view/common/advanced-search/mapping-item-marker-presence.phtml:8
+msgid "Select map marker presence…"
 msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:21

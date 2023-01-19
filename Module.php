@@ -297,7 +297,8 @@ class Module extends AbstractModule
         $event->setParam('partials', $partials);
     }
 
-    public function filterSearchFilters(Event $event) {
+    public function filterSearchFilters(Event $event)
+    {
         $view = $event->getTarget();
         $query = $event->getParam('query');
         $filters = $event->getParam('filters');

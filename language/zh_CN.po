@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-12-12 13:56-0500\n"
+"POT-Creation-Date: 2023-01-19 10:20-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Hong Zhang <zhangh@unlv.nevada.edu>, 2021\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/omeka/teams/14184/zh_CN/)\n"
@@ -21,7 +21,26 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: Module.php:286 view/admin/csv-mapping.phtml:3
+#: Module.php:307
+msgid "Map marker presence"
+msgstr ""
+
+#: Module.php:308
+#: view/common/advanced-search/mapping-item-marker-presence.phtml:5
+msgid "Has map markers"
+msgstr ""
+
+#: Module.php:308
+#: view/common/advanced-search/mapping-item-marker-presence.phtml:6
+msgid "Has no map markers"
+msgstr ""
+
+#: Module.php:315
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:19
+msgid "Geographic location"
+msgstr ""
+
+#: Module.php:375 view/admin/csv-mapping.phtml:3
 #: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
 msgstr "制图"
@@ -85,44 +104,32 @@ msgstr "纬度/经度"
 msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
 msgstr ""
 
-#: view/common/advanced-search/mapping-item-advanced-search.phtml:3
-msgid "Search by map marker presence"
-msgstr ""
-
-#: view/common/advanced-search/mapping-item-advanced-search.phtml:5
-msgid "Has map markers"
-msgstr ""
-
-#: view/common/advanced-search/mapping-item-advanced-search.phtml:6
-msgid "Has no map markers"
-msgstr ""
-
-#: view/common/advanced-search/mapping-item-advanced-search.phtml:8
-msgid "Select map marker presence…"
-msgstr ""
-
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:5
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:5
 msgid "Geographic Address"
 msgstr "地理地址"
 
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:8
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:8
 msgid "Geographic Radius"
 msgstr "地理半径"
 
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:11
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:11
 msgid "Geographic Radius Unit"
 msgstr "地理半径单位"
 
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:13
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:13
 msgid "Kilometers"
 msgstr "公里"
 
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:14
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:14
 msgid "Miles"
 msgstr "英哩"
 
-#: view/common/advanced-search/mapping-map-browse-advanced-search.phtml:19
-msgid "Geographic location"
+#: view/common/advanced-search/mapping-item-marker-presence.phtml:3
+msgid "Search by map marker presence"
+msgstr ""
+
+#: view/common/advanced-search/mapping-item-marker-presence.phtml:8
+msgid "Select map marker presence…"
 msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:21

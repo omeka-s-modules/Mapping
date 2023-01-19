@@ -4,7 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Naosuke Okamoto, 2018
+# Iametza Interaktiboa, 2022
 # 
 #, fuzzy
 msgid ""
@@ -13,13 +13,13 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-01-19 10:20-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Naosuke Okamoto, 2018\n"
-"Language-Team: Japanese (https://www.transifex.com/omeka/teams/14184/ja/)\n"
+"Last-Translator: Iametza Interaktiboa, 2022\n"
+"Language-Team: Basque (https://www.transifex.com/omeka/teams/14184/eu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: ja\n"
-"Plural-Forms: nplurals=1; plural=0;\n"
+"Language: eu\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: Module.php:307
 msgid "Map marker presence"
@@ -28,113 +28,118 @@ msgstr ""
 #: Module.php:308
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:5
 msgid "Has map markers"
-msgstr ""
+msgstr "Mapa-markatzaileak ditu"
 
 #: Module.php:308
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:6
 msgid "Has no map markers"
-msgstr ""
+msgstr "Ez du mapa-markatzailerik"
 
 #: Module.php:315
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:19
 msgid "Geographic location"
-msgstr ""
+msgstr "Kokaleku geografikoa"
 
 #: Module.php:375 view/admin/csv-mapping.phtml:3
 #: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
-msgstr "マッピング"
+msgstr "Mapaketa"
 
 #: src/Collecting/FormPromptMap.php:30
 msgid "Enter a marker label"
-msgstr ""
+msgstr "Sartu etiketa markatzailea"
 
 #: src/Site/BlockLayout/AbstractMap.php:58
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
-msgstr ""
+msgstr "Oinarrizko mapa hornitzailea"
 
 #: src/Site/BlockLayout/AbstractMap.php:59
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
 msgstr ""
+"Hautatu oinarrizko mapa hornitzailea. Lehenetsia OpenStreetMap.Mapnik da. "
+"Hornitzaile hauek DIREN-BEZALA eskaintzen dira. Ez dago zerbitzu edo "
+"abiaduraren bermerik."
 
 #: src/Site/BlockLayout/AbstractMap.php:65
 msgid "Minimum zoom level"
-msgstr ""
+msgstr "Gutxienezko zoom maila"
 
 #: src/Site/BlockLayout/AbstractMap.php:66
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
-msgstr ""
+msgstr "Mapa bistaratzeko gutxienezko zoom maila. Lehenetsia 0 da."
 
 #: src/Site/BlockLayout/AbstractMap.php:73
 msgid "Maximum zoom level"
-msgstr ""
+msgstr "Gehienezko zoom maila"
 
 #: src/Site/BlockLayout/AbstractMap.php:74
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
-msgstr ""
+msgstr "Mapa bistaratzeko gehienezko zoom maila. Lehenetsia 19 da."
 
 #: src/Site/BlockLayout/MapQuery.php:32
 msgid "Attach items using this query. No query means all items."
 msgstr ""
+"Gehitu elementuak kontsulta hau erabiliz. Kontsultarik ezak elementu guztiak"
+" esan nahi du."
 
 #: view/admin/csv-mapping.phtml:7
 msgid "Select below"
-msgstr ""
+msgstr "Hautatu ondoren"
 
 #: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
-msgstr "緯度"
+msgstr "Latitudea"
 
 #: view/admin/csv-mapping.phtml:9
 msgid "Longitude"
-msgstr "経度"
+msgstr "Longitudea"
 
 #: view/admin/csv-mapping.phtml:10
 msgid "Latitude/Longitude"
-msgstr "緯度/経度"
+msgstr "Latitudea/Longitudea"
 
 #: view/admin/csv-mapping.phtml:11
 msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
-msgstr ""
+msgstr "Muga Lehenetsiak (sw_lng,sw_lat,ne_lng,ne_lat)"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:5
 msgid "Geographic Address"
-msgstr "地理的住所"
+msgstr "Helbide Geografikoa"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:8
 msgid "Geographic Radius"
-msgstr "地理的半径"
+msgstr "Erradio Geografikoa"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:11
 msgid "Geographic Radius Unit"
-msgstr "地理的半径単位"
+msgstr "Erradio Geografiko Unitatea"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:13
 msgid "Kilometers"
-msgstr "キロメートル"
+msgstr "Kilometroak"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:14
 msgid "Miles"
-msgstr "マイル"
+msgstr "Milak"
 
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:3
 msgid "Search by map marker presence"
-msgstr ""
+msgstr "Bilatu mapa marken presentziaren arabera"
 
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:8
 msgid "Select map marker presence…"
-msgstr ""
+msgstr "Hautatu mapa-markatzaileen presentzia..."
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
-msgstr "デフォルトの表示"
+msgstr "Lehenetsitako Ikuspegia"
 
 #: view/common/block-layout/mapping-block-form.phtml:27
 #, php-format
@@ -142,210 +147,216 @@ msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
 "%s."
 msgstr ""
+"Ezarri lehenetsitako ikuspegia mapa barruko kontrolak erabiliz. Uneko zoom "
+"maila %s da."
 
 #: view/common/block-layout/mapping-block-form.phtml:35
 msgid "WMS Overlays"
-msgstr "WMS オーバーレイ／地理参照マップイメージのオーバーレイ"
+msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:37
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
-msgstr "以下のWebマップサービス（WMS）オーバーレイを追加、編集、および削除します。 既定で開くオーバーレイを確認することができます。"
+msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:71
 msgid "Base URL"
-msgstr "ベースURL"
+msgstr "Oinarri helbidea"
 
 #: view/common/block-layout/mapping-block-form.phtml:80
 msgid "Layers"
-msgstr "レイヤー"
+msgstr "Kapak"
 
 #: view/common/block-layout/mapping-block-form.phtml:82
 msgid "The WMS layers, if any (comma-separated)."
-msgstr "WMS層（ある場合）（コンマ区切り）。"
+msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:93
 msgid "The WMS styles, if any (comma-separated)."
-msgstr "WMSスタイル（存在する場合）（コンマ区切り）。"
+msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:101
 msgid "Add Overlay"
-msgstr "オーバーレイを追加"
+msgstr "Gehitu Gainjartzea"
 
 #: view/common/block-layout/mapping-block-form.phtml:102
 msgid "Save Changes"
-msgstr "変更を保存"
+msgstr "Gorde Aldaketak"
 
 #: view/common/block-layout/mapping-block-form.phtml:103
 msgid "Clear Inputs"
-msgstr "入力をクリア"
+msgstr "Garbitu Sarrerak"
 
 #: view/common/block-layout/mapping-block-form.phtml:107
 msgid "Timeline"
-msgstr ""
+msgstr "Denbora lerroa"
 
 #: view/common/block-layout/mapping-block-form.phtml:111
 msgid "Title headline"
-msgstr ""
+msgstr "Titulua"
 
 #: view/common/block-layout/mapping-block-form.phtml:126
 msgid "Title text"
-msgstr ""
+msgstr "Titulu testua"
 
 #: view/common/block-layout/mapping-block-form.phtml:142
 msgid "Fly to"
-msgstr ""
+msgstr "Joan hona"
 
 #: view/common/block-layout/mapping-block-form.phtml:145
 msgid "Select the map view to fly to when navigating between events."
-msgstr ""
+msgstr "Hautatu ekintzen artean nabigatzean joan beharreko mapa ikuspegia."
 
 #: view/common/block-layout/mapping-block-form.phtml:152
 msgid "Default view"
-msgstr ""
+msgstr "Ikuspegi lehenetsia"
 
 #: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Event marker, zoom 0"
-msgstr ""
+msgstr "Ekintza marka, zoom 0"
 
 #: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 2"
-msgstr ""
+msgstr "Ekintza marka, zoom 2"
 
 #: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 4"
-msgstr ""
+msgstr "Ekintza marka, zoom 4"
 
 #: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 6"
-msgstr ""
+msgstr "Ekintza marka, zoom 6"
 
 #: view/common/block-layout/mapping-block-form.phtml:157
 msgid "Event marker, zoom 8"
-msgstr ""
+msgstr "Ekintza marka, zoom 8"
 
 #: view/common/block-layout/mapping-block-form.phtml:158
 msgid "Event marker, zoom 10"
-msgstr ""
+msgstr "Ekintza marka, zoom 10"
 
 #: view/common/block-layout/mapping-block-form.phtml:159
 msgid "Event marker, zoom 12"
-msgstr ""
+msgstr "Ekintza marka, zoom 12"
 
 #: view/common/block-layout/mapping-block-form.phtml:160
 msgid "Event marker, zoom 14"
-msgstr ""
+msgstr "Ekintza marka, zoom 14"
 
 #: view/common/block-layout/mapping-block-form.phtml:161
 msgid "Event marker, zoom 16"
-msgstr ""
+msgstr "Ekintza marka, zoom 16"
 
 #: view/common/block-layout/mapping-block-form.phtml:162
 msgid "Event marker, zoom 18"
-msgstr ""
+msgstr "Ekintza marka, zoom 18"
 
 #: view/common/block-layout/mapping-block-form.phtml:173
 msgid "Show contemporaneous events?"
-msgstr ""
+msgstr "Garaiko gertaerak erakutsi?"
 
 #: view/common/block-layout/mapping-block-form.phtml:176
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
 msgstr ""
+"Hautatu hau uneko ekintzaren garai bereko ekintzak erakutsi nahi badituzu "
+"mapan (lehenetsitako ikuspegian bakarrik)."
 
 #: view/common/block-layout/mapping-block-form.phtml:191
 msgid "Timeline navigation position"
-msgstr ""
+msgstr "Denbora-lerro nabigazio kokalekua"
 
 #: view/common/block-layout/mapping-block-form.phtml:194
 msgid "Select the position of the timeline navigation."
-msgstr ""
+msgstr "Hautatu denbora-lerroko nabigazioaren kokalekua."
 
 #: view/common/block-layout/mapping-block-form.phtml:202
 msgid "Full width, below story slider and map"
-msgstr ""
+msgstr "Zabalera osoa, historio graduatzaile eta maparen azpian"
 
 #: view/common/block-layout/mapping-block-form.phtml:203
 msgid "Full width, above story slider and map"
-msgstr ""
+msgstr "Zabalera osoa, historio graduatzaile eta maparen aurretik"
 
 #: view/common/block-layout/mapping-block-form.phtml:217
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
 msgstr ""
+"Hautatu denbora-lerroa betetzerakoan erabiltzeko denbora-zigilu edo tarte "
+"propietatea."
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:12
 #: view/mapping/index/show.phtml:45
 #, php-format
 msgid "Item: %s"
-msgstr "アイテム： %s"
+msgstr "Elementua: %s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
 #: view/mapping/index/show.phtml:41
 #, php-format
 msgid "Media: %s"
-msgstr "メディア： %s"
+msgstr "Multimedia: %s"
 
 #: view/mapping/index/form.phtml:36
 msgid "Close Me"
-msgstr "閉じる"
+msgstr "Itxi Ni"
 
 #: view/mapping/index/form.phtml:37
 msgid "Marker Image"
-msgstr "マーカー画像"
+msgstr "Marka Irudia"
 
 #: view/mapping/index/form.phtml:38
 msgid " No Image"
-msgstr "画像なし"
+msgstr "Irudirik ez"
 
 #: view/mapping/index/form.phtml:59
 msgid "Marker Label"
-msgstr "マーカーのラベル"
+msgstr "Marka Etiketa"
 
 #: view/mapping/index/form.phtml:62
 msgid "Select Marker Image"
-msgstr "マーカー画像を選択"
+msgstr "Hautatu Marka Irudia"
 
 #: view/mapping/site/index/browse.phtml:23
 msgid "Search Map"
-msgstr "地図を検索"
+msgstr "Arakatu Mapa"
 
 #: view/mapping/site/index/browse.phtml:39
 msgid "View media"
-msgstr "メディアを表示"
+msgstr "Ikusi multimedia"
 
 #: view/mapping/site/index/browse.phtml:43
 msgid "View item"
-msgstr "アイテムを表示"
+msgstr "Ikusi elementua"
 
 #: src/Site/BlockLayout/Map.php:15
 msgid "Map by attachments"
-msgstr ""
+msgstr "Fitxategi erantsi bidez mapatu"
 
 #: src/Site/BlockLayout/MapQuery.php:16
 msgid "Map by query"
-msgstr ""
+msgstr "Kontsulta bidezko mapatu"
 
 #: src/Site/BlockLayout/AbstractMap.php:62
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
-msgstr ""
+msgstr "[Hornitzaile lehenetsia]"
 
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
-msgstr "地図を閲覧"
+msgstr "Arakatu Mapa"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
-msgstr "地図上の場所を選択する必要があります。"
+msgstr "Mapan kokalekua hautatu behar duzu."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."
-msgstr ""
+msgstr "Mapatutako zonak elementua eduki behar du"
 
 #: src/Api/Adapter/MappingAdapter.php:51
 msgid "Map bounds must contain four numbers separated by commas"
-msgstr ""
+msgstr "Mapa mugek komaz bereizitako lau zenbaki dituzte"
