@@ -61,6 +61,24 @@ function MappingBlock(mapDiv, timelineDiv) {
         }
     };
 
+    // Set the scroll wheel zoom behavior.
+    switch (mapData['scroll_wheel_zoom']) {
+        case 'disable':
+            map.scrollWheelZoom.disable()
+            break;
+        case 'click':
+            map.scrollWheelZoom.disable()
+            map.on('click', function() {
+                if (!map.scrollWheelZoom.enabled()) {
+                    map.scrollWheelZoom.enable();
+                }
+            });
+            break;
+        default:
+            map.scrollWheelZoom.enable()
+            break;
+    }
+
     // Set the markers.
     $.each(markerData, function(index, data) {
         var markerId = data['o:id'];
