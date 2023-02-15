@@ -23,6 +23,7 @@ $wmsOverlayTemplate = '
     <?php echo $this->formRow($basemapProviderSelect); ?>
     <?php echo $this->formRow($minZoomInput); ?>
     <?php echo $this->formRow($maxZoomInput); ?>
+    <?php echo $this->formRow($scrollWheelZoom); ?>
     <p><?php echo sprintf(
         $this->translate('Set the default view using the in-map controls. The current zoom level is %s.'),
         '<span class="current-zoom"></span>'

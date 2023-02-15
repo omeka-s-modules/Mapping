@@ -77,6 +77,15 @@ abstract class AbstractMap extends AbstractBlockLayout
             ->setAttribute('min', 0)
             ->setAttribute('step', 1)
             ->setAttribute('placeholder', '19');
+        $scrollWheelZoom = (new Element\Select('o:block[__blockIndex__][o:data][scroll_wheel_zoom]'))
+            ->setLabel($view->translate('Scroll wheel zoom'))
+            ->setValue($data['scroll_wheel_zoom'])
+            ->setValueOptions([
+                '' => $view->translate('Enabled'),
+                'disable' => $view->translate('Disabled'),
+                'click' => $view->translate('Disabled until map click'),
+
+            ]);
         $form = $view->partial(
             'common/block-layout/mapping-block-form',
             [
@@ -85,6 +94,7 @@ abstract class AbstractMap extends AbstractBlockLayout
                 'basemapProviderSelect' => $basemapProviderSelect,
                 'minZoomInput' => $minZoomInput,
                 'maxZoomInput' => $maxZoomInput,
+                'scrollWheelZoom' => $scrollWheelZoom,
             ]
         );
         return $form;
@@ -113,6 +123,10 @@ abstract class AbstractMap extends AbstractBlockLayout
         $maxZoom = null;
         if (isset($data['max_zoom']) && is_numeric($data['max_zoom'])) {
             $maxZoom = $data['max_zoom'];
+        }
+        $scrollWheelZoom = '';
+        if (isset($data['scroll_wheel_zoom'])) {
+            $scrollWheelZoom = $data['scroll_wheel_zoom'];
         }
         $bounds = null;
         if (isset($data['bounds'])
@@ -207,6 +221,7 @@ abstract class AbstractMap extends AbstractBlockLayout
             'basemap_provider' => $basemapProvider,
             'max_zoom' => $maxZoom,
             'min_zoom' => $minZoom,
+            'scroll_wheel_zoom' => $scrollWheelZoom,
             'bounds' => $bounds,
             'wms' => $wmsOverlays,
             'timeline' => $timeline,
