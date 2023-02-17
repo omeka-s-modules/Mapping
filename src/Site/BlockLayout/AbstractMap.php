@@ -79,6 +79,7 @@ abstract class AbstractMap extends AbstractBlockLayout
             ->setAttribute('placeholder', '19');
         $scrollWheelZoom = (new Element\Select('o:block[__blockIndex__][o:data][scroll_wheel_zoom]'))
             ->setLabel($view->translate('Scroll wheel zoom'))
+            ->setOption('info', $view->translate('Set whether users can zoom with their mouse wheel when hovering over the map, either automatically upon page load or after clicking inside the map.'))
             ->setValue($data['scroll_wheel_zoom'])
             ->setValueOptions([
                 '' => $view->translate('Enabled'),
