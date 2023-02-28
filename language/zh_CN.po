@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-19 10:20-0500\n"
+"POT-Creation-Date: 2023-02-28 10:22-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Hong Zhang <zhangh@unlv.nevada.edu>, 2021\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/omeka/teams/14184/zh_CN/)\n"
@@ -21,26 +21,26 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: Module.php:307
+#: Module.php:308
 msgid "Map marker presence"
 msgstr ""
 
-#: Module.php:308
+#: Module.php:309
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:5
 msgid "Has map markers"
 msgstr ""
 
-#: Module.php:308
+#: Module.php:309
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:6
 msgid "Has no map markers"
 msgstr ""
 
-#: Module.php:315
+#: Module.php:316
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:19
 msgid "Geographic location"
 msgstr ""
 
-#: Module.php:375 view/admin/csv-mapping.phtml:3
+#: Module.php:376 view/admin/csv-mapping.phtml:3
 #: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
 msgstr "制图"
@@ -79,6 +79,28 @@ msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
 msgstr "设定地图能被显示的最大缩放级数。默认值为19。"
+
+#: src/Site/BlockLayout/AbstractMap.php:81
+msgid "Scroll wheel zoom"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:82
+msgid ""
+"Set whether users can zoom with their mouse wheel when hovering over the "
+"map, either automatically upon page load or after clicking inside the map."
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:85
+msgid "Enabled"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:86
+msgid "Disabled"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:87
+msgid "Disabled until map click"
+msgstr ""
 
 #: src/Site/BlockLayout/MapQuery.php:32
 msgid "Attach items using this query. No query means all items."
@@ -136,142 +158,142 @@ msgstr ""
 msgid "Default View"
 msgstr "默认视图"
 
-#: view/common/block-layout/mapping-block-form.phtml:27
+#: view/common/block-layout/mapping-block-form.phtml:28
 #, php-format
 msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
 "%s."
 msgstr "使用图内控制来设置默认视图。当前缩放级数是%s。"
 
-#: view/common/block-layout/mapping-block-form.phtml:35
+#: view/common/block-layout/mapping-block-form.phtml:36
 msgid "WMS Overlays"
 msgstr "WMS叠加图"
 
-#: view/common/block-layout/mapping-block-form.phtml:37
+#: view/common/block-layout/mapping-block-form.phtml:38
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr "在下面添加、编辑、删除网络地图服务（WMS）叠加图。您可以点选您想默认打开的叠加图。"
 
-#: view/common/block-layout/mapping-block-form.phtml:71
+#: view/common/block-layout/mapping-block-form.phtml:72
 msgid "Base URL"
 msgstr "基础URL"
 
-#: view/common/block-layout/mapping-block-form.phtml:80
+#: view/common/block-layout/mapping-block-form.phtml:81
 msgid "Layers"
 msgstr "图层"
 
-#: view/common/block-layout/mapping-block-form.phtml:82
+#: view/common/block-layout/mapping-block-form.phtml:83
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "WMS图层，如果有的话（逗号分隔的）。"
 
-#: view/common/block-layout/mapping-block-form.phtml:93
+#: view/common/block-layout/mapping-block-form.phtml:94
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "WMS样式，如果有的话（逗号分隔的）。"
 
-#: view/common/block-layout/mapping-block-form.phtml:101
+#: view/common/block-layout/mapping-block-form.phtml:102
 msgid "Add Overlay"
 msgstr "添加叠加图"
 
-#: view/common/block-layout/mapping-block-form.phtml:102
+#: view/common/block-layout/mapping-block-form.phtml:103
 msgid "Save Changes"
 msgstr "保存更改"
 
-#: view/common/block-layout/mapping-block-form.phtml:103
+#: view/common/block-layout/mapping-block-form.phtml:104
 msgid "Clear Inputs"
 msgstr "清空输入"
 
-#: view/common/block-layout/mapping-block-form.phtml:107
+#: view/common/block-layout/mapping-block-form.phtml:108
 msgid "Timeline"
 msgstr "时间线"
 
-#: view/common/block-layout/mapping-block-form.phtml:111
+#: view/common/block-layout/mapping-block-form.phtml:112
 msgid "Title headline"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:126
+#: view/common/block-layout/mapping-block-form.phtml:127
 msgid "Title text"
 msgstr "标题文本"
 
-#: view/common/block-layout/mapping-block-form.phtml:142
+#: view/common/block-layout/mapping-block-form.phtml:143
 msgid "Fly to"
 msgstr "飞往"
 
-#: view/common/block-layout/mapping-block-form.phtml:145
+#: view/common/block-layout/mapping-block-form.phtml:146
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:152
+#: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Default view"
 msgstr "默认视图"
 
-#: view/common/block-layout/mapping-block-form.phtml:153
+#: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 0"
 msgstr "事件记号，缩放0"
 
-#: view/common/block-layout/mapping-block-form.phtml:154
+#: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 2"
 msgstr "事件记号，缩放2"
 
-#: view/common/block-layout/mapping-block-form.phtml:155
+#: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 4"
 msgstr "事件记号，缩放4"
 
-#: view/common/block-layout/mapping-block-form.phtml:156
+#: view/common/block-layout/mapping-block-form.phtml:157
 msgid "Event marker, zoom 6"
 msgstr "事件记号，缩放6"
 
-#: view/common/block-layout/mapping-block-form.phtml:157
+#: view/common/block-layout/mapping-block-form.phtml:158
 msgid "Event marker, zoom 8"
 msgstr "事件记号，缩放8"
 
-#: view/common/block-layout/mapping-block-form.phtml:158
+#: view/common/block-layout/mapping-block-form.phtml:159
 msgid "Event marker, zoom 10"
 msgstr "事件记号，缩放10"
 
-#: view/common/block-layout/mapping-block-form.phtml:159
+#: view/common/block-layout/mapping-block-form.phtml:160
 msgid "Event marker, zoom 12"
 msgstr "事件记号，缩放12"
 
-#: view/common/block-layout/mapping-block-form.phtml:160
+#: view/common/block-layout/mapping-block-form.phtml:161
 msgid "Event marker, zoom 14"
 msgstr "事件记号，缩放14"
 
-#: view/common/block-layout/mapping-block-form.phtml:161
+#: view/common/block-layout/mapping-block-form.phtml:162
 msgid "Event marker, zoom 16"
 msgstr "事件记号，缩放16"
 
-#: view/common/block-layout/mapping-block-form.phtml:162
+#: view/common/block-layout/mapping-block-form.phtml:163
 msgid "Event marker, zoom 18"
 msgstr "事件记号，缩放18"
 
-#: view/common/block-layout/mapping-block-form.phtml:173
+#: view/common/block-layout/mapping-block-form.phtml:174
 msgid "Show contemporaneous events?"
 msgstr "显示同时期事件？"
 
-#: view/common/block-layout/mapping-block-form.phtml:176
+#: view/common/block-layout/mapping-block-form.phtml:177
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
 msgstr "如果您想在地图上显示存在于和当前事件（只是默认视图）同一时间段的所有事件，点选此处。"
 
-#: view/common/block-layout/mapping-block-form.phtml:191
+#: view/common/block-layout/mapping-block-form.phtml:192
 msgid "Timeline navigation position"
 msgstr "时间线导航位置"
 
-#: view/common/block-layout/mapping-block-form.phtml:194
+#: view/common/block-layout/mapping-block-form.phtml:195
 msgid "Select the position of the timeline navigation."
 msgstr "选择时间线导航的位置。"
 
-#: view/common/block-layout/mapping-block-form.phtml:202
+#: view/common/block-layout/mapping-block-form.phtml:203
 msgid "Full width, below story slider and map"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:203
+#: view/common/block-layout/mapping-block-form.phtml:204
 msgid "Full width, above story slider and map"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:217
+#: view/common/block-layout/mapping-block-form.phtml:218
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."

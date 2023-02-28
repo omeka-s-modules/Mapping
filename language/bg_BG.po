@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-19 10:20-0500\n"
+"POT-Creation-Date: 2023-02-28 10:22-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Tzvetan Tzvetanski <ceibg.org@gmail.com>, 2021\n"
 "Language-Team: Bulgarian (Bulgaria) (https://www.transifex.com/omeka/teams/14184/bg_BG/)\n"
@@ -21,26 +21,26 @@ msgstr ""
 "Language: bg_BG\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:307
+#: Module.php:308
 msgid "Map marker presence"
 msgstr ""
 
-#: Module.php:308
+#: Module.php:309
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:5
 msgid "Has map markers"
 msgstr ""
 
-#: Module.php:308
+#: Module.php:309
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:6
 msgid "Has no map markers"
 msgstr ""
 
-#: Module.php:315
+#: Module.php:316
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:19
 msgid "Geographic location"
 msgstr ""
 
-#: Module.php:375 view/admin/csv-mapping.phtml:3
+#: Module.php:376 view/admin/csv-mapping.phtml:3
 #: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
 msgstr "Обозначаване на карта/картографиране"
@@ -86,6 +86,28 @@ msgid ""
 msgstr ""
 "Задайте максималното ниво на увеличение, до което картата ще се показва. По "
 "подразбиране е 19."
+
+#: src/Site/BlockLayout/AbstractMap.php:81
+msgid "Scroll wheel zoom"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:82
+msgid ""
+"Set whether users can zoom with their mouse wheel when hovering over the "
+"map, either automatically upon page load or after clicking inside the map."
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:85
+msgid "Enabled"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:86
+msgid "Disabled"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:87
+msgid "Disabled until map click"
+msgstr ""
 
 #: src/Site/BlockLayout/MapQuery.php:32
 msgid "Attach items using this query. No query means all items."
@@ -143,7 +165,7 @@ msgstr ""
 msgid "Default View"
 msgstr "Изглед по подразбиране"
 
-#: view/common/block-layout/mapping-block-form.phtml:27
+#: view/common/block-layout/mapping-block-form.phtml:28
 #, php-format
 msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
@@ -152,11 +174,11 @@ msgstr ""
 "Задайте изгледа по подразбиране, като използвате контролите в картата. "
 "Текущото ниво на увеличение е %s."
 
-#: view/common/block-layout/mapping-block-form.phtml:35
+#: view/common/block-layout/mapping-block-form.phtml:36
 msgid "WMS Overlays"
 msgstr "WMS наслагвания"
 
-#: view/common/block-layout/mapping-block-form.phtml:37
+#: view/common/block-layout/mapping-block-form.phtml:38
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
@@ -164,105 +186,105 @@ msgstr ""
 "Добавяне, редактиране и изтриване на слоеве за уеб карти (WMS) по-долу. "
 "Можете да проверите кое наслагване искате да се отвори по подразбиране."
 
-#: view/common/block-layout/mapping-block-form.phtml:71
+#: view/common/block-layout/mapping-block-form.phtml:72
 msgid "Base URL"
 msgstr "Базов URL"
 
-#: view/common/block-layout/mapping-block-form.phtml:80
+#: view/common/block-layout/mapping-block-form.phtml:81
 msgid "Layers"
 msgstr "Слоеве"
 
-#: view/common/block-layout/mapping-block-form.phtml:82
+#: view/common/block-layout/mapping-block-form.phtml:83
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "WMS слоевете, ако има такива (разделени със запетая)."
 
-#: view/common/block-layout/mapping-block-form.phtml:93
+#: view/common/block-layout/mapping-block-form.phtml:94
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "WMS стилове, ако има такива (разделени със запетая)."
 
-#: view/common/block-layout/mapping-block-form.phtml:101
+#: view/common/block-layout/mapping-block-form.phtml:102
 msgid "Add Overlay"
 msgstr "Добавяне на наслагване"
 
-#: view/common/block-layout/mapping-block-form.phtml:102
+#: view/common/block-layout/mapping-block-form.phtml:103
 msgid "Save Changes"
 msgstr "Запазване на промените"
 
-#: view/common/block-layout/mapping-block-form.phtml:103
+#: view/common/block-layout/mapping-block-form.phtml:104
 msgid "Clear Inputs"
 msgstr "Изчистване на входираното"
 
-#: view/common/block-layout/mapping-block-form.phtml:107
+#: view/common/block-layout/mapping-block-form.phtml:108
 msgid "Timeline"
 msgstr "Хронология"
 
-#: view/common/block-layout/mapping-block-form.phtml:111
+#: view/common/block-layout/mapping-block-form.phtml:112
 msgid "Title headline"
 msgstr "Главно заглавие"
 
-#: view/common/block-layout/mapping-block-form.phtml:126
+#: view/common/block-layout/mapping-block-form.phtml:127
 msgid "Title text"
 msgstr "Заглавие на текста"
 
-#: view/common/block-layout/mapping-block-form.phtml:142
+#: view/common/block-layout/mapping-block-form.phtml:143
 msgid "Fly to"
 msgstr "отиди до"
 
-#: view/common/block-layout/mapping-block-form.phtml:145
+#: view/common/block-layout/mapping-block-form.phtml:146
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
 "Изберете изгледа на картата, до който да отидете, когато навигирате между "
 "събития."
 
-#: view/common/block-layout/mapping-block-form.phtml:152
+#: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Default view"
 msgstr "Изглед по подразбиране"
 
-#: view/common/block-layout/mapping-block-form.phtml:153
+#: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 0"
 msgstr "Маркер за събитие, мащабиране 0"
 
-#: view/common/block-layout/mapping-block-form.phtml:154
+#: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 2"
 msgstr "Маркер за събитие, мащабиране 2"
 
-#: view/common/block-layout/mapping-block-form.phtml:155
+#: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 4"
 msgstr "Маркер за събитие, мащабиране 4"
 
-#: view/common/block-layout/mapping-block-form.phtml:156
+#: view/common/block-layout/mapping-block-form.phtml:157
 msgid "Event marker, zoom 6"
 msgstr "Маркер за събитие, мащабиране 6"
 
-#: view/common/block-layout/mapping-block-form.phtml:157
+#: view/common/block-layout/mapping-block-form.phtml:158
 msgid "Event marker, zoom 8"
 msgstr "Маркер за събитие, мащабиране 8"
 
-#: view/common/block-layout/mapping-block-form.phtml:158
+#: view/common/block-layout/mapping-block-form.phtml:159
 msgid "Event marker, zoom 10"
 msgstr "Маркер за събитие, мащабиране 10"
 
-#: view/common/block-layout/mapping-block-form.phtml:159
+#: view/common/block-layout/mapping-block-form.phtml:160
 msgid "Event marker, zoom 12"
 msgstr "Маркер за събитие, мащабиране 12"
 
-#: view/common/block-layout/mapping-block-form.phtml:160
+#: view/common/block-layout/mapping-block-form.phtml:161
 msgid "Event marker, zoom 14"
 msgstr "Маркер за събитие, мащабиране 14"
 
-#: view/common/block-layout/mapping-block-form.phtml:161
+#: view/common/block-layout/mapping-block-form.phtml:162
 msgid "Event marker, zoom 16"
 msgstr "Маркер за събитие, мащабиране 16"
 
-#: view/common/block-layout/mapping-block-form.phtml:162
+#: view/common/block-layout/mapping-block-form.phtml:163
 msgid "Event marker, zoom 18"
 msgstr "Маркер за събитие, мащабиране 18"
 
-#: view/common/block-layout/mapping-block-form.phtml:173
+#: view/common/block-layout/mapping-block-form.phtml:174
 msgid "Show contemporaneous events?"
 msgstr "Показване на съвременни събития?"
 
-#: view/common/block-layout/mapping-block-form.phtml:176
+#: view/common/block-layout/mapping-block-form.phtml:177
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
@@ -271,23 +293,23 @@ msgstr ""
 "съществуват в същия период от време като текущото събитие (само изглед по "
 "подразбиране)."
 
-#: view/common/block-layout/mapping-block-form.phtml:191
+#: view/common/block-layout/mapping-block-form.phtml:192
 msgid "Timeline navigation position"
 msgstr "Позиция за навигация по времевата линия"
 
-#: view/common/block-layout/mapping-block-form.phtml:194
+#: view/common/block-layout/mapping-block-form.phtml:195
 msgid "Select the position of the timeline navigation."
 msgstr "Изберете позицията на навигацията по времевата линия."
 
-#: view/common/block-layout/mapping-block-form.phtml:202
+#: view/common/block-layout/mapping-block-form.phtml:203
 msgid "Full width, below story slider and map"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:203
+#: view/common/block-layout/mapping-block-form.phtml:204
 msgid "Full width, above story slider and map"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:217
+#: view/common/block-layout/mapping-block-form.phtml:218
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."

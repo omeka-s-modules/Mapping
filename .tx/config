@@ -1,10 +1,9 @@
 [main]
 host = https://www.transifex.com
 
-[omeka-s.module-Mapping]
+[o:omeka:p:omeka-s:r:module-Mapping]
 file_filter = language/<lang>.po
 minimum_perc = 10
 source_file = language/template.pot
 source_lang = en
 type = PO
-

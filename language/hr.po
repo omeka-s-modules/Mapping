@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-01-19 10:20-0500\n"
+"POT-Creation-Date: 2023-02-28 10:22-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Angela-Marina Batarelo <angela-marina.batarelo@ericsson.com>, 2021\n"
 "Language-Team: Croatian (https://www.transifex.com/omeka/teams/14184/hr/)\n"
@@ -22,26 +22,26 @@ msgstr ""
 "Language: hr\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: Module.php:307
+#: Module.php:308
 msgid "Map marker presence"
 msgstr ""
 
-#: Module.php:308
+#: Module.php:309
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:5
 msgid "Has map markers"
 msgstr ""
 
-#: Module.php:308
+#: Module.php:309
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:6
 msgid "Has no map markers"
 msgstr ""
 
-#: Module.php:315
+#: Module.php:316
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:19
 msgid "Geographic location"
 msgstr ""
 
-#: Module.php:375 view/admin/csv-mapping.phtml:3
+#: Module.php:376 view/admin/csv-mapping.phtml:3
 #: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
 msgstr ""
@@ -107,6 +107,28 @@ msgstr ""
 "Maksimalna razina zumiranja do kojeg će karta biti prikazana. Zadana "
 "vrijednost je 19."
 
+#: src/Site/BlockLayout/AbstractMap.php:81
+msgid "Scroll wheel zoom"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:82
+msgid ""
+"Set whether users can zoom with their mouse wheel when hovering over the "
+"map, either automatically upon page load or after clicking inside the map."
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:85
+msgid "Enabled"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:86
+msgid "Disabled"
+msgstr ""
+
+#: src/Site/BlockLayout/AbstractMap.php:87
+msgid "Disabled until map click"
+msgstr ""
+
 #: src/Site/BlockLayout/MapQuery.php:32
 msgid "Attach items using this query. No query means all items."
 msgstr ""
@@ -163,7 +185,7 @@ msgstr ""
 msgid "Default View"
 msgstr "Zadani Prikaz"
 
-#: view/common/block-layout/mapping-block-form.phtml:27
+#: view/common/block-layout/mapping-block-form.phtml:28
 #, php-format
 msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
@@ -172,11 +194,11 @@ msgstr ""
 "Postavite zadani prikaz koristeći kontrole na karti. Trenutna razina "
 "zumiranja je %s."
 
-#: view/common/block-layout/mapping-block-form.phtml:35
+#: view/common/block-layout/mapping-block-form.phtml:36
 msgid "WMS Overlays"
 msgstr "WMS sloj"
 
-#: view/common/block-layout/mapping-block-form.phtml:37
+#: view/common/block-layout/mapping-block-form.phtml:38
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
@@ -190,39 +212,39 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:71
+#: view/common/block-layout/mapping-block-form.phtml:72
 msgid "Base URL"
 msgstr "Osnovni URL"
 
-#: view/common/block-layout/mapping-block-form.phtml:80
+#: view/common/block-layout/mapping-block-form.phtml:81
 msgid "Layers"
 msgstr "Slojevi"
 
-#: view/common/block-layout/mapping-block-form.phtml:82
+#: view/common/block-layout/mapping-block-form.phtml:83
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "WMS slojevi, ako ih ima (razdvojeni zarezima)."
 
-#: view/common/block-layout/mapping-block-form.phtml:93
+#: view/common/block-layout/mapping-block-form.phtml:94
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "WMS stilovi, ako ih ima (razdvojeni zarezima)."
 
-#: view/common/block-layout/mapping-block-form.phtml:101
+#: view/common/block-layout/mapping-block-form.phtml:102
 msgid "Add Overlay"
 msgstr "Dodajte sloj"
 
-#: view/common/block-layout/mapping-block-form.phtml:102
+#: view/common/block-layout/mapping-block-form.phtml:103
 msgid "Save Changes"
 msgstr "Spremite Promjene"
 
-#: view/common/block-layout/mapping-block-form.phtml:103
+#: view/common/block-layout/mapping-block-form.phtml:104
 msgid "Clear Inputs"
 msgstr "Očisti Unose"
 
-#: view/common/block-layout/mapping-block-form.phtml:107
+#: view/common/block-layout/mapping-block-form.phtml:108
 msgid "Timeline"
 msgstr "Vremenski Okvir"
 
-#: view/common/block-layout/mapping-block-form.phtml:111
+#: view/common/block-layout/mapping-block-form.phtml:112
 msgid "Title headline"
 msgstr ""
 "Naslov naslova\n"
@@ -234,15 +256,15 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:126
+#: view/common/block-layout/mapping-block-form.phtml:127
 msgid "Title text"
 msgstr "Tekst naslova"
 
-#: view/common/block-layout/mapping-block-form.phtml:142
+#: view/common/block-layout/mapping-block-form.phtml:143
 msgid "Fly to"
 msgstr "Odletite do"
 
-#: view/common/block-layout/mapping-block-form.phtml:145
+#: view/common/block-layout/mapping-block-form.phtml:146
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
 "Odaberite prikaz karte na koji ćete letjeti tijekom navigacije između događaja.\n"
@@ -254,11 +276,11 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:152
+#: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Default view"
 msgstr "Zadani prikaz"
 
-#: view/common/block-layout/mapping-block-form.phtml:153
+#: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 0"
 msgstr ""
 "Oznaka događaja, zoom 0\n"
@@ -270,7 +292,7 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:154
+#: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 2"
 msgstr ""
 "Oznaka događaja, zoom 2\n"
@@ -282,7 +304,7 @@ msgstr ""
 " \n"
 " Oznaka događaja, zoom"
 
-#: view/common/block-layout/mapping-block-form.phtml:155
+#: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 4"
 msgstr ""
 "Oznaka događaja, zoom 4\n"
@@ -294,7 +316,7 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:156
+#: view/common/block-layout/mapping-block-form.phtml:157
 msgid "Event marker, zoom 6"
 msgstr ""
 "Oznaka događaja, zoom 6\n"
@@ -306,7 +328,7 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:157
+#: view/common/block-layout/mapping-block-form.phtml:158
 msgid "Event marker, zoom 8"
 msgstr ""
 "Oznaka događaja, zoom 8\n"
@@ -318,7 +340,7 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:158
+#: view/common/block-layout/mapping-block-form.phtml:159
 msgid "Event marker, zoom 10"
 msgstr ""
 "Oznaka događaja, zoom 10\n"
@@ -330,7 +352,7 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:159
+#: view/common/block-layout/mapping-block-form.phtml:160
 msgid "Event marker, zoom 12"
 msgstr ""
 "Oznaka događaja, zoom 12\n"
@@ -342,7 +364,7 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:160
+#: view/common/block-layout/mapping-block-form.phtml:161
 msgid "Event marker, zoom 14"
 msgstr ""
 "Oznaka događaja, zoom 14\n"
@@ -354,7 +376,7 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:161
+#: view/common/block-layout/mapping-block-form.phtml:162
 msgid "Event marker, zoom 16"
 msgstr ""
 "Oznaka događaja, zoom 16\n"
@@ -366,7 +388,7 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:162
+#: view/common/block-layout/mapping-block-form.phtml:163
 msgid "Event marker, zoom 18"
 msgstr ""
 "Oznaka događaja, zoom 18\n"
@@ -378,11 +400,11 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:173
+#: view/common/block-layout/mapping-block-form.phtml:174
 msgid "Show contemporaneous events?"
 msgstr "Prikaži istovremene događaje?"
 
-#: view/common/block-layout/mapping-block-form.phtml:176
+#: view/common/block-layout/mapping-block-form.phtml:177
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
@@ -396,7 +418,7 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:191
+#: view/common/block-layout/mapping-block-form.phtml:192
 msgid "Timeline navigation position"
 msgstr ""
 "Položaj navigacije vremenskom trakom\n"
@@ -408,7 +430,7 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:194
+#: view/common/block-layout/mapping-block-form.phtml:195
 msgid "Select the position of the timeline navigation."
 msgstr ""
 "Odaberite položaj navigacije vremenskom trakom.\n"
@@ -420,15 +442,15 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-form.phtml:202
+#: view/common/block-layout/mapping-block-form.phtml:203
 msgid "Full width, below story slider and map"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:203
+#: view/common/block-layout/mapping-block-form.phtml:204
 msgid "Full width, above story slider and map"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:217
+#: view/common/block-layout/mapping-block-form.phtml:218
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
