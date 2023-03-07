@@ -9,7 +9,8 @@ try {
 }
 
 var map = L.map('mapping-map', {
-    fullscreenControl: true
+    fullscreenControl: true,
+    worldCopyJump:true
 });
 var markers = L.markerClusterGroup();
 var baseMaps = {

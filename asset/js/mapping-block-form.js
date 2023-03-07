@@ -11,7 +11,8 @@ var setMap = function(block) {
     var currentZoomLevelSpan = block.find('span.current-zoom');
 
     var map = L.map(mapDiv[0], {
-        fullscreenControl: true
+        fullscreenControl: true,
+        worldCopyJump:true
     });
     var defaultBounds = null;
     var defaultBoundsData = mapDiv.find('input[name$="[bounds]"]').val();

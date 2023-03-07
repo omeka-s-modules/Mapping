@@ -4,7 +4,8 @@ var mappingMap = $('#mapping-map');
 var mappingData = mappingMap.data('mapping');
 
 var map = L.map('mapping-map', {
-    fullscreenControl: true
+    fullscreenControl: true,
+    worldCopyJump:true
 });
 var markers = new L.FeatureGroup();
 var baseMaps = {
