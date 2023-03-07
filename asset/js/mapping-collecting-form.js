@@ -8,7 +8,8 @@ $(document).ready(function() {
         mapDiv.css('cursor', 'crosshair');
 
         var map = L.map(this, {
-            fullscreenControl: true
+            fullscreenControl: true,
+            worldCopyJump:true
         });
         var marker;
 

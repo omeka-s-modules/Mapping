@@ -129,7 +129,8 @@ var markersData = mappingMap.data('markers');
 
 // Initialize the map and set default view.
 var map = L.map('mapping-map', {
-    fullscreenControl: true
+    fullscreenControl: true,
+    worldCopyJump:true
 });
 map.setView([20, 0], 2);
 var mapMoved = false;
