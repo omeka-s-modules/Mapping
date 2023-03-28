@@ -125,7 +125,7 @@ $('form').submit(function(e) {
     $('.block[data-block-layout^="mappingMap"]').each(function() {
         var thisBlock = $(this);
         var layoutInput = thisBlock.find('input[type="hidden"][name$="[o:layout]"]');
-        var index = /\[(\d)\]/.exec(layoutInput.attr('name'))[1];
+        var index = /\[(\d+)\]/.exec(layoutInput.attr('name'))[1];
         thisBlock.find('.mapping-wms-overlay').find('input[type="hidden"]').each(function() {
             var thisInput = $(this);
             var name = thisInput.attr('name').replace('[__blockIndex__]', '[' + index + ']');
