@@ -116,19 +116,13 @@ $('form').submit(function(e) {
             thisInput.attr('name', name);
         });
     });
-    // Due to a change to core JS that moved blockIndex replacment from
-    // immediately before submit to block creation, we need to replace
-    // blockIndex here. Otherwise, dynamically created WMS inputs are ignored.
-    // Unfortunately the only way to get the blockIndex at this stage is to
-    // extract it from the layout input's name (ideally the index would be set
-    // to a data attribute, but that doesn't exist at the time of this fix).
+    // We need to replace blockIndex here. Otherwise, dynamically created WMS
+    // inputs are ignored.
     $('.block[data-block-layout^="mappingMap"]').each(function() {
         var thisBlock = $(this);
-        var layoutInput = thisBlock.find('input[type="hidden"][name$="[o:layout]"]');
-        var index = /\[(\d+)\]/.exec(layoutInput.attr('name'))[1];
         thisBlock.find('.mapping-wms-overlay').find('input[type="hidden"]').each(function() {
             var thisInput = $(this);
-            var name = thisInput.attr('name').replace('[__blockIndex__]', '[' + index + ']');
+            var name = thisInput.attr('name').replace('[__blockIndex__]', '[' + thisBlock.data('blockIndex') + ']');
             thisInput.attr('name', name);
         });
     });
