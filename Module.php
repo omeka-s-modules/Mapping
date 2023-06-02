@@ -441,11 +441,13 @@ class Module extends AbstractModule
             $mapping = null;
         }
 
-        if ($mapping && (null === $bounds)) {
+        if (null === $bounds) {
             // This request has no mapping data. If a mapping for this item exists, delete it.
-            $subRequest = new \Omeka\Api\Request('delete', 'mappings');
-            $subRequest->setId($mapping->getId());
-            $mappingsAdapter->deleteEntity($subRequest);
+            if ($mapping) {
+                $subRequest = new \Omeka\Api\Request('delete', 'mappings');
+                $subRequest->setId($mapping->getId());
+                $mappingsAdapter->deleteEntity($subRequest);
+            }
             return;
         }
 
