@@ -489,8 +489,12 @@ class Module extends AbstractModule
                 $subRequest->setId($markerData['o:id']);
                 $subRequest->setContent($markerData);
                 $marker = $markersAdapter->findEntity($markerData['o:id'], $subRequest);
-                $markersAdapter->hydrateEntity($subRequest, $marker, new \Omeka\Stdlib\ErrorStore);
                 $retainMarkerIds[] = $marker->getId();
+
+                // Skip subrequest if passed marker data is only a reference; just retain it
+                if (array_diff_key($markerData, array_flip(['@id', 'o:id']))) {
+                    $markersAdapter->hydrateEntity($subRequest, $marker, new \Omeka\Stdlib\ErrorStore);
+                }
             } else {
                 $subRequest = new \Omeka\Api\Request('create', 'mapping_markers');
                 $subRequest->setContent($markerData);
