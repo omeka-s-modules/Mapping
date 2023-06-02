@@ -3,6 +3,8 @@ namespace Mapping;
 
 use Doctrine\ORM\Events;
 use Mapping\Db\Event\Listener\DetachOrphanMappings;
+use Omeka\Api\Exception as ApiException;
+use Omeka\Api\Request;
 use Omeka\Module\AbstractModule;
 use Omeka\Permissions\Acl;
 use Laminas\EventManager\Event;
@@ -412,6 +414,7 @@ class Module extends AbstractModule
     {
         $itemAdapter = $event->getTarget();
         $request = $event->getParam('request');
+        $item = $event->getParam('entity');
 
         if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:mapping')) {
             return;
@@ -420,46 +423,50 @@ class Module extends AbstractModule
         $mappingsAdapter = $itemAdapter->getAdapter('mappings');
         $mappingData = $request->getValue('o-module-mapping:mapping', []);
 
-        $mappingId = null;
         $bounds = null;
 
-        if (isset($mappingData['o:id']) && is_numeric($mappingData['o:id'])) {
-            $mappingId = $mappingData['o:id'];
-        }
         if (isset($mappingData['o-module-mapping:bounds'])
             && '' !== trim($mappingData['o-module-mapping:bounds'])
         ) {
             $bounds = $mappingData['o-module-mapping:bounds'];
         }
 
+        $mapping = null;
+        if (Request::CREATE !== $request->getOperation()) {
+            try {
+                $mapping = $mappingsAdapter->findEntity(['item' => $item]);
+            } catch (ApiException\NotFoundException $e) {
+                // no action
+            }
+        }
+
         if (null === $bounds) {
             // This request has no mapping data. If a mapping for this item
             // exists, delete it. If no mapping for this item exists, do nothing.
-            if (null !== $mappingId) {
-                // Delete mapping
+            if ($mapping) {
                 $subRequest = new \Omeka\Api\Request('delete', 'mappings');
-                $subRequest->setId($mappingId);
+                $subRequest->setId($mapping->getId());
                 $mappingsAdapter->deleteEntity($subRequest);
             }
+            return;
+        }
+
+        // This request has mapping data. If a mapping for this item exists,
+        // update it. If no mapping for this item exists, create it.
+        if ($mapping) {
+            // Update mapping
+            $subRequest = new \Omeka\Api\Request('update', 'mappings');
+            $subRequest->setId($mappingData['o:id']);
+            $subRequest->setContent($mappingData);
+            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
         } else {
-            // This request has mapping data. If a mapping for this item exists,
-            // update it. If no mapping for this item exists, create it.
-            if ($mappingId) {
-                // Update mapping
-                $subRequest = new \Omeka\Api\Request('update', 'mappings');
-                $subRequest->setId($mappingData['o:id']);
-                $subRequest->setContent($mappingData);
-                $mapping = $mappingsAdapter->findEntity($mappingData['o:id'], $subRequest);
-                $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
-            } else {
-                // Create mapping
-                $subRequest = new \Omeka\Api\Request('create', 'mappings');
-                $subRequest->setContent($mappingData);
-                $mapping = new \Mapping\Entity\Mapping;
-                $mapping->setItem($event->getParam('entity'));
-                $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
-                $mappingsAdapter->getEntityManager()->persist($mapping);
-            }
+            // Create mapping
+            $subRequest = new \Omeka\Api\Request('create', 'mappings');
+            $subRequest->setContent($mappingData);
+            $mapping = new \Mapping\Entity\Mapping;
+            $mapping->setItem($event->getParam('entity'));
+            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
+            $mappingsAdapter->getEntityManager()->persist($mapping);
         }
     }
 
