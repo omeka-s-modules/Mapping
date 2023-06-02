@@ -4,6 +4,7 @@ namespace Mapping;
 use Doctrine\ORM\Events;
 use Mapping\Db\Event\Listener\DetachOrphanMappings;
 use Omeka\Api\Exception as ApiException;
+use Omeka\Api\Request;
 use Omeka\Module\AbstractModule;
 use Omeka\Permissions\Acl;
 use Laminas\EventManager\Event;
@@ -435,10 +436,13 @@ class Module extends AbstractModule
             return;
         }
 
-        try {
-            $mapping = $mappingsAdapter->findEntity(['item' => $item]);
-        } catch (ApiException\NotFoundException $e) {
-            $mapping = null;
+        $mapping = null;
+        if (Request::CREATE !== $request->getOperation()) {
+            try {
+                $mapping = $mappingsAdapter->findEntity(['item' => $item]);
+            } catch (ApiException\NotFoundException $e) {
+                // no action
+            }
         }
 
         if (null === $bounds) {
