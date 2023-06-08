@@ -26,6 +26,17 @@ return [
     'view_helpers' => [
         'invokables' => [
             'formPromptMap' => Collecting\FormPromptMap::class,
+            'formMappingCopyCoordinates' => View\Helper\CopyCoordinates::class,
+        ],
+        'delegators' => [
+            'Laminas\Form\View\Helper\FormElement' => [
+                Service\Delegator\FormElementDelegatorFactory::class,
+            ],
+        ],
+    ],
+    'form_elements' => [
+        'factories' => [
+           'Mapping\Form\Element\CopyCoordinates' => Service\Form\Element\CopyCoordinatesFactory::class,
         ],
     ],
     'csv_import' => [

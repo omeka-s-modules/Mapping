@@ -5,6 +5,7 @@ use Doctrine\ORM\Events;
 use Mapping\Db\Event\Listener\DetachOrphanMappings;
 use Omeka\Api\Exception as ApiException;
 use Omeka\Api\Request;
+use Mapping\Form\Element\CopyCoordinates;
 use Omeka\Module\AbstractModule;
 use Omeka\Permissions\Acl;
 use Laminas\EventManager\Event;
@@ -223,6 +224,47 @@ class Module extends AbstractModule
             'Omeka\Form\SiteSettingsForm',
             'form.add_elements',
             [$this, 'addSiteSettings']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Form\ResourceBatchUpdateForm',
+            'form.add_elements',
+            function (Event $event) {
+                $form = $event->getTarget();
+                $form->add([
+                    'type' => CopyCoordinates::class,
+                    'name' => 'mapping_copy_coordinates',
+                ]);
+            }
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.preprocess_batch_update',
+            function (Event $event) {
+                $data = $event->getParam('data');
+                $rawData = $event->getParam('request')->getContent();
+                $property = $rawData['mapping_copy_coordinates']['coordinates_property'] ?? null;
+                if (!is_numeric($property)) {
+                    return;
+                }
+                $order = $rawData['mapping_copy_coordinates']['coordinates_order'] ?? null;
+                if (!in_array($order, ['latlng', 'lnglat'])) {
+                    return;
+                }
+                $delimiter = $rawData['mapping_copy_coordinates']['coordinates_delimiter'] ?? null;
+                if (!in_array($delimiter, ['comma', 'space', 'slash', 'colon'])) {
+                    return;
+                }
+                $data['mapping_copy_coordinates'] = $rawData['mapping_copy_coordinates'];
+                $event->setParam('data', $data);
+            }
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.update.post',
+            function (Event $event) {
+                $data = $event->getParam('request')->getContent();
+                // @todo: handle marker creation
+            }
         );
     }
 
