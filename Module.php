@@ -393,13 +393,13 @@ class Module extends AbstractModule
         $response = $api->search('mappings', ['item_id' => $item->id()]);
         foreach ($response->getContent() as $mapping) {
             // There's zero or one mapping per item.
-            $jsonLd['o-module-mapping:mapping'] = $mapping->getReference();
+            $jsonLd['o-module-mapping:mapping'] = $mapping;
         }
         // Add marker data.
         $response = $api->search('mapping_markers', ['item_id' => $item->id()]);
         foreach ($response->getContent() as $marker) {
             // There's zero or more markers per item.
-            $jsonLd['o-module-mapping:marker'][] = $marker->getReference();
+            $jsonLd['o-module-mapping:marker'][] = $marker;
         }
 
         $event->setParam('jsonLd', $jsonLd);
