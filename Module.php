@@ -489,9 +489,20 @@ class Module extends AbstractModule
         $markersAdapter = $itemAdapter->getAdapter('mapping_markers');
         $retainMarkerIds = [];
 
+        $existingMarkers = [];
+        if ($item->getId()) {
+            $dql = 'SELECT mm FROM Mapping\Entity\MappingMarker mm INDEX BY mm.id WHERE mm.item = ?1';
+            $query = $entityManager->createQuery($dql)->setParameter(1, $item->getId());
+            $existingMarkers = $query->getResult();
+        }
+
         // Create/update markers passed in the request.
         foreach ($request->getValue('o-module-mapping:marker', []) as $markerData) {
             if (isset($markerData['o:id'])) {
+                if (!isset($existingMarkers[$markerData['o:id']])) {
+                    // This marker belongs to another item. Ignore it.
+                    continue;
+                }
                 $subRequest = new \Omeka\Api\Request('update', 'mapping_markers');
                 $subRequest->setId($markerData['o:id']);
                 $subRequest->setContent($markerData);
@@ -509,12 +520,6 @@ class Module extends AbstractModule
         }
 
         // Delete existing markers not passed in the request.
-        $existingMarkers = [];
-        if ($item->getId()) {
-            $dql = 'SELECT mm FROM Mapping\Entity\MappingMarker mm INDEX BY mm.id WHERE mm.item = ?1';
-            $query = $entityManager->createQuery($dql)->setParameter(1, $item->getId());
-            $existingMarkers = $query->getResult();
-        }
         foreach ($existingMarkers as $existingMarkerId => $existingMarker) {
             if (!in_array($existingMarkerId, $retainMarkerIds)) {
                 $entityManager->remove($existingMarker);
