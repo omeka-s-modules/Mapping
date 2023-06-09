@@ -242,16 +242,7 @@ class Module extends AbstractModule
             function (Event $event) {
                 $data = $event->getParam('data');
                 $rawData = $event->getParam('request')->getContent();
-                $property = $rawData['mapping_copy_coordinates']['coordinates_property'] ?? null;
-                if (!is_numeric($property)) {
-                    return;
-                }
-                $order = $rawData['mapping_copy_coordinates']['coordinates_order'] ?? null;
-                if (!in_array($order, ['latlng', 'lnglat'])) {
-                    return;
-                }
-                $delimiter = $rawData['mapping_copy_coordinates']['coordinates_delimiter'] ?? null;
-                if (!in_array($delimiter, ['comma', 'space', 'slash', 'colon'])) {
+                if (!$this->copyCoordinatesDataIsValid($rawData)) {
                     return;
                 }
                 $data['mapping_copy_coordinates'] = $rawData['mapping_copy_coordinates'];
@@ -261,10 +252,7 @@ class Module extends AbstractModule
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.update.post',
-            function (Event $event) {
-                $data = $event->getParam('request')->getContent();
-                // @todo: handle marker creation
-            }
+            [$this, 'copyCoordinates']
         );
     }
 
@@ -445,6 +433,98 @@ class Module extends AbstractModule
         }
 
         $event->setParam('jsonLd', $jsonLd);
+    }
+
+    /**
+     * Does the passed data contain valid copy-coordinates data?
+     *
+     * @param array $data
+     * return bool
+     */
+    public function copyCoordinatesDataIsValid(array $data)
+    {
+        return (
+            isset($data['mapping_copy_coordinates']['coordinates_property'])
+            && is_numeric($data['mapping_copy_coordinates']['coordinates_property'])
+            && isset($data['mapping_copy_coordinates']['coordinates_order'])
+            && in_array($data['mapping_copy_coordinates']['coordinates_order'], ['latlng', 'lnglat'])
+            && isset($data['mapping_copy_coordinates']['coordinates_delimiter'])
+            && in_array($data['mapping_copy_coordinates']['coordinates_delimiter'], [',', ' ', '/', ':'])
+        );
+    }
+
+    /**
+     * Copy coordinates from property values to mapping markers.
+     *
+     * @param Event $event
+     */
+    public function copyCoordinates(Event $event)
+    {
+        $data = $event->getParam('request')->getContent();
+        $item = $event->getParam('response')->getContent();
+
+        if (!$this->copyCoordinatesDataIsValid($data)) {
+            return;
+        }
+
+        $services = $this->getServiceLocator();
+        $entityManager = $services->get('Omeka\EntityManager');
+
+        $coordinatesPropertyId = $data['mapping_copy_coordinates']['coordinates_property'];
+        $coordinatesOrder = $data['mapping_copy_coordinates']['coordinates_order'];
+        $coordinatesDelimiter = $data['mapping_copy_coordinates']['coordinates_delimiter'];
+
+        // Get the property entity.
+        $dql = 'SELECT p FROM Omeka\Entity\Property p WHERE p.id = :id';
+        $property = $entityManager->createQuery($dql)
+            ->setParameter('id', $coordinatesPropertyId)
+            ->getOneOrNullResult();
+        if (null === $property) {
+            return; // The property doesn't exist. Do nothing.
+        }
+
+        $dql = 'SELECT v FROM Omeka\Entity\Value v WHERE v.resource = :resource_id AND v.property = :property_id AND v.value IS NOT NULL';
+        $values = $entityManager->createQuery($dql)
+            ->setParameter('resource_id', $item->getId())
+            ->setParameter('property_id', $property->getId())
+            ->getResult();
+        if (!$values) {
+            return; // Relevant values don't exist. Do nothing.
+        }
+
+        // @see: https://stackoverflow.com/a/31408260
+        $latRegex = '^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]+)?))$';
+        $lngRegex = '^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]+)?))$';
+        foreach ($values as $value) {
+            $coordinates = explode($coordinatesDelimiter, $value->getValue());
+            if (2 !== count($coordinates)) {
+                continue; // Coordinates must have latitude and longitude. Skip.
+            }
+            $coordinates = array_map('trim', $coordinates);
+            $lat = ('latlng' === $coordinatesOrder) ? $coordinates[0] : $coordinates[1];
+            $lng = ('lnglat' === $coordinatesOrder) ? $coordinates[0] : $coordinates[1];
+            if (!preg_match(sprintf('/%s/', $latRegex), $lat)) {
+                continue; // Invalid latitude. Skip.
+            }
+            if (!preg_match(sprintf('/%s/', $lngRegex), $lng)) {
+                continue; // Invalid longitude. Skip.
+            }
+            $dql = 'SELECT m FROM Mapping\Entity\MappingMarker m WHERE m.lat = :lat AND m.lng = :lng AND m.item = :item';
+            $marker = $entityManager->createQuery($dql)
+                ->setParameter('lat', $lat)
+                ->setParameter('lng', $lng)
+                ->setParameter('item', $item)
+                ->getOneOrNullResult();
+            if ($marker) {
+                continue; // A marker with these coordinates already exists. Skip.
+            }
+            $marker = new \Mapping\Entity\MappingMarker;
+            $marker->setLat($lat);
+            $marker->setLng($lng);
+            $marker->setItem($item);
+            $entityManager->persist($marker);
+        }
+        $entityManager->flush();
     }
 
     /**

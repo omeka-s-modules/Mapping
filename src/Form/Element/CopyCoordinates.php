@@ -37,10 +37,10 @@ class CopyCoordinates extends Element
         $this->coordinatesDelimiterElement = (new Element\Select('mapping_copy_coordinates[coordinates_delimiter]'))
             ->setEmptyOption('Select coordinates delimiter') // @translate
             ->setValueOptions([
-                'comma' => 'Comma (,)', // @translate
-                'space' => 'Space ( )', // @translate
-                'slash' => 'Slash (/)', // @translate
-                'colon' => 'Colon (:)', // @translate
+                ',' => 'Comma (,)', // @translate
+                ' ' => 'Space ( )', // @translate
+                '/' => 'Slash (/)', // @translate
+                ':' => 'Colon (:)', // @translate
             ]);
     }
 
