@@ -19,7 +19,7 @@ var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
     popupContent.find('.mapping-marker-popup-label').val(markerLabel);
     if (markerMediaId) {
         var mediaThumbnail = $('<img>', {
-            src: $('.mapping-marker-image-select[value="' + markerMediaId + '"').data('mediaThumbnailUrl')
+            src: $('.mapping-marker-image-select[value="' + markerMediaId + '"]').data('mediaThumbnailUrl')
         });
         popupContent.find('.mapping-marker-popup-image').html(mediaThumbnail);
     }
