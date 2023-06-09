@@ -18,6 +18,9 @@ class CopyCoordinates extends AbstractHelper
             $view->formSelect($element->getCoordinatesPropertyElement()),
             $view->formSelect($element->getCoordinatesOrderElement()),
             $view->formSelect($element->getCoordinatesDelimiterElement()),
+            $view->formSelect($element->getMarkerLabelPropertyElement()),
+            $view->formSelect($element->getMarkerLabelPropertySourceElement()),
+            $view->formSelect($element->getMarkerMediaElement()),
         ]);
     }
 }

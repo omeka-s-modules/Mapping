@@ -473,9 +473,14 @@ class Module extends AbstractModule
         $coordinatesPropertyId = $data['mapping_copy_coordinates']['coordinates_property'];
         $coordinatesOrder = $data['mapping_copy_coordinates']['coordinates_order'];
         $coordinatesDelimiter = $data['mapping_copy_coordinates']['coordinates_delimiter'];
+        $markerLabelProperty = $data['mapping_copy_coordinates']['marker_label_property'] ?? null;
+        $markerLabelPropertySource = $data['mapping_copy_coordinates']['marker_label_property_source'] ?? null;
+        $markerMedia = $data['mapping_copy_coordinates']['marker_media'] ?? null;
 
         // Get the property entity.
-        $dql = 'SELECT p FROM Omeka\Entity\Property p WHERE p.id = :id';
+        $dql = 'SELECT p
+        FROM Omeka\Entity\Property p
+        WHERE p.id = :id';
         $property = $entityManager->createQuery($dql)
             ->setParameter('id', $coordinatesPropertyId)
             ->getOneOrNullResult();
@@ -483,7 +488,11 @@ class Module extends AbstractModule
             return; // The property doesn't exist. Do nothing.
         }
 
-        $dql = 'SELECT v FROM Omeka\Entity\Value v WHERE v.resource = :resource_id AND v.property = :property_id AND v.value IS NOT NULL';
+        $dql = 'SELECT v
+        FROM Omeka\Entity\Value v
+        WHERE v.resource = :resource_id
+        AND v.property = :property_id
+        AND v.value IS NOT NULL';
         $values = $entityManager->createQuery($dql)
             ->setParameter('resource_id', $item->getId())
             ->setParameter('property_id', $property->getId())
@@ -509,19 +518,35 @@ class Module extends AbstractModule
             if (!preg_match(sprintf('/%s/', $lngRegex), $lng)) {
                 continue; // Invalid longitude. Skip.
             }
-            $dql = 'SELECT m FROM Mapping\Entity\MappingMarker m WHERE m.lat = :lat AND m.lng = :lng AND m.item = :item';
-            $marker = $entityManager->createQuery($dql)
-                ->setParameter('lat', $lat)
-                ->setParameter('lng', $lng)
-                ->setParameter('item', $item)
-                ->getOneOrNullResult();
-            if ($marker) {
-                continue; // A marker with these coordinates already exists. Skip.
-            }
             $marker = new \Mapping\Entity\MappingMarker;
             $marker->setLat($lat);
             $marker->setLng($lng);
             $marker->setItem($item);
+            if ('primary' === $markerMedia) {
+                // Prioritize the item's primary media, if any.
+                $media = $item->getPrimaryMedia();
+                if (!$media) {
+                    // Fall back on the item's first media, if any.
+                    $dql = 'SELECT m
+                    FROM Omeka\Entity\Media m
+                    WHERE m.item = :item
+                    ORDER BY m.position ASC';
+                    $media = $entityManager->createQuery($dql)
+                        ->setParameter('item', $item)
+                        ->setMaxResults(1)
+                        ->getOneOrNullResult();
+                }
+                $marker->setMedia($media);
+            }
+            if (is_numeric($markerLabelProperty)) {
+                $dql = 'SELECT p
+                FROM Omeka\Entity\Property p
+                WHERE p.id = :id';
+                $property = $entityManager->createQuery($dql)
+                    ->setParameter('id', $markerLabelProperty)
+                    ->getOneOrNullResult();
+                // @todo: get value and set it to marker
+            }
             $entityManager->persist($marker);
         }
         $entityManager->flush();

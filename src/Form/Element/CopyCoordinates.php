@@ -11,6 +11,9 @@ class CopyCoordinates extends Element
     protected $coordinatesPropertyElement;
     protected $coordinatesOrderElement;
     protected $coordinatesDelimiterElement;
+    protected $markerLabelPropertyElement;
+    protected $markerLabelPropertySourceElement;
+    protected $markerMediaElement;
 
     public function setFormElementManager(ServiceLocatorInterface  $formElements)
     {
@@ -42,6 +45,25 @@ class CopyCoordinates extends Element
                 '/' => 'Slash (/)', // @translate
                 ':' => 'Colon (:)', // @translate
             ]);
+        $this->markerLabelPropertyElement = $this->formElements->get(PropertySelect::class)
+            ->setName('mapping_copy_coordinates[marker_label_property]')
+            ->setEmptyOption('')
+            ->setAttributes([
+                'class' => 'chosen-select',
+                'data-placeholder' => 'Select marker label property', // @translate
+            ]);
+        $this->markerLabelPropertySourceElement = (new Element\Select('mapping_copy_coordinates[marker_label_property_source]'))
+            ->setEmptyOption('Select marker label property source') // @translate
+            ->setValueOptions([
+                'item' => 'Item (default)', // @translate
+                'media' => 'Media', // @translate
+            ]);
+        $this->markerMediaElement = (new Element\Select('mapping_copy_coordinates[marker_media]'))
+            ->setEmptyOption('Select marker media') // @translate
+            ->setValueOptions([
+                'none' => 'No media (default)', // @translate
+                'primary' => 'Primary media', // @translate
+            ]);
     }
 
     public function getCoordinatesPropertyElement()
@@ -57,5 +79,20 @@ class CopyCoordinates extends Element
     public function getCoordinatesDelimiterElement()
     {
         return $this->coordinatesDelimiterElement;
+    }
+
+    public function getMarkerLabelPropertyElement()
+    {
+        return $this->markerLabelPropertyElement;
+    }
+
+    public function getMarkerLabelPropertySourceElement()
+    {
+        return $this->markerLabelPropertySourceElement;
+    }
+
+    public function getMarkerMediaElement()
+    {
+        return $this->markerMediaElement;
     }
 }
