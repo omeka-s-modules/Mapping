@@ -3,6 +3,8 @@ namespace Mapping;
 
 use Doctrine\ORM\Events;
 use Mapping\Db\Event\Listener\DetachOrphanMappings;
+use Omeka\Api\Exception as ApiException;
+use Omeka\Api\Request;
 use Omeka\Module\AbstractModule;
 use Omeka\Permissions\Acl;
 use Laminas\EventManager\Event;
@@ -391,13 +393,13 @@ class Module extends AbstractModule
         $response = $api->search('mappings', ['item_id' => $item->id()]);
         foreach ($response->getContent() as $mapping) {
             // There's zero or one mapping per item.
-            $jsonLd['o-module-mapping:mapping'] = $mapping->getReference();
+            $jsonLd['o-module-mapping:mapping'] = $mapping;
         }
         // Add marker data.
         $response = $api->search('mapping_markers', ['item_id' => $item->id()]);
         foreach ($response->getContent() as $marker) {
             // There's zero or more markers per item.
-            $jsonLd['o-module-mapping:marker'][] = $marker->getReference();
+            $jsonLd['o-module-mapping:marker'][] = $marker;
         }
 
         $event->setParam('jsonLd', $jsonLd);
@@ -412,6 +414,7 @@ class Module extends AbstractModule
     {
         $itemAdapter = $event->getTarget();
         $request = $event->getParam('request');
+        $item = $event->getParam('entity');
 
         if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:mapping')) {
             return;
@@ -420,46 +423,50 @@ class Module extends AbstractModule
         $mappingsAdapter = $itemAdapter->getAdapter('mappings');
         $mappingData = $request->getValue('o-module-mapping:mapping', []);
 
-        $mappingId = null;
         $bounds = null;
 
-        if (isset($mappingData['o:id']) && is_numeric($mappingData['o:id'])) {
-            $mappingId = $mappingData['o:id'];
-        }
         if (isset($mappingData['o-module-mapping:bounds'])
             && '' !== trim($mappingData['o-module-mapping:bounds'])
         ) {
             $bounds = $mappingData['o-module-mapping:bounds'];
         }
 
+        $mapping = null;
+        if (Request::CREATE !== $request->getOperation()) {
+            try {
+                $mapping = $mappingsAdapter->findEntity(['item' => $item]);
+            } catch (ApiException\NotFoundException $e) {
+                // no action
+            }
+        }
+
         if (null === $bounds) {
             // This request has no mapping data. If a mapping for this item
             // exists, delete it. If no mapping for this item exists, do nothing.
-            if (null !== $mappingId) {
-                // Delete mapping
+            if ($mapping) {
                 $subRequest = new \Omeka\Api\Request('delete', 'mappings');
-                $subRequest->setId($mappingId);
+                $subRequest->setId($mapping->getId());
                 $mappingsAdapter->deleteEntity($subRequest);
             }
+            return;
+        }
+
+        // This request has mapping data. If a mapping for this item exists,
+        // update it. If no mapping for this item exists, create it.
+        if ($mapping) {
+            // Update mapping
+            $subRequest = new \Omeka\Api\Request('update', 'mappings');
+            $subRequest->setId($mappingData['o:id']);
+            $subRequest->setContent($mappingData);
+            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
         } else {
-            // This request has mapping data. If a mapping for this item exists,
-            // update it. If no mapping for this item exists, create it.
-            if ($mappingId) {
-                // Update mapping
-                $subRequest = new \Omeka\Api\Request('update', 'mappings');
-                $subRequest->setId($mappingData['o:id']);
-                $subRequest->setContent($mappingData);
-                $mapping = $mappingsAdapter->findEntity($mappingData['o:id'], $subRequest);
-                $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
-            } else {
-                // Create mapping
-                $subRequest = new \Omeka\Api\Request('create', 'mappings');
-                $subRequest->setContent($mappingData);
-                $mapping = new \Mapping\Entity\Mapping;
-                $mapping->setItem($event->getParam('entity'));
-                $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
-                $mappingsAdapter->getEntityManager()->persist($mapping);
-            }
+            // Create mapping
+            $subRequest = new \Omeka\Api\Request('create', 'mappings');
+            $subRequest->setContent($mappingData);
+            $mapping = new \Mapping\Entity\Mapping;
+            $mapping->setItem($event->getParam('entity'));
+            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
+            $mappingsAdapter->getEntityManager()->persist($mapping);
         }
     }
 
@@ -482,9 +489,20 @@ class Module extends AbstractModule
         $markersAdapter = $itemAdapter->getAdapter('mapping_markers');
         $retainMarkerIds = [];
 
+        $existingMarkers = [];
+        if ($item->getId()) {
+            $dql = 'SELECT mm FROM Mapping\Entity\MappingMarker mm INDEX BY mm.id WHERE mm.item = ?1';
+            $query = $entityManager->createQuery($dql)->setParameter(1, $item->getId());
+            $existingMarkers = $query->getResult();
+        }
+
         // Create/update markers passed in the request.
         foreach ($request->getValue('o-module-mapping:marker', []) as $markerData) {
             if (isset($markerData['o:id'])) {
+                if (!isset($existingMarkers[$markerData['o:id']])) {
+                    // This marker belongs to another item. Ignore it.
+                    continue;
+                }
                 $subRequest = new \Omeka\Api\Request('update', 'mapping_markers');
                 $subRequest->setId($markerData['o:id']);
                 $subRequest->setContent($markerData);
@@ -502,12 +520,6 @@ class Module extends AbstractModule
         }
 
         // Delete existing markers not passed in the request.
-        $existingMarkers = [];
-        if ($item->getId()) {
-            $dql = 'SELECT mm FROM Mapping\Entity\MappingMarker mm INDEX BY mm.id WHERE mm.item = ?1';
-            $query = $entityManager->createQuery($dql)->setParameter(1, $item->getId());
-            $existingMarkers = $query->getResult();
-        }
         foreach ($existingMarkers as $existingMarkerId => $existingMarker) {
             if (!in_array($existingMarkerId, $retainMarkerIds)) {
                 $entityManager->remove($existingMarker);
