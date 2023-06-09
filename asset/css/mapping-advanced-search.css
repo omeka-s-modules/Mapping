@@ -1,0 +1,8 @@
+#mapping-geographic-location .inputs {
+    display: flex;
+    gap: .5em;
+}
+
+#mapping-geographic-location .inputs > div:first-child {
+    flex-grow: 1;
+}

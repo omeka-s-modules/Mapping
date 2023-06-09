@@ -6,6 +6,7 @@ $element->setLabel($this->translate('Search by map marker presence'))
         '0' => $this->translate('Has no map markers'),
     ])
     ->setEmptyOption($this->translate('Select map marker presence…'))
-    ->setValue($query['has_markers'] ?? '');
+    ->setValue($query['has_markers'] ?? '')
+    ->setAttribute('id', 'has_markers');
 echo $this->formRow($element);
 ?>
