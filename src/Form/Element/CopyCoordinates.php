@@ -56,7 +56,7 @@ class CopyCoordinates extends Element
             ->setEmptyOption('Select marker label property source') // @translate
             ->setValueOptions([
                 'item' => 'Item (default)', // @translate
-                'media' => 'Media', // @translate
+                'media' => 'Primary media', // @translate
             ]);
         $this->markerMediaElement = (new Element\Select('mapping_copy_coordinates[marker_media]'))
             ->setEmptyOption('Select marker media') // @translate
