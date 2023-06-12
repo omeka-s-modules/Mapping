@@ -23,45 +23,45 @@ class CopyCoordinates extends Element
     public function init()
     {
         $this->setAttribute('data-collection-action', 'replace');
-        $this->setLabel('Copy coordinates to markers'); // @translate
+        $this->setLabel('Copy coordinates from property values to Mapping markers'); // @translate
         $this->coordinatesPropertyElement = $this->formElements->get(PropertySelect::class)
             ->setName('mapping_copy_coordinates[coordinates_property]')
             ->setEmptyOption('')
             ->setAttributes([
                 'class' => 'chosen-select',
-                'data-placeholder' => 'Select coordinates property', // @translate
+                'data-placeholder' => 'Select property', // @translate
             ]);
-        $this->coordinatesOrderElement = (new Element\Select('mapping_copy_coordinates[coordinates_order]'))
-            ->setEmptyOption('Select coordinates order') // @translate
+        $this->coordinatesOrderElement = (new Element\Radio('mapping_copy_coordinates[coordinates_order]'))
+            ->setValue('latlng')
             ->setValueOptions([
-                'latlng' => 'latitude longitude', // @translate
-                'lnglat' => 'longitude latitude', // @translate
+                'latlng' => 'Latitude Longitude', // @translate
+                'lnglat' => 'Longitude Latitude', // @translate
             ]);
-        $this->coordinatesDelimiterElement = (new Element\Select('mapping_copy_coordinates[coordinates_delimiter]'))
-            ->setEmptyOption('Select coordinates delimiter') // @translate
+        $this->coordinatesDelimiterElement = (new Element\Radio('mapping_copy_coordinates[coordinates_delimiter]'))
+            ->setValue(',')
             ->setValueOptions([
-                ',' => 'Comma (,)', // @translate
-                ' ' => 'Space ( )', // @translate
-                '/' => 'Slash (/)', // @translate
-                ':' => 'Colon (:)', // @translate
+                ',' => 'Comma [,]', // @translate
+                ' ' => 'Space [ ]', // @translate
+                '/' => 'Slash [/]', // @translate
+                ':' => 'Colon [:]', // @translate
             ]);
         $this->markerLabelPropertyElement = $this->formElements->get(PropertySelect::class)
             ->setName('mapping_copy_coordinates[marker_label_property]')
             ->setEmptyOption('')
             ->setAttributes([
                 'class' => 'chosen-select',
-                'data-placeholder' => 'Select marker label property', // @translate
+                'data-placeholder' => 'Select label property', // @translate
             ]);
-        $this->markerLabelPropertySourceElement = (new Element\Select('mapping_copy_coordinates[marker_label_property_source]'))
-            ->setEmptyOption('Select marker label property source') // @translate
+        $this->markerLabelPropertySourceElement = (new Element\Radio('mapping_copy_coordinates[marker_label_property_source]'))
+            ->setValue('item')
             ->setValueOptions([
-                'item' => 'Item (default)', // @translate
+                'item' => 'Item', // @translate
                 'media' => 'Primary media', // @translate
             ]);
-        $this->markerMediaElement = (new Element\Select('mapping_copy_coordinates[marker_media]'))
-            ->setEmptyOption('Select marker media') // @translate
+        $this->markerMediaElement = (new Element\Radio('mapping_copy_coordinates[marker_media]'))
+            ->setValue('none')
             ->setValueOptions([
-                'none' => 'No media (default)', // @translate
+                'none' => 'No media', // @translate
                 'primary' => 'Primary media', // @translate
             ]);
     }

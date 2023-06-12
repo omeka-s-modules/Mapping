@@ -1,0 +1,20 @@
+<h4><?php echo $this->translate('Coordinates options'); ?></h4>
+<?php echo $this->formSelect($element->getCoordinatesPropertyElement()) ?>
+<div>
+    <span><?php echo $this->translate('Order'); ?>
+    </span><span style="float: right;"><?php echo $this->formRadio($element->getCoordinatesOrderElement()) ?></span>
+</div>
+<div>
+    <span><?php echo $this->translate('Delimiter'); ?>
+    </span><span style="float: right;"><?php echo $this->formRadio($element->getCoordinatesDelimiterElement()) ?></span>
+</div>
+<h4><?php echo $this->translate('Marker options'); ?></h4>
+<?php echo $this->formSelect($element->getMarkerLabelPropertyElement()); ?>
+<div>
+    <span><?php echo $this->translate('Label source'); ?>
+    </span><span style="float: right;"><?php echo $this->formRadio($element->getMarkerLabelPropertySourceElement()) ?></span>
+</div>
+<div>
+    <span><?php echo $this->translate('Media'); ?>
+    </span><span style="float: right;"><?php echo $this->formRadio($element->getMarkerMediaElement()) ?></span>
+</div>

@@ -14,13 +14,6 @@ class CopyCoordinates extends AbstractHelper
     public function render(ElementInterface $element)
     {
         $view = $this->getView();
-        return implode('', [
-            $view->formSelect($element->getCoordinatesPropertyElement()),
-            $view->formSelect($element->getCoordinatesOrderElement()),
-            $view->formSelect($element->getCoordinatesDelimiterElement()),
-            $view->formSelect($element->getMarkerLabelPropertyElement()),
-            $view->formSelect($element->getMarkerLabelPropertySourceElement()),
-            $view->formSelect($element->getMarkerMediaElement()),
-        ]);
+        return $view->partial('common/batch-update/mapping-copy-coordinates', ['element' => $element]);
     }
 }

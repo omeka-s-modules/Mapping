@@ -443,14 +443,40 @@ class Module extends AbstractModule
      */
     public function copyCoordinatesDataIsValid(array $data)
     {
-        return (
-            isset($data['mapping_copy_coordinates']['coordinates_property'])
-            && is_numeric($data['mapping_copy_coordinates']['coordinates_property'])
-            && isset($data['mapping_copy_coordinates']['coordinates_order'])
-            && in_array($data['mapping_copy_coordinates']['coordinates_order'], ['latlng', 'lnglat'])
-            && isset($data['mapping_copy_coordinates']['coordinates_delimiter'])
-            && in_array($data['mapping_copy_coordinates']['coordinates_delimiter'], [',', ' ', '/', ':'])
-        );
+        $coordinatesData = $data['mapping_copy_coordinates'] ?? null;
+        if (!is_array($coordinatesData)) {
+            return false;
+        }
+        // coordinates_property must be set and numeric.
+        if (!(isset($coordinatesData['coordinates_property'])
+            && is_numeric($coordinatesData['coordinates_property'])
+        )) {
+            return false;
+        }
+        // If set, coordinates_order must be one of allowed values.
+        if (isset($coordinatesData['coordinates_order'])
+            && !in_array($coordinatesData['coordinates_order'], ['latlng', 'lnglat'])) {
+            return false;
+        }
+        // If set, coordinates_delimiter must be one of allowed values.
+        if (isset($coordinatesData['coordinates_delimiter'])
+            && !in_array($coordinatesData['coordinates_delimiter'], [',', ' ', '/', ':'])
+        ) {
+            return false;
+        }
+        // If set, marker_label_property_source must be one of allowed values.
+        if (isset($coordinatesData['marker_label_property_source'])
+            && !in_array($coordinatesData['marker_label_property_source'], ['item', 'media'])
+        ) {
+            return false;
+        }
+        // If set, marker_media must be one of allowed values.
+        if (isset($coordinatesData['marker_media'])
+            && !in_array($coordinatesData['marker_media'], ['none', 'primary'])
+        ) {
+            return false;
+        }
+        return true;
     }
 
     /**
