@@ -5,6 +5,7 @@ use Doctrine\ORM\Events;
 use Mapping\Db\Event\Listener\DetachOrphanMappings;
 use Omeka\Api\Exception as ApiException;
 use Omeka\Api\Request;
+use Mapping\Entity\MappingMarker;
 use Mapping\Form\Element\CopyCoordinates;
 use Omeka\Module\AbstractModule;
 use Omeka\Permissions\Acl;
@@ -464,15 +465,21 @@ class Module extends AbstractModule
         ) {
             return false;
         }
+        // If set, coordinates_on_duplicate must be one of allowed values.
+        if (isset($coordinatesData['coordinates_on_duplicate'])
+            && !in_array($coordinatesData['coordinates_on_duplicate'], ['skip', 'overwrite'])
+        ) {
+            return false;
+        }
         // If set, marker_label_property_source must be one of allowed values.
         if (isset($coordinatesData['marker_label_property_source'])
-            && !in_array($coordinatesData['marker_label_property_source'], ['item', 'media'])
+            && !in_array($coordinatesData['marker_label_property_source'], ['item', 'primary_media'])
         ) {
             return false;
         }
         // If set, marker_media must be one of allowed values.
         if (isset($coordinatesData['marker_media'])
-            && !in_array($coordinatesData['marker_media'], ['none', 'primary'])
+            && !in_array($coordinatesData['marker_media'], ['none', 'primary_media'])
         ) {
             return false;
         }
@@ -499,6 +506,7 @@ class Module extends AbstractModule
         $coordinatesPropertyId = $data['mapping_copy_coordinates']['coordinates_property'];
         $coordinatesOrder = $data['mapping_copy_coordinates']['coordinates_order'];
         $coordinatesDelimiter = $data['mapping_copy_coordinates']['coordinates_delimiter'];
+        $coordinatesOnDuplicate = $data['mapping_copy_coordinates']['coordinates_on_duplicate'];
         $markerLabelPropertyId = $data['mapping_copy_coordinates']['marker_label_property'] ?? null;
         $markerLabelPropertySource = $data['mapping_copy_coordinates']['marker_label_property_source'] ?? null;
         $markerMedia = $data['mapping_copy_coordinates']['marker_media'] ?? null;
@@ -533,16 +541,41 @@ class Module extends AbstractModule
             if (!preg_match(sprintf('/%s/', $lngRegex), $lng)) {
                 continue; // Invalid longitude. Skip.
             }
-            $marker = new \Mapping\Entity\MappingMarker;
+
+            // Handle duplicate coordinates. For this purpose, duplicates are
+            // those with a difference of less than 0.00001. Any less and there
+            // is no noticable difference between coordinates on map on maximum
+            // zoom.
+            $dql = 'SELECT m
+                FROM Mapping\Entity\MappingMarker m
+                WHERE m.item = :item_id
+                AND ABS(m.lat - :lat) < 0.00001
+                AND ABS(m.lng - :lng) < 0.00001';
+            $marker = $entityManager->createQuery($dql)
+                ->setParameter('item_id', $item->getId())
+                ->setParameter('lat', $lat)
+                ->setParameter('lng', $lng)
+                ->setMaxResults(1)
+                ->getOneOrNullResult();
+            if ($marker) {
+                if ('skip' === $coordinatesOnDuplicate) {
+                    continue;
+                }
+            } else {
+                $marker = new MappingMarker;
+            }
+
             $marker->setLat($lat);
             $marker->setLng($lng);
             $marker->setItem($item);
-            if ('primary' === $markerMedia) {
+            if ('primary_media' === $markerMedia) {
                 $marker->setMedia($this->getPrimaryMedia($item));
+            } else {
+                $marker->setMedia(null);
             }
             if (is_numeric($markerLabelPropertyId)) {
                 $resourceId = null;
-                if ('media' === $markerLabelPropertySource) {
+                if ('primary_media' === $markerLabelPropertySource) {
                     $media = $this->getPrimaryMedia($item);
                     if ($media) {
                         $resourceId = $media->getId();
@@ -566,6 +599,8 @@ class Module extends AbstractModule
                         $marker->setLabel($value->getValue());
                     }
                 }
+            } else {
+                $marker->setLabel(null);
             }
             $entityManager->persist($marker);
         }

@@ -8,6 +8,10 @@
     <span><?php echo $this->translate('Delimiter'); ?>
     </span><span style="float: right;"><?php echo $this->formRadio($element->getCoordinatesDelimiterElement()) ?></span>
 </div>
+<div>
+    <span><?php echo $this->translate('On duplicate'); ?>
+    </span><span style="float: right;"><?php echo $this->formRadio($element->getCoordinatesOnDuplicateElement()) ?></span>
+</div>
 <h4><?php echo $this->translate('Marker options'); ?></h4>
 <?php echo $this->formSelect($element->getMarkerLabelPropertyElement()); ?>
 <div>

@@ -11,6 +11,7 @@ class CopyCoordinates extends Element
     protected $coordinatesPropertyElement;
     protected $coordinatesOrderElement;
     protected $coordinatesDelimiterElement;
+    protected $coordinatesOnDuplicateElement;
     protected $markerLabelPropertyElement;
     protected $markerLabelPropertySourceElement;
     protected $markerMediaElement;
@@ -22,8 +23,9 @@ class CopyCoordinates extends Element
 
     public function init()
     {
+        $this->setLabel('Copy coordinates to markers'); // @translate
         $this->setAttribute('data-collection-action', 'replace');
-        $this->setLabel('Copy coordinates from property values to Mapping markers'); // @translate
+
         $this->coordinatesPropertyElement = $this->formElements->get(PropertySelect::class)
             ->setName('mapping_copy_coordinates[coordinates_property]')
             ->setEmptyOption('')
@@ -45,6 +47,12 @@ class CopyCoordinates extends Element
                 '/' => 'Slash [/]', // @translate
                 ':' => 'Colon [:]', // @translate
             ]);
+        $this->coordinatesOnDuplicateElement = (new Element\Radio('mapping_copy_coordinates[coordinates_on_duplicate]'))
+            ->setValue('skip')
+            ->setValueOptions([
+                'skip' => 'Skip', // @translate
+                'overwrite' => 'Overwrite', // @translate
+            ]);
         $this->markerLabelPropertyElement = $this->formElements->get(PropertySelect::class)
             ->setName('mapping_copy_coordinates[marker_label_property]')
             ->setEmptyOption('')
@@ -56,13 +64,13 @@ class CopyCoordinates extends Element
             ->setValue('item')
             ->setValueOptions([
                 'item' => 'Item', // @translate
-                'media' => 'Primary media', // @translate
+                'primary_media' => 'Primary media', // @translate
             ]);
         $this->markerMediaElement = (new Element\Radio('mapping_copy_coordinates[marker_media]'))
             ->setValue('none')
             ->setValueOptions([
                 'none' => 'No media', // @translate
-                'primary' => 'Primary media', // @translate
+                'primary_media' => 'Primary media', // @translate
             ]);
     }
 
@@ -79,6 +87,11 @@ class CopyCoordinates extends Element
     public function getCoordinatesDelimiterElement()
     {
         return $this->coordinatesDelimiterElement;
+    }
+
+    public function getCoordinatesOnDuplicateElement()
+    {
+        return $this->coordinatesOnDuplicateElement;
     }
 
     public function getMarkerLabelPropertyElement()
