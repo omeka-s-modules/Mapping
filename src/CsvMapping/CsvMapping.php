@@ -34,6 +34,9 @@ class CsvMapping extends AbstractMapping
         $mappingJson = [];
 
         foreach ($row as $index => $value) {
+            if (trim($value) === '') {
+                continue;
+            }
             if (in_array($index, $latMap)) {
                 $markerJson['o-module-mapping:lat'] = $value;
             }
