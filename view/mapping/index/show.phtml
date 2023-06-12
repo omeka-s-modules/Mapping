@@ -8,6 +8,7 @@ if (!$mapping && !$markers) {
 
 $this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
 $this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
+$this->headLink()->appendStylesheet($this->assetUrl('css/mapping.css', 'Mapping'));
 
 $this->headScript()->appendFile($this->assetUrl('node_modules/leaflet/dist/leaflet.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
