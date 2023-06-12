@@ -8,7 +8,8 @@ $elementAddress = (new Form\Element\Text('mapping_address'))
 $elementRadius = (new Form\Element\Text('mapping_radius'))
     ->setLabel($this->translate('Radius'))
     ->setValue($query['mapping_radius'] ?? '')
-    ->setAttribute('id', 'mapping_radius');
+    ->setAttribute('id', 'mapping_radius')
+    ->setAttribute('size', '5');
 $elementRadiusUnit = (new Form\Element\Select('mapping_radius_unit'))
     ->setLabel($this->translate('Unit'))
     ->setValueOptions([
