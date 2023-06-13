@@ -69,7 +69,7 @@ class CopyCoordinates extends Element
         $this->markerMediaElement = (new Element\Radio('mapping_copy_coordinates[marker_media]'))
             ->setValue('none')
             ->setValueOptions([
-                'none' => 'No media', // @translate
+                'none' => 'None', // @translate
                 'primary_media' => 'Primary media', // @translate
             ]);
     }

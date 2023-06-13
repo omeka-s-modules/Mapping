@@ -543,14 +543,15 @@ class Module extends AbstractModule
             }
 
             // Handle duplicate coordinates. For this purpose, duplicates are
-            // those with a difference of less than 0.00001. Any less and there
-            // is no noticable difference between coordinates on map on maximum
-            // zoom.
+            // those with a difference of less than 0.000001. That's a difference
+            // of 0° 00′ 0.0036″ DMS, or 11.1-43.5 mm. Any less and there is no
+            // noticable difference between coordinates on map on maximum zoom.
+            // @see https://en.wikipedia.org/wiki/Decimal_degrees#Precision
             $dql = 'SELECT m
                 FROM Mapping\Entity\MappingMarker m
                 WHERE m.item = :item_id
-                AND ABS(m.lat - :lat) < 0.00001
-                AND ABS(m.lng - :lng) < 0.00001';
+                AND ABS(m.lat - :lat) < 0.000001
+                AND ABS(m.lng - :lng) < 0.000001';
             $marker = $entityManager->createQuery($dql)
                 ->setParameter('item_id', $item->getId())
                 ->setParameter('lat', $lat)
@@ -559,7 +560,7 @@ class Module extends AbstractModule
                 ->getOneOrNullResult();
             if ($marker) {
                 if ('skip' === $coordinatesOnDuplicate) {
-                    continue;
+                    continue; // Skip this duplicate.
                 }
             } else {
                 $marker = new MappingMarker;
