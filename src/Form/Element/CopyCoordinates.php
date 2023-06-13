@@ -23,9 +23,6 @@ class CopyCoordinates extends Element
 
     public function init()
     {
-        $this->setLabel('Copy coordinates to markers'); // @translate
-        $this->setAttribute('data-collection-action', 'replace');
-
         $this->coordinatesPropertyElement = $this->formElements->get(PropertySelect::class)
             ->setName('mapping_copy_coordinates[coordinates_property]')
             ->setEmptyOption('')

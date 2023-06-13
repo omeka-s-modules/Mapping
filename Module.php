@@ -234,6 +234,16 @@ class Module extends AbstractModule
                 $form->add([
                     'type' => CopyCoordinates::class,
                     'name' => 'mapping_copy_coordinates',
+                    'options' => [
+                        'label' => 'Copy coordinates to Mapping markers', // @translate
+                    ],
+                ]);
+                $form->add([
+                    'type' => 'checkbox',
+                    'name' => 'mapping_delete_markers',
+                    'options' => [
+                        'label' => 'Delete Mapping markers', // @translate
+                    ],
                 ]);
             }
         );
@@ -243,10 +253,12 @@ class Module extends AbstractModule
             function (Event $event) {
                 $data = $event->getParam('data');
                 $rawData = $event->getParam('request')->getContent();
-                if (!$this->copyCoordinatesDataIsValid($rawData)) {
-                    return;
+                if ($this->copyCoordinatesDataIsValid($rawData)) {
+                    $data['mapping_copy_coordinates'] = $rawData['mapping_copy_coordinates'];
                 }
-                $data['mapping_copy_coordinates'] = $rawData['mapping_copy_coordinates'];
+                if (isset($rawData['mapping_delete_markers'])) {
+                    $data['mapping_delete_markers'] = $rawData['mapping_delete_markers'];
+                }
                 $event->setParam('data', $data);
             }
         );
@@ -254,6 +266,11 @@ class Module extends AbstractModule
             'Omeka\Api\Adapter\ItemAdapter',
             'api.update.post',
             [$this, 'copyCoordinates']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.update.post',
+            [$this, 'deleteMarkers']
         );
     }
 
@@ -544,8 +561,8 @@ class Module extends AbstractModule
 
             // Handle duplicate coordinates. For this purpose, duplicates are
             // those with a difference of less than 0.000001. That's a difference
-            // of 0° 00′ 0.0036″ DMS, or 11.1-43.5 mm. Any less and there is no
-            // noticable difference between coordinates on map on maximum zoom.
+            // of 0° 00′ 0.0036″ DMS, or 11.1-43.5 mm. At this precision there is
+            // no noticable difference between coordinates on map on maximum zoom.
             // @see https://en.wikipedia.org/wiki/Decimal_degrees#Precision
             $dql = 'SELECT m
                 FROM Mapping\Entity\MappingMarker m
@@ -606,6 +623,29 @@ class Module extends AbstractModule
             $entityManager->persist($marker);
         }
         $entityManager->flush();
+    }
+
+    /**
+     * Delete markers.
+     *
+     * @param Event $event
+     */
+    public function deleteMarkers(Event $event)
+    {
+        $data = $event->getParam('request')->getContent();
+        $item = $event->getParam('response')->getContent();
+
+        if (!(isset($data['mapping_delete_markers']) && $data['mapping_delete_markers'])) {
+            return;
+        }
+
+        $services = $this->getServiceLocator();
+        $entityManager = $services->get('Omeka\EntityManager');
+
+        $dql = 'DELETE FROM Mapping\Entity\MappingMarker m WHERE m.item = :item_id';
+        $entityManager->createQuery($dql)
+            ->setParameter('item_id', $item->getId())
+            ->execute();
     }
 
     public function getPrimaryMedia(\Omeka\Entity\Item $item)
