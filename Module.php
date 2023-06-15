@@ -260,14 +260,12 @@ class Module extends AbstractModule
             function (Event $event) {
                 $data = $event->getParam('data');
                 $rawData = $event->getParam('request')->getContent();
-                echo '<pre>';print_r($rawData);
                 if ($this->copyCoordinatesDataIsValid($rawData)) {
                     $data['mapping_copy_coordinates'] = $rawData['mapping_copy_coordinates'];
                 }
                 if (isset($rawData['mapping_delete_markers'])) {
                     $data['mapping_delete_markers'] = $rawData['mapping_delete_markers'];
                 }
-                print_r($data);exit;
                 $event->setParam('data', $data);
             }
         );
@@ -463,6 +461,128 @@ class Module extends AbstractModule
     }
 
     /**
+     * Handle hydration for mapping data.
+     *
+     * @param Event $event
+     */
+    public function handleMapping(Event $event)
+    {
+        $itemAdapter = $event->getTarget();
+        $request = $event->getParam('request');
+        $item = $event->getParam('entity');
+
+        if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:mapping')) {
+            return;
+        }
+
+        $mappingsAdapter = $itemAdapter->getAdapter('mappings');
+        $mappingData = $request->getValue('o-module-mapping:mapping', []);
+
+        $bounds = null;
+
+        if (isset($mappingData['o-module-mapping:bounds'])
+            && '' !== trim($mappingData['o-module-mapping:bounds'])
+        ) {
+            $bounds = $mappingData['o-module-mapping:bounds'];
+        }
+
+        $mapping = null;
+        if (Request::CREATE !== $request->getOperation()) {
+            try {
+                $mapping = $mappingsAdapter->findEntity(['item' => $item]);
+            } catch (ApiException\NotFoundException $e) {
+                // no action
+            }
+        }
+
+        if (null === $bounds) {
+            // This request has no mapping data. If a mapping for this item
+            // exists, delete it. If no mapping for this item exists, do nothing.
+            if ($mapping) {
+                $subRequest = new \Omeka\Api\Request('delete', 'mappings');
+                $subRequest->setId($mapping->getId());
+                $mappingsAdapter->deleteEntity($subRequest);
+            }
+            return;
+        }
+
+        // This request has mapping data. If a mapping for this item exists,
+        // update it. If no mapping for this item exists, create it.
+        if ($mapping) {
+            // Update mapping
+            $subRequest = new \Omeka\Api\Request('update', 'mappings');
+            $subRequest->setId($mappingData['o:id']);
+            $subRequest->setContent($mappingData);
+            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
+        } else {
+            // Create mapping
+            $subRequest = new \Omeka\Api\Request('create', 'mappings');
+            $subRequest->setContent($mappingData);
+            $mapping = new \Mapping\Entity\Mapping;
+            $mapping->setItem($event->getParam('entity'));
+            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
+            $mappingsAdapter->getEntityManager()->persist($mapping);
+        }
+    }
+
+    /**
+     * Handle hydration for marker data.
+     *
+     * @param Event $event
+     */
+    public function handleMarkers(Event $event)
+    {
+        $itemAdapter = $event->getTarget();
+        $request = $event->getParam('request');
+
+        if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:marker')) {
+            return;
+        }
+
+        $item = $event->getParam('entity');
+        $entityManager = $itemAdapter->getEntityManager();
+        $markersAdapter = $itemAdapter->getAdapter('mapping_markers');
+        $retainMarkerIds = [];
+
+        $existingMarkers = [];
+        if ($item->getId()) {
+            $dql = 'SELECT mm FROM Mapping\Entity\MappingMarker mm INDEX BY mm.id WHERE mm.item = ?1';
+            $query = $entityManager->createQuery($dql)->setParameter(1, $item->getId());
+            $existingMarkers = $query->getResult();
+        }
+
+        // Create/update markers passed in the request.
+        foreach ($request->getValue('o-module-mapping:marker', []) as $markerData) {
+            if (isset($markerData['o:id'])) {
+                if (!isset($existingMarkers[$markerData['o:id']])) {
+                    // This marker belongs to another item. Ignore it.
+                    continue;
+                }
+                $subRequest = new \Omeka\Api\Request('update', 'mapping_markers');
+                $subRequest->setId($markerData['o:id']);
+                $subRequest->setContent($markerData);
+                $marker = $markersAdapter->findEntity($markerData['o:id'], $subRequest);
+                $markersAdapter->hydrateEntity($subRequest, $marker, new \Omeka\Stdlib\ErrorStore);
+                $retainMarkerIds[] = $marker->getId();
+            } else {
+                $subRequest = new \Omeka\Api\Request('create', 'mapping_markers');
+                $subRequest->setContent($markerData);
+                $marker = new \Mapping\Entity\MappingMarker;
+                $marker->setItem($item);
+                $markersAdapter->hydrateEntity($subRequest, $marker, new \Omeka\Stdlib\ErrorStore);
+                $entityManager->persist($marker);
+            }
+        }
+
+        // Delete existing markers not passed in the request.
+        foreach ($existingMarkers as $existingMarkerId => $existingMarker) {
+            if (!in_array($existingMarkerId, $retainMarkerIds)) {
+                $entityManager->remove($existingMarker);
+            }
+        }
+    }
+
+    /**
      * Does the passed data contain valid copy-coordinates data?
      *
      * @param array $data
@@ -528,35 +648,70 @@ class Module extends AbstractModule
             return;
         }
 
+        $data = $data['mapping_copy_coordinates'];
+
+        $copyAction = $data['copy_action'];
+        $coordinatesPropertyId = $data['coordinates_property'] ?? null;
+        $coordinatesPropertyLatId = $data['coordinates_property_lat'] ?? null;
+        $coordinatesPropertyLngId = $data['coordinates_property_lng'] ?? null;
+        $coordinatesOrder = $data['coordinates_order'] ?? null;
+        $coordinatesDelimiter = $data['coordinates_delimiter'] ?? null;
+        $coordinatesOnDuplicate = $data['coordinates_on_duplicate'] ?? null;
+        $markerLabelPropertyId = $data['marker_label_property'] ?? null;
+        $markerLabelPropertySource = $data['marker_label_property_source'] ?? null;
+        $markerMedia = $data['marker_media'] ?? null;
+
         $services = $this->getServiceLocator();
         $entityManager = $services->get('Omeka\EntityManager');
-
-        $coordinatesPropertyId = $data['mapping_copy_coordinates']['coordinates_property'];
-        $coordinatesOrder = $data['mapping_copy_coordinates']['coordinates_order'];
-        $coordinatesDelimiter = $data['mapping_copy_coordinates']['coordinates_delimiter'];
-        $coordinatesOnDuplicate = $data['mapping_copy_coordinates']['coordinates_on_duplicate'];
-        $markerLabelPropertyId = $data['mapping_copy_coordinates']['marker_label_property'] ?? null;
-        $markerLabelPropertySource = $data['mapping_copy_coordinates']['marker_label_property_source'] ?? null;
-        $markerMedia = $data['mapping_copy_coordinates']['marker_media'] ?? null;
 
         $dql = 'SELECT v
             FROM Omeka\Entity\Value v
             WHERE v.resource = :resource_id
             AND v.property = :property_id
             AND v.value IS NOT NULL';
-        $values = $entityManager->createQuery($dql)
-            ->setParameter('resource_id', $item->getId())
-            ->setParameter('property_id', $coordinatesPropertyId)
-            ->getResult();
-        if (!$values) {
-            return; // Relevant values don't exist. Do nothing.
+
+        $allCoordinates = [];
+        // Get coordinates by one property containing both latitude and longitude.
+        if ('by_property' === $copyAction) {
+            $values = $entityManager->createQuery($dql)
+                ->setParameter('resource_id', $item->getId())
+                ->setParameter('property_id', $coordinatesPropertyId)
+                ->getResult();
+            if (!$values) {
+                return; // Relevant values don't exist. Do nothing.
+            }
+            foreach ($values as $value) {
+                $allCoordinates[] = $value->getValue();
+            }
+        // Get coordinates by separate latitude and longitude properties.
+        } elseif ('by_properties' === $copyAction) {
+            $latValues = $entityManager->createQuery($dql)
+                ->setParameter('resource_id', $item->getId())
+                ->setParameter('property_id', $coordinatesPropertyLatId)
+                ->getResult();
+            $lngValues = $entityManager->createQuery($dql)
+                ->setParameter('resource_id', $item->getId())
+                ->setParameter('property_id', $coordinatesPropertyLngId)
+                ->getResult();
+            if (!($latValues && $lngValues)) {
+                return; // Relevant values don't exist. Do nothing.
+            }
+            if (count($latValues) !== count($lngValues)) {
+                return; // Missing latitudes or longitudes. Do nothing.
+            }
+            foreach ($latValues as $index => $latValue) {
+                $lat = $latValue->getValue();
+                $lng = $lngValues[$index]->getValue();
+                $allCoordinates[] = sprintf('%s,%s', $lat, $lng);
+            }
+            $coordinatesDelimiter = ',';
         }
 
         // @see: https://stackoverflow.com/a/31408260
         $latRegex = '^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]+)?))$';
         $lngRegex = '^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]+)?))$';
-        foreach ($values as $value) {
-            $coordinates = explode($coordinatesDelimiter, $value->getValue());
+        foreach ($allCoordinates as $coordinates) {
+            $coordinates = explode($coordinatesDelimiter, $coordinates);
             if (2 !== count($coordinates)) {
                 continue; // Coordinates must have latitude and longitude. Skip.
             }
@@ -677,127 +832,5 @@ class Module extends AbstractModule
                 ->getOneOrNullResult();
         }
         return $media;
-    }
-
-    /**
-     * Handle hydration for mapping data.
-     *
-     * @param Event $event
-     */
-    public function handleMapping(Event $event)
-    {
-        $itemAdapter = $event->getTarget();
-        $request = $event->getParam('request');
-        $item = $event->getParam('entity');
-
-        if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:mapping')) {
-            return;
-        }
-
-        $mappingsAdapter = $itemAdapter->getAdapter('mappings');
-        $mappingData = $request->getValue('o-module-mapping:mapping', []);
-
-        $bounds = null;
-
-        if (isset($mappingData['o-module-mapping:bounds'])
-            && '' !== trim($mappingData['o-module-mapping:bounds'])
-        ) {
-            $bounds = $mappingData['o-module-mapping:bounds'];
-        }
-
-        $mapping = null;
-        if (Request::CREATE !== $request->getOperation()) {
-            try {
-                $mapping = $mappingsAdapter->findEntity(['item' => $item]);
-            } catch (ApiException\NotFoundException $e) {
-                // no action
-            }
-        }
-
-        if (null === $bounds) {
-            // This request has no mapping data. If a mapping for this item
-            // exists, delete it. If no mapping for this item exists, do nothing.
-            if ($mapping) {
-                $subRequest = new \Omeka\Api\Request('delete', 'mappings');
-                $subRequest->setId($mapping->getId());
-                $mappingsAdapter->deleteEntity($subRequest);
-            }
-            return;
-        }
-
-        // This request has mapping data. If a mapping for this item exists,
-        // update it. If no mapping for this item exists, create it.
-        if ($mapping) {
-            // Update mapping
-            $subRequest = new \Omeka\Api\Request('update', 'mappings');
-            $subRequest->setId($mappingData['o:id']);
-            $subRequest->setContent($mappingData);
-            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
-        } else {
-            // Create mapping
-            $subRequest = new \Omeka\Api\Request('create', 'mappings');
-            $subRequest->setContent($mappingData);
-            $mapping = new \Mapping\Entity\Mapping;
-            $mapping->setItem($event->getParam('entity'));
-            $mappingsAdapter->hydrateEntity($subRequest, $mapping, new \Omeka\Stdlib\ErrorStore);
-            $mappingsAdapter->getEntityManager()->persist($mapping);
-        }
-    }
-
-    /**
-     * Handle hydration for marker data.
-     *
-     * @param Event $event
-     */
-    public function handleMarkers(Event $event)
-    {
-        $itemAdapter = $event->getTarget();
-        $request = $event->getParam('request');
-
-        if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:marker')) {
-            return;
-        }
-
-        $item = $event->getParam('entity');
-        $entityManager = $itemAdapter->getEntityManager();
-        $markersAdapter = $itemAdapter->getAdapter('mapping_markers');
-        $retainMarkerIds = [];
-
-        $existingMarkers = [];
-        if ($item->getId()) {
-            $dql = 'SELECT mm FROM Mapping\Entity\MappingMarker mm INDEX BY mm.id WHERE mm.item = ?1';
-            $query = $entityManager->createQuery($dql)->setParameter(1, $item->getId());
-            $existingMarkers = $query->getResult();
-        }
-
-        // Create/update markers passed in the request.
-        foreach ($request->getValue('o-module-mapping:marker', []) as $markerData) {
-            if (isset($markerData['o:id'])) {
-                if (!isset($existingMarkers[$markerData['o:id']])) {
-                    // This marker belongs to another item. Ignore it.
-                    continue;
-                }
-                $subRequest = new \Omeka\Api\Request('update', 'mapping_markers');
-                $subRequest->setId($markerData['o:id']);
-                $subRequest->setContent($markerData);
-                $marker = $markersAdapter->findEntity($markerData['o:id'], $subRequest);
-                $markersAdapter->hydrateEntity($subRequest, $marker, new \Omeka\Stdlib\ErrorStore);
-                $retainMarkerIds[] = $marker->getId();
-            } else {
-                $subRequest = new \Omeka\Api\Request('create', 'mapping_markers');
-                $subRequest->setContent($markerData);
-                $marker = new \Mapping\Entity\MappingMarker;
-                $marker->setItem($item);
-                $markersAdapter->hydrateEntity($subRequest, $marker, new \Omeka\Stdlib\ErrorStore);
-                $entityManager->persist($marker);
-            }
-        }
-
-        // Delete existing markers not passed in the request.
-        foreach ($existingMarkers as $existingMarkerId => $existingMarker) {
-            if (!in_array($existingMarkerId, $retainMarkerIds)) {
-                $entityManager->remove($existingMarker);
-            }
-        }
     }
 }
