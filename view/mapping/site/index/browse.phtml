@@ -16,6 +16,7 @@ $this->headScript()->appendFile($this->assetUrl('js/advanced-search.js', 'Omeka'
 
 $query['mapping_basemap_provider'] = $query['mapping_basemap_provider'] ?? '';
 ?>
+<?php echo $this->pageTitle($this->translate('Map'), 2); ?>
 
 <div id="mapping-map" style="height:500px; width: 80%; margin:0 auto;"></div>
 
