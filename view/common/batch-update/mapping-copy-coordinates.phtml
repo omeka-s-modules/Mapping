@@ -1,24 +1,72 @@
-<h4><?php echo $this->translate('Coordinates options'); ?></h4>
-<?php echo $this->formSelect($element->getCoordinatesPropertyElement()) ?>
 <div>
-    <span><?php echo $this->translate('Order'); ?>
-    </span><span style="float: right;"><?php echo $this->formRadio($element->getCoordinatesOrderElement()) ?></span>
+    <span><?php echo $this->translate('Copy action'); ?></span>
+    <span style="float: right;"><?php echo $this->formElement($element->getCopyActionElement()) ?></span>
 </div>
-<div>
-    <span><?php echo $this->translate('Delimiter'); ?>
-    </span><span style="float: right;"><?php echo $this->formRadio($element->getCoordinatesDelimiterElement()) ?></span>
+
+<div id="mapping-copy-coordinates-by-property">
+    <?php echo $this->formSelect($element->getCoordinatesPropertyElement()) ?>
+    <div>
+        <span><?php echo $this->translate('Order'); ?></span>
+        <span style="float: right;"><?php echo $this->formRadio($element->getCoordinatesOrderElement()) ?></span>
+    </div>
+    <div>
+        <span><?php echo $this->translate('Delimiter'); ?></span>
+        <span style="float: right;"><?php echo $this->formRadio($element->getCoordinatesDelimiterElement()) ?></span>
+    </div>
 </div>
-<div>
-    <span><?php echo $this->translate('On duplicate'); ?>
-    </span><span style="float: right;"><?php echo $this->formRadio($element->getCoordinatesOnDuplicateElement()) ?></span>
+
+<div id="mapping-copy-coordinates-by-properties">
+    <?php echo $this->formSelect($element->getCoordinatesPropertyLatElement()) ?>
+    <?php echo $this->formSelect($element->getCoordinatesPropertyLngElement()) ?>
 </div>
-<h4><?php echo $this->translate('Marker options'); ?></h4>
-<?php echo $this->formSelect($element->getMarkerLabelPropertyElement()); ?>
-<div>
-    <span><?php echo $this->translate('Label source'); ?>
-    </span><span style="float: right;"><?php echo $this->formRadio($element->getMarkerLabelPropertySourceElement()) ?></span>
+
+<div id="mapping-copy-coordinates-on-duplicate">
+    <span><?php echo $this->translate('On duplicate'); ?></span>
+    <span style="float: right;"><?php echo $this->formRadio($element->getCoordinatesOnDuplicateElement()) ?></span>
 </div>
-<div>
-    <span><?php echo $this->translate('Image'); ?>
-    </span><span style="float: right;"><?php echo $this->formRadio($element->getMarkerMediaElement()) ?></span>
+
+<div id="mapping-copy-coordinates-marker-options">
+    <h4><?php echo $this->translate('Marker options'); ?></h4>
+    <?php echo $this->formSelect($element->getMarkerLabelPropertyElement()); ?>
+    <div>
+        <span><?php echo $this->translate('Label source'); ?></span>
+        <span style="float: right;"><?php echo $this->formRadio($element->getMarkerLabelPropertySourceElement()) ?></span>
+    </div>
+    <div>
+        <span><?php echo $this->translate('Image'); ?></span>
+        <span style="float: right;"><?php echo $this->formRadio($element->getMarkerMediaElement()) ?></span>
+    </div>
 </div>
+
+<script>
+const byPropertyDiv = $('#mapping-copy-coordinates-by-property');
+const byPropertiesDiv = $('#mapping-copy-coordinates-by-properties');
+const onDuplicateDiv = $('#mapping-copy-coordinates-on-duplicate');
+const markerOptionsDiv = $('#mapping-copy-coordinates-marker-options');
+byPropertyDiv.hide();
+byPropertiesDiv.hide();
+onDuplicateDiv.hide();
+markerOptionsDiv.hide();
+$('[name="mapping_copy_coordinates[copy_action]"]').on('change', function(e) {
+    const thisRadio = $(this);
+    switch (thisRadio.val()) {
+        case 'by_property':
+            byPropertyDiv.show();
+            byPropertiesDiv.hide();
+            onDuplicateDiv.show();
+            markerOptionsDiv.show();
+            break;
+        case 'by_properties':
+            byPropertyDiv.hide();
+            byPropertiesDiv.show();
+            onDuplicateDiv.show();
+            markerOptionsDiv.show();
+            break;
+        default:
+            byPropertyDiv.hide();
+            byPropertiesDiv.hide();
+            onDuplicateDiv.hide();
+            markerOptionsDiv.hide();
+    }
+});
+</script>

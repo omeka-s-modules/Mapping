@@ -8,7 +8,10 @@ use Laminas\ServiceManager\ServiceLocatorInterface;
 class CopyCoordinates extends Element
 {
     protected $formElements;
+    protected $copyActionElement;
     protected $coordinatesPropertyElement;
+    protected $coordinatesPropertyLatElement;
+    protected $coordinatesPropertyLngElement;
     protected $coordinatesOrderElement;
     protected $coordinatesDelimiterElement;
     protected $coordinatesOnDuplicateElement;
@@ -23,12 +26,45 @@ class CopyCoordinates extends Element
 
     public function init()
     {
+        $this->copyActionElement = (new Element\Radio('mapping_copy_coordinates[copy_action]'))
+            ->setValue('')
+            ->setValueOptions([
+                '' => '[No action]',
+                [
+                    'value' => 'by_property',
+                    'label' => 'By one property',
+                    'label_attributes' => [
+                        'title' => 'By one property containing both latitude and longitude', // @translate'
+                    ],
+                ],
+                [
+                    'value' => 'by_properties',
+                    'label' => 'By two properties',
+                    'label_attributes' => [
+                        'title' => 'By separate latitude and longitude properties', // @translate'
+                    ],
+                ],
+            ]);
         $this->coordinatesPropertyElement = $this->formElements->get(PropertySelect::class)
             ->setName('mapping_copy_coordinates[coordinates_property]')
             ->setEmptyOption('')
             ->setAttributes([
                 'class' => 'chosen-select',
                 'data-placeholder' => 'Select property', // @translate
+            ]);
+        $this->coordinatesPropertyLatElement = $this->formElements->get(PropertySelect::class)
+            ->setName('mapping_copy_coordinates[coordinates_property_lat]')
+            ->setEmptyOption('')
+            ->setAttributes([
+                'class' => 'chosen-select',
+                'data-placeholder' => 'Select latitude property', // @translate
+            ]);
+        $this->coordinatesPropertyLngElement = $this->formElements->get(PropertySelect::class)
+            ->setName('mapping_copy_coordinates[coordinates_property_lng]')
+            ->setEmptyOption('')
+            ->setAttributes([
+                'class' => 'chosen-select',
+                'data-placeholder' => 'Select longitude property', // @translate
             ]);
         $this->coordinatesOrderElement = (new Element\Radio('mapping_copy_coordinates[coordinates_order]'))
             ->setValue('latlng')
@@ -71,9 +107,24 @@ class CopyCoordinates extends Element
             ]);
     }
 
+    public function getCopyActionElement()
+    {
+        return $this->copyActionElement;
+    }
+
     public function getCoordinatesPropertyElement()
     {
         return $this->coordinatesPropertyElement;
+    }
+
+    public function getCoordinatesPropertyLatElement()
+    {
+        return $this->coordinatesPropertyLatElement;
+    }
+
+    public function getCoordinatesPropertyLngElement()
+    {
+        return $this->coordinatesPropertyLngElement;
     }
 
     public function getCoordinatesOrderElement()

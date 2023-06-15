@@ -231,18 +231,25 @@ class Module extends AbstractModule
             'form.add_elements',
             function (Event $event) {
                 $form = $event->getTarget();
+
+                $groups = $form->getOption('element_groups');
+                $groups['mapping'] = 'Mapping'; // @translate
+                $form->setOption('element_groups', $groups);
+
                 $form->add([
                     'type' => CopyCoordinates::class,
                     'name' => 'mapping_copy_coordinates',
                     'options' => [
-                        'label' => 'Copy coordinates to Mapping markers', // @translate
+                        'element_group' => 'mapping',
+                        'label' => 'Copy coordinates to markers', // @translate
                     ],
                 ]);
                 $form->add([
                     'type' => 'checkbox',
                     'name' => 'mapping_delete_markers',
                     'options' => [
-                        'label' => 'Delete Mapping markers', // @translate
+                        'element_group' => 'mapping',
+                        'label' => 'Delete markers', // @translate
                     ],
                 ]);
             }
@@ -253,12 +260,14 @@ class Module extends AbstractModule
             function (Event $event) {
                 $data = $event->getParam('data');
                 $rawData = $event->getParam('request')->getContent();
+                echo '<pre>';print_r($rawData);
                 if ($this->copyCoordinatesDataIsValid($rawData)) {
                     $data['mapping_copy_coordinates'] = $rawData['mapping_copy_coordinates'];
                 }
                 if (isset($rawData['mapping_delete_markers'])) {
                     $data['mapping_delete_markers'] = $rawData['mapping_delete_markers'];
                 }
+                print_r($data);exit;
                 $event->setParam('data', $data);
             }
         );
@@ -465,39 +474,41 @@ class Module extends AbstractModule
         if (!is_array($coordinatesData)) {
             return false;
         }
-        // coordinates_property must be set and numeric.
-        if (!(isset($coordinatesData['coordinates_property'])
-            && is_numeric($coordinatesData['coordinates_property'])
-        )) {
+        // copy_action must be set and one of allowed values.
+        if (!(isset($coordinatesData['copy_action']) && in_array($coordinatesData['copy_action'], ['by_property', 'by_properties']))) {
             return false;
         }
-        // If set, coordinates_order must be one of allowed values.
-        if (isset($coordinatesData['coordinates_order'])
-            && !in_array($coordinatesData['coordinates_order'], ['latlng', 'lnglat'])) {
-            return false;
+        // Validate a by_property action.
+        if ('by_property' === $coordinatesData['copy_action']) {
+            // coordinates_property must be set and numeric.
+            if (!(isset($coordinatesData['coordinates_property']) && is_numeric($coordinatesData['coordinates_property']))) {
+                return false;
+            }
+            // coordinates_order must be set and one of allowed values.
+            if (!(isset($coordinatesData['coordinates_order']) && in_array($coordinatesData['coordinates_order'], ['latlng', 'lnglat']))) {
+                return false;
+            }
+            // coordinates_delimiter must be set and one of allowed values.
+            if (!(isset($coordinatesData['coordinates_delimiter']) && in_array($coordinatesData['coordinates_delimiter'], [',', ' ', '/', ':']))) {
+                return false;
+            }
+        // Validate a by_properties action.
+        } elseif ('by_properties' === $coordinatesData['copy_action']) {
+            // coordinates_property_lat and coordinates_property_lng must be set and numeric.
+            if (!(isset($coordinatesData['coordinates_property_lat']) && is_numeric($coordinatesData['coordinates_property_lat']) && isset($coordinatesData['coordinates_property_lng']) && is_numeric($coordinatesData['coordinates_property_lng']))) {
+                return false;
+            }
         }
-        // If set, coordinates_delimiter must be one of allowed values.
-        if (isset($coordinatesData['coordinates_delimiter'])
-            && !in_array($coordinatesData['coordinates_delimiter'], [',', ' ', '/', ':'])
-        ) {
-            return false;
-        }
-        // If set, coordinates_on_duplicate must be one of allowed values.
-        if (isset($coordinatesData['coordinates_on_duplicate'])
-            && !in_array($coordinatesData['coordinates_on_duplicate'], ['skip', 'overwrite'])
-        ) {
+        // coordinates_on_duplicate must be set and one of allowed values.
+        if (!(isset($coordinatesData['coordinates_on_duplicate']) && in_array($coordinatesData['coordinates_on_duplicate'], ['skip', 'overwrite']))) {
             return false;
         }
         // If set, marker_label_property_source must be one of allowed values.
-        if (isset($coordinatesData['marker_label_property_source'])
-            && !in_array($coordinatesData['marker_label_property_source'], ['item', 'primary_media'])
-        ) {
+        if (isset($coordinatesData['marker_label_property_source']) && !in_array($coordinatesData['marker_label_property_source'], ['item', 'primary_media'])) {
             return false;
         }
         // If set, marker_media must be one of allowed values.
-        if (isset($coordinatesData['marker_media'])
-            && !in_array($coordinatesData['marker_media'], ['none', 'primary_media'])
-        ) {
+        if (isset($coordinatesData['marker_media']) && !in_array($coordinatesData['marker_media'], ['none', 'primary_media'])) {
             return false;
         }
         return true;
