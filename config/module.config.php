@@ -27,6 +27,7 @@ return [
         'invokables' => [
             'formPromptMap' => Collecting\FormPromptMap::class,
             'formMappingCopyCoordinates' => View\Helper\CopyCoordinates::class,
+            'formMappingUpdateMarkers' => View\Helper\UpdateMarkers::class,
         ],
         'delegators' => [
             'Laminas\Form\View\Helper\FormElement' => [
@@ -37,6 +38,7 @@ return [
     'form_elements' => [
         'factories' => [
            'Mapping\Form\Element\CopyCoordinates' => Service\Form\Element\CopyCoordinatesFactory::class,
+           'Mapping\Form\Element\UpdateMarkers' => Service\Form\Element\UpdateMarkersFactory::class,
         ],
     ],
     'csv_import' => [

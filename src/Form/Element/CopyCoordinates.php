@@ -9,15 +9,12 @@ class CopyCoordinates extends Element
 {
     protected $formElements;
     protected $copyActionElement;
-    protected $coordinatesPropertyElement;
-    protected $coordinatesPropertyLatElement;
-    protected $coordinatesPropertyLngElement;
-    protected $coordinatesOrderElement;
-    protected $coordinatesDelimiterElement;
-    protected $coordinatesOnDuplicateElement;
-    protected $markerLabelPropertyElement;
-    protected $markerLabelPropertySourceElement;
-    protected $markerMediaElement;
+    protected $propertyElement;
+    protected $propertyLatElement;
+    protected $propertyLngElement;
+    protected $orderElement;
+    protected $delimiterElement;
+    protected $copyDuplicatesElement;
 
     public function setFormElementManager(ServiceLocatorInterface  $formElements)
     {
@@ -45,34 +42,34 @@ class CopyCoordinates extends Element
                     ],
                 ],
             ]);
-        $this->coordinatesPropertyElement = $this->formElements->get(PropertySelect::class)
-            ->setName('mapping_copy_coordinates[coordinates_property]')
+        $this->propertyElement = $this->formElements->get(PropertySelect::class)
+            ->setName('mapping_copy_coordinates[property]')
             ->setEmptyOption('')
             ->setAttributes([
                 'class' => 'chosen-select',
                 'data-placeholder' => 'Select property', // @translate
             ]);
-        $this->coordinatesPropertyLatElement = $this->formElements->get(PropertySelect::class)
-            ->setName('mapping_copy_coordinates[coordinates_property_lat]')
+        $this->propertyLatElement = $this->formElements->get(PropertySelect::class)
+            ->setName('mapping_copy_coordinates[property_lat]')
             ->setEmptyOption('')
             ->setAttributes([
                 'class' => 'chosen-select',
                 'data-placeholder' => 'Select latitude property', // @translate
             ]);
-        $this->coordinatesPropertyLngElement = $this->formElements->get(PropertySelect::class)
-            ->setName('mapping_copy_coordinates[coordinates_property_lng]')
+        $this->propertyLngElement = $this->formElements->get(PropertySelect::class)
+            ->setName('mapping_copy_coordinates[property_lng]')
             ->setEmptyOption('')
             ->setAttributes([
                 'class' => 'chosen-select',
                 'data-placeholder' => 'Select longitude property', // @translate
             ]);
-        $this->coordinatesOrderElement = (new Element\Radio('mapping_copy_coordinates[coordinates_order]'))
+        $this->orderElement = (new Element\Radio('mapping_copy_coordinates[order]'))
             ->setValue('latlng')
             ->setValueOptions([
                 'latlng' => 'Latitude Longitude', // @translate
                 'lnglat' => 'Longitude Latitude', // @translate
             ]);
-        $this->coordinatesDelimiterElement = (new Element\Radio('mapping_copy_coordinates[coordinates_delimiter]'))
+        $this->delimiterElement = (new Element\Radio('mapping_copy_coordinates[delimiter]'))
             ->setValue(',')
             ->setValueOptions([
                 ',' => 'Comma [,]', // @translate
@@ -80,31 +77,7 @@ class CopyCoordinates extends Element
                 '/' => 'Slash [/]', // @translate
                 ':' => 'Colon [:]', // @translate
             ]);
-        $this->coordinatesOnDuplicateElement = (new Element\Radio('mapping_copy_coordinates[coordinates_on_duplicate]'))
-            ->setValue('skip')
-            ->setValueOptions([
-                'skip' => 'Skip', // @translate
-                'overwrite' => 'Overwrite', // @translate
-            ]);
-        $this->markerLabelPropertyElement = $this->formElements->get(PropertySelect::class)
-            ->setName('mapping_copy_coordinates[marker_label_property]')
-            ->setEmptyOption('')
-            ->setAttributes([
-                'class' => 'chosen-select',
-                'data-placeholder' => 'Select label property', // @translate
-            ]);
-        $this->markerLabelPropertySourceElement = (new Element\Radio('mapping_copy_coordinates[marker_label_property_source]'))
-            ->setValue('item')
-            ->setValueOptions([
-                'item' => 'Item', // @translate
-                'primary_media' => 'Primary media', // @translate
-            ]);
-        $this->markerMediaElement = (new Element\Radio('mapping_copy_coordinates[marker_media]'))
-            ->setValue('none')
-            ->setValueOptions([
-                'none' => 'None', // @translate
-                'primary_media' => 'Primary media', // @translate
-            ]);
+        $this->copyDuplicatesElement = (new Element\Checkbox('mapping_copy_coordinates[copy_duplicates]'));
     }
 
     public function getCopyActionElement()
@@ -112,48 +85,33 @@ class CopyCoordinates extends Element
         return $this->copyActionElement;
     }
 
-    public function getCoordinatesPropertyElement()
+    public function getPropertyElement()
     {
-        return $this->coordinatesPropertyElement;
+        return $this->propertyElement;
     }
 
-    public function getCoordinatesPropertyLatElement()
+    public function getPropertyLatElement()
     {
-        return $this->coordinatesPropertyLatElement;
+        return $this->propertyLatElement;
     }
 
-    public function getCoordinatesPropertyLngElement()
+    public function getPropertyLngElement()
     {
-        return $this->coordinatesPropertyLngElement;
+        return $this->propertyLngElement;
     }
 
-    public function getCoordinatesOrderElement()
+    public function getOrderElement()
     {
-        return $this->coordinatesOrderElement;
+        return $this->orderElement;
     }
 
-    public function getCoordinatesDelimiterElement()
+    public function getDelimiterElement()
     {
-        return $this->coordinatesDelimiterElement;
+        return $this->delimiterElement;
     }
 
-    public function getCoordinatesOnDuplicateElement()
+    public function getCopyDuplicatesElement()
     {
-        return $this->coordinatesOnDuplicateElement;
-    }
-
-    public function getMarkerLabelPropertyElement()
-    {
-        return $this->markerLabelPropertyElement;
-    }
-
-    public function getMarkerLabelPropertySourceElement()
-    {
-        return $this->markerLabelPropertySourceElement;
-    }
-
-    public function getMarkerMediaElement()
-    {
-        return $this->markerMediaElement;
+        return $this->copyDuplicatesElement;
     }
 }

@@ -7,6 +7,7 @@ use Omeka\Api\Exception as ApiException;
 use Omeka\Api\Request;
 use Mapping\Entity\MappingMarker;
 use Mapping\Form\Element\CopyCoordinates;
+use Mapping\Form\Element\UpdateMarkers;
 use Omeka\Module\AbstractModule;
 use Omeka\Permissions\Acl;
 use Laminas\EventManager\Event;
@@ -237,6 +238,14 @@ class Module extends AbstractModule
                 $form->setOption('element_groups', $groups);
 
                 $form->add([
+                    'type' => 'checkbox',
+                    'name' => 'mapping_delete_markers',
+                    'options' => [
+                        'element_group' => 'mapping',
+                        'label' => 'Delete markers', // @translate
+                    ],
+                ]);
+                $form->add([
                     'type' => CopyCoordinates::class,
                     'name' => 'mapping_copy_coordinates',
                     'options' => [
@@ -245,11 +254,11 @@ class Module extends AbstractModule
                     ],
                 ]);
                 $form->add([
-                    'type' => 'checkbox',
-                    'name' => 'mapping_delete_markers',
+                    'type' => UpdateMarkers::class,
+                    'name' => 'mapping_update_markers',
                     'options' => [
                         'element_group' => 'mapping',
-                        'label' => 'Delete markers', // @translate
+                        'label' => 'Update markers', // @translate
                     ],
                 ]);
             }
@@ -260,11 +269,14 @@ class Module extends AbstractModule
             function (Event $event) {
                 $data = $event->getParam('data');
                 $rawData = $event->getParam('request')->getContent();
+                if (isset($rawData['mapping_delete_markers'])) {
+                    $data['mapping_delete_markers'] = $rawData['mapping_delete_markers'];
+                }
                 if ($this->copyCoordinatesDataIsValid($rawData)) {
                     $data['mapping_copy_coordinates'] = $rawData['mapping_copy_coordinates'];
                 }
-                if (isset($rawData['mapping_delete_markers'])) {
-                    $data['mapping_delete_markers'] = $rawData['mapping_delete_markers'];
+                if ($this->updateMarkersDataIsValid($rawData)) {
+                    $data['mapping_update_markers'] = $rawData['mapping_update_markers'];
                 }
                 $event->setParam('data', $data);
             }
@@ -272,12 +284,20 @@ class Module extends AbstractModule
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.update.post',
-            [$this, 'copyCoordinates']
+            [$this, 'deleteMarkers'],
+            30
         );
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.update.post',
-            [$this, 'deleteMarkers']
+            [$this, 'copyCoordinates'],
+            20
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemAdapter',
+            'api.update.post',
+            [$this, 'updateMarkers'],
+            10
         );
     }
 
@@ -594,44 +614,71 @@ class Module extends AbstractModule
         if (!is_array($coordinatesData)) {
             return false;
         }
-        // copy_action must be set and one of allowed values.
         if (!(isset($coordinatesData['copy_action']) && in_array($coordinatesData['copy_action'], ['by_property', 'by_properties']))) {
             return false;
         }
-        // Validate a by_property action.
         if ('by_property' === $coordinatesData['copy_action']) {
-            // coordinates_property must be set and numeric.
-            if (!(isset($coordinatesData['coordinates_property']) && is_numeric($coordinatesData['coordinates_property']))) {
+            if (!(isset($coordinatesData['coordinates_property']) && is_numeric($coordinatesData['property']))) {
                 return false;
             }
-            // coordinates_order must be set and one of allowed values.
-            if (!(isset($coordinatesData['coordinates_order']) && in_array($coordinatesData['coordinates_order'], ['latlng', 'lnglat']))) {
+            if (!(isset($coordinatesData['coordinates_order']) && in_array($coordinatesData['order'], ['latlng', 'lnglat']))) {
                 return false;
             }
-            // coordinates_delimiter must be set and one of allowed values.
-            if (!(isset($coordinatesData['coordinates_delimiter']) && in_array($coordinatesData['coordinates_delimiter'], [',', ' ', '/', ':']))) {
+            if (!(isset($coordinatesData['coordinates_delimiter']) && in_array($coordinatesData['delimiter'], [',', ' ', '/', ':']))) {
                 return false;
             }
-        // Validate a by_properties action.
         } elseif ('by_properties' === $coordinatesData['copy_action']) {
-            // coordinates_property_lat and coordinates_property_lng must be set and numeric.
-            if (!(isset($coordinatesData['coordinates_property_lat']) && is_numeric($coordinatesData['coordinates_property_lat']) && isset($coordinatesData['coordinates_property_lng']) && is_numeric($coordinatesData['coordinates_property_lng']))) {
+            if (!(isset($coordinatesData['property_lat']) && is_numeric($coordinatesData['property_lat']) && isset($coordinatesData['property_lng']) && is_numeric($coordinatesData['property_lng']))) {
                 return false;
             }
         }
-        // coordinates_on_duplicate must be set and one of allowed values.
-        if (!(isset($coordinatesData['coordinates_on_duplicate']) && in_array($coordinatesData['coordinates_on_duplicate'], ['skip', 'overwrite']))) {
-            return false;
-        }
-        // If set, marker_label_property_source must be one of allowed values.
-        if (isset($coordinatesData['marker_label_property_source']) && !in_array($coordinatesData['marker_label_property_source'], ['item', 'primary_media'])) {
-            return false;
-        }
-        // If set, marker_media must be one of allowed values.
-        if (isset($coordinatesData['marker_media']) && !in_array($coordinatesData['marker_media'], ['none', 'primary_media'])) {
+        if (isset($coordinatesData['copy_duplicates']) && !in_array($coordinatesData['copy_duplicates'], ['1', '0'])) {
             return false;
         }
         return true;
+    }
+
+    /**
+     * Does the passed data contain valid update-markers data?
+     *
+     * @param array $data
+     * return bool
+     */
+    public function updateMarkersDataIsValid(array $data)
+    {
+        $markersData = $data['mapping_update_markers'] ?? null;
+        if (!is_array($markersData)) {
+            return false;
+        }
+        if (isset($coordinatesData['label_property_source']) && !in_array($coordinatesData['label_property_source'], ['item', 'primary_media'])) {
+            return false;
+        }
+        if (isset($coordinatesData['image']) && !in_array($coordinatesData['image'], ['', 'remove', 'primary_media'])) {
+            return false;
+        }
+    }
+
+    /**
+     * Delete markers.
+     *
+     * @param Event $event
+     */
+    public function deleteMarkers(Event $event)
+    {
+        $data = $event->getParam('request')->getContent();
+        $item = $event->getParam('response')->getContent();
+
+        if (!(isset($data['mapping_delete_markers']) && $data['mapping_delete_markers'])) {
+            return;
+        }
+
+        $services = $this->getServiceLocator();
+        $entityManager = $services->get('Omeka\EntityManager');
+
+        $dql = 'DELETE FROM Mapping\Entity\MappingMarker m WHERE m.item = :item_id';
+        $entityManager->createQuery($dql)
+            ->setParameter('item_id', $item->getId())
+            ->execute();
     }
 
     /**
@@ -651,12 +698,12 @@ class Module extends AbstractModule
         $data = $data['mapping_copy_coordinates'];
 
         $copyAction = $data['copy_action'];
-        $coordinatesPropertyId = $data['coordinates_property'] ?? null;
-        $coordinatesPropertyLatId = $data['coordinates_property_lat'] ?? null;
-        $coordinatesPropertyLngId = $data['coordinates_property_lng'] ?? null;
-        $coordinatesOrder = $data['coordinates_order'] ?? null;
-        $coordinatesDelimiter = $data['coordinates_delimiter'] ?? null;
-        $coordinatesOnDuplicate = $data['coordinates_on_duplicate'] ?? null;
+        $propertyId = $data['property'] ?? null;
+        $propertyLatId = $data['property_lat'] ?? null;
+        $propertyLngId = $data['property_lng'] ?? null;
+        $order = $data['order'] ?? null;
+        $delimiter = $data['delimiter'] ?? null;
+        $copyDuplicates = $data['copy_duplicates'] ?? null;
         $markerLabelPropertyId = $data['marker_label_property'] ?? null;
         $markerLabelPropertySource = $data['marker_label_property_source'] ?? null;
         $markerMedia = $data['marker_media'] ?? null;
@@ -675,7 +722,7 @@ class Module extends AbstractModule
         if ('by_property' === $copyAction) {
             $values = $entityManager->createQuery($dql)
                 ->setParameter('resource_id', $item->getId())
-                ->setParameter('property_id', $coordinatesPropertyId)
+                ->setParameter('property_id', $propertyId)
                 ->getResult();
             if (!$values) {
                 return; // Relevant values don't exist. Do nothing.
@@ -687,11 +734,11 @@ class Module extends AbstractModule
         } elseif ('by_properties' === $copyAction) {
             $latValues = $entityManager->createQuery($dql)
                 ->setParameter('resource_id', $item->getId())
-                ->setParameter('property_id', $coordinatesPropertyLatId)
+                ->setParameter('property_id', $propertyLatId)
                 ->getResult();
             $lngValues = $entityManager->createQuery($dql)
                 ->setParameter('resource_id', $item->getId())
-                ->setParameter('property_id', $coordinatesPropertyLngId)
+                ->setParameter('property_id', $propertyLngId)
                 ->getResult();
             if (!($latValues && $lngValues)) {
                 return; // Relevant values don't exist. Do nothing.
@@ -704,20 +751,20 @@ class Module extends AbstractModule
                 $lng = $lngValues[$index]->getValue();
                 $allCoordinates[] = sprintf('%s,%s', $lat, $lng);
             }
-            $coordinatesDelimiter = ',';
+            $delimiter = ',';
         }
 
         // @see: https://stackoverflow.com/a/31408260
         $latRegex = '^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]+)?))$';
         $lngRegex = '^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]+)?))$';
         foreach ($allCoordinates as $coordinates) {
-            $coordinates = explode($coordinatesDelimiter, $coordinates);
+            $coordinates = explode($delimiter, $coordinates);
             if (2 !== count($coordinates)) {
                 continue; // Coordinates must have latitude and longitude. Skip.
             }
             $coordinates = array_map('trim', $coordinates);
-            $lat = ('latlng' === $coordinatesOrder) ? $coordinates[0] : $coordinates[1];
-            $lng = ('lnglat' === $coordinatesOrder) ? $coordinates[0] : $coordinates[1];
+            $lat = ('latlng' === $order) ? $coordinates[0] : $coordinates[1];
+            $lng = ('lnglat' === $order) ? $coordinates[0] : $coordinates[1];
             if (!preg_match(sprintf('/%s/', $latRegex), $lat)) {
                 continue; // Invalid latitude. Skip.
             }
@@ -742,7 +789,7 @@ class Module extends AbstractModule
                 ->setMaxResults(1)
                 ->getOneOrNullResult();
             if ($marker) {
-                if ('skip' === $coordinatesOnDuplicate) {
+                if (!$copyDuplicates) {
                     continue; // Skip this duplicate.
                 }
             } else {
@@ -792,26 +839,29 @@ class Module extends AbstractModule
     }
 
     /**
-     * Delete markers.
+     * Update markers.
      *
      * @param Event $event
      */
-    public function deleteMarkers(Event $event)
+    public function updateMarkers(Event $event)
     {
         $data = $event->getParam('request')->getContent();
         $item = $event->getParam('response')->getContent();
 
-        if (!(isset($data['mapping_delete_markers']) && $data['mapping_delete_markers'])) {
+        if (!$this->updateMarkersDataIsValid($data)) {
             return;
         }
+
+        $data = $data['mapping_update_markers'];
+
+        $labelPropertyId = $data['label_property'] ?? null;
+        $labelPropertySource = $data['label_property_source'] ?? null;
+        $image = $data['image'] ?? null;
 
         $services = $this->getServiceLocator();
         $entityManager = $services->get('Omeka\EntityManager');
 
-        $dql = 'DELETE FROM Mapping\Entity\MappingMarker m WHERE m.item = :item_id';
-        $entityManager->createQuery($dql)
-            ->setParameter('item_id', $item->getId())
-            ->execute();
+        // @todo: get markers and update them. Use code from Module::copyCoordinates()
     }
 
     public function getPrimaryMedia(\Omeka\Entity\Item $item)
