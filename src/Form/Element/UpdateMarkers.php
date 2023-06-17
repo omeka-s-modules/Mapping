@@ -22,6 +22,9 @@ class UpdateMarkers extends Element
         $this->labelPropertyElement = $this->formElements->get(PropertySelect::class)
             ->setName('mapping_update_markers[label_property]')
             ->setEmptyOption('')
+            ->setOptions([
+                'prepend_value_options' => ['-1' => '[Remove label]'], // @translate
+            ])
             ->setAttributes([
                 'class' => 'chosen-select',
                 'data-placeholder' => 'Select label property', // @translate
@@ -33,7 +36,7 @@ class UpdateMarkers extends Element
                 'primary_media' => 'Primary media', // @translate
             ]);
         $this->imageElement = (new Element\Radio('mapping_update_markers[image]'))
-            ->setValue('none')
+            ->setValue('')
             ->setValueOptions([
                 '' => '[No change]', // @translate
                 'remove' => 'Remove', // @translate

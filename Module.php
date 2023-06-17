@@ -704,9 +704,6 @@ class Module extends AbstractModule
         $order = $data['order'] ?? null;
         $delimiter = $data['delimiter'] ?? null;
         $copyDuplicates = $data['copy_duplicates'] ?? null;
-        $markerLabelPropertyId = $data['marker_label_property'] ?? null;
-        $markerLabelPropertySource = $data['marker_label_property_source'] ?? null;
-        $markerMedia = $data['marker_media'] ?? null;
 
         $services = $this->getServiceLocator();
         $entityManager = $services->get('Omeka\EntityManager');
@@ -799,40 +796,6 @@ class Module extends AbstractModule
             $marker->setLat($lat);
             $marker->setLng($lng);
             $marker->setItem($item);
-            if ('primary_media' === $markerMedia) {
-                $marker->setMedia($this->getPrimaryMedia($item));
-            } else {
-                $marker->setMedia(null);
-            }
-            if (is_numeric($markerLabelPropertyId)) {
-                $resourceId = null;
-                if ('primary_media' === $markerLabelPropertySource) {
-                    $media = $this->getPrimaryMedia($item);
-                    if ($media) {
-                        $resourceId = $media->getId();
-                    }
-                } else {
-                    $resourceId = $item->getId();
-                }
-                if ($resourceId) {
-                    $dql = 'SELECT v
-                        FROM Omeka\Entity\Value v
-                        WHERE v.resource = :resource_id
-                        AND v.property = :property_id
-                        AND v.value IS NOT NULL
-                        ORDER BY v.id ASC';
-                    $value = $entityManager->createQuery($dql)
-                        ->setParameter('resource_id', $resourceId)
-                        ->setParameter('property_id', $markerLabelPropertyId)
-                        ->setMaxResults(1)
-                        ->getOneOrNullResult();
-                    if ($value) {
-                        $marker->setLabel($value->getValue());
-                    }
-                }
-            } else {
-                $marker->setLabel(null);
-            }
             $entityManager->persist($marker);
         }
         $entityManager->flush();
@@ -861,7 +824,55 @@ class Module extends AbstractModule
         $services = $this->getServiceLocator();
         $entityManager = $services->get('Omeka\EntityManager');
 
-        // @todo: get markers and update them. Use code from Module::copyCoordinates()
+        $dql = 'SELECT m
+            FROM Mapping\Entity\MappingMarker m
+            WHERE item = :item_id';
+        $markers = $entityManager->createQuery($dql)
+            ->setParameter('item_id', $item->getId())
+            ->getResult();
+        if (!$markers) {
+            return; // Markers don't exist. Do nothing.
+        }
+        foreach ($markers as $marker) {
+            // Handle marker image.
+            if ('primary_media' === $image) {
+                $marker->setMedia($this->getPrimaryMedia($item));
+            } elseif ('remove' === $image) {
+                $marker->setMedia(null);
+            }
+            // Handle maker label.
+            if ('-1' === $labelPropertyId) {
+                $marker->setLabel(null);
+            } elseif (is_numeric($labelPropertyId)) {
+                $resourceId = null;
+                if ('primary_media' === $labelPropertySource) {
+                    $media = $this->getPrimaryMedia($item);
+                    if ($media) {
+                        $resourceId = $media->getId();
+                    }
+                } else {
+                    $resourceId = $item->getId();
+                }
+                if ($resourceId) {
+                    $dql = 'SELECT v
+                        FROM Omeka\Entity\Value v
+                        WHERE v.resource = :resource_id
+                        AND v.property = :property_id
+                        AND v.value IS NOT NULL
+                        ORDER BY v.id ASC';
+                    $value = $entityManager->createQuery($dql)
+                        ->setParameter('resource_id', $resourceId)
+                        ->setParameter('property_id', $labelPropertyId)
+                        ->setMaxResults(1)
+                        ->getOneOrNullResult();
+                    if ($value) {
+                        $marker->setLabel($value->getValue());
+                    }
+                }
+            }
+            $entityManager->persist($marker);
+        }
+        $entityManager->flush();
     }
 
     public function getPrimaryMedia(\Omeka\Entity\Item $item)
