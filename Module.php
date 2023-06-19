@@ -618,13 +618,13 @@ class Module extends AbstractModule
             return false;
         }
         if ('by_property' === $coordinatesData['copy_action']) {
-            if (!(isset($coordinatesData['coordinates_property']) && is_numeric($coordinatesData['property']))) {
+            if (!(isset($coordinatesData['property']) && is_numeric($coordinatesData['property']))) {
                 return false;
             }
-            if (!(isset($coordinatesData['coordinates_order']) && in_array($coordinatesData['order'], ['latlng', 'lnglat']))) {
+            if (!(isset($coordinatesData['order']) && in_array($coordinatesData['order'], ['latlng', 'lnglat']))) {
                 return false;
             }
-            if (!(isset($coordinatesData['coordinates_delimiter']) && in_array($coordinatesData['delimiter'], [',', ' ', '/', ':']))) {
+            if (!(isset($coordinatesData['delimiter']) && in_array($coordinatesData['delimiter'], [',', ' ', '/', ':']))) {
                 return false;
             }
         } elseif ('by_properties' === $coordinatesData['copy_action']) {
@@ -656,6 +656,7 @@ class Module extends AbstractModule
         if (isset($coordinatesData['image']) && !in_array($coordinatesData['image'], ['', 'remove', 'primary_media'])) {
             return false;
         }
+        return true;
     }
 
     /**
@@ -826,7 +827,7 @@ class Module extends AbstractModule
 
         $dql = 'SELECT m
             FROM Mapping\Entity\MappingMarker m
-            WHERE item = :item_id';
+            WHERE m.item = :item_id';
         $markers = $entityManager->createQuery($dql)
             ->setParameter('item_id', $item->getId())
             ->getResult();
