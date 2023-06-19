@@ -632,7 +632,7 @@ class Module extends AbstractModule
                 return false;
             }
         }
-        if (isset($coordinatesData['copy_duplicates']) && !in_array($coordinatesData['copy_duplicates'], ['1', '0'])) {
+        if (isset($coordinatesData['assign_media']) && !in_array($coordinatesData['assign_media'], ['1', '0'])) {
             return false;
         }
         return true;
@@ -704,7 +704,7 @@ class Module extends AbstractModule
         $propertyLngId = $data['property_lng'] ?? null;
         $order = $data['order'] ?? null;
         $delimiter = $data['delimiter'] ?? null;
-        $copyDuplicates = $data['copy_duplicates'] ?? null;
+        $assignMedia = $data['assign_media'] ?? null;
 
         $services = $this->getServiceLocator();
         $entityManager = $services->get('Omeka\EntityManager');
@@ -772,7 +772,7 @@ class Module extends AbstractModule
                     continue; // Relevant values don't exist. Do nothing.
                 }
                 foreach ($values as $value) {
-                    $allCoordinates[] = $value->getValue();
+                    $allCoordinates[$media->getId()] = $value->getValue();
                 }
             }
         // By two media properties, one latitude and the other longitude
@@ -798,7 +798,7 @@ class Module extends AbstractModule
                 foreach ($latValues as $index => $latValue) {
                     $lat = $latValue->getValue();
                     $lng = $lngValues[$index]->getValue();
-                    $allCoordinates[] = sprintf('%s,%s', $lat, $lng);
+                    $allCoordinates[$media->getId()] = sprintf('%s,%s', $lat, $lng);
                 }
                 $delimiter = ',';
             }
@@ -807,7 +807,7 @@ class Module extends AbstractModule
         // @see: https://stackoverflow.com/a/31408260
         $latRegex = '^(\+|-)?(?:90(?:(?:\.0{1,6})?)|(?:[0-9]|[1-8][0-9])(?:(?:\.[0-9]+)?))$';
         $lngRegex = '^(\+|-)?(?:180(?:(?:\.0{1,6})?)|(?:[0-9]|[1-9][0-9]|1[0-7][0-9])(?:(?:\.[0-9]+)?))$';
-        foreach ($allCoordinates as $coordinates) {
+        foreach ($allCoordinates as $key => $coordinates) {
             $coordinates = explode($delimiter, $coordinates);
             if (2 !== count($coordinates)) {
                 continue; // Coordinates must have latitude and longitude. Skip.
@@ -834,17 +834,20 @@ class Module extends AbstractModule
                 ->setMaxResults(1)
                 ->getOneOrNullResult();
             if ($marker) {
-                if (!$copyDuplicates) {
-                    continue; // Skip this duplicate.
-                }
+                // This marker already exists.
             } else {
+                // This marker does not exist. Create it.
                 $marker = new MappingMarker;
+                $marker->setLat($lat);
+                $marker->setLng($lng);
+                $marker->setItem($item);
+                $entityManager->persist($marker);
             }
-
-            $marker->setLat($lat);
-            $marker->setLng($lng);
-            $marker->setItem($item);
-            $entityManager->persist($marker);
+            // Assign media to marker if directed to do so.
+            if (in_array($copyAction, ['by_media_property', 'by_media_properties']) && $assignMedia) {
+                $media = $entityManager->find('Omeka\Entity\Media', $key);
+                $marker->setMedia($media);
+            }
         }
         $entityManager->flush();
     }

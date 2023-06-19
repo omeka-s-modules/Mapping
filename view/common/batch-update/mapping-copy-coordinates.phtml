@@ -17,37 +17,45 @@
     <?php echo $this->formElement($element->getPropertyLngElement()) ?>
 </div>
 
-<div id="mapping-copy-coordinates-on-duplicate">
-    <span><?php echo $this->translate('Copy duplicates?'); ?></span>
-    <span style="float: right;"><?php echo $this->formElement($element->getCopyDuplicatesElement()) ?></span>
+<div id="mapping-copy-coordinates-assign-media">
+    <span><?php echo $this->translate('Assign media?'); ?></span>
+    <span style="float: right;"><?php echo $this->formElement($element->getAssignMediaElement()) ?></span>
 </div>
 
 <script>
 const byPropertyDiv = $('#mapping-copy-coordinates-by-property');
 const byPropertiesDiv = $('#mapping-copy-coordinates-by-properties');
-const onDuplicateDiv = $('#mapping-copy-coordinates-on-duplicate');
+const assignMediaDiv = $('#mapping-copy-coordinates-assign-media');
 byPropertyDiv.hide();
 byPropertiesDiv.hide();
-onDuplicateDiv.hide();
+assignMediaDiv.hide();
 $('[name="mapping_copy_coordinates[copy_action]"]').on('change', function(e) {
     const thisRadio = $(this);
     switch (thisRadio.val()) {
         case 'by_item_property':
+            byPropertyDiv.show();
+            byPropertiesDiv.hide();
+            assignMediaDiv.hide();
+            break;
         case 'by_media_property':
             byPropertyDiv.show();
             byPropertiesDiv.hide();
-            onDuplicateDiv.show();
+            assignMediaDiv.show();
             break;
         case 'by_item_properties':
+            byPropertyDiv.show();
+            byPropertiesDiv.hide();
+            assignMediaDiv.hide();
+            break;
         case 'by_media_properties':
-            byPropertyDiv.hide();
-            byPropertiesDiv.show();
-            onDuplicateDiv.show();
+            byPropertyDiv.show();
+            byPropertiesDiv.hide();
+            assignMediaDiv.show();
             break;
         default:
             byPropertyDiv.hide();
             byPropertiesDiv.hide();
-            onDuplicateDiv.hide();
+            assignMediaDiv.hide();
     }
 });
 </script>

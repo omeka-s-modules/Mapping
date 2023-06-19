@@ -14,7 +14,7 @@ class CopyCoordinates extends Element
     protected $propertyLngElement;
     protected $orderElement;
     protected $delimiterElement;
-    protected $copyDuplicatesElement;
+    protected $assignMediaElement;
 
     public function setFormElementManager(ServiceLocatorInterface  $formElements)
     {
@@ -66,7 +66,7 @@ class CopyCoordinates extends Element
                 '/' => 'Slash [/]', // @translate
                 ':' => 'Colon [:]', // @translate
             ]);
-        $this->copyDuplicatesElement = (new Element\Checkbox('mapping_copy_coordinates[copy_duplicates]'));
+        $this->assignMediaElement = (new Element\Checkbox('mapping_copy_coordinates[assign_media]'));
     }
 
     public function getCopyActionElement()
@@ -99,8 +99,8 @@ class CopyCoordinates extends Element
         return $this->delimiterElement;
     }
 
-    public function getCopyDuplicatesElement()
+    public function getAssignMediaElement()
     {
-        return $this->copyDuplicatesElement;
+        return $this->assignMediaElement;
     }
 }
