@@ -614,10 +614,10 @@ class Module extends AbstractModule
         if (!is_array($coordinatesData)) {
             return false;
         }
-        if (!(isset($coordinatesData['copy_action']) && in_array($coordinatesData['copy_action'], ['by_property', 'by_properties']))) {
+        if (!(isset($coordinatesData['copy_action']) && in_array($coordinatesData['copy_action'], ['by_item_property', 'by_item_properties', 'by_media_property', 'by_media_properties']))) {
             return false;
         }
-        if ('by_property' === $coordinatesData['copy_action']) {
+        if (in_array($coordinatesData['copy_action'], ['by_item_property', 'by_media_property'])) {
             if (!(isset($coordinatesData['property']) && is_numeric($coordinatesData['property']))) {
                 return false;
             }
@@ -627,7 +627,7 @@ class Module extends AbstractModule
             if (!(isset($coordinatesData['delimiter']) && in_array($coordinatesData['delimiter'], [',', ' ', '/', ':']))) {
                 return false;
             }
-        } elseif ('by_properties' === $coordinatesData['copy_action']) {
+        } elseif (in_array($coordinatesData['copy_action'], ['by_item_properties', 'by_media_properties'])) {
             if (!(isset($coordinatesData['property_lat']) && is_numeric($coordinatesData['property_lat']) && isset($coordinatesData['property_lng']) && is_numeric($coordinatesData['property_lng']))) {
                 return false;
             }
@@ -709,16 +709,24 @@ class Module extends AbstractModule
         $services = $this->getServiceLocator();
         $entityManager = $services->get('Omeka\EntityManager');
 
-        $dql = 'SELECT v
+        $dqlValues = 'SELECT v
             FROM Omeka\Entity\Value v
             WHERE v.resource = :resource_id
             AND v.property = :property_id
             AND v.value IS NOT NULL';
+        $dqlMedia = 'SELECT m
+            FROM Omeka\Entity\Media m
+            WHERE m.item = :item_id';
+        $dqlMarker = 'SELECT m
+            FROM Mapping\Entity\MappingMarker m
+            WHERE m.item = :item_id
+            AND ABS(m.lat - :lat) < 0.000001
+            AND ABS(m.lng - :lng) < 0.000001';
 
         $allCoordinates = [];
-        // Get coordinates by one property containing both latitude and longitude.
-        if ('by_property' === $copyAction) {
-            $values = $entityManager->createQuery($dql)
+        // By one item property containing both latitude and longitude
+        if ('by_item_property' === $copyAction) {
+            $values = $entityManager->createQuery($dqlValues)
                 ->setParameter('resource_id', $item->getId())
                 ->setParameter('property_id', $propertyId)
                 ->getResult();
@@ -728,13 +736,13 @@ class Module extends AbstractModule
             foreach ($values as $value) {
                 $allCoordinates[] = $value->getValue();
             }
-        // Get coordinates by separate latitude and longitude properties.
-        } elseif ('by_properties' === $copyAction) {
-            $latValues = $entityManager->createQuery($dql)
+        // By two item properties, one latitude and the other longitude
+        } elseif ('by_item_properties' === $copyAction) {
+            $latValues = $entityManager->createQuery($dqlValues)
                 ->setParameter('resource_id', $item->getId())
                 ->setParameter('property_id', $propertyLatId)
                 ->getResult();
-            $lngValues = $entityManager->createQuery($dql)
+            $lngValues = $entityManager->createQuery($dqlValues)
                 ->setParameter('resource_id', $item->getId())
                 ->setParameter('property_id', $propertyLngId)
                 ->getResult();
@@ -750,6 +758,50 @@ class Module extends AbstractModule
                 $allCoordinates[] = sprintf('%s,%s', $lat, $lng);
             }
             $delimiter = ',';
+        // By one media property containing both latitude and longitude
+        } elseif ('by_media_property' === $copyAction) {
+            $medias = $entityManager->createQuery($dqlMedia)
+                ->setParameter('item_id', $item->getId())
+                ->getResult();
+            foreach ($medias as $media) {
+                $values = $entityManager->createQuery($dqlValues)
+                    ->setParameter('resource_id', $media->getId())
+                    ->setParameter('property_id', $propertyId)
+                    ->getResult();
+                if (!$values) {
+                    continue; // Relevant values don't exist. Do nothing.
+                }
+                foreach ($values as $value) {
+                    $allCoordinates[] = $value->getValue();
+                }
+            }
+        // By two media properties, one latitude and the other longitude
+        } elseif ('by_media_properties' === $copyAction) {
+            $medias = $entityManager->createQuery($dqlMedia)
+                ->setParameter('item_id', $item->getId())
+                ->getResult();
+            foreach ($medias as $media) {
+                $latValues = $entityManager->createQuery($dqlValues)
+                    ->setParameter('resource_id', $media->getId())
+                    ->setParameter('property_id', $propertyLatId)
+                    ->getResult();
+                $lngValues = $entityManager->createQuery($dqlValues)
+                    ->setParameter('resource_id', $media->getId())
+                    ->setParameter('property_id', $propertyLngId)
+                    ->getResult();
+                if (!($latValues && $lngValues)) {
+                    continue; // Relevant values don't exist. Do nothing.
+                }
+                if (count($latValues) !== count($lngValues)) {
+                    continue; // Missing latitudes or longitudes. Do nothing.
+                }
+                foreach ($latValues as $index => $latValue) {
+                    $lat = $latValue->getValue();
+                    $lng = $lngValues[$index]->getValue();
+                    $allCoordinates[] = sprintf('%s,%s', $lat, $lng);
+                }
+                $delimiter = ',';
+            }
         }
 
         // @see: https://stackoverflow.com/a/31408260
@@ -775,12 +827,7 @@ class Module extends AbstractModule
             // of 0° 00′ 0.0036″ DMS, or 11.1-43.5 mm. At this precision there is
             // no noticable difference between coordinates on map on maximum zoom.
             // @see https://en.wikipedia.org/wiki/Decimal_degrees#Precision
-            $dql = 'SELECT m
-                FROM Mapping\Entity\MappingMarker m
-                WHERE m.item = :item_id
-                AND ABS(m.lat - :lat) < 0.000001
-                AND ABS(m.lng - :lng) < 0.000001';
-            $marker = $entityManager->createQuery($dql)
+            $marker = $entityManager->createQuery($dqlMarker)
                 ->setParameter('item_id', $item->getId())
                 ->setParameter('lat', $lat)
                 ->setParameter('lng', $lng)

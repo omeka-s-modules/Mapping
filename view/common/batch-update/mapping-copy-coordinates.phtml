@@ -1,7 +1,4 @@
-<div>
-    <span><?php echo $this->translate('Copy action'); ?></span>
-    <span style="float: right;"><?php echo $this->formElement($element->getCopyActionElement()) ?></span>
-</div>
+<?php echo $this->formElement($element->getCopyActionElement()) ?>
 
 <div id="mapping-copy-coordinates-by-property">
     <?php echo $this->formElement($element->getPropertyElement()) ?>
@@ -35,12 +32,14 @@ onDuplicateDiv.hide();
 $('[name="mapping_copy_coordinates[copy_action]"]').on('change', function(e) {
     const thisRadio = $(this);
     switch (thisRadio.val()) {
-        case 'by_property':
+        case 'by_item_property':
+        case 'by_media_property':
             byPropertyDiv.show();
             byPropertiesDiv.hide();
             onDuplicateDiv.show();
             break;
-        case 'by_properties':
+        case 'by_item_properties':
+        case 'by_media_properties':
             byPropertyDiv.hide();
             byPropertiesDiv.show();
             onDuplicateDiv.show();
