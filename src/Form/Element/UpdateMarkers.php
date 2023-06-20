@@ -34,12 +34,13 @@ class UpdateMarkers extends Element
             ->setValueOptions([
                 'item' => 'Item', // @translate
                 'primary_media' => 'Primary media', // @translate
+                'assigned_media' => 'Assigned media', // @translate
             ]);
         $this->imageElement = (new Element\Radio('mapping_update_markers[image]'))
             ->setValue('')
             ->setValueOptions([
                 '' => '[No change]', // @translate
-                'remove' => 'Remove', // @translate
+                'unassign' => '[Unassign media]', // @translate
                 'primary_media' => 'Primary media', // @translate
             ]);
     }

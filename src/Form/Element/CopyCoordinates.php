@@ -26,10 +26,10 @@ class CopyCoordinates extends Element
         $this->copyActionElement = (new Element\Select('mapping_copy_coordinates[copy_action]'))
             ->setEmptyOption('Select copy action')
             ->setValueOptions([
-                'by_item_property' => 'By one item property containing both latitude and longitude', // @translate
-                'by_item_properties' => 'By two item properties, one latitude and the other longitude', // @translate
-                'by_media_property' => 'By one media property containing both latitude and longitude', // @translate
-                'by_media_properties' => 'By two media properties, one latitude and the other longitude', // @translate
+                'by_item_property' => 'Copy from one item property containing both latitude and longitude', // @translate
+                'by_item_properties' => 'Copy from two item properties, one latitude and the other longitude', // @translate
+                'by_media_property' => 'Copy from one media property containing both latitude and longitude', // @translate
+                'by_media_properties' => 'Copy from two media properties, one latitude and the other longitude', // @translate
             ]);
         $this->propertyElement = $this->formElements->get(PropertySelect::class)
             ->setName('mapping_copy_coordinates[property]')

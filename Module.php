@@ -650,10 +650,10 @@ class Module extends AbstractModule
         if (!is_array($markersData)) {
             return false;
         }
-        if (isset($coordinatesData['label_property_source']) && !in_array($coordinatesData['label_property_source'], ['item', 'primary_media'])) {
+        if (isset($coordinatesData['label_property_source']) && !in_array($coordinatesData['label_property_source'], ['item', 'primary_media', 'assigned_media'])) {
             return false;
         }
-        if (isset($coordinatesData['image']) && !in_array($coordinatesData['image'], ['', 'remove', 'primary_media'])) {
+        if (isset($coordinatesData['image']) && !in_array($coordinatesData['image'], ['', 'unassign', 'primary_media'])) {
             return false;
         }
         return true;
@@ -888,7 +888,7 @@ class Module extends AbstractModule
             // Handle marker image.
             if ('primary_media' === $image) {
                 $marker->setMedia($this->getPrimaryMedia($item));
-            } elseif ('remove' === $image) {
+            } elseif ('unassign' === $image) {
                 $marker->setMedia(null);
             }
             // Handle maker label.
@@ -898,6 +898,11 @@ class Module extends AbstractModule
                 $resourceId = null;
                 if ('primary_media' === $labelPropertySource) {
                     $media = $this->getPrimaryMedia($item);
+                    if ($media) {
+                        $resourceId = $media->getId();
+                    }
+                } elseif ('assigned_media' === $labelPropertySource) {
+                    $media = $marker->getMedia();
                     if ($media) {
                         $resourceId = $media->getId();
                     }
