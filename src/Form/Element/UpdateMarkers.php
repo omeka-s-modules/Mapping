@@ -19,6 +19,7 @@ class UpdateMarkers extends Element
 
     public function init()
     {
+        $this->setAttribute('data-collection-action', 'replace');
         $this->labelPropertyElement = $this->formElements->get(PropertySelect::class)
             ->setName('mapping_update_markers[label_property]')
             ->setEmptyOption('')

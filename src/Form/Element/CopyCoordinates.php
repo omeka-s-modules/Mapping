@@ -23,6 +23,7 @@ class CopyCoordinates extends Element
 
     public function init()
     {
+        $this->setAttribute('data-collection-action', 'replace');
         $this->copyActionElement = (new Element\Select('mapping_copy_coordinates[copy_action]'))
             ->setEmptyOption('Select copy action')
             ->setValueOptions([
