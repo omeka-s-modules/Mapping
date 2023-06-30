@@ -232,6 +232,9 @@ class Module extends AbstractModule
             'form.add_elements',
             function (Event $event) {
                 $form = $event->getTarget();
+                if ('item' !== $form->getOption('resource_type')) {
+                    return; // Include elements only on item batch edit.
+                }
 
                 $groups = $form->getOption('element_groups');
                 $groups['mapping'] = 'Mapping'; // @translate
