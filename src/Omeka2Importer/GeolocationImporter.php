@@ -15,9 +15,9 @@ class GeolocationImporter extends AbstractImporter
         }
         $response = $this->client->geolocations->get($geolocationId);
         $geolocationsData = json_decode($response->getBody(), true);
-        $resourceJson['o-module-mapping:marker'][] = [
-            'o-module-mapping:lat' => $geolocationsData['latitude'],
-            'o-module-mapping:lng' => $geolocationsData['longitude'],
+        $resourceJson['o-module-mapping:feature'][] = [
+            'o-module-mapping:geography-type' => 'point',
+            'o-module-mapping:geography-coordinates' => [$geolocationsData['longitude'], $geolocationsData['latitude']],
 
         ];
         return $resourceJson;

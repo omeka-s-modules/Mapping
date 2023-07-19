@@ -84,14 +84,32 @@ class ItemMapping extends AbstractResourceMapper
 
         $mappings = $job->getMappings();
 
-        // Set the local markers.
+        // Set the local features.
+        $remoteFeatures = $remoteResource['o-module-mapping:features'] ?? null;
+        if ($remoteFeatures) {
+            foreach ($remoteFeatures as $remoteFeature) {
+                $localFeature = [
+                    'o-module-mapping:geography-type' => $remoteResource['o-module-mapping:geography-type'],
+                    'o-module-mapping:geography-coordinates' => $remoteMarker['o-module-mapping:geography-coordinates'],
+                    'o:label' => $remoteMarker['o:label'],
+                    'o:media' => null,
+                ];
+                if (isset($remoteMarker['o:media']['o:id'])) {
+                    $localMarker['o:media'] = [
+                        'o:id' => $mappings->get('media', $remoteMarker['o:media']['o:id']),
+                    ];
+                }
+                $localResource['o-module-mapping:marker'][] = $localMarker;
+            }
+        }
+        // Map from legacy (pre-2.0) latitude and longitude keys.
         $remoteMarkers = $remoteResource['o-module-mapping:marker'] ?? null;
         if ($remoteMarkers) {
             foreach ($remoteMarkers as $remoteMarker) {
                 $localMarker = [
-                    'o-module-mapping:lat' => $remoteMarker['o-module-mapping:lat'],
-                    'o-module-mapping:lng' => $remoteMarker['o-module-mapping:lng'],
-                    'o-module-mapping:label' => $remoteMarker['o-module-mapping:label'],
+                    'o-module-mapping:geography-type' => 'Point',
+                    'o-module-mapping:geography-coordinates' => [$remoteMarker['o-module-mapping:lng'], $remoteMarker['o-module-mapping:lat']],
+                    'o:label' => $remoteMarker['o-module-mapping:label'],
                     'o:media' => null,
                 ];
                 if (isset($remoteMarker['o:media']['o:id'])) {

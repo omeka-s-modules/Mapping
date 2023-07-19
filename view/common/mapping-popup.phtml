@@ -1,0 +1,22 @@
+<?php
+$item = $feature->item();
+$media = $feature->media();
+$label = $feature->label();
+?>
+<div class="mapping-feature-popup-content" style="display:none;"
+    data-feature-id="<?php echo $this->escapeHtml($feature->id()); ?>"
+    data-feature-geography="<?php echo $this->escapeHtml(json_encode($feature->geography())); ?>"
+>
+    <?php if ($label): ?>
+    <h3><?php echo $this->escapeHtml($label); ?></h3>
+    <?php endif; ?>
+    <?php if ($media): ?>
+    <?php echo $this->thumbnail($media, 'medium'); ?>
+    <div>
+        <?php echo sprintf($this->translate('Media: %s'), $media->link($media->displayTitle())); ?>
+    </div>
+    <?php endif; ?>
+    <div>
+        <?php echo sprintf($this->translate('Item: %s'), $item->link($item->displayTitle())); ?>
+    </div>
+</div>

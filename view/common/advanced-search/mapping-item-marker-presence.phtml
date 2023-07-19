@@ -1,12 +1,12 @@
 <?php
-$element = new \Laminas\Form\Element\Select('has_markers');
-$element->setLabel($this->translate('Search by map marker presence'))
+$element = new \Laminas\Form\Element\Select('has_features');
+$element->setLabel($this->translate('Search by map feature presence'))
     ->setValueOptions([
-        '1' => $this->translate('Has map markers'),
-        '0' => $this->translate('Has no map markers'),
+        '1' => $this->translate('Has map features'),
+        '0' => $this->translate('Has no map features'),
     ])
-    ->setEmptyOption($this->translate('Select map marker presence…'))
-    ->setValue($query['has_markers'] ?? '')
-    ->setAttribute('id', 'has_markers');
+    ->setEmptyOption($this->translate('Select map feature presence…'))
+    ->setValue($query['has_features'] ?? '')
+    ->setAttribute('id', 'has_features');
 echo $this->formRow($element);
 ?>

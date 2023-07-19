@@ -50,7 +50,7 @@ class MapQuery extends AbstractMap
         // set a reasonable item limit.
         $query = array_merge($query, [
             'site_id' => $block->page()->site()->id(),
-            'has_markers' => true,
+            'has_features' => true,
             'limit' => 5000,
         ]);
         $response = $view->api()->search('items', $query);

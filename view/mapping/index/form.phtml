@@ -16,30 +16,28 @@ $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Map
 $this->headScript()->appendFile($this->assetUrl('js/control.default-view.js', 'Mapping'));
 
 $mapping = null;
-$markers = [];
+$features = [];
 $itemMedia = [];
 if (isset($item)) {
-    $mapping = $this->api()
-        ->searchOne('mappings', ['item_id' => $item->id()])->getContent();
-    $markers = $this->api()
-        ->search('mapping_markers', ['item_id' => $item->id()])->getContent();
+    $mapping = $this->api()->searchOne('mappings', ['item_id' => $item->id()])->getContent();
+    $features = $this->api()->search('mapping_features', ['item_id' => $item->id()])->getContent();
     $itemMedia = $item->media();
 }
 ?>
 <fieldset id="mapping-section" class="section">
     <legend id="mapping-legend"><?php echo $this->translate('Mapping'); ?></legend>
-    <div id="mapping-map" style="height:500px;"
+    <div id="mapping-map" style="height:700px;"
         data-mapping="<?php echo $this->escapeHtml(json_encode($mapping)); ?>"
-        data-markers="<?php echo $this->escapeHtml(json_encode($markers)); ?>"
+        data-features="<?php echo $this->escapeHtml(json_encode($features)); ?>"
     ></div>
-    <div id="mapping-marker-image-selector" class="sidebar">
+    <div id="mapping-feature-image-selector" class="sidebar">
         <a href="#" class="sidebar-close o-icon-close"><span class="screen-reader-text"><?php echo $this->translate('Close Me'); ?></span></a>
-        <h3><?php echo $this->translate('Marker Image'); ?></h3>
-        <label><input type="radio" class="mapping-marker-image-select" name="marker-image" value="" checked><?php echo $this->translate(' No Image'); ?></label>
+        <h3><?php echo $this->translate('Feature image'); ?></h3>
+        <label><input type="radio" class="mapping-feature-image-select" name="feature-image" value="" checked><?php echo $this->translate(' No Image'); ?></label>
         <?php foreach ($itemMedia as $media): ?>
         <?php if ($media->hasThumbnails()): ?>
         <label style="cursor:pointer;">
-            <input type="radio" class="mapping-marker-image-select" name="marker-image" style="display:none;"
+            <input type="radio" class="mapping-feature-image-select" name="feature-image" style="display:none;"
                 value="<?php echo $this->escapeHtml($media->id()); ?>"
                 data-media-thumbnail-url="<?php echo $this->escapeHtml($media->thumbnailUrl('medium')); ?>"
                 data-media-title="<?php echo $this->escapeHtml($media->displayTitle()); ?>">
@@ -55,9 +53,9 @@ if (isset($item)) {
     </div>
 </fieldset>
 
-<div class="mapping-marker-popup-content template">
-    <div><?php echo $this->translate('Marker Label'); ?></div>
-    <input type="text" class="mapping-marker-popup-label" size="30">
-    <div class="mapping-marker-popup-image"></div>
-    <button class="mapping-marker-popup-image-select"><?php echo $this->translate('Select Marker Image'); ?></button>
+<div class="mapping-feature-popup-content template">
+    <div><?php echo $this->translate('Feature label'); ?></div>
+    <input type="text" class="mapping-feature-popup-label" size="30">
+    <div class="mapping-feature-popup-image"></div>
+    <button class="mapping-feature-popup-image-select"><?php echo $this->translate('Select feature image'); ?></button>
 </div>

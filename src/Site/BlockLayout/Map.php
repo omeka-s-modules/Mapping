@@ -45,7 +45,7 @@ class Map extends AbstractMap
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
         $form = parent::form($view, $site, $page, $block);
-        $form .= $view->blockAttachmentsForm($block, true, ['has_markers' => true]);
+        $form .= $view->blockAttachmentsForm($block, true, ['has_features' => true]);
         return $form;
     }
 

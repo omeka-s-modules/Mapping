@@ -1,19 +1,21 @@
 <?php
 namespace Mapping;
 
+use Composer\Semver\Comparator;
 use Doctrine\ORM\Events;
 use Mapping\Db\Event\Listener\DetachOrphanMappings;
 use Omeka\Api\Exception as ApiException;
 use Omeka\Api\Request;
-use Mapping\Entity\MappingMarker;
+use Mapping\Entity\MappingFeature;
 use Mapping\Form\Element\CopyCoordinates;
-use Mapping\Form\Element\UpdateMarkers;
+use Mapping\Form\Element\UpdateFeatures;
 use Omeka\Module\AbstractModule;
 use Omeka\Permissions\Acl;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
 use Laminas\Mvc\MvcEvent;
 use Laminas\ServiceManager\ServiceLocatorInterface;
+use LongitudeOne\Spatial\PHP\Types\Geography;
 
 class Module extends AbstractModule
 {
@@ -81,7 +83,7 @@ class Module extends AbstractModule
         $em = $this->getServiceLocator()->get('Omeka\EntityManager');
         $filter = $em->getFilters()->getFilter('resource_visibility');
         $filter->addRelatedEntity('Mapping\Entity\Mapping', 'item_id');
-        $filter->addRelatedEntity('Mapping\Entity\MappingMarker', 'item_id');
+        $filter->addRelatedEntity('Mapping\Entity\MappingFeature', 'item_id');
 
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
         $acl->allow(
@@ -95,18 +97,18 @@ class Module extends AbstractModule
                 Acl::ROLE_REVIEWER,
                 Acl::ROLE_SITE_ADMIN,
             ],
-            ['Mapping\Api\Adapter\MappingMarkerAdapter',
+            ['Mapping\Api\Adapter\MappingFeatureAdapter',
              'Mapping\Api\Adapter\MappingAdapter',
-             'Mapping\Entity\MappingMarker',
+             'Mapping\Entity\MappingFeature',
              'Mapping\Entity\Mapping',
             ]
         );
 
         $acl->allow(
             null,
-            ['Mapping\Api\Adapter\MappingMarkerAdapter',
+            ['Mapping\Api\Adapter\MappingFeatureAdapter',
                 'Mapping\Api\Adapter\MappingAdapter',
-                'Mapping\Entity\MappingMarker',
+                'Mapping\Entity\MappingFeature',
             ],
             ['show', 'browse', 'read', 'search']
             );
@@ -121,18 +123,74 @@ class Module extends AbstractModule
     public function install(ServiceLocatorInterface $serviceLocator)
     {
         $conn = $serviceLocator->get('Omeka\Connection');
-        $conn->exec('CREATE TABLE mapping_marker (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, media_id INT DEFAULT NULL, lat DOUBLE PRECISION NOT NULL, lng DOUBLE PRECISION NOT NULL, `label` VARCHAR(255) DEFAULT NULL, INDEX IDX_667C9244126F525E (item_id), INDEX IDX_667C9244EA9FDD75 (media_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-        $conn->exec('CREATE TABLE mapping (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, bounds VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_49E62C8A126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci ENGINE = InnoDB;');
-        $conn->exec('ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;');
-        $conn->exec('ALTER TABLE mapping_marker ADD CONSTRAINT FK_667C9244EA9FDD75 FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE SET NULL;');
-        $conn->exec('ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;');
+        $conn->exec("CREATE TABLE mapping_feature (id INT UNSIGNED AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, media_id INT DEFAULT NULL, `label` VARCHAR(255) DEFAULT NULL, geography GEOMETRY NOT NULL COMMENT '(DC2Type:geography)', INDEX IDX_34879C46126F525E (item_id), INDEX IDX_34879C46EA9FDD75 (media_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;");
+        $conn->exec("CREATE TABLE mapping (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, bounds VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_49E62C8A126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;");
+        $conn->exec("ALTER TABLE mapping_feature ADD CONSTRAINT FK_34879C46126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;");
+        $conn->exec("ALTER TABLE mapping_feature ADD CONSTRAINT FK_34879C46EA9FDD75 FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE SET NULL;");
+        $conn->exec("ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;");
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
     {
         $conn = $serviceLocator->get('Omeka\Connection');
         $conn->exec('DROP TABLE IF EXISTS mapping;');
-        $conn->exec('DROP TABLE IF EXISTS mapping_marker');
+        $conn->exec('DROP TABLE IF EXISTS mapping_feature');
+    }
+
+    public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $services)
+    {
+        if (Comparator::lessThan($oldVersion, '2.0.0-alpha')) {
+            $this->upgradeToV2($services);
+        }
+    }
+
+    /**
+     * Upgrade to Mapping version 2.
+     *
+     * @param ServiceLocatorInterface $services
+     */
+    public function upgradeToV2(ServiceLocatorInterface $services)
+    {
+        $conn = $services->get('Omeka\Connection');
+
+        $wrap = function($num, $min, $max) {
+            $d = $max - $min;
+            return ($num === $max) ? $num : fmod(fmod($num - $min, $d) + $d, $d) + $min;
+        };
+
+        // Create the mapping_feature table.
+        $conn->exec("CREATE TABLE mapping_feature (id INT UNSIGNED AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, media_id INT DEFAULT NULL, `label` VARCHAR(255) DEFAULT NULL, geography GEOMETRY NOT NULL COMMENT '(DC2Type:geography)', INDEX IDX_34879C46126F525E (item_id), INDEX IDX_34879C46EA9FDD75 (media_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;");
+        $conn->exec("ALTER TABLE mapping_feature ADD CONSTRAINT FK_34879C46126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;");
+        $conn->exec("ALTER TABLE mapping_feature ADD CONSTRAINT FK_34879C46EA9FDD75 FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE SET NULL;");
+
+        // Prepare the insert statement.
+        $insertSql = 'INSERT INTO mapping_feature (id, item_id, media_id, `label`, geography) VALUES (:id, :item_id, :media_id, :label, ST_PointFromText(:point))';
+        $insertStmt = $conn->prepare($insertSql);
+
+        // Iterate all rows in mapping_marker, converting longitudes and
+        // latitudes to point geometries.
+        $markers = $conn->iterateAssociative('SELECT * FROM mapping_marker');
+        foreach ($markers as $marker) {
+            if (!(is_numeric($marker['lng']) && is_numeric($marker['lat']))) {
+                // Invalid coordinates. Longitude and latitude must be numeric.
+                continue;
+            }
+            // Wrap longitudes and latitudes that are outside their valid ranges
+            // into their valid geographical equivalents.
+            $longitude = $wrap($marker['lng'], -180.0, 180.0);
+            $latitude = $wrap($marker['lat'], -90.0, 90.0);
+
+            // Bind values and insert the row.
+            $insertStmt->bindValue('id', $marker['id']);
+            $insertStmt->bindValue('item_id', $marker['item_id']);
+            $insertStmt->bindValue('media_id', $marker['media_id']);
+            $insertStmt->bindValue('label', $marker['label']);
+            $insertStmt->bindValue('point', sprintf('POINT(%s %s)', $longitude, $latitude));
+            $insertStmt->executeQuery();
+        }
+
+        // Drop the mapping_marker table now that we're done with it.
+        $conn->executeStatement('DROP TABLE mapping_marker;');
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
@@ -180,7 +238,7 @@ class Module extends AbstractModule
             'view.search.filters',
             [$this, 'filterSearchFilters']
          );
-        // Add the "has_markers" filter to item search.
+        // Add the "has_features" filter to item search.
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.search.query',
@@ -220,7 +278,7 @@ class Module extends AbstractModule
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.hydrate.post',
-            [$this, 'handleMarkers']
+            [$this, 'handleFeatures']
         );
         $sharedEventManager->attach(
             'Omeka\Form\SiteSettingsForm',
@@ -242,10 +300,10 @@ class Module extends AbstractModule
 
                 $form->add([
                     'type' => 'checkbox',
-                    'name' => 'mapping_delete_markers',
+                    'name' => 'mapping_delete_features',
                     'options' => [
                         'element_group' => 'mapping',
-                        'label' => 'Delete markers', // @translate
+                        'label' => 'Delete features', // @translate
                     ],
                 ]);
                 $form->add([
@@ -257,11 +315,11 @@ class Module extends AbstractModule
                     ],
                 ]);
                 $form->add([
-                    'type' => UpdateMarkers::class,
-                    'name' => 'mapping_update_markers',
+                    'type' => UpdateFeatures::class,
+                    'name' => 'mapping_update_features',
                     'options' => [
                         'element_group' => 'mapping',
-                        'label' => 'Update markers', // @translate
+                        'label' => 'Update features', // @translate
                     ],
                 ]);
             }
@@ -272,14 +330,14 @@ class Module extends AbstractModule
             function (Event $event) {
                 $data = $event->getParam('data');
                 $rawData = $event->getParam('request')->getContent();
-                if (isset($rawData['mapping_delete_markers'])) {
-                    $data['mapping_delete_markers'] = $rawData['mapping_delete_markers'];
+                if (isset($rawData['mapping_delete_features'])) {
+                    $data['mapping_delete_features'] = $rawData['mapping_delete_features'];
                 }
                 if ($this->copyCoordinatesDataIsValid($rawData)) {
                     $data['mapping_copy_coordinates'] = $rawData['mapping_copy_coordinates'];
                 }
-                if ($this->updateMarkersDataIsValid($rawData)) {
-                    $data['mapping_update_markers'] = $rawData['mapping_update_markers'];
+                if ($this->updateFeaturesDataIsValid($rawData)) {
+                    $data['mapping_update_features'] = $rawData['mapping_update_features'];
                 }
                 $event->setParam('data', $data);
             }
@@ -287,7 +345,7 @@ class Module extends AbstractModule
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.update.post',
-            [$this, 'deleteMarkers'],
+            [$this, 'deleteFeatures'],
             30
         );
         $sharedEventManager->attach(
@@ -299,7 +357,7 @@ class Module extends AbstractModule
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
             'api.update.post',
-            [$this, 'updateMarkers'],
+            [$this, 'updateFeatures'],
             10
         );
     }
@@ -383,10 +441,10 @@ class Module extends AbstractModule
         $query = $event->getParam('query');
         $filters = $event->getParam('filters');
 
-        // Add the marker presence search filter label.
-        if (isset($query['has_markers']) && in_array($query['has_markers'], ['0', '1'])) {
-            $filterLabel = $view->translate('Map marker presence');
-            $filters[$filterLabel][] = $query['has_markers'] ? $view->translate('Has map markers') : $view->translate('Has no map markers');
+        // Add the feature presence search filter label.
+        if (isset($query['has_features']) && in_array($query['has_features'], ['0', '1'])) {
+            $filterLabel = $view->translate('Map feature presence');
+            $filters[$filterLabel][] = $query['has_features'] ? $view->translate('Has map features') : $view->translate('Has no map features');
         }
         // Add the geographic location search filter label.
         $address = $query['mapping_address'] ?? null;
@@ -404,27 +462,27 @@ class Module extends AbstractModule
         $itemAdapter = $event->getTarget();
         $qb = $event->getParam('queryBuilder');
         $query = $event->getParam('request')->getContent();
-        if (isset($query['has_markers']) && (is_numeric($query['has_markers']) || is_bool($query['has_markers']))) {
-            $mappingMarkerAlias = $itemAdapter->createAlias();
-            if ($query['has_markers']) {
+        if (isset($query['has_features']) && (is_numeric($query['has_features']) || is_bool($query['has_features']))) {
+            $mappingFeatureAlias = $itemAdapter->createAlias();
+            if ($query['has_features']) {
                 $qb->innerJoin(
-                    'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
-                    'WITH', "$mappingMarkerAlias.item = omeka_root.id"
+                    'Mapping\Entity\MappingFeature', $mappingFeatureAlias,
+                    'WITH', "$mappingFeatureAlias.item = omeka_root.id"
                 );
             } else {
                 $qb->leftJoin(
-                    'Mapping\Entity\MappingMarker', $mappingMarkerAlias,
-                    'WITH', "$mappingMarkerAlias.item = omeka_root.id"
+                    'Mapping\Entity\MappingFeature', $mappingFeatureAlias,
+                    'WITH', "$mappingFeatureAlias.item = omeka_root.id"
                 );
-                $qb->andWhere($qb->expr()->isNull($mappingMarkerAlias));
+                $qb->andWhere($qb->expr()->isNull($mappingFeatureAlias));
             }
         }
         $address = $query['mapping_address'] ?? null;
         $radius = $query['mapping_radius'] ?? null;
         $radiusUnit = $query['mapping_radius_unit'] ?? null;
         if (isset($address) && '' !== trim($address) && isset($radius) && is_numeric($radius)) {
-            $mappingMarkerAdapter = $itemAdapter->getAdapter('mapping_markers');
-            $mappingMarkerAdapter->buildGeographicLocationQuery($qb, $address, $radius, $radiusUnit, $itemAdapter);
+            $mappingFeatureAdapter = $itemAdapter->getAdapter('mapping_features');
+            $mappingFeatureAdapter->buildGeographicLocationQuery($qb, $address, $radius, $radiusUnit, $itemAdapter);
         }
     }
 
@@ -446,9 +504,7 @@ class Module extends AbstractModule
         if ('view.show.section_nav' === $event->getName()) {
             // Don't render the mapping tab if there is no mapping data.
             $itemJson = $event->getParam('resource')->jsonSerialize();
-            if (!isset($itemJson['o-module-mapping:marker'])
-                && !isset($itemJson['o-module-mapping:mapping'])
-            ) {
+            if (!isset($itemJson['o-module-mapping:feature']) && !isset($itemJson['o-module-mapping:mapping'])) {
                 return;
             }
         }
@@ -458,7 +514,7 @@ class Module extends AbstractModule
     }
 
     /**
-     * Add the mapping and marker data to the item JSON-LD.
+     * Add the mapping and feature data to the item JSON-LD.
      *
      * Event $event
      */
@@ -473,11 +529,11 @@ class Module extends AbstractModule
             // There's zero or one mapping per item.
             $jsonLd['o-module-mapping:mapping'] = $mapping;
         }
-        // Add marker data.
-        $response = $api->search('mapping_markers', ['item_id' => $item->id()]);
-        foreach ($response->getContent() as $marker) {
-            // There's zero or more markers per item.
-            $jsonLd['o-module-mapping:marker'][] = $marker;
+        // Add feature data.
+        $response = $api->search('mapping_features', ['item_id' => $item->id()]);
+        foreach ($response->getContent() as $feature) {
+            // There's zero or more features per item.
+            $jsonLd['o-module-mapping:feature'][] = $feature;
         }
 
         $event->setParam('jsonLd', $jsonLd);
@@ -549,58 +605,58 @@ class Module extends AbstractModule
     }
 
     /**
-     * Handle hydration for marker data.
+     * Handle hydration for feature data.
      *
      * @param Event $event
      */
-    public function handleMarkers(Event $event)
+    public function handleFeatures(Event $event)
     {
         $itemAdapter = $event->getTarget();
         $request = $event->getParam('request');
 
-        if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:marker')) {
+        if (!$itemAdapter->shouldHydrate($request, 'o-module-mapping:feature')) {
             return;
         }
 
         $item = $event->getParam('entity');
         $entityManager = $itemAdapter->getEntityManager();
-        $markersAdapter = $itemAdapter->getAdapter('mapping_markers');
-        $retainMarkerIds = [];
+        $featuresAdapter = $itemAdapter->getAdapter('mapping_features');
+        $retainFeatureIds = [];
 
-        $existingMarkers = [];
+        $existingFeatures = [];
         if ($item->getId()) {
-            $dql = 'SELECT mm FROM Mapping\Entity\MappingMarker mm INDEX BY mm.id WHERE mm.item = ?1';
+            $dql = 'SELECT mf FROM Mapping\Entity\MappingFeature mf INDEX BY mf.id WHERE mf.item = ?1';
             $query = $entityManager->createQuery($dql)->setParameter(1, $item->getId());
-            $existingMarkers = $query->getResult();
+            $existingFeatures = $query->getResult();
         }
 
-        // Create/update markers passed in the request.
-        foreach ($request->getValue('o-module-mapping:marker', []) as $markerData) {
-            if (isset($markerData['o:id'])) {
-                if (!isset($existingMarkers[$markerData['o:id']])) {
-                    // This marker belongs to another item. Ignore it.
+        // Create/update features passed in the request.
+        foreach ($request->getValue('o-module-mapping:feature', []) as $featureData) {
+            if (isset($featureData['o:id'])) {
+                if (!isset($existingFeatures[$featureData['o:id']])) {
+                    // This feature belongs to another item. Ignore it.
                     continue;
                 }
-                $subRequest = new \Omeka\Api\Request('update', 'mapping_markers');
-                $subRequest->setId($markerData['o:id']);
-                $subRequest->setContent($markerData);
-                $marker = $markersAdapter->findEntity($markerData['o:id'], $subRequest);
-                $markersAdapter->hydrateEntity($subRequest, $marker, new \Omeka\Stdlib\ErrorStore);
-                $retainMarkerIds[] = $marker->getId();
+                $subRequest = new \Omeka\Api\Request('update', 'mapping_features');
+                $subRequest->setId($featureData['o:id']);
+                $subRequest->setContent($featureData);
+                $feature = $featuresAdapter->findEntity($featureData['o:id'], $subRequest);
+                $featuresAdapter->hydrateEntity($subRequest, $feature, new \Omeka\Stdlib\ErrorStore);
+                $retainFeatureIds[] = $feature->getId();
             } else {
-                $subRequest = new \Omeka\Api\Request('create', 'mapping_markers');
-                $subRequest->setContent($markerData);
-                $marker = new \Mapping\Entity\MappingMarker;
-                $marker->setItem($item);
-                $markersAdapter->hydrateEntity($subRequest, $marker, new \Omeka\Stdlib\ErrorStore);
-                $entityManager->persist($marker);
+                $subRequest = new \Omeka\Api\Request('create', 'mapping_features');
+                $subRequest->setContent($featureData);
+                $feature = new \Mapping\Entity\MappingFeature;
+                $feature->setItem($item);
+                $featuresAdapter->hydrateEntity($subRequest, $feature, new \Omeka\Stdlib\ErrorStore);
+                $entityManager->persist($feature);
             }
         }
 
-        // Delete existing markers not passed in the request.
-        foreach ($existingMarkers as $existingMarkerId => $existingMarker) {
-            if (!in_array($existingMarkerId, $retainMarkerIds)) {
-                $entityManager->remove($existingMarker);
+        // Delete existing features not passed in the request.
+        foreach ($existingFeatures as $existingFeatureId => $existingFeature) {
+            if (!in_array($existingFeatureId, $retainFeatureIds)) {
+                $entityManager->remove($existingFeature);
             }
         }
     }
@@ -642,51 +698,51 @@ class Module extends AbstractModule
     }
 
     /**
-     * Does the passed data contain valid update-markers data?
+     * Does the passed data contain valid update-features data?
      *
      * @param array $data
      * return bool
      */
-    public function updateMarkersDataIsValid(array $data)
+    public function updateFeaturesDataIsValid(array $data)
     {
-        $markersData = $data['mapping_update_markers'] ?? null;
-        if (!is_array($markersData)) {
+        $featuresData = $data['mapping_update_features'] ?? null;
+        if (!is_array($featuresData)) {
             return false;
         }
-        if (isset($coordinatesData['label_property_source']) && !in_array($coordinatesData['label_property_source'], ['item', 'primary_media', 'assigned_media'])) {
+        if (isset($featuresData['label_property_source']) && !in_array($featuresData['label_property_source'], ['item', 'primary_media', 'assigned_media'])) {
             return false;
         }
-        if (isset($coordinatesData['image']) && !in_array($coordinatesData['image'], ['', 'unassign', 'primary_media'])) {
+        if (isset($featuresData['image']) && !in_array($featuresData['image'], ['', 'unassign', 'primary_media'])) {
             return false;
         }
         return true;
     }
 
     /**
-     * Delete markers.
+     * Delete features.
      *
      * @param Event $event
      */
-    public function deleteMarkers(Event $event)
+    public function deleteFeatures(Event $event)
     {
         $data = $event->getParam('request')->getContent();
         $item = $event->getParam('response')->getContent();
 
-        if (!(isset($data['mapping_delete_markers']) && $data['mapping_delete_markers'])) {
+        if (!(isset($data['mapping_delete_features']) && $data['mapping_delete_features'])) {
             return;
         }
 
         $services = $this->getServiceLocator();
         $entityManager = $services->get('Omeka\EntityManager');
 
-        $dql = 'DELETE FROM Mapping\Entity\MappingMarker m WHERE m.item = :item_id';
+        $dql = 'DELETE FROM Mapping\Entity\MappingFeature m WHERE m.item = :item_id';
         $entityManager->createQuery($dql)
             ->setParameter('item_id', $item->getId())
             ->execute();
     }
 
     /**
-     * Copy coordinates from property values to mapping markers.
+     * Copy coordinates from property values to mapping features.
      *
      * @param Event $event
      */
@@ -720,11 +776,11 @@ class Module extends AbstractModule
         $dqlMedia = 'SELECT m
             FROM Omeka\Entity\Media m
             WHERE m.item = :item_id';
-        $dqlMarker = 'SELECT m
-            FROM Mapping\Entity\MappingMarker m
-            WHERE m.item = :item_id
-            AND ABS(m.lat - :lat) < 0.000001
-            AND ABS(m.lng - :lng) < 0.000001';
+        $dqlFeature = "SELECT f
+            FROM Mapping\Entity\MappingFeature f
+            WHERE f.item = :item_id
+            AND ST_GeometryType(f.geography) = 'POINT'
+            AND ST_Intersects(ST_Buffer(ST_GeomFromText(:buffer_center_point), 0.00001), f.geography) = 1";
 
         $allCoordinates = [];
         // By one item property containing both latitude and longitude
@@ -826,50 +882,49 @@ class Module extends AbstractModule
             }
 
             // Handle duplicate coordinates. For this purpose, duplicates are
-            // those with a difference of less than 0.000001. That's a difference
-            // of 0° 00′ 0.0036″ DMS, or 11.1-43.5 mm. At this precision there is
-            // no noticable difference between coordinates on map on maximum zoom.
+            // those with a difference of less than 0.00001. That's a difference
+            // of 0° 00′ 0.036″ DMS, or 1.11 m. At this precision, markers are
+            // near indistinguishable on the map on maximum zoom.
             // @see https://en.wikipedia.org/wiki/Decimal_degrees#Precision
-            $marker = $entityManager->createQuery($dqlMarker)
+            $feature = $entityManager->createQuery($dqlFeature)
                 ->setParameter('item_id', $item->getId())
-                ->setParameter('lat', $lat)
-                ->setParameter('lng', $lng)
+                ->setParameter('buffer_center_point', sprintf('POINT(%s %s)', $lng, $lat))
                 ->setMaxResults(1)
                 ->getOneOrNullResult();
-            if ($marker) {
-                // This marker already exists.
+            if ($feature) {
+                // This feature already exists.
             } else {
-                // This marker does not exist. Create it.
-                $marker = new MappingMarker;
-                $marker->setLat($lat);
-                $marker->setLng($lng);
-                $marker->setItem($item);
-                $entityManager->persist($marker);
+                // This feature does not exist. Create it.
+                $point = new Geography\Point($lng, $lat);
+                $feature = new MappingFeature;
+                $feature->setItem($item);
+                $feature->setGeography($point);
+                $entityManager->persist($feature);
             }
-            // Assign media to marker if directed to do so.
+            // Assign media to feature if directed to do so.
             if (in_array($copyAction, ['by_media_property', 'by_media_properties']) && $assignMedia) {
                 $media = $entityManager->find('Omeka\Entity\Media', $key);
-                $marker->setMedia($media);
+                $feature->setMedia($media);
             }
         }
         $entityManager->flush();
     }
 
     /**
-     * Update markers.
+     * Update features.
      *
      * @param Event $event
      */
-    public function updateMarkers(Event $event)
+    public function updateFeatures(Event $event)
     {
         $data = $event->getParam('request')->getContent();
         $item = $event->getParam('response')->getContent();
 
-        if (!$this->updateMarkersDataIsValid($data)) {
+        if (!$this->updateFeaturesDataIsValid($data)) {
             return;
         }
 
-        $data = $data['mapping_update_markers'];
+        $data = $data['mapping_update_features'];
 
         $labelPropertyId = $data['label_property'] ?? null;
         $labelPropertySource = $data['label_property_source'] ?? null;
@@ -879,24 +934,24 @@ class Module extends AbstractModule
         $entityManager = $services->get('Omeka\EntityManager');
 
         $dql = 'SELECT m
-            FROM Mapping\Entity\MappingMarker m
+            FROM Mapping\Entity\MappingFeature m
             WHERE m.item = :item_id';
-        $markers = $entityManager->createQuery($dql)
+        $features = $entityManager->createQuery($dql)
             ->setParameter('item_id', $item->getId())
             ->getResult();
-        if (!$markers) {
-            return; // Markers don't exist. Do nothing.
+        if (!$features) {
+            return; // Features don't exist. Do nothing.
         }
-        foreach ($markers as $marker) {
-            // Handle marker image.
+        foreach ($features as $feature) {
+            // Handle feature image.
             if ('primary_media' === $image) {
-                $marker->setMedia($this->getPrimaryMedia($item));
+                $feature->setMedia($this->getPrimaryMedia($item));
             } elseif ('unassign' === $image) {
-                $marker->setMedia(null);
+                $feature->setMedia(null);
             }
             // Handle maker label.
             if ('-1' === $labelPropertyId) {
-                $marker->setLabel(null);
+                $feature->setLabel(null);
             } elseif (is_numeric($labelPropertyId)) {
                 $resourceId = null;
                 if ('primary_media' === $labelPropertySource) {
@@ -905,7 +960,7 @@ class Module extends AbstractModule
                         $resourceId = $media->getId();
                     }
                 } elseif ('assigned_media' === $labelPropertySource) {
-                    $media = $marker->getMedia();
+                    $media = $feature->getMedia();
                     if ($media) {
                         $resourceId = $media->getId();
                     }
@@ -925,11 +980,11 @@ class Module extends AbstractModule
                         ->setMaxResults(1)
                         ->getOneOrNullResult();
                     if ($value) {
-                        $marker->setLabel(mb_substr($value->getValue(), 0, 255));
+                        $feature->setLabel(mb_substr($value->getValue(), 0, 255));
                     }
                 }
             }
-            $entityManager->persist($marker);
+            $entityManager->persist($feature);
         }
         $entityManager->flush();
     }

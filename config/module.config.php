@@ -7,7 +7,7 @@ return [
     'api_adapters' => [
         'invokables' => [
             'mappings' => Api\Adapter\MappingAdapter::class,
-            'mapping_markers' => Api\Adapter\MappingMarkerAdapter::class,
+            'mapping_features' => Api\Adapter\MappingFeatureAdapter::class,
         ],
     ],
     'entity_manager' => [
@@ -16,6 +16,17 @@ return [
         ],
         'proxy_paths' => [
             dirname(__DIR__) . '/data/doctrine-proxies',
+        ],
+        'data_types' => [
+            'geography' => \LongitudeOne\Spatial\DBAL\Types\GeographyType::class,
+        ],
+        'functions' => [
+            'numeric' => [
+                'ST_Buffer' => 'Mapping\Spatial\ORM\Query\AST\Functions\StBuffer',
+                'ST_Intersects' => 'LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StIntersects',
+                'ST_GeomFromText' => 'LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeomFromText',
+                'ST_GeometryType' => 'LongitudeOne\Spatial\ORM\Query\AST\Functions\Standard\StGeometryType',
+            ],
         ],
     ],
     'view_manager' => [
@@ -27,7 +38,7 @@ return [
         'invokables' => [
             'formPromptMap' => Collecting\FormPromptMap::class,
             'formMappingCopyCoordinates' => View\Helper\CopyCoordinates::class,
-            'formMappingUpdateMarkers' => View\Helper\UpdateMarkers::class,
+            'formMappingUpdateFeatures' => View\Helper\UpdateFeatures::class,
         ],
         'delegators' => [
             'Laminas\Form\View\Helper\FormElement' => [
@@ -38,7 +49,7 @@ return [
     'form_elements' => [
         'factories' => [
            'Mapping\Form\Element\CopyCoordinates' => Service\Form\Element\CopyCoordinatesFactory::class,
-           'Mapping\Form\Element\UpdateMarkers' => Service\Form\Element\UpdateMarkersFactory::class,
+           'Mapping\Form\Element\UpdateFeatures' => Service\Form\Element\UpdateFeaturesFactory::class,
         ],
     ],
     'csv_import' => [
