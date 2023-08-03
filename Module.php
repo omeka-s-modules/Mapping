@@ -925,7 +925,7 @@ class Module extends AbstractModule
                         ->setMaxResults(1)
                         ->getOneOrNullResult();
                     if ($value) {
-                        $marker->setLabel($value->getValue());
+                        $marker->setLabel(mb_substr($value->getValue(), 0, 255));
                     }
                 }
             }
