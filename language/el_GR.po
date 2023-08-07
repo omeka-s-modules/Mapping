@@ -4,9 +4,7 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Caroline Derauw <caroline.derauw@uclouvain.be>, 2017
-# BADEY Sylvain <mali2003@free.fr>, 2018
-# Daniel Berthereau <daniel.transifex@berthereau.net>, 2019
+# Yannis Kaskamanidis <kiolalis@gmail.com>, 2023
 # 
 #, fuzzy
 msgid ""
@@ -15,117 +13,129 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2023-08-07 12:55-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Daniel Berthereau <daniel.transifex@berthereau.net>, 2019\n"
-"Language-Team: French (https://app.transifex.com/omeka/teams/14184/fr/)\n"
+"Last-Translator: Yannis Kaskamanidis <kiolalis@gmail.com>, 2023\n"
+"Language-Team: Greek (Greece) (https://app.transifex.com/omeka/teams/14184/el_GR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: fr\n"
-"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+"Language: el_GR\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #: Module.php:388
 msgid "Map marker presence"
-msgstr ""
+msgstr "Παρουσία δείκτη χάρτη"
 
 #: Module.php:389
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:5
 msgid "Has map markers"
-msgstr ""
+msgstr "Διαθέτει δείκτες χάρτη"
 
 #: Module.php:389
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:6
 msgid "Has no map markers"
-msgstr ""
+msgstr "Δεν διαθέτει δείκτες χάρτη"
 
 #: Module.php:396
 msgid "Geographic location"
-msgstr ""
+msgstr "Γεωγραφική θέση"
 
 #: Module.php:456 view/admin/csv-mapping.phtml:3
 #: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
-msgstr "Carte"
+msgstr "Χαρτογράφηση"
 
 #: src/Collecting/FormPromptMap.php:30
 msgid "Enter a marker label"
-msgstr ""
+msgstr "Εισαγωγή μιας ετικέτας δείκτη"
 
 #: src/Site/BlockLayout/AbstractMap.php:58
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
-msgstr ""
+msgstr "Πάροχος χάρτη υπόβαθρου"
 
 #: src/Site/BlockLayout/AbstractMap.php:59
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
 msgstr ""
+"Επιλέξτε τον πάροχο του χάρτη υπόβαθρου. Η προεπιλογή είναι "
+"OpenStreetMap.Mapnik. Αυτοί οι πάροχοι προσφέρονται ως έχουν. Δεν υπάρχει "
+"εγγύηση για υποστήριξη ή ταχύτητα."
 
 #: src/Site/BlockLayout/AbstractMap.php:65
 msgid "Minimum zoom level"
-msgstr ""
+msgstr "Ελάχιστο επίπεδο εστίασης"
 
 #: src/Site/BlockLayout/AbstractMap.php:66
 msgid ""
 "The minimum zoom level down to which the map will be displayed. The default "
 "is 0."
 msgstr ""
+"Το ελάχιστο επίπεδο εστίασης στο οποίο θα εμφανίζεται ο χάρτης. Η προεπιλογή"
+" είναι 0."
 
 #: src/Site/BlockLayout/AbstractMap.php:73
 msgid "Maximum zoom level"
-msgstr ""
+msgstr "Μέγιστο επίπεδο εστίασης"
 
 #: src/Site/BlockLayout/AbstractMap.php:74
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
 msgstr ""
+"Καθορίστε το μέγιστο επίπεδο εστίασης μέχρι το οποίο θα εμφανίζεται ο "
+"χάρτης. Η προεπιλογή είναι 19."
 
 #: src/Site/BlockLayout/AbstractMap.php:81
 msgid "Scroll wheel zoom"
-msgstr ""
+msgstr "Εστίαση με τον τροχό του ποντικιού"
 
 #: src/Site/BlockLayout/AbstractMap.php:82
 msgid ""
 "Set whether users can zoom with their mouse wheel when hovering over the "
 "map, either automatically upon page load or after clicking inside the map."
 msgstr ""
+"Καθορίστε εάν οι χρήστες μπορούν να εστιάζουν με τον τροχό του ποντικιού "
+"τους όταν ο δείκτης του αιωρείται πάνω από τον χάρτη, είτε αυτόματα κατά τη "
+"φόρτωση της σελίδας είτε αφού κάνουν κλικ πάνω στον χάρτη."
 
 #: src/Site/BlockLayout/AbstractMap.php:85
 msgid "Enabled"
-msgstr ""
+msgstr "Ενεργοποιημένο"
 
 #: src/Site/BlockLayout/AbstractMap.php:86
 msgid "Disabled"
-msgstr ""
+msgstr "Απενεργοποιημένο"
 
 #: src/Site/BlockLayout/AbstractMap.php:87
 msgid "Disabled until map click"
-msgstr ""
+msgstr "Απενεργοποιημένο μέχρι να γίνει κλικ στον χάρτη"
 
 #: src/Site/BlockLayout/MapQuery.php:32
 msgid "Attach items using this query. No query means all items."
 msgstr ""
+"Επισυνάψτε αντικείμενα χρησιμοποιώντας αυτό το ερώτημα. Κανένα ερώτημα "
+"σημαίνει όλα τα αντικείμενα."
 
 #: view/admin/csv-mapping.phtml:7
 msgid "Select below"
-msgstr "Choisir ci-dessous"
+msgstr "Επιλέξτε παρακάτω"
 
 #: view/admin/csv-mapping.phtml:8
 msgid "Latitude"
-msgstr "Latitude"
+msgstr "Γεωγραφικό πλάτος"
 
 #: view/admin/csv-mapping.phtml:9
 msgid "Longitude"
-msgstr "Longitude"
+msgstr "Γεωγραφικό μήκος"
 
 #: view/admin/csv-mapping.phtml:10
 msgid "Latitude/Longitude"
-msgstr "Latitude/Longitude"
+msgstr "Γεωγραφικό πλάτος/Γεωγραφικό μήκος"
 
 #: view/admin/csv-mapping.phtml:11
 msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
-msgstr ""
+msgstr "Προεπιλεγμένα όρια (sw_lng,sw_lat,ne_lng,ne_lat)"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:5
 msgid "Address"
@@ -141,11 +151,11 @@ msgstr ""
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:16
 msgid "Kilometers"
-msgstr "Kilomètres"
+msgstr "Χιλιόμετρα"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:17
 msgid "Miles"
-msgstr "Miles"
+msgstr "Μίλια"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:27
 msgid "Search by geographic location"
@@ -153,11 +163,11 @@ msgstr ""
 
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:3
 msgid "Search by map marker presence"
-msgstr ""
+msgstr "Αναζήτηση βάσει παρουσίας δείκτη χάρτη"
 
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:8
 msgid "Select map marker presence…"
-msgstr ""
+msgstr "Επιλογή παρουσίας δείκτη χάρτη…"
 
 #: view/common/batch-update/mapping-copy-coordinates.phtml:6
 msgid "Order"
@@ -181,7 +191,7 @@ msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
-msgstr "Vue par défaut"
+msgstr "Προεπιλεγμένη Προβολή"
 
 #: view/common/block-layout/mapping-block-form.phtml:28
 #, php-format
@@ -189,186 +199,195 @@ msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
 "%s."
 msgstr ""
+"Καθορίστε την προεπιλεγμένη προβολή χρησιμοποιώντας τα στοιχεία ελέγχου του "
+"χάρτη. Το τρέχον επίπεδο εστίασης είναι %s."
 
 #: view/common/block-layout/mapping-block-form.phtml:36
 msgid "WMS Overlays"
-msgstr "Couches WMS"
+msgstr "Επικαλύψεις WMS"
 
 #: view/common/block-layout/mapping-block-form.phtml:38
 msgid ""
 "Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
 "which overlay you want open by default."
 msgstr ""
-"Ajouter, modifier et supprimer les couches Web Map Service (WMS) ci-dessous."
-" Vous pouvez cocher quelles couches vous voulez ouvrir par défaut."
+"Προσθήκη, επεξεργασία και διαγραφή των επικαλύψεων της Υπηρεσίας Χαρτών "
+"Ιστού (WMS) παρακάτω. Μπορείτε να ελέγξετε ποια επικάλυψη θέλετε να ανοίγει "
+"από προεπιλογή."
 
 #: view/common/block-layout/mapping-block-form.phtml:72
 msgid "Base URL"
-msgstr "URL de base"
+msgstr "Βασική διεύθυνση URL"
 
 #: view/common/block-layout/mapping-block-form.phtml:81
 msgid "Layers"
-msgstr "Couches"
+msgstr "Στρώσεις"
 
 #: view/common/block-layout/mapping-block-form.phtml:83
 msgid "The WMS layers, if any (comma-separated)."
-msgstr "Les couches WMS, le cas échéant (séparées par des virgules)."
+msgstr "Οι WMS στρώσεις, εάν υπάρχει κάποια (χωρισμένες με κόμμα)."
 
 #: view/common/block-layout/mapping-block-form.phtml:94
 msgid "The WMS styles, if any (comma-separated)."
-msgstr "Les styles WMS, le cas échéant (séparées par des virgules)."
+msgstr "Τα WMS στυλ, εάν υπάρχει κάποιο (χωρισμένα με κόμμα)."
 
 #: view/common/block-layout/mapping-block-form.phtml:102
 msgid "Add Overlay"
-msgstr "Ajouter une couche"
+msgstr "Προσθήκη επικάλυψης"
 
 #: view/common/block-layout/mapping-block-form.phtml:103
 msgid "Save Changes"
-msgstr "Sauvegarder les changements"
+msgstr "Αποθήκευση αλλαγών"
 
 #: view/common/block-layout/mapping-block-form.phtml:104
 msgid "Clear Inputs"
-msgstr "Supprimer les entrées"
+msgstr "Εκκαθάριση εισακτέων"
 
 #: view/common/block-layout/mapping-block-form.phtml:108
 msgid "Timeline"
-msgstr ""
+msgstr "Χρονογραμμή"
 
 #: view/common/block-layout/mapping-block-form.phtml:112
 msgid "Title headline"
-msgstr ""
+msgstr "Επικεφαλίδα τίτλου"
 
 #: view/common/block-layout/mapping-block-form.phtml:127
 msgid "Title text"
-msgstr ""
+msgstr "Κείμενο τίτλου"
 
 #: view/common/block-layout/mapping-block-form.phtml:143
 msgid "Fly to"
-msgstr ""
+msgstr "Μετάβαση στο"
 
 #: view/common/block-layout/mapping-block-form.phtml:146
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
+"Επιλέξτε την προβολή χάρτη στην οποία θα μεταβείτε κατά την πλοήγηση μεταξύ "
+"συμβάντων."
 
 #: view/common/block-layout/mapping-block-form.phtml:153
 msgid "Default view"
-msgstr ""
+msgstr "Προεπιλεγμένη προβολή"
 
 #: view/common/block-layout/mapping-block-form.phtml:154
 msgid "Event marker, zoom 0"
-msgstr ""
+msgstr "Δείκτης συμβάντος, εστίαση 0"
 
 #: view/common/block-layout/mapping-block-form.phtml:155
 msgid "Event marker, zoom 2"
-msgstr ""
+msgstr "Δείκτης συμβάντος, εστίαση 2"
 
 #: view/common/block-layout/mapping-block-form.phtml:156
 msgid "Event marker, zoom 4"
-msgstr ""
+msgstr "Δείκτης συμβάντος, εστίαση 4"
 
 #: view/common/block-layout/mapping-block-form.phtml:157
 msgid "Event marker, zoom 6"
-msgstr ""
+msgstr "Δείκτης συμβάντος, εστίαση 6"
 
 #: view/common/block-layout/mapping-block-form.phtml:158
 msgid "Event marker, zoom 8"
-msgstr ""
+msgstr "Δείκτης συμβάντος, εστίαση 8"
 
 #: view/common/block-layout/mapping-block-form.phtml:159
 msgid "Event marker, zoom 10"
-msgstr ""
+msgstr "Δείκτης συμβάντος, εστίαση 10"
 
 #: view/common/block-layout/mapping-block-form.phtml:160
 msgid "Event marker, zoom 12"
-msgstr ""
+msgstr "Δείκτης συμβάντος, εστίαση 12"
 
 #: view/common/block-layout/mapping-block-form.phtml:161
 msgid "Event marker, zoom 14"
-msgstr ""
+msgstr "Δείκτης συμβάντος, εστίαση 14"
 
 #: view/common/block-layout/mapping-block-form.phtml:162
 msgid "Event marker, zoom 16"
-msgstr ""
+msgstr "Δείκτης συμβάντος, εστίαση 16"
 
 #: view/common/block-layout/mapping-block-form.phtml:163
 msgid "Event marker, zoom 18"
-msgstr ""
+msgstr "Δείκτης συμβάντος, εστίαση 18"
 
 #: view/common/block-layout/mapping-block-form.phtml:174
 msgid "Show contemporaneous events?"
-msgstr ""
+msgstr "Εμφάνιση ταυτόχρονων γεγονότων;"
 
 #: view/common/block-layout/mapping-block-form.phtml:177
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
 msgstr ""
+"Επιλέξτε αυτό εάν θέλετε να εμφανίζονται στον χάρτη όλα τα συμβάντα που "
+"συμβαίνουν ταυτόχρονα με το τρέχον συμβάν (μόνο στην προεπιλεγμένη προβολή)."
 
 #: view/common/block-layout/mapping-block-form.phtml:192
 msgid "Timeline navigation position"
-msgstr ""
+msgstr "Θέση πλοήγησης στη χρονογραμμή"
 
 #: view/common/block-layout/mapping-block-form.phtml:195
 msgid "Select the position of the timeline navigation."
-msgstr ""
+msgstr "Επιλέξτε τη θέση της πλοήγησης στη χρονογραμμή."
 
 #: view/common/block-layout/mapping-block-form.phtml:203
 msgid "Full width, below story slider and map"
-msgstr ""
+msgstr "Πλήρες πλάτος, κάτω από το ρυθμιστικό αφήγησης και τον χάρτη"
 
 #: view/common/block-layout/mapping-block-form.phtml:204
 msgid "Full width, above story slider and map"
-msgstr ""
+msgstr "Πλήρες πλάτος, πάνω από το ρυθμιστικό αφήγησης και τον χάρτη"
 
 #: view/common/block-layout/mapping-block-form.phtml:218
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
 msgstr ""
+"Επιλέξτε τη χρονική σήμανση ή την ιδιότητα διαστήματος που θα "
+"χρησιμοποιήσετε κατά τη συμπλήρωση της χρονογραμμής."
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:12
 #: view/mapping/index/show.phtml:46
 #, php-format
 msgid "Item: %s"
-msgstr "Contenu : “%s”"
+msgstr "Αντικείμενο: %s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
 #: view/mapping/index/show.phtml:42
 #, php-format
 msgid "Media: %s"
-msgstr "Média : “%s”"
+msgstr "Πολυμέσο: %s"
 
 #: view/mapping/index/form.phtml:36
 msgid "Close Me"
-msgstr "Fermer"
+msgstr "Κλείσε με"
 
 #: view/mapping/index/form.phtml:37
 msgid "Marker Image"
-msgstr "Image de la fenêtre contextuelle"
+msgstr "Εικόνα δείκτη"
 
 #: view/mapping/index/form.phtml:38
 msgid " No Image"
-msgstr "Pas d'image"
+msgstr "Χωρίς εικόνα"
 
 #: view/mapping/index/form.phtml:59
 msgid "Marker Label"
-msgstr "Étiquette de la fenêtre contextuelle"
+msgstr "Ετικέτα δείκτη"
 
 #: view/mapping/index/form.phtml:62
 msgid "Select Marker Image"
-msgstr "Sélectionner l'image de la fenêtre contextuelle"
+msgstr "Επιλογή εικόνας δείκτη"
 
 #: view/mapping/site/index/browse.phtml:25
 msgid "Search Map"
-msgstr "Rechercher une carte"
+msgstr "Αναζήτηση στον χάρτη"
 
 #: view/mapping/site/index/browse.phtml:41
 msgid "View media"
-msgstr "Voir les médias"
+msgstr "Προβολή πολυμέσου"
 
 #: view/mapping/site/index/browse.phtml:45
 msgid "View item"
-msgstr "Voir le contenu"
+msgstr "Προβολή αντικειμένου"
 
 #: Module.php:248
 msgid "Delete markers"
@@ -384,34 +403,34 @@ msgstr ""
 
 #: src/Site/BlockLayout/Map.php:15
 msgid "Map by attachments"
-msgstr ""
+msgstr "Χάρτης σύμφωνα με τα συνημμένα"
 
 #: src/Site/BlockLayout/MapQuery.php:16
 msgid "Map by query"
-msgstr ""
+msgstr "Χάρτης σύμφωνα με το ερώτημα"
 
 #: src/Site/BlockLayout/AbstractMap.php:62
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
-msgstr ""
+msgstr "[Προεπιλεγμένος πάροχος]"
 
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
-msgstr "Parcourir la carte"
+msgstr "Περιήγηση χάρτη"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
-msgstr "Vous devez sélectionner un emplacement sur la carte."
+msgstr "Πρέπει να επιλέξετε μια τοποθεσία στο χάρτη."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."
-msgstr ""
+msgstr "Μια ζώνη χαρτογράφησης πρέπει να έχει ένα αντικείμενο."
 
 #: src/Api/Adapter/MappingAdapter.php:51
 msgid "Map bounds must contain four numbers separated by commas"
 msgstr ""
-"Les limites de la carte doivent contenir quatre nombres séparés par une "
-"virgule."
+"Τα όρια του χάρτη πρέπει να περιέχουν τέσσερις αριθμούς που χωρίζονται με "
+"κόμμα"
 
 #: src/Form/Element/CopyCoordinates.php:30
 msgid "Copy from one item property containing both latitude and longitude"

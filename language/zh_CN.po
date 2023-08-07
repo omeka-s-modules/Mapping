@@ -11,36 +11,35 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-02-28 10:22-0500\n"
+"POT-Creation-Date: 2023-08-07 12:55-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Hong Zhang <zhangh@unlv.nevada.edu>, 2021\n"
-"Language-Team: Chinese (China) (https://www.transifex.com/omeka/teams/14184/zh_CN/)\n"
+"Language-Team: Chinese (China) (https://app.transifex.com/omeka/teams/14184/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: Module.php:308
+#: Module.php:388
 msgid "Map marker presence"
 msgstr ""
 
-#: Module.php:309
+#: Module.php:389
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:5
 msgid "Has map markers"
 msgstr ""
 
-#: Module.php:309
+#: Module.php:389
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:6
 msgid "Has no map markers"
 msgstr ""
 
-#: Module.php:316
-#: view/common/advanced-search/mapping-item-geographic-location.phtml:19
+#: Module.php:396
 msgid "Geographic location"
 msgstr ""
 
-#: Module.php:376 view/admin/csv-mapping.phtml:3
+#: Module.php:456 view/admin/csv-mapping.phtml:3
 #: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
 msgid "Mapping"
 msgstr "制图"
@@ -127,24 +126,28 @@ msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
 msgstr ""
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:5
-msgid "Geographic Address"
-msgstr "地理地址"
+msgid "Address"
+msgstr ""
 
-#: view/common/advanced-search/mapping-item-geographic-location.phtml:8
-msgid "Geographic Radius"
-msgstr "地理半径"
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:9
+msgid "Radius"
+msgstr ""
 
-#: view/common/advanced-search/mapping-item-geographic-location.phtml:11
-msgid "Geographic Radius Unit"
-msgstr "地理半径单位"
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:14
+msgid "Unit"
+msgstr ""
 
-#: view/common/advanced-search/mapping-item-geographic-location.phtml:13
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:16
 msgid "Kilometers"
 msgstr "公里"
 
-#: view/common/advanced-search/mapping-item-geographic-location.phtml:14
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:17
 msgid "Miles"
 msgstr "英哩"
+
+#: view/common/advanced-search/mapping-item-geographic-location.phtml:27
+msgid "Search by geographic location"
+msgstr ""
 
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:3
 msgid "Search by map marker presence"
@@ -152,6 +155,26 @@ msgstr ""
 
 #: view/common/advanced-search/mapping-item-marker-presence.phtml:8
 msgid "Select map marker presence…"
+msgstr ""
+
+#: view/common/batch-update/mapping-copy-coordinates.phtml:6
+msgid "Order"
+msgstr ""
+
+#: view/common/batch-update/mapping-copy-coordinates.phtml:10
+msgid "Delimiter"
+msgstr ""
+
+#: view/common/batch-update/mapping-copy-coordinates.phtml:21
+msgid "Assign media to marker?"
+msgstr ""
+
+#: view/common/batch-update/mapping-update-markers.phtml:2
+msgid "Media image"
+msgstr ""
+
+#: view/common/batch-update/mapping-update-markers.phtml:7
+msgid "Label source"
 msgstr ""
 
 #: view/common/block-layout/mapping-block-form.phtml:21
@@ -300,13 +323,13 @@ msgid ""
 msgstr ""
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:12
-#: view/mapping/index/show.phtml:45
+#: view/mapping/index/show.phtml:46
 #, php-format
 msgid "Item: %s"
 msgstr "条目：%s"
 
 #: view/common/block-layout/mapping-block-popup-content.phtml:16
-#: view/mapping/index/show.phtml:41
+#: view/mapping/index/show.phtml:42
 #, php-format
 msgid "Media: %s"
 msgstr "媒介：%s"
@@ -331,17 +354,29 @@ msgstr "标记标签"
 msgid "Select Marker Image"
 msgstr "选择标记图像"
 
-#: view/mapping/site/index/browse.phtml:23
+#: view/mapping/site/index/browse.phtml:25
 msgid "Search Map"
 msgstr "搜索地图"
 
-#: view/mapping/site/index/browse.phtml:39
+#: view/mapping/site/index/browse.phtml:41
 msgid "View media"
 msgstr "查看媒介"
 
-#: view/mapping/site/index/browse.phtml:43
+#: view/mapping/site/index/browse.phtml:45
 msgid "View item"
 msgstr "查看条目"
+
+#: Module.php:248
+msgid "Delete markers"
+msgstr ""
+
+#: Module.php:256
+msgid "Copy coordinates to markers"
+msgstr ""
+
+#: Module.php:264
+msgid "Update markers"
+msgstr ""
 
 #: src/Site/BlockLayout/Map.php:15
 msgid "Map by attachments"
@@ -371,3 +406,67 @@ msgstr "制图区必须有一个条目。"
 #: src/Api/Adapter/MappingAdapter.php:51
 msgid "Map bounds must contain four numbers separated by commas"
 msgstr "地图边界必须包含以逗号分隔的四个数字"
+
+#: src/Form/Element/CopyCoordinates.php:30
+msgid "Copy from one item property containing both latitude and longitude"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:31
+msgid "Copy from two item properties, one latitude and the other longitude"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:32
+msgid "Copy from one media property containing both latitude and longitude"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:33
+msgid "Copy from two media properties, one latitude and the other longitude"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:47
+msgid "Select latitude property"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:54
+msgid "Select longitude property"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:59
+msgid "Latitude Longitude"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:60
+msgid "Longitude Latitude"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:65
+msgid "Comma [,]"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:66
+msgid "Space [ ]"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:67
+msgid "Slash [/]"
+msgstr ""
+
+#: src/Form/Element/CopyCoordinates.php:68
+msgid "Colon [:]"
+msgstr ""
+
+#: src/Form/Element/UpdateMarkers.php:27
+msgid "[Remove label]"
+msgstr ""
+
+#: src/Form/Element/UpdateMarkers.php:31
+msgid "Select label property"
+msgstr ""
+
+#: src/Form/Element/UpdateMarkers.php:38
+msgid "Assigned media"
+msgstr ""
+
+#: src/Form/Element/UpdateMarkers.php:44
+msgid "[Unassign media]"
+msgstr ""

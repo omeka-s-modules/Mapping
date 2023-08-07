@@ -8,7 +8,8 @@ use Mapping\Form\Element\UpdateMarkers;
 
 class FormElementDelegatorFactory implements DelegatorFactoryInterface
 {
-    public function __invoke(ContainerInterface $container, $name, callable $callback, array $options = null) {
+    public function __invoke(ContainerInterface $container, $name, callable $callback, array $options = null)
+    {
         $formElement = $callback();
         $formElement->addClass(CopyCoordinates::class, 'formMappingCopyCoordinates');
         $formElement->addClass(UpdateMarkers::class, 'formMappingUpdateMarkers');

@@ -739,7 +739,7 @@ class Module extends AbstractModule
             foreach ($values as $value) {
                 $allCoordinates[] = $value->getValue();
             }
-        // By two item properties, one latitude and the other longitude
+            // By two item properties, one latitude and the other longitude
         } elseif ('by_item_properties' === $copyAction) {
             $latValues = $entityManager->createQuery($dqlValues)
                 ->setParameter('resource_id', $item->getId())
@@ -778,7 +778,7 @@ class Module extends AbstractModule
                     $allCoordinates[$media->getId()] = $value->getValue();
                 }
             }
-        // By two media properties, one latitude and the other longitude
+            // By two media properties, one latitude and the other longitude
         } elseif ('by_media_properties' === $copyAction) {
             $medias = $entityManager->createQuery($dqlMedia)
                 ->setParameter('item_id', $item->getId())
