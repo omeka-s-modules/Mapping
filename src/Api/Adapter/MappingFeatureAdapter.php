@@ -76,7 +76,7 @@ class MappingFeatureAdapter extends AbstractEntityAdapter
             } catch (InvalidValueException $e) {
                 $errorStore->addError('o-module-mapping:geography-type', $e->getMessage());
             }
-        } elseif ($this->shouldHydrate($request, 'o-module-mapping:lng') && $this->shouldHydrate($request, 'o-module-mapping:lng')) {
+        } elseif ($this->shouldHydrate($request, 'o-module-mapping:lng') && $this->shouldHydrate($request, 'o-module-mapping:lat')) {
             // Hydrate from legacy (pre-2.0) latitude and longitude keys.
             $point = new Geography\Point(
                 $request->getValue('o-module-mapping:lng'),
