@@ -42,11 +42,11 @@ class MapQuery extends AbstractMap
         $isTimeline = (bool) $data['timeline']['data_type_properties'];
         $timelineIsAvailable = $this->timelineIsAvailable();
 
-        // Get markers (and events, if applicable) from the attached items.
+        // Get features (and events, if applicable) from the attached items.
         $events = [];
-        $markers = [];
+        $features = [];
         parse_str($data['query'], $query);
-        // Search only for items with markers that are in the current site, and
+        // Search only for items with features that are in the current site, and
         // set a reasonable item limit.
         $query = array_merge($query, [
             'site_id' => $block->page()->site()->id(),
@@ -62,14 +62,14 @@ class MapQuery extends AbstractMap
                     $events[] = $event;
                 }
             }
-            // Set the map markers for this item.
-            $itemMarkers = $view->api()->search('mapping_markers', ['item_id' => $item->id()])->getContent();
-            $markers = array_merge($markers, $itemMarkers);
+            // Set the map features for this item.
+            $itemFeatures = $view->api()->search('mapping_features', ['item_id' => $item->id()])->getContent();
+            $features = array_merge($features, $itemFeatures);
         }
 
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
-            'markers' => $markers,
+            'features' => $features,
             'isTimeline' => $isTimeline,
             'timelineData' => $this->getTimelineData($events, $data, $view),
             'timelineOptions' => $this->getTimelineOptions($data),

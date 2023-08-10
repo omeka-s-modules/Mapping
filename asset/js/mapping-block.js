@@ -1,7 +1,6 @@
 function MappingBlock(mapDiv, timelineDiv) {
 
     var mapData = mapDiv.data('data');
-    var markerData = mapDiv.data('markers');
     var map = new L.map(mapDiv[0], {
         minZoom: mapData.min_zoom ? mapData.min_zoom : 0,
         maxZoom: mapData.max_zoom ? mapData.max_zoom : 19,
@@ -11,8 +10,13 @@ function MappingBlock(mapDiv, timelineDiv) {
     var timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
     var timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
     var timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], timelineData, timelineOptions) : null;
-    var markers = new L.markerClusterGroup();
-    var markersByItem = {};
+    const features = L.featureGroup();
+    const featuresPoint = L.markerClusterGroup();
+    const featuresPoly = L.deflate({
+        markerLayer: featuresPoint, // Enable clustering of poly features
+        greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
+    });
+    var featuresByItem = {};
 
     // Set base map and grouped overlay layers.
     var defaultProvider;
@@ -53,7 +57,7 @@ function MappingBlock(mapDiv, timelineDiv) {
             var northEast = [bounds[3], bounds[2]];
             map.fitBounds([southWest, northEast]);
         } else {
-            var bounds = markers.getBounds();
+            var bounds = features.getBounds();
             if (bounds.isValid()) {
                 map.fitBounds(bounds);
             } else {
@@ -80,32 +84,37 @@ function MappingBlock(mapDiv, timelineDiv) {
             break;
     }
 
-    // Set the markers.
-    $.each(markerData, function(index, data) {
-        var markerId = data['o:id'];
-        var itemId = data['o:item']['o:id'];
-        // Note that we must explicitly specify a new icon so a timeline's event
-        // markers can be reset correctly.
-        // @see https://github.com/Leaflet/Leaflet.markercluster/issues/786
-        var icon = new L.Icon.Default();
-        var marker = L.marker(L.latLng(
-            data['o-module-mapping:lat'],
-            data['o-module-mapping:lng']
-        ), {icon: icon});
-        var popupContent = $('.mapping-marker-popup-content[data-marker-id="' + markerId + '"]');
-        if (popupContent.length > 0) {
-            popupContent = popupContent.clone().show();
-            marker.bindPopup(popupContent[0]);
-        }
-        if (!(itemId in markersByItem)) {
-            markersByItem[itemId] = new L.markerClusterGroup();
-        }
-        markersByItem[itemId].addLayer(marker);
-        markers.addLayer(marker);
+    $('.mapping-feature-popup-content').each(function() {
+        const popup = $(this).clone().show();
+        const itemId = popup.data('item-id');
+        const geography = popup.data('feature-geography');
+        L.geoJSON(geography, {
+            onEachFeature: function(feature, layer) {
+                layer.bindPopup(popup[0]);
+                switch (feature.type) {
+                    case 'Point':
+                        featuresPoint.addLayer(layer);
+                        break;
+                    case 'LineString':
+                    case 'Polygon':
+                        layer.on('popupopen', function() {
+                            map.fitBounds(layer.getBounds());
+                        });
+                        featuresPoly.addLayer(layer);
+                        break;
+                }
+                if (!(itemId in featuresByItem)) {
+                    featuresByItem[itemId] = L.featureGroup();
+                }
+                featuresByItem[itemId].addLayer(layer);
+            }
+        });
     });
 
-    // Add the markers to the map.
-    map.addLayer(markers);
+    // Add the features to the map.
+    features.addLayer(featuresPoint);
+    features.addLayer(featuresPoly);
+    map.addLayer(features);
     setDefaultView();
 
     // Add base map and grouped WMS overlay layers.
@@ -136,23 +145,25 @@ function MappingBlock(mapDiv, timelineDiv) {
     });
 
     if (timeline) {
-        // Reload the map when an event changes.
         timeline.on('change', function(e) {
-            $.each(markersByItem, function(itemId, itemMarkers) {
-                markers.removeLayer(itemMarkers);
-            });
             if ($.isNumeric(e.unique_id)) {
+                // Changed to an event slide. Set the timeline event view.
+                map.removeLayer(features);
+                $.each(featuresByItem, function(itemId, itemFeatures) {
+                    map.removeLayer(itemFeatures);
+                });
                 // Changed to an event slide. Set the event's map view.
                 var currentEvent = this.config.event_dict[e.unique_id];
                 var currentEventStart = currentEvent.start_date.data.date_obj;
                 var currentEventEnd = ('undefined' === typeof currentEvent.end_date) ? null : currentEvent.end_date.data.date_obj;
-                var eventMarkers = markersByItem[currentEvent.unique_id];
-                markers.addLayer(eventMarkers);
+                var eventFeatures = featuresByItem[currentEvent.unique_id];
+                // features.addLayer(eventFeatures);
+                map.addLayer(eventFeatures);
                 if ($.isNumeric(mapData['timeline']['fly_to'])) {
-                    map.flyToBounds(eventMarkers.getBounds(), {maxZoom: parseInt(mapData['timeline']['fly_to'])});
+                    map.flyToBounds(eventFeatures.getBounds(), {maxZoom: parseInt(mapData['timeline']['fly_to'])});
                 } else {
                     if (mapData['timeline']['show_contemporaneous']) {
-                        // Show all event markers that are contemporaneous with the current event.
+                        // Show all event features that are contemporaneous with the current event.
                         $.each(this.config.event_dict, function(index, event) {
                             if ($.isNumeric(index) && (index != currentEvent.unique_id)) {
                                 var eventStart = event.start_date.data.date_obj;
@@ -160,12 +171,12 @@ function MappingBlock(mapDiv, timelineDiv) {
                                 // For a timeline using intervals, a portion of this event
                                 // must fall within the interval of the current event.
                                 if (currentEventEnd && eventStart <= currentEventEnd && eventEnd >= currentEventStart) {
-                                    markers.addLayer(markersByItem[event.unique_id])
+                                    features.addLayer(featuresByItem[event.unique_id])
                                 }
                                 // For a timeline using timestamps, this event must have
                                 // the same timestamp as the current event.
                                 if (!currentEventEnd && currentEventStart.getTime() == eventStart.getTime()) {
-                                    markers.addLayer(markersByItem[event.unique_id])
+                                    features.addLayer(featuresByItem[event.unique_id])
                                 }
                             }
                         });
@@ -174,9 +185,7 @@ function MappingBlock(mapDiv, timelineDiv) {
                 }
             } else {
                 // Changed to the title slide. Set the default map view.
-                $.each(markersByItem, function(itemId, itemMarkers) {
-                    markers.addLayer(itemMarkers);
-                });
+                map.addLayer(features);
                 setDefaultView();
             }
         });
