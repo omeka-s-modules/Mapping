@@ -142,6 +142,10 @@ class Module extends AbstractModule
         if (Comparator::lessThan($oldVersion, '2.0.0-alpha')) {
             $this->upgradeToV2($services);
         }
+        if (Comparator::lessThan($oldVersion, '2.0.0-alpha1')) {
+            $conn = $services->get('Omeka\Connection');
+            $conn->exec("UPDATE site_setting SET id = 'mapping_advanced_search_add_feature_presence' WHERE id = 'mapping_advanced_search_add_marker_presence'");
+        }
     }
 
     /**
@@ -374,13 +378,13 @@ class Module extends AbstractModule
 
         $form->add([
             'type' => 'checkbox',
-            'name' => 'mapping_advanced_search_add_marker_presence',
+            'name' => 'mapping_advanced_search_add_feature_presence',
             'options' => [
                 'element_group' => 'mapping',
-                'label' => 'Add marker presence to advanced search',
+                'label' => 'Add feature presence to advanced search',
             ],
             'attributes' => [
-                'value' => $siteSettings->get('mapping_advanced_search_add_marker_presence'),
+                'value' => $siteSettings->get('mapping_advanced_search_add_feature_presence'),
             ],
         ]);
         $form->add([
@@ -424,9 +428,9 @@ class Module extends AbstractModule
         $siteSettings = $services->get('Omeka\Settings\Site');
         $partials = $event->getParam('partials');
 
-        // Conditionally add the marker presence field.
-        if ($status->isAdminRequest() || ($status->isSiteRequest() && $siteSettings->get('mapping_advanced_search_add_marker_presence'))) {
-            $partials[] = 'common/advanced-search/mapping-item-marker-presence';
+        // Conditionally add the feature presence field.
+        if ($status->isAdminRequest() || ($status->isSiteRequest() && $siteSettings->get('mapping_advanced_search_add_feature_presence'))) {
+            $partials[] = 'common/advanced-search/mapping-item-feature-presence';
         }
         // Conditionally add the geographic location fields.
         if ($status->isAdminRequest() || ($status->isSiteRequest() && $siteSettings->get('mapping_advanced_search_add_geographic_location'))) {
