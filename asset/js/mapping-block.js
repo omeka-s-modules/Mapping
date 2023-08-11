@@ -1,42 +1,42 @@
 function MappingBlock(mapDiv, timelineDiv) {
 
-    var mapData = mapDiv.data('data');
-    var map = new L.map(mapDiv[0], {
+    const mapData = mapDiv.data('data');
+    const map = new L.map(mapDiv[0], {
         minZoom: mapData.min_zoom ? mapData.min_zoom : 0,
         maxZoom: mapData.max_zoom ? mapData.max_zoom : 19,
         fullscreenControl: true,
         worldCopyJump:true
     });
-    var timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
-    var timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
-    var timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], timelineData, timelineOptions) : null;
+    const timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
+    const timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
+    const timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], timelineData, timelineOptions) : null;
     const features = L.featureGroup();
     const featuresPoint = L.markerClusterGroup();
     const featuresPoly = L.deflate({
         markerLayer: featuresPoint, // Enable clustering of poly features
         greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
     });
-    var featuresByItem = {};
+    const featuresByItem = {};
 
     // Set base map and grouped overlay layers.
-    var defaultProvider;
+    let defaultProvider;
     try {
         defaultProvider = L.tileLayer.provider(mapData['basemap_provider']);
     } catch (error) {
         defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
     }
-    var baseMaps = {
+    const baseMaps = {
         'Default': defaultProvider,
         'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
         'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
         'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
     };
-    var noOverlayLayer = new L.GridLayer();
-    var groupedOverlays = {'Overlays': {'No overlay': noOverlayLayer}};
+    const noOverlayLayer = new L.GridLayer();
+    const groupedOverlays = {'Overlays': {'No overlay': noOverlayLayer}};
 
     // Set and prepare opacity control.
-    var opacityControl;
-    var handleOpacityControl = function(overlay, label) {
+    let opacityControl;
+    const handleOpacityControl = function(overlay, label) {
         if (opacityControl) {
             // Only one control at a time.
             map.removeControl(opacityControl);
@@ -44,20 +44,20 @@ function MappingBlock(mapDiv, timelineDiv) {
         }
         if (overlay !== noOverlayLayer) {
             // The "No overlay" overlay gets no control.
-            opacityControl =  new L.Control.Opacity(overlay, label);
+            opacityControl = new L.Control.Opacity(overlay, label);
             map.addControl(opacityControl);
         }
     };
 
     // Set the default view.
-    var setDefaultView = function() {
+    const setDefaultView = function() {
         if (mapData['bounds']) {
-            var bounds = mapData['bounds'].split(',');
-            var southWest = [bounds[1], bounds[0]];
-            var northEast = [bounds[3], bounds[2]];
+            const bounds = mapData['bounds'].split(',');
+            const southWest = [bounds[1], bounds[0]];
+            const northEast = [bounds[3], bounds[2]];
             map.fitBounds([southWest, northEast]);
         } else {
-            var bounds = features.getBounds();
+            const bounds = features.getBounds();
             if (bounds.isValid()) {
                 map.fitBounds(bounds);
             } else {
@@ -153,10 +153,10 @@ function MappingBlock(mapDiv, timelineDiv) {
                     map.removeLayer(itemFeatures);
                 });
                 // Changed to an event slide. Set the event's map view.
-                var currentEvent = this.config.event_dict[e.unique_id];
-                var currentEventStart = currentEvent.start_date.data.date_obj;
-                var currentEventEnd = ('undefined' === typeof currentEvent.end_date) ? null : currentEvent.end_date.data.date_obj;
-                var eventFeatures = featuresByItem[currentEvent.unique_id];
+                const currentEvent = this.config.event_dict[e.unique_id];
+                const currentEventStart = currentEvent.start_date.data.date_obj;
+                const currentEventEnd = ('undefined' === typeof currentEvent.end_date) ? null : currentEvent.end_date.data.date_obj;
+                const eventFeatures = featuresByItem[currentEvent.unique_id];
                 // features.addLayer(eventFeatures);
                 map.addLayer(eventFeatures);
                 if ($.isNumeric(mapData['timeline']['fly_to'])) {
@@ -166,8 +166,8 @@ function MappingBlock(mapDiv, timelineDiv) {
                         // Show all event features that are contemporaneous with the current event.
                         $.each(this.config.event_dict, function(index, event) {
                             if ($.isNumeric(index) && (index != currentEvent.unique_id)) {
-                                var eventStart = event.start_date.data.date_obj;
-                                var eventEnd = ('undefined' === typeof event.end_date) ? null : event.end_date.data.date_obj;
+                                const eventStart = event.start_date.data.date_obj;
+                                const eventEnd = ('undefined' === typeof event.end_date) ? null : event.end_date.data.date_obj;
                                 // For a timeline using intervals, a portion of this event
                                 // must fall within the interval of the current event.
                                 if (currentEventEnd && eventStart <= currentEventEnd && eventEnd >= currentEventStart) {
@@ -194,7 +194,7 @@ function MappingBlock(mapDiv, timelineDiv) {
 
 $(document).ready( function() {
     $('.mapping-block').each(function() {
-        var blockDiv = $(this);
+        const blockDiv = $(this);
         mappingBlock = new MappingBlock(
             blockDiv.children('.mapping-map'),
             blockDiv.children('.mapping-timeline')
