@@ -1,11 +1,13 @@
 $(document).ready( function() {
 
+const mappingMap = $('#mapping-map');
+
 const map = L.map('mapping-map', {
     fullscreenControl: true,
     worldCopyJump:true
 });
 const features = L.featureGroup();
-const featuresPoint = L.markerClusterGroup();
+const featuresPoint = mappingMap.data('disable-clustering') ? L.featureGroup() : L.markerClusterGroup();
 const featuresPoly = L.deflate({
     markerLayer: featuresPoint, // Enable clustering of poly features
     greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.

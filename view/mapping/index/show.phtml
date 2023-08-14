@@ -20,10 +20,15 @@ $this->headScript()->appendFile($this->assetUrl('node_modules/Leaflet.Deflate/di
 
 $this->headScript()->appendFile($this->assetUrl('js/mapping-show.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Mapping'));
+
+$disableClustering = $this->status()->isSiteRequest() ? $this->siteSetting('mapping_disable_clustering') : false;
 ?>
 
 <div id="mapping-section" class="section">
-    <div id="mapping-map" style="height:700px;" data-mapping="<?php echo $this->escapeHtml(json_encode($mapping)); ?>"></div>
+    <div id="mapping-map" style="height:700px;"
+        data-mapping="<?php echo $this->escapeHtml(json_encode($mapping)); ?>"
+        data-disable-clustering="<?php echo $disableClustering ? '1' : '0'; ?>"
+    ></div>
 </div>
 
 <?php foreach ($features as $feature): ?>

@@ -36,11 +36,15 @@ if ($isTimeline) {
 ?>
 <div class="<?php echo implode(' ', $mappingBlockClasses); ?>">
     <?php if ($isTimeline): ?>
-    <div class='mapping-timeline' style="height: 400px" data-data="<?php echo $this->escapeHtml(json_encode($timelineData)); ?>" data-options="<?php echo $this->escapeHtml(json_encode($timelineOptions)); ?>"></div>
-    <div class="mapping-map" style="height:400px;" data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"></div>
-    <?php else: ?>
-    <div class="mapping-map" style="height:500px;" data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"></div>
+    <div class='mapping-timeline' style="height: 500px"
+        data-data="<?php echo $this->escapeHtml(json_encode($timelineData)); ?>"
+        data-options="<?php echo $this->escapeHtml(json_encode($timelineOptions)); ?>"
+    ></div>
     <?php endif; ?>
+    <div class="mapping-map" style="height:500px;"
+        data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
+        data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
+    ></div>
 
     <?php foreach ($features as $feature): ?>
     <?php echo $this->partial('common/mapping-popup', ['feature' => $feature]); ?>

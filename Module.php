@@ -398,6 +398,17 @@ class Module extends AbstractModule
                 'value' => $siteSettings->get('mapping_advanced_search_add_geographic_location'),
             ],
         ]);
+        $form->add([
+            'type' => 'checkbox',
+            'name' => 'mapping_disable_clustering',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Disable feature clustering',
+            ],
+            'attributes' => [
+                'value' => $siteSettings->get('mapping_disable_clustering'),
+            ],
+        ]);
     }
 
     public function handleViewFormAfter(Event $event)
