@@ -11,7 +11,7 @@ class CsvMapping extends AbstractMapping
 
     public function getSidebar(PhpRenderer $view)
     {
-        return $view->partial('admin/csv-mapping');
+        return $view->partial('common/csv-import/mapping');
     }
 
     public function processRow(array $row)

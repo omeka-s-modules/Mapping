@@ -413,12 +413,12 @@ class Module extends AbstractModule
 
     public function handleViewFormAfter(Event $event)
     {
-        echo $event->getTarget()->partial('mapping/index/form');
+        echo $event->getTarget()->partial('common/mapping-item-form');
     }
 
     public function handleViewShowAfter(Event $event)
     {
-        echo $event->getTarget()->partial('mapping/index/show');
+        echo $event->getTarget()->partial('common/mapping-item-show');
     }
 
     public function filterMapBrowseAdvancedSearch(Event $event)
