@@ -2,7 +2,6 @@ $(document).ready( function() {
 
 const mappingMap = $('#mapping-map');
 const mappingData = mappingMap.data('mapping');
-console.log(mappingMap.data('disable-clustering'));
 
 const map = L.map('mapping-map', {
     fullscreenControl: true,
