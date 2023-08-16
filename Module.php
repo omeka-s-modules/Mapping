@@ -13,6 +13,7 @@ use Omeka\Module\AbstractModule;
 use Omeka\Permissions\Acl;
 use Laminas\EventManager\Event;
 use Laminas\EventManager\SharedEventManagerInterface;
+use Laminas\ModuleManager\ModuleManager;
 use Laminas\Mvc\MvcEvent;
 use Laminas\ServiceManager\ServiceLocatorInterface;
 use LongitudeOne\Spatial\PHP\Types\Geography;
@@ -69,6 +70,11 @@ class Module extends AbstractModule
         'HikeBike.HillShading' => 'HikeBike.HillShading',
         'Wikimedia' => 'Wikimedia',
     ];
+
+    public function init(ModuleManager $moduleManager)
+    {
+        require_once sprintf('%s/vendor/autoload.php', __DIR__);
+    }
 
     public function getConfig()
     {
