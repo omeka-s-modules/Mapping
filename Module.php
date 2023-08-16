@@ -199,22 +199,48 @@ class Module extends AbstractModule
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
     {
-        // Add the map form to the item add and edit pages.
+        // Add the map tab to admin pages.
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            'view.add.section_nav',
+            [$this, 'addMapTab']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            'view.edit.section_nav',
+            [$this, 'addMapTab']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\Item',
+            'view.show.section_nav',
+            [$this, 'addMapTab']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\ItemSet',
+            'view.show.section_nav',
+            [$this, 'addMapTab']
+        );
+        // Add the map form to admin pages.
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.add.form.after',
-            [$this, 'handleViewFormAfter']
+            [$this, 'addItemForm']
         );
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.edit.form.after',
-            [$this, 'handleViewFormAfter']
+            [$this, 'addItemForm']
         );
-        // Add the map to the item show page.
+        // Add the map to admin pages.
         $sharedEventManager->attach(
             'Omeka\Controller\Admin\Item',
             'view.show.after',
-            [$this, 'handleViewShowAfter']
+            [$this, 'addResourceMap']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Controller\Admin\ItemSet',
+            'view.show.after',
+            [$this, 'addResourceMap']
         );
         // Add the mapping fields to advanced search pages.
         $sharedEventManager->attach(
@@ -253,21 +279,6 @@ class Module extends AbstractModule
             '*',
             'api.context',
             [$this, 'filterApiContext']
-        );
-        $sharedEventManager->attach(
-            'Omeka\Controller\Admin\Item',
-            'view.add.section_nav',
-            [$this, 'addMapTab']
-        );
-        $sharedEventManager->attach(
-            'Omeka\Controller\Admin\Item',
-            'view.edit.section_nav',
-            [$this, 'addMapTab']
-        );
-        $sharedEventManager->attach(
-            'Omeka\Controller\Admin\Item',
-            'view.show.section_nav',
-            [$this, 'addMapTab']
         );
         $sharedEventManager->attach(
             'Omeka\Api\Representation\ItemRepresentation',
@@ -411,14 +422,42 @@ class Module extends AbstractModule
         ]);
     }
 
-    public function handleViewFormAfter(Event $event)
+    public function addMapTab(Event $event)
+    {
+        $view = $event->getTarget();
+        if ('view.show.section_nav' === $event->getName()) {
+            // Don't render the mapping tab if there is no mapping data.
+            $resource = $event->getParam('resource');
+            $hasMapping = false;
+            $hasFeatures = false;
+            switch (get_class($resource)) {
+                case 'Omeka\Api\Representation\ItemRepresentation':
+                    $hasMapping = $view->api()->searchOne('mappings', ['item_id' => $resource->id()])->getTotalResults();
+                    $hasFeatures = $view->api()->search('mapping_features', ['item_id' => $resource->id(), 'limit' => 0])->getTotalResults();
+                    break;
+                case 'Omeka\Api\Representation\ItemSetRepresentation':
+                    $hasFeatures = $view->api()->search('mapping_features', ['item_set_id' => $resource->id(), 'limit' => 0])->getTotalResults();
+                    break;
+                default:
+                    return;
+            }
+            if (!($hasMapping || $hasFeatures)) {
+                return;
+            }
+        }
+        $sectionNav = $event->getParam('section_nav');
+        $sectionNav['mapping-section'] = $view->translate('Mapping');
+        $event->setParam('section_nav', $sectionNav);
+    }
+
+    public function addItemForm(Event $event)
     {
         echo $event->getTarget()->partial('common/mapping-item-form');
     }
 
-    public function handleViewShowAfter(Event $event)
+    public function addResourceMap(Event $event)
     {
-        echo $event->getTarget()->partial('common/mapping-item-show');
+        echo $event->getTarget()->partial('common/mapping-resource-map');
     }
 
     public function filterMapBrowseAdvancedSearch(Event $event)
@@ -506,26 +545,6 @@ class Module extends AbstractModule
         $context = $event->getParam('context');
         $context['o-module-mapping'] = 'http://omeka.org/s/vocabs/module/mapping#';
         $event->setParam('context', $context);
-    }
-
-    /**
-     * Add the map tab to section navigations.
-     *
-     * Event $event
-     */
-    public function addMapTab(Event $event)
-    {
-        $view = $event->getTarget();
-        if ('view.show.section_nav' === $event->getName()) {
-            // Don't render the mapping tab if there is no mapping data.
-            $itemJson = $event->getParam('resource')->jsonSerialize();
-            if (!isset($itemJson['o-module-mapping:feature']) && !isset($itemJson['o-module-mapping:mapping'])) {
-                return;
-            }
-        }
-        $sectionNav = $event->getParam('section_nav');
-        $sectionNav['mapping-section'] = $view->translate('Mapping');
-        $event->setParam('section_nav', $sectionNav);
     }
 
     /**

@@ -1,8 +1,19 @@
 <?php
-$mapping = $this->api()->searchOne('mappings', ['item_id' => $item->id()])->getContent();
-$features = $this->api()->search('mapping_features', ['item_id' => $item->id()])->getContent();
+$mapping = null;
+$features = [];
+switch (get_class($resource)) {
+    case 'Omeka\Api\Representation\ItemRepresentation':
+        $mapping = $this->api()->searchOne('mappings', ['item_id' => $resource->id()])->getContent();
+        $features = $this->api()->search('mapping_features', ['item_id' => $resource->id()])->getContent();
+        break;
+    case 'Omeka\Api\Representation\ItemSetRepresentation':
+        $features = $this->api()->search('mapping_features', ['item_set_id' => $resource->id()])->getContent();
+        break;
+    default:
+        return;
+}
 
-if (!$mapping && !$features) {
+if (!($mapping || $features)) {
     return;
 }
 

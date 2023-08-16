@@ -128,6 +128,13 @@ class MappingFeatureAdapter extends AbstractEntityAdapter
                 );
             }
         }
+        if (isset($query['item_set_id']) && is_numeric($query['item_set_id'])) {
+            $itemAlias = $this->createAlias();
+            $itemSetAlias = $this->createAlias();
+            $qb->innerJoin('omeka_root.item', $itemAlias);
+            $qb->innerJoin("$itemAlias.itemSets", $itemSetAlias);
+            $qb->andWhere($qb->expr()->eq("$itemSetAlias.id", $this->createNamedParameter($qb, $query['item_set_id'])));
+        }
         $address = $query['address'] ?? null;
         $radius = $query['radius'] ?? null;
         $radiusUnit = $query['radius_unit'] ?? null;
