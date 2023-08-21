@@ -307,6 +307,11 @@ class Module extends AbstractModule
             [$this, 'addSiteSettings']
         );
         $sharedEventManager->attach(
+            'Omeka\Form\SiteSettingsForm',
+            'form.add_input_filters',
+            [$this, 'addSiteSettingsInputFilters']
+        );
+        $sharedEventManager->attach(
             'Omeka\Form\ResourceBatchUpdateForm',
             'form.add_elements',
             function (Event $event) {
@@ -425,6 +430,28 @@ class Module extends AbstractModule
             'attributes' => [
                 'value' => $siteSettings->get('mapping_disable_clustering'),
             ],
+        ]);
+        $form->add([
+            'type' => 'select',
+            'name' => 'mapping_basemap_provider',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Basemap provider',
+                'empty_option' => '[Default provider]', // @translate
+                'value_options' => self::BASEMAP_PROVIDERS,
+            ],
+            'attributes' => [
+                'value' => $siteSettings->get('mapping_basemap_provider'),
+            ],
+        ]);
+    }
+
+    public function addSiteSettingsInputFilters(Event $event)
+    {
+        $inputFilter = $event->getParam('inputFilter');
+        $inputFilter->add([
+            'name' => 'mapping_basemap_provider',
+            'allow_empty' => true,
         ]);
     }
 

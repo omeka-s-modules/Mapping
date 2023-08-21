@@ -12,12 +12,18 @@ const featuresPoly = L.deflate({
     markerLayer: featuresPoint, // Enable clustering of poly features
     greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
 });
+
+// Set base maps and grouped overlays.
 const urlParams = new URLSearchParams(window.location.search);
 let defaultProvider;
 try {
     defaultProvider = L.tileLayer.provider(urlParams.get('mapping_basemap_provider'));
 } catch (error) {
-    defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
+    try {
+        defaultProvider = L.tileLayer.provider(mappingMap.data('basemap-provider'));
+    } catch (error) {
+        defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
+    }
 }
 const baseMaps = {
     'Default': defaultProvider,
@@ -26,7 +32,6 @@ const baseMaps = {
     'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
     'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
 };
-
 
 $('.mapping-feature-popup-content').each(function() {
     const popup = $(this).clone().show();

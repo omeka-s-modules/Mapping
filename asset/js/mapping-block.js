@@ -18,16 +18,21 @@ function MappingBlock(mapDiv, timelineDiv) {
     });
     const featuresByItem = {};
 
-    // Set base map and grouped overlay layers.
+    // Set base maps and grouped overlays.
     let defaultProvider;
     try {
         defaultProvider = L.tileLayer.provider(mapData['basemap_provider']);
     } catch (error) {
-        defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
+        try {
+            defaultProvider = L.tileLayer.provider(mapDiv.data('basemap-provider'));
+        } catch (error) {
+            defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
+        }
     }
     const baseMaps = {
         'Default': defaultProvider,
         'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
+        'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
         'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
         'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
     };

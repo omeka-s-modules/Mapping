@@ -44,6 +44,7 @@ if ($isTimeline) {
     <div class="mapping-map" style="height:500px;"
         data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
         data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
+        data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
     ></div>
 
     <?php foreach ($features as $feature): ?>

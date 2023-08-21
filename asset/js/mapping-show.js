@@ -14,7 +14,15 @@ const featuresPoly = L.deflate({
     greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
 });
 
+// Set base maps.
+let defaultProvider;
+try {
+    defaultProvider = L.tileLayer.provider(mappingMap.data('basemap-provider'));
+} catch (error) {
+    defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
+}
 const baseMaps = {
+    'Default': defaultProvider,
     'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
     'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
     'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
@@ -53,7 +61,7 @@ $('.mapping-feature-popup-content').each(function() {
 
 features.addLayer(featuresPoint)
     .addLayer(featuresPoly);
-map.addLayer(baseMaps['Streets'])
+map.addLayer(baseMaps['Default'])
     .addLayer(features)
     .addControl(new L.Control.Layers(baseMaps))
     .addControl(new L.Control.FitBounds(features));
