@@ -14,10 +14,10 @@ $label = $feature->label();
     <?php if ($media): ?>
     <?php echo $this->thumbnail($media, 'medium'); ?>
     <div>
-        <?php echo sprintf($this->translate('Media: %s'), $media->link($media->displayTitle(), null, ['target' => '_blank'])); ?>
+        <?php echo sprintf($this->translate('Media: %s'), $media->link($media->displayTitle(null, $this->lang()), null, ['target' => '_blank'])); ?>
     </div>
     <?php endif; ?>
     <div>
-        <?php echo sprintf($this->translate('Item: %s'), $item->link($item->displayTitle(), null, ['target' => '_blank'])); ?>
+        <?php echo sprintf($this->translate('Item: %s'), $item->link($item->displayTitle(null, $this->lang()), null, ['target' => '_blank'])); ?>
     </div>
 </div>

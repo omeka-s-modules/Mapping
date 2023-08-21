@@ -327,7 +327,7 @@ abstract class AbstractMap extends AbstractBlockLayout
         $event = [
             'unique_id' => (string) $item->id(), // must cast to string
             'text' => [
-                'headline' => $item->link($item->displayTitle(), null, ['target' => '_blank']),
+                'headline' => $item->link($item->displayTitle(null, $view->lang()), null, ['target' => '_blank']),
                 'text' => $item->displayDescription(),
             ],
         ];
