@@ -11,7 +11,13 @@ function MappingBlock(mapDiv, timelineDiv) {
     const timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
     const timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], timelineData, timelineOptions) : null;
     const features = L.featureGroup();
-    const featuresPoint = mapDiv.data('disable-clustering') ? L.featureGroup() : L.markerClusterGroup();
+    const featuresPoint = mapDiv.data('disable-clustering')
+        ? L.featureGroup()
+        : L.markerClusterGroup({
+            polygonOptions: {
+                color: 'green'
+            }
+        });
     const featuresPoly = L.deflate({
         markerLayer: featuresPoint, // Enable clustering of poly features
         greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.

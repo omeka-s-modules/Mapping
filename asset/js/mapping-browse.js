@@ -7,7 +7,13 @@ const map = L.map('mapping-map', {
     worldCopyJump:true
 });
 const features = L.featureGroup();
-const featuresPoint = mappingMap.data('disable-clustering') ? L.featureGroup() : L.markerClusterGroup();
+const featuresPoint = mappingMap.data('disable-clustering')
+    ? L.featureGroup()
+    : L.markerClusterGroup({
+        polygonOptions: {
+            color: 'green'
+        }
+    });
 const featuresPoly = L.deflate({
     markerLayer: featuresPoint, // Enable clustering of poly features
     greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
