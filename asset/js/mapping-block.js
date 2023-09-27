@@ -95,7 +95,7 @@ function MappingBlock(mapDiv, timelineDiv) {
             break;
     }
 
-    $('.mapping-feature-popup-content').each(function() {
+    mapDiv.closest('.mapping-block').find('.mapping-feature-popup-content').each(function() {
         const popup = $(this).clone().show();
         const itemId = popup.data('item-id');
         const geography = popup.data('feature-geography');

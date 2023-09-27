@@ -403,7 +403,7 @@ class Module extends AbstractModule
             'name' => 'mapping_advanced_search_add_feature_presence',
             'options' => [
                 'element_group' => 'mapping',
-                'label' => 'Add feature presence to advanced search',
+                'label' => 'Add feature presence to advanced search', // @translate
             ],
             'attributes' => [
                 'value' => $siteSettings->get('mapping_advanced_search_add_feature_presence'),
@@ -414,7 +414,7 @@ class Module extends AbstractModule
             'name' => 'mapping_advanced_search_add_geographic_location',
             'options' => [
                 'element_group' => 'mapping',
-                'label' => 'Add geographic location to advanced search',
+                'label' => 'Add geographic location to advanced search', // @translate
             ],
             'attributes' => [
                 'value' => $siteSettings->get('mapping_advanced_search_add_geographic_location'),
@@ -425,7 +425,8 @@ class Module extends AbstractModule
             'name' => 'mapping_disable_clustering',
             'options' => [
                 'element_group' => 'mapping',
-                'label' => 'Disable feature clustering',
+                'label' => 'Disable clustering of map features', // @translate
+                'info' => 'Map features are markers, polygons, polylines, and rectangles. Note that large features may not cluster.',  // @translate
             ],
             'attributes' => [
                 'value' => $siteSettings->get('mapping_disable_clustering'),
@@ -436,7 +437,7 @@ class Module extends AbstractModule
             'name' => 'mapping_basemap_provider',
             'options' => [
                 'element_group' => 'mapping',
-                'label' => 'Basemap provider',
+                'label' => 'Basemap provider', // @translate
                 'empty_option' => '[Default provider]', // @translate
                 'value_options' => self::BASEMAP_PROVIDERS,
             ],
