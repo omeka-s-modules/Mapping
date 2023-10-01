@@ -26,7 +26,7 @@ $query['mapping_basemap_provider'] = $query['mapping_basemap_provider'] ?? '';
 
 <form id="advanced-search">
     <?php echo $this->partial('common/advanced-search', ['query' => $query, 'resourceType' => 'item']); ?>
-    <button type="button"><?php echo $this->translate('Search Map'); ?></button>
+    <button type="submit"><?php echo $this->translate('Search Map'); ?></button>
     <input type="hidden" name="mapping_basemap_provider" value="<?php echo $this->escapeHtml($query['mapping_basemap_provider']); ?>">
 </form>
 
