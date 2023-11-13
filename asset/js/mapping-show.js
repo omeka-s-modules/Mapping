@@ -1,46 +1,82 @@
 $(document).ready( function() {
 
-var mappingMap = $('#mapping-map');
-var mappingData = mappingMap.data('mapping');
+const mappingMap = $('#mapping-map');
+const mappingData = mappingMap.data('mapping');
 
-var map = L.map('mapping-map', {
+const map = L.map('mapping-map', {
     fullscreenControl: true,
     worldCopyJump:true
 });
-var markers = new L.FeatureGroup();
-var baseMaps = {
+const features = L.featureGroup();
+const featuresPoint = mappingMap.data('disable-clustering')
+    ? L.featureGroup()
+    : L.markerClusterGroup({
+        polygonOptions: {
+            color: 'green'
+        }
+    });
+const featuresPoly = L.deflate({
+    markerLayer: featuresPoint, // Enable clustering of poly features
+    greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
+});
+
+// Set base maps.
+let defaultProvider;
+try {
+    defaultProvider = L.tileLayer.provider(mappingMap.data('basemap-provider'));
+} catch (error) {
+    defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
+}
+const baseMaps = {
+    'Default': defaultProvider,
     'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
     'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
     'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
     'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
 };
 
-var defaultBounds = null;
+let defaultBounds = null;
 if (mappingData && mappingData['o-module-mapping:bounds'] !== null) {
-    var bounds = mappingData['o-module-mapping:bounds'].split(',');
-    var southWest = [bounds[1], bounds[0]];
-    var northEast = [bounds[3], bounds[2]];
+    const bounds = mappingData['o-module-mapping:bounds'].split(',');
+    const southWest = [bounds[1], bounds[0]];
+    const northEast = [bounds[3], bounds[2]];
     defaultBounds = [southWest, northEast];
 }
 
-$('.mapping-marker-popup-content').each(function() {
-    var popup = $(this).clone().show();
-    var latLng = new L.LatLng(popup.data('marker-lat'), popup.data('marker-lng'));
-    var marker = new L.Marker(latLng);
-    marker.bindPopup(popup[0]);
-    markers.addLayer(marker);
+$('.mapping-feature-popup-content').each(function() {
+    const popup = $(this).clone().show();
+    const geography = popup.data('feature-geography');
+    L.geoJSON(geography, {
+        onEachFeature: function(feature, layer) {
+            layer.bindPopup(popup[0]);
+            switch (feature.type) {
+                case 'Point':
+                    featuresPoint.addLayer(layer);
+                    break;
+                case 'LineString':
+                case 'Polygon':
+                    layer.on('popupopen', function() {
+                        map.fitBounds(layer.getBounds());
+                    });
+                    featuresPoly.addLayer(layer);
+                    break;
+            }
+        }
+    });
 });
 
-map.addLayer(baseMaps['Streets']);
-map.addLayer(markers);
-map.addControl(new L.Control.Layers(baseMaps));
-map.addControl(new L.Control.FitBounds(markers));
+features.addLayer(featuresPoint)
+    .addLayer(featuresPoly);
+map.addLayer(baseMaps['Default'])
+    .addLayer(features)
+    .addControl(new L.Control.Layers(baseMaps))
+    .addControl(new L.Control.FitBounds(features));
 
-var setView = function() {
+const setView = function() {
     if (defaultBounds) {
         map.fitBounds(defaultBounds);
     } else {
-        var bounds = markers.getBounds();
+        const bounds = features.getBounds();
         if (bounds.isValid()) {
             map.fitBounds(bounds);
         } else {

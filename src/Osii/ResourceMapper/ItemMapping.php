@@ -15,9 +15,16 @@ class ItemMapping extends AbstractResourceMapper
             return $remoteResource;
         }
 
+        if (isset($remoteResource['o-module-mapping:feature'])) {
+            // Mapping versions with features use full representations, so
+            // there's no need to reconstitute from references.
+            return $remoteResource;
+        }
+
         if (isset($remoteResource['o-module-mapping:mapping'])) {
-            // Get  the JSON-LD representation of the remote mappings resource
-            // and set it to the local resource.
+            // Earlier Mapping versions used references instead of full
+            // representations, so here we have to get the representations of
+            // the remote mapping resource and set it to the local resource.
             try {
                 $mapping = $this->getApiOutput($remoteResource['o-module-mapping:mapping']['@id']);
                 $remoteResource['o-module-mapping:mapping'] = $mapping;
@@ -31,8 +38,9 @@ class ItemMapping extends AbstractResourceMapper
         }
 
         if (isset($remoteResource['o-module-mapping:marker'])) {
-            // Get  the JSON-LD representations of the remote marker resources
-            // and set them to the local resource.
+            // Earlier Mapping versions used references instead of full
+            // representations, so here we have to get the representations of
+            // the remote marker resources and set them to the local resource.
             $markers = [];
             foreach ($remoteResource['o-module-mapping:marker'] as $marker) {
                 try {
@@ -68,8 +76,8 @@ class ItemMapping extends AbstractResourceMapper
         $query->setParameter('itemId', $localResource['o:id']);
         $query->execute();
 
-        // Delete all MappingMarker entities that belong to this local item.
-        $dql = 'DELETE Mapping\Entity\MappingMarker m WHERE m.item = :itemId';
+        // Delete all MappingFeature entities that belong to this local item.
+        $dql = 'DELETE Mapping\Entity\MappingFeature m WHERE m.item = :itemId';
         $query = $entityManager->createQuery($dql);
         $query->setParameter('itemId', $localResource['o:id']);
         $query->execute();
@@ -84,14 +92,32 @@ class ItemMapping extends AbstractResourceMapper
 
         $mappings = $job->getMappings();
 
-        // Set the local markers.
+        // Set the local features.
+        $remoteFeatures = $remoteResource['o-module-mapping:features'] ?? null;
+        if ($remoteFeatures) {
+            foreach ($remoteFeatures as $remoteFeature) {
+                $localFeature = [
+                    'o-module-mapping:geography-type' => $remoteFeature['o-module-mapping:geography-type'],
+                    'o-module-mapping:geography-coordinates' => $remoteFeature['o-module-mapping:geography-coordinates'],
+                    'o:label' => $remoteFeature['o:label'],
+                    'o:media' => null,
+                ];
+                if (isset($remoteFeature['o:media']['o:id'])) {
+                    $localFeature['o:media'] = [
+                        'o:id' => $mappings->get('media', $remoteFeature['o:media']['o:id']),
+                    ];
+                }
+                $localResource['o-module-mapping:marker'][] = $localFeature;
+            }
+        }
+        // Map from legacy (pre-2.0) latitude and longitude keys.
         $remoteMarkers = $remoteResource['o-module-mapping:marker'] ?? null;
         if ($remoteMarkers) {
             foreach ($remoteMarkers as $remoteMarker) {
                 $localMarker = [
-                    'o-module-mapping:lat' => $remoteMarker['o-module-mapping:lat'],
-                    'o-module-mapping:lng' => $remoteMarker['o-module-mapping:lng'],
-                    'o-module-mapping:label' => $remoteMarker['o-module-mapping:label'],
+                    'o-module-mapping:geography-type' => 'Point',
+                    'o-module-mapping:geography-coordinates' => [$remoteMarker['o-module-mapping:lng'], $remoteMarker['o-module-mapping:lat']],
+                    'o:label' => $remoteMarker['o-module-mapping:label'],
                     'o:media' => null,
                 ];
                 if (isset($remoteMarker['o:media']['o:id'])) {

@@ -3,10 +3,10 @@ namespace Mapping\Db\Event\Listener;
 
 use Doctrine\ORM\Event\PreFlushEventArgs;
 use Mapping\Entity\Mapping;
-use Mapping\Entity\MappingMarker;
+use Mapping\Entity\MappingFeature;
 
 /**
- * Automatically detach mappings and markers that reference unknown items.
+ * Automatically detach mappings and features that reference unknown items.
  */
 class DetachOrphanMappings
 {
@@ -30,12 +30,12 @@ class DetachOrphanMappings
             }
         }
 
-        if (isset($identityMap[MappingMarker::class])) {
-            foreach ($identityMap[MappingMarker::class] as $marker) {
-                if (!$em->contains($marker->getItem())
-                    || ($marker->getMedia() && !$em->contains($marker->getMedia()))
+        if (isset($identityMap[MappingFeature::class])) {
+            foreach ($identityMap[MappingFeature::class] as $feature) {
+                if (!$em->contains($feature->getItem())
+                    || ($feature->getMedia() && !$em->contains($feature->getMedia()))
                 ) {
-                    $em->detach($marker);
+                    $em->detach($feature);
                 }
             }
         }
@@ -43,7 +43,7 @@ class DetachOrphanMappings
         $insertions = $uow->getScheduledEntityInsertions();
         foreach ($insertions as $entity) {
             if (($entity instanceof Mapping && !$em->contains($entity->getItem()))
-                || ($entity instanceof MappingMarker && (!$em->contains($entity->getItem()) || ($entity->getMedia() && !$em->contains($entity->getMedia()))))
+                || ($entity instanceof MappingFeature && (!$em->contains($entity->getItem()) || ($entity->getMedia() && !$em->contains($entity->getMedia()))))
             ) {
                 $em->detach($entity);
             }

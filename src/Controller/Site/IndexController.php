@@ -17,9 +17,9 @@ class IndexController extends AbstractActionController
 
         // Only get items that are in this site's item pool.
         $itemsQuery['site_id'] = $this->currentSite()->id();
-        // Only get items that have markers.
-        $itemsQuery['has_markers'] = true;
-        // Limit to a reasonable amount of items that have markers to avoid
+        // Only get items that have features.
+        $itemsQuery['has_features'] = true;
+        // Limit to a reasonable amount of items that have features to avoid
         // reaching the server memory limit and to improve client performance.
         $itemsQuery['limit'] = 5000;
         // Do not include geographic location query when searching items.
@@ -30,21 +30,21 @@ class IndexController extends AbstractActionController
         );
         $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
 
-        // Get all markers for all items that match the query, if any.
-        $markers = [];
+        // Get all features for all items that match the query, if any.
+        $features = [];
         if ($itemIds) {
-            $markersQuery = [
+            $featuresQuery = [
                 'item_id' => $itemIds,
                 'address' => $this->params()->fromQuery('mapping_address'),
                 'radius' => $this->params()->fromQuery('mapping_radius'),
                 'radius_unit' => $this->params()->fromQuery('mapping_radius_unit'),
             ];
-            $markers = $this->api()->search('mapping_markers', $markersQuery)->getContent();
+            $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
         }
 
         $view = new ViewModel;
         $view->setVariable('query', $this->params()->fromQuery());
-        $view->setVariable('markers', $markers);
+        $view->setVariable('features', $features);
         return $view;
     }
 }

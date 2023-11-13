@@ -1,182 +1,190 @@
 $(document).ready( function() {
 
 /**
- * Add a marker to the map.
+ * Add a feature to the map.
  *
- * @param marker
- * @param markerId
- * @param markerLabel
- * @param markerMediaId
+ * @param feature
+ * @param featureId
+ * @param featureLabel
+ * @param featureMediaId
  */
-var addMarker = function(marker, markerId, markerLabel, markerMediaId) {
+const addFeature = function(feature, featureId, featureLabel, featureMediaId) {
 
-    // Build the marker popup content.
-    var popupContent = $('.mapping-marker-popup-content.template').clone()
+    // Build the feature popup content.
+    const popupContent = $('.mapping-feature-popup-content.template').clone()
         .removeClass('template')
-        .data('marker', marker)
-        .data('selectedMediaId', markerMediaId)
+        .data('feature', feature)
+        .data('selectedMediaId', featureMediaId)
         .show();
-    popupContent.find('.mapping-marker-popup-label').val(markerLabel);
-    if (markerMediaId) {
-        var mediaThumbnail = $('<img>', {
-            src: $('.mapping-marker-image-select[value="' + markerMediaId + '"]').data('mediaThumbnailUrl')
+    popupContent.find('.mapping-feature-popup-label').val(featureLabel);
+    if (featureMediaId) {
+        const mediaThumbnail = $('<img>', {
+            src: $(`.mapping-feature-image-select[value="${featureMediaId}"]`).data('mediaThumbnailUrl')
         });
-        popupContent.find('.mapping-marker-popup-image').html(mediaThumbnail);
+        popupContent.find('.mapping-feature-popup-image').html(mediaThumbnail);
     }
-    marker.bindPopup(popupContent[0]);
+    feature.bindPopup(popupContent[0]);
 
-    // Prepare image selector when marker is clicked.
-    marker.on('click', function(e) {
-        var selectedMediaId = popupContent.data('selectedMediaId');
+    // Prepare image selector when feature is clicked.
+    feature.on('click', function(e) {
+        const selectedMediaId = popupContent.data('selectedMediaId');
         if (selectedMediaId) {
-            $('.mapping-marker-image-select[value="' + selectedMediaId + '"]').prop('checked', true);
+            $(`.mapping-feature-image-select[value="${selectedMediaId}"]`).prop('checked', true);
         } else {
-            $('.mapping-marker-image-select:first').prop('checked', true);
+            $('.mapping-feature-image-select:first').prop('checked', true);
         }
     });
 
-    // Close image selector when marker closes.
-    marker.on('popupclose', function(e) {
-        var sidebar = $('#mapping-marker-image-selector');
+    // Close image selector when feature closes.
+    feature.on('popupclose', function(e) {
+        const sidebar = $('#mapping-feature-image-selector');
         if (sidebar.hasClass('active')) {
             Omeka.closeSidebar(sidebar);
         }
     });
 
-    // Add the marker layer before adding marker inputs so Leaflet sets an ID.
-    drawnItems.addLayer(marker);
-
-    // Add the corresponding marker inputs to the form.
-    if (markerId) {
-        mappingForm.append($('<input>')
-            .attr('type', 'hidden')
-            .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o:id]')
-            .val(markerId));
+    // Wrap marker coordinates that are outside their valid ranges into their
+    // valid geographical equivalents. Note that this only applies to markers
+    // because other features may extend through the antimeridian.
+    if (feature._latlng) {
+        feature.setLatLng(feature.getLatLng().wrap());
     }
-    // Account for markers placed outside the CRS's bounds.
-    var latLng = marker.getLatLng().wrap();
-    mappingForm.append($('<input>')
-        .attr('type', 'hidden')
-        .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:lat]')
-        .val(latLng.lat));
-    mappingForm.append($('<input>')
-        .attr('type', 'hidden')
-        .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:lng]')
-        .val(latLng.lng));
-    mappingForm.append($('<input>')
-        .attr('type', 'hidden')
-        .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:label]')
-        .val(markerLabel));
-    mappingForm.append($('<input>')
-        .attr('type', 'hidden')
-        .attr('name', 'o-module-mapping:marker[' + marker._leaflet_id + '][o:media][o:id]')
-        .val(markerMediaId));
+    // Add the feature layer before adding feature inputs so Leaflet sets an ID.
+    drawnFeatures.addLayer(feature);
+    const featureGeoJson = feature.toGeoJSON();
+    const featureNamePrefix = getFeatureNamePrefix(feature);
 
+    // Add the corresponding feature inputs to the form.
+    if (featureId) {
+        mappingForm.append($('<input>', {
+            type: 'hidden',
+            name: featureNamePrefix + '[o:id]',
+            value: featureId
+        }));
+    }
+    mappingForm.append($('<input>', {
+        type: 'hidden',
+        name: featureNamePrefix + '[o:media][o:id]',
+        value: featureMediaId
+    }));
+    mappingForm.append($('<input>', {
+        type: 'hidden',
+        name: featureNamePrefix + '[o:label]',
+        value: featureLabel
+    }));
+    mappingForm.append($('<input>', {
+        type: 'hidden',
+        name: featureNamePrefix + '[o-module-mapping:geography-type]',
+        value: featureGeoJson.geometry.type
+    }));
+    mappingForm.append($('<input>', {
+        type: 'hidden',
+        name: featureNamePrefix + '[o-module-mapping:geography-coordinates]',
+        value: JSON.stringify(featureGeoJson.geometry.coordinates)
+    }));
 };
 
 /**
- * Edit a marker.
+ * Edit a feature.
  *
- * @param marker
+ * @param feature
  */
-var editMarker = function(marker) {
-    // Edit the corresponding marker form inputs.
-    $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:lat]"]')
-        .val(marker.getLatLng().lat);
-    $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:lng]"]')
-        .val(marker.getLatLng().lng);
+const editFeature = function(feature) {
+    const featureGeoJson = feature.toGeoJSON();
+    const featureNamePrefix = getFeatureNamePrefix(feature);
+    // Edit the corresponding feature inputs
+    $(`input[name="${featureNamePrefix}[o-module-mapping:geography-type]"]`)
+        .val(featureGeoJson.geometry.type);
+    $(`input[name="${featureNamePrefix}[o-module-mapping:geography-coordinates]"]`)
+        .val(JSON.stringify(featureGeoJson.geometry.coordinates));
 }
 
 /**
- * Delete a marker.
+ * Delete a feature.
  *
- * @param marker
+ * @param feature
  */
-var deleteMarker = function(marker) {
-    // Remove the corresponding marker inputs from the form.
-    $('input[name^="o-module-mapping:marker[' + marker._leaflet_id + ']"]').remove();
+const deleteFeature = function(feature) {
+    // Remove the corresponding feature inputs from the form.
+    $(`input[name^="${getFeatureNamePrefix(feature)}"]`).remove();
 }
 
 /**
- * Fit map bounds.
+ * Set the map view.
  */
-var fitBounds = function() {
+const setView = function() {
     if (mapMoved) {
-        // The user moved the map. Do not fit bounds.
-        return;
+        return; // The user moved the map. Do not set the view.
     }
     if (defaultBounds) {
         map.fitBounds(defaultBounds);
     } else {
-        var allMarkers = [];
-        map.eachLayer(function(layer) {
-            if (layer._latlng) {
-                allMarkers.push(layer);
-            }
-        });
-        var bounds = L.featureGroup(allMarkers).getBounds();
+        const bounds = drawnFeatures.getBounds();
         if (bounds.isValid()) {
             map.fitBounds(bounds);
+        } else {
+            map.setView([20, 0], 2)
         }
     }
 }
 
+const getFeatureNamePrefix = function(feature) {
+    return `o-module-mapping:feature[${drawnFeatures.getLayerId(feature)}]`;
+};
+
 // Get map data.
-var mappingMap = $('#mapping-map');
-var mappingForm = $('#mapping-form');
-var mappingData = mappingMap.data('mapping');
-var markersData = mappingMap.data('markers');
+const mappingMap = $('#mapping-map');
+const mappingForm = $('#mapping-form');
+const mappingData = mappingMap.data('mapping');
+const featuresData = mappingMap.data('features');
 
 // Initialize the map and set default view.
-var map = L.map('mapping-map', {
+const map = L.map('mapping-map', {
     fullscreenControl: true,
     worldCopyJump:true
 });
-map.setView([20, 0], 2);
-var mapMoved = false;
-var defaultBounds = null;
+let mapMoved = false;
+let defaultBounds = null;
 if (mappingData && mappingData['o-module-mapping:bounds'] !== null) {
-    var bounds = mappingData['o-module-mapping:bounds'].split(',');
-    var southWest = [bounds[1], bounds[0]];
-    var northEast = [bounds[3], bounds[2]];
+    const bounds = mappingData['o-module-mapping:bounds'].split(',');
+    const southWest = [bounds[1], bounds[0]];
+    const northEast = [bounds[3], bounds[2]];
     defaultBounds = [southWest, northEast];
 }
 
 // Add layers and controls to the map.
-var baseMaps = {
+const baseMaps = {
     'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
     'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
     'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
     'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
 };
-var layerControl = L.control.layers(baseMaps);
-var drawnItems = new L.FeatureGroup();
-var geoSearchControl = new window.GeoSearch.GeoSearchControl({
+const baseMapsControl = L.control.layers(baseMaps);
+const geoSearchControl = new window.GeoSearch.GeoSearchControl({
     provider: new window.GeoSearch.OpenStreetMapProvider,
     showMarker: false,
     retainZoomLevel: false,
 });
-var drawControl = new L.Control.Draw({
+const drawnFeatures = new L.FeatureGroup();
+const drawControl = new L.Control.Draw({
     draw: {
-        polyline: false,
-        polygon: false,
-        rectangle: false,
+        polyline: true,
+        polygon: true,
+        // Rectangle is compatible because it is treated as a polygon.
+        rectangle: true,
+        // Circles are incompatible because they require a separate radius.
+        // Ideally we would draw circles as polygons, but there is no function
+        // to do this. Note that GeoJSON does not support circles.
         circle: false,
         circlemarker: false
     },
     edit: {
-        featureGroup: drawnItems
+        featureGroup: drawnFeatures
     }
 });
-L.drawLocal.edit.toolbar.buttons.edit = 'Move markers';
-L.drawLocal.edit.toolbar.buttons.editDisabled = 'No markers to move';
-L.drawLocal.edit.toolbar.buttons.remove = 'Delete markers';
-L.drawLocal.edit.toolbar.buttons.removeDisabled = 'No markers to delete';
-L.drawLocal.edit.handlers.edit.tooltip.text = 'Drag and drop marker to move it.';
-L.drawLocal.edit.handlers.remove.tooltip.text = 'Click on a marker to delete it.';
 map.addLayer(baseMaps['Streets']);
-map.addLayer(drawnItems);
-map.addControl(layerControl);
+map.addLayer(drawnFeatures);
+map.addControl(baseMapsControl);
 map.addControl(drawControl);
 map.addControl(geoSearchControl);
 map.addControl(new L.Control.DefaultView(
@@ -199,12 +207,18 @@ map.addControl(new L.Control.DefaultView(
     {noInitialDefaultView: !defaultBounds}
 ));
 
-// Add saved markers to the map.
-$.each(markersData, function(index, data) {
-    var latLng = L.latLng(data['o-module-mapping:lat'], data['o-module-mapping:lng']);
-    var marker = L.marker(latLng);
-    var markerMediaId = data['o:media'] ? data['o:media']['o:id'] : null;
-    addMarker(marker, data['o:id'], data['o-module-mapping:label'], markerMediaId);
+// Add saved features to the map.
+$.each(featuresData, function(index, data) {
+    const featureMediaId = data['o:media'] ? data['o:media']['o:id'] : null;
+    const geoJson = {
+        type: data['o-module-mapping:geography-type'],
+        coordinates: data['o-module-mapping:geography-coordinates'],
+    };
+    const feature = L.geoJSON(geoJson, {
+        onEachFeature: function(feature, layer) {
+            addFeature(layer, data['o:id'], data['o:label'], featureMediaId);
+        }
+    });
 });
 
 // Set saved mapping data to the map (default view).
@@ -213,87 +227,89 @@ if (mappingData) {
     $('input[name="o-module-mapping:mapping[o-module-mapping:bounds]"]').val(mappingData['o-module-mapping:bounds']);
 }
 
-fitBounds();
+// Set the initial view.
+setView();
 
+// Handle map moved.
 map.on('movestart', function(e) {
     mapMoved = true;
 });
 
-// Handle adding new markers.
+// Handle adding new features.
 map.on('draw:created', function(e) {
-    if (e.layerType === 'marker') {
-        addMarker(e.layer);
+    if (['marker', 'polyline', 'polygon', 'rectangle'].includes(e.layerType)) {
+        addFeature(e.layer);
     }
 });
 
-// Handle editing existing markers (saved and unsaved).
+// Handle editing existing features (saved and unsaved).
 map.on('draw:edited', function(e) {
     e.layers.eachLayer(function(layer) {
-        editMarker(layer);
+        editFeature(layer);
     });
 });
 
-// Handle deleting existing (saved and unsaved) markers.
+// Handle deleting existing (saved and unsaved) features.
 map.on('draw:deleted', function(e) {
     e.layers.eachLayer(function(layer) {
-        deleteMarker(layer);
+        deleteFeature(layer);
     });
 });
 
 // Handle adding a geocoded marker.
 map.on('geosearch/showlocation', function(e) {
-    addMarker(new L.Marker([e.location.y, e.location.x]), null, e.location.label);
+    addFeature(new L.Marker([e.location.y, e.location.x]), null, e.location.label);
 });
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
 $('#mapping-section').on('o:section-opened', function(e) {
     $('#content').one('transitionend', function(e) {
         map.invalidateSize();
-        fitBounds();
+        setView();
     });
 });
 
-// Handle updating corresponding form input when updating a marker label.
-mappingMap.on('keyup', '.mapping-marker-popup-label', function(e) {
-    var thisInput = $(this);
-    var marker = thisInput.closest('.mapping-marker-popup-content').data('marker');
-    var labelInput = $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:label]"]');
+// Handle updating corresponding form input when updating a feature label.
+mappingMap.on('keyup', '.mapping-feature-popup-label', function(e) {
+    const thisInput = $(this);
+    const feature = thisInput.closest('.mapping-feature-popup-content').data('feature');
+    const labelInput = $(`input[name="${getFeatureNamePrefix(feature)}[o:label]"]`);
     labelInput.val(thisInput.val());
 });
 
 // Handle select popup image button.
-$('#mapping-section').on('click', '.mapping-marker-popup-image-select', function(e) {
+$('#mapping-section').on('click', '.mapping-feature-popup-image-select', function(e) {
     e.preventDefault();
-    Omeka.openSidebar($('#mapping-marker-image-selector'));
+    Omeka.openSidebar($('#mapping-feature-image-selector'));
 });
 
 // Handle media image selection.
-$('input.mapping-marker-image-select').on('change', function(e) {
-    var thisInput = $(this);
-    var popupContent = $('.mapping-marker-popup-content:visible');
-    var marker = popupContent.data('marker');
+$('input.mapping-feature-image-select').on('change', function(e) {
+    const thisInput = $(this);
+    const popupContent = $('.mapping-feature-popup-content:visible');
+    const popupLabel = popupContent.find('.mapping-feature-popup-label');
+    const feature = popupContent.data('feature');
+    const featureNamePrefix = getFeatureNamePrefix(feature);
+    const mediaThumbnailUrl = thisInput.data('mediaThumbnailUrl');
+    const mediaTitle = thisInput.data('mediaTitle');
+    let mediaThumbnail = null;
 
     // Render thumbnail in popup content.
-    var mediaThumbnail = null;
-    var mediaThumbnailUrl = thisInput.data('mediaThumbnailUrl');
     if (mediaThumbnailUrl) {
-        var mediaThumbnail = $('<img>', {src: mediaThumbnailUrl});
-        popupContent.find('.mapping-marker-popup-image-select').html('Change Marker Image');
+        mediaThumbnail = $('<img>', {src: mediaThumbnailUrl});
+        popupContent.find('.mapping-feature-popup-image-select').html('Change feature image');
     } else {
-        popupContent.find('.mapping-marker-popup-image-select').html('Select Marker Image');
+        popupContent.find('.mapping-feature-popup-image-select').html('Select feature image');
     }
-    popupContent.find('.mapping-marker-popup-image').html(mediaThumbnail);
+    popupContent.find('.mapping-feature-popup-image').html(mediaThumbnail);
     popupContent.data('selectedMediaId', thisInput.val());
 
     // Update corresponding form input when updating an image.
-    var mediaIdInput = $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o:media][o:id]"]');
-    mediaIdInput.val(thisInput.val());
+    $(`input[name="${featureNamePrefix}[o:media][o:id]"]`).val(thisInput.val());
 
     // Set the media title as the popup label if not already set.
-    var mediaTitle = thisInput.data('mediaTitle');
-    var popupLabel = popupContent.find('.mapping-marker-popup-label');
     if (!popupLabel.val()) {
-        var labelInput = $('input[name="o-module-mapping:marker[' + marker._leaflet_id + '][o-module-mapping:label]"]');
+        const labelInput = $(`input[name="${featureNamePrefix}[o:label]"]`);
         labelInput.val(mediaTitle);
         popupLabel.val(mediaTitle);
     }

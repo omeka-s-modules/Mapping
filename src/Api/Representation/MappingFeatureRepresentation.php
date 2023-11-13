@@ -3,21 +3,22 @@ namespace Mapping\Api\Representation;
 
 use Omeka\Api\Representation\AbstractEntityRepresentation;
 
-class MappingMarkerRepresentation extends AbstractEntityRepresentation
+class MappingFeatureRepresentation extends AbstractEntityRepresentation
 {
     public function getJsonLdType()
     {
-        return 'o-module-mapping:Marker';
+        return 'o-module-mapping:Feature';
     }
 
     public function getJsonLd()
     {
+        $media = $this->media();
         return [
             'o:item' => $this->item()->getReference(),
-            'o:media' => $this->resource->getMedia() ? $this->media()->getReference() : null,
-            'o-module-mapping:lat' => $this->lat(),
-            'o-module-mapping:lng' => $this->lng(),
-            'o-module-mapping:label' => $this->label(),
+            'o:media' => $media ? $media->getReference() : null,
+            'o:label' => $this->label(),
+            'o-module-mapping:geography-type' => $this->geographyType(),
+            'o-module-mapping:geography-coordinates' => $this->geographyCoordinates(),
         ];
     }
 
@@ -40,18 +41,23 @@ class MappingMarkerRepresentation extends AbstractEntityRepresentation
         return $this->getAdapter('media')->getRepresentation($media);
     }
 
-    public function lat()
-    {
-        return $this->resource->getLat();
-    }
-
-    public function lng()
-    {
-        return $this->resource->getLng();
-    }
-
     public function label()
     {
         return $this->resource->getLabel();
+    }
+
+    public function geography()
+    {
+        return $this->resource->getGeography();
+    }
+
+    public function geographyType()
+    {
+        return $this->geography()->getType();
+    }
+
+    public function geographyCoordinates()
+    {
+        return $this->geography()->toArray();
     }
 }

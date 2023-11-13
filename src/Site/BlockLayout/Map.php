@@ -45,7 +45,7 @@ class Map extends AbstractMap
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
         $form = parent::form($view, $site, $page, $block);
-        $form .= $view->blockAttachmentsForm($block, true, ['has_markers' => true]);
+        $form .= $view->blockAttachmentsForm($block, true, ['has_features' => true]);
         return $form;
     }
 
@@ -55,13 +55,13 @@ class Map extends AbstractMap
         $isTimeline = (bool) $data['timeline']['data_type_properties'];
         $timelineIsAvailable = $this->timelineIsAvailable();
 
-        // Get markers (and events, if applicable) from the attached items.
+        // Get features (and events, if applicable) from the attached items.
         $events = [];
-        $markers = [];
+        $features = [];
         foreach ($block->attachments() as $attachment) {
             $item = $attachment->item();
             if (!$item) {
-                // This attachment has no item. Do not add markers.
+                // This attachment has no item. Do not add features.
                 continue;
             }
             if ($isTimeline && $timelineIsAvailable) {
@@ -71,14 +71,14 @@ class Map extends AbstractMap
                     $events[] = $event;
                 }
             }
-            // Set the map markers for this item.
-            $itemMarkers = $view->api()->search('mapping_markers', ['item_id' => $item->id()])->getContent();
-            $markers = array_merge($markers, $itemMarkers);
+            // Set the map features for this item.
+            $itemFeatures = $view->api()->search('mapping_features', ['item_id' => $item->id()])->getContent();
+            $features = array_merge($features, $itemFeatures);
         }
 
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
-            'markers' => $markers,
+            'features' => $features,
             'isTimeline' => $isTimeline,
             'timelineData' => $this->getTimelineData($events, $data, $view),
             'timelineOptions' => $this->getTimelineOptions($data),

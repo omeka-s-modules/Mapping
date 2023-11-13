@@ -9,6 +9,7 @@ $this->headScript()->appendFile($this->assetUrl('node_modules/leaflet/dist/leafl
 $this->headScript()->appendFile($this->assetUrl('node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('node_modules/leaflet-providers/leaflet-providers.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
+$this->headScript()->appendFile($this->assetUrl('node_modules/Leaflet.Deflate/dist/L.Deflate.js', 'Mapping'));
 
 $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/mapping-browse.js', 'Mapping'));
@@ -18,31 +19,17 @@ $query['mapping_basemap_provider'] = $query['mapping_basemap_provider'] ?? '';
 ?>
 <?php echo $this->pageTitle($this->translate('Map'), 2); ?>
 
-<div id="mapping-map" style="height:500px; width: 80%; margin:0 auto;"></div>
+<div id="mapping-map" style="height:700px; width: 80%; margin:0 auto;"
+    data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
+    data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
+></div>
 
 <form id="advanced-search">
     <?php echo $this->partial('common/advanced-search', ['query' => $query, 'resourceType' => 'item']); ?>
-    <button type="button"><?php echo $this->translate('Search Map'); ?></button>
+    <button type="submit"><?php echo $this->translate('Search Map'); ?></button>
     <input type="hidden" name="mapping_basemap_provider" value="<?php echo $this->escapeHtml($query['mapping_basemap_provider']); ?>">
 </form>
 
-<?php foreach ($markers as $marker): ?>
-<div class="mapping-marker-popup-content" style="display:none;"
-    data-marker-id="<?php echo $this->escapeHtml($marker->id()); ?>"
-    data-marker-lat="<?php echo $this->escapeHtml($marker->lat()); ?>"
-    data-marker-lng="<?php echo $this->escapeHtml($marker->lng()); ?>"
->
-    <?php if ($marker->label()): ?>
-    <h3><?php echo $this->escapeHtml($marker->label()); ?></h3>
-    <?php endif; ?>
-    <?php if ($marker->media()): ?>
-    <img src="<?php echo $this->escapeHtml($marker->media()->thumbnailUrl('medium')); ?>">
-    <div>
-        <a href="<?php echo $this->escapeHtml($marker->media()->url()); ?>"><?php echo $this->translate('View media'); ?></a>
-    </div>
-    <?php endif; ?>
-    <div>
-        <a href="<?php echo $this->escapeHtml($marker->item()->url()); ?>"><?php echo $this->translate('View item'); ?></a>
-    </div>
-</div>
+<?php foreach ($features as $feature): ?>
+<?php echo $this->partial('common/mapping-feature-popup', ['feature' => $feature]); ?>
 <?php endforeach; ?>

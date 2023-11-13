@@ -11,7 +11,7 @@ class CsvMapping extends AbstractMapping
 
     public function getSidebar(PhpRenderer $view)
     {
-        return $view->partial('admin/csv-mapping');
+        return $view->partial('common/csv-import/mapping');
     }
 
     public function processRow(array $row)
@@ -30,7 +30,8 @@ class CsvMapping extends AbstractMapping
         $multivalueSeparator = $this->args['multivalue_separator'];
 
         // Set default values.
-        $markerJson = [];
+        $lat = null;
+        $lng = null;
         $mappingJson = [];
 
         foreach ($row as $index => $value) {
@@ -38,10 +39,10 @@ class CsvMapping extends AbstractMapping
                 continue;
             }
             if (in_array($index, $latMap)) {
-                $markerJson['o-module-mapping:lat'] = $value;
+                $lat = $value;
             }
             if (in_array($index, $lngMap)) {
-                $markerJson['o-module-mapping:lng'] = $value;
+                $lng = $value;
             }
             if (in_array($index, $latLngMap)) {
                 if (empty($multivalueMap[$index])) {
@@ -54,9 +55,9 @@ class CsvMapping extends AbstractMapping
                     if (count($latLng) !== 2) {
                         continue;
                     }
-                    $json['o-module-mapping:marker'][] = [
-                        'o-module-mapping:lat' => $latLng[0],
-                        'o-module-mapping:lng' => $latLng[1],
+                    $json['o-module-mapping:feature'][] = [
+                        'o-module-mapping:geography-type' => 'point',
+                        'o-module-mapping:geography-coordinates' => [$latLng[1], $latLng[0]],
                     ];
                 }
             }
@@ -65,8 +66,11 @@ class CsvMapping extends AbstractMapping
             }
         }
 
-        if (isset($markerJson['o-module-mapping:lat']) && isset($markerJson['o-module-mapping:lng'])) {
-            $json['o-module-mapping:marker'][] = $markerJson;
+        if ($lat && $lng) {
+            $json['o-module-mapping:feature'][] = [
+                'o-module-mapping:geography-type' => 'point',
+                'o-module-mapping:geography-coordinates' => [$lng, $lat],
+            ];
         }
         if (isset($mappingJson['o-module-mapping:bounds'])) {
             $json['o-module-mapping:mapping'] = $mappingJson;

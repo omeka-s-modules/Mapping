@@ -14,11 +14,11 @@ class Mapping implements ResourcePageBlockLayoutInterface
 
     public function getCompatibleResourceNames() : array
     {
-        return ['items'];
+        return ['items', 'item_sets'];
     }
 
     public function render(PhpRenderer $view, AbstractResourceEntityRepresentation $resource) : string
     {
-        return $view->partial('mapping/index/show', ['item' => $resource]);
+        return $view->partial('common/mapping-resource-map', ['resource' => $resource]);
     }
 }

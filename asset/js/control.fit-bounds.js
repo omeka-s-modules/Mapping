@@ -1,4 +1,4 @@
-// Control that fits markers within bounds.
+// Control that fits features within bounds.
 L.Control.FitBounds = L.Control.extend({
     options: {
         position: 'topleft'
@@ -16,7 +16,7 @@ L.Control.FitBounds = L.Control.extend({
 
         link.innerHTML = '⊡';
         link.href = '#';
-        link.title = 'Fit all markers on the map within one view';
+        link.title = 'Fit all features on the map within one view';
         link.style.fontSize = '20px';
 
         L.DomEvent

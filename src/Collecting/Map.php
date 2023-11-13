@@ -57,10 +57,10 @@ class Map implements MediaTypeInterface
         }
         if ($lat && $lng) {
             // Add marker data only when latitude and longitude are valid.
-            $itemData['o-module-mapping:marker'][] = [
-                'o-module-mapping:lat' => $lat,
-                'o-module-mapping:lng' => $lng,
-                'o-module-mapping:label' => $label,
+            $itemData['o-module-mapping:feature'][] = [
+                'o-module-mapping:geography-type' => 'point',
+                'o-module-mapping:geography-coordinates' => [$lng, $lat],
+                'o:label' => $label,
             ];
         }
         return $itemData;
