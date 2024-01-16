@@ -321,6 +321,9 @@ class Module extends AbstractModule
                         'element_group' => 'mapping',
                         'label' => 'Delete features', // @translate
                     ],
+                    'attributes' => [
+                        'data-collection-action' => 'replace',
+                    ],
                 ]);
                 $form->add([
                     'type' => CopyCoordinates::class,
