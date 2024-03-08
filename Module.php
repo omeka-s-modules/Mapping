@@ -385,11 +385,11 @@ class Module extends AbstractModule
             'copy_resources.copy_site',
             function (Event $event) {
                 $copyResources = $event->getParam('copy_resources');
-                $siteCopy = $event->getParam('site_copy');
+                $siteCopy = $event->getParam('resource_copy');
 
-                $copyResources->revertSiteBlockLayouts($siteCopy, 'mappingMap');
-                $copyResources->revertSiteBlockLayouts($siteCopy, 'mappingMapQuery');
-                $copyResources->revertSiteNavigationLinkTypes($siteCopy, 'mapping');
+                $copyResources->revertSiteBlockLayouts($siteCopy->id(), 'mappingMap');
+                $copyResources->revertSiteBlockLayouts($siteCopy->id(), 'mappingMapQuery');
+                $copyResources->revertSiteNavigationLinkTypes($siteCopy->id(), 'mapping');
             }
         );
     }
