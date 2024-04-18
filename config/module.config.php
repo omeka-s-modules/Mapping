@@ -69,6 +69,7 @@ return [
         'factories' => [
             'mappingMap' => Service\BlockLayout\MapFactory::class,
             'mappingMapQuery' => Service\BlockLayout\MapFactory::class,
+            'mappingMapGeoJson' => Service\BlockLayout\MapFactory::class,
         ],
     ],
     'navigation_links' => [

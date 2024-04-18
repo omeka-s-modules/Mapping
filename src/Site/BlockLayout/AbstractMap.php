@@ -240,7 +240,8 @@ abstract class AbstractMap extends AbstractBlockLayout
         // >= 1.1.0 (when it introduced interval data type).
         $module = $this->moduleManager->getModule('NumericDataTypes');
         return (
-            $module
+            !($this instanceof MapGeoJson) // MapGeoJson block layout does not support timeline
+            && $module
             && ModuleManager::STATE_ACTIVE === $module->getState()
             && Comparator::greaterThanOrEqualTo($module->getDb('version'), '1.1.0')
         );

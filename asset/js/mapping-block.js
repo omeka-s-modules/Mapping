@@ -122,6 +122,47 @@ function MappingBlock(mapDiv, timelineDiv) {
         });
     });
 
+    if (mapData.geojson) {
+        L.geoJSON(JSON.parse(mapData.geojson), {
+            onEachFeature: function(feature, layer) {
+                if (feature.properties) {
+                    const popup = $('<div>', {
+                        class: 'mapping-feature-popup-content',
+                    });
+                    const labelKey = mapData.geojson_property_key_label;
+                    if (feature.properties[labelKey]) {
+                        const h3 = $('<h3>').text(feature.properties[labelKey]);
+                        popup.append(h3);
+                    }
+                    const dl = $('<dl>', {
+                        style: 'height: 200px; overflow: scroll;',
+                    });
+                    $.each(feature.properties, function(key, value) {
+                        if ('string' === typeof value) {
+                            const dt = $('<dt>').text(key);
+                            const dd = $('<dd>').text(value);
+                            dl.append(dt, dd);
+                        }
+                    });
+                    popup.append(dl);
+                    layer.bindPopup(popup[0]);
+                }
+                switch (feature.geometry.type) {
+                    case 'Point':
+                        featuresPoint.addLayer(layer);
+                        break;
+                    case 'LineString':
+                    case 'Polygon':
+                        layer.on('popupopen', function() {
+                            map.fitBounds(layer.getBounds());
+                        });
+                        featuresPoly.addLayer(layer);
+                        break;
+                }
+            }
+        });
+    }
+
     // Add the features to the map.
     features.addLayer(featuresPoint);
     features.addLayer(featuresPoly);
