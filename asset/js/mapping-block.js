@@ -126,27 +126,45 @@ function MappingBlock(mapDiv, timelineDiv) {
         L.geoJSON(JSON.parse(mapData.geojson), {
             onEachFeature: function(feature, layer) {
                 if (feature.properties) {
-                    const popup = $('<div>', {
-                        class: 'mapping-feature-popup-content',
-                    });
-                    const labelKey = mapData.geojson_property_key_label;
-                    if (feature.properties[labelKey]) {
-                        const h3 = $('<h3>').text(feature.properties[labelKey]);
-                        popup.append(h3);
-                    }
-                    const dl = $('<dl>', {
-                        style: 'height: 200px; overflow: scroll;',
-                    });
+                    // Filter out non-string properties.
                     $.each(feature.properties, function(key, value) {
-                        if ('string' === typeof value) {
-                            const dt = $('<dt>').text(key);
-                            const dd = $('<dd>').text(value);
-                            dl.append(dt, dd);
+                        if ('string' !== typeof value) {
+                            delete feature.properties[key];
                         }
                     });
-                    popup.append(dl);
-                    layer.bindPopup(popup[0]);
+                    if (!$.isEmptyObject(feature.properties)) {
+                        // Add the popup.
+                        const popup = $('<div>', {
+                            class: 'mapping-feature-popup-content',
+                        });
+                        // Add the popup label.
+                        const labelKey = mapData.geojson_property_key_label;
+                        if (feature.properties[labelKey] && 'string' === typeof feature.properties[labelKey]) {
+                            $('<h3>').text(feature.properties[labelKey]).appendTo(popup);
+                        }
+                        // Add the popup comment.
+                        const commentKey = mapData.geojson_property_key_comment;
+                        if (feature.properties[commentKey] && 'string' === typeof feature.properties[commentKey]) {
+                            $('<p>').text(feature.properties[commentKey]).appendTo(popup);
+                        }
+                        // Add the GeoJSON properties to the popup.
+                        if (parseInt(mapData.geojson_show_property_list)) {
+                            const dl = $('<dl>', {
+                                style: 'height: 200px; overflow: scroll;',
+                            });
+                            $.each(feature.properties, function(key, value) {
+                                if ('string' === typeof value) {
+                                    const dt = $('<dt>').text(key);
+                                    const dd = $('<dd>').text(value);
+                                    dl.append(dt, dd);
+                                }
+                            });
+                            popup.append(dl);
+                        }
+                        layer.bindPopup(popup[0]);
+                    }
                 }
+                // Add features to map.
                 switch (feature.geometry.type) {
                     case 'Point':
                         featuresPoint.addLayer(layer);

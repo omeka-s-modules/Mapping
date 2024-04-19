@@ -31,12 +31,22 @@ class MapGeoJson extends AbstractMap
             ->setLabel($view->translate('Label property key'))
             ->setOption('info', $view->translate('Enter the GeoJSON property key used for the popup label, if any.'))
             ->setValue($data['geojson_property_key_label'] ?? null);
+        $commentElement = (new Element\Text('o:block[__blockIndex__][o:data][geojson_property_key_comment]'))
+            ->setLabel($view->translate('Comment property key'))
+            ->setOption('info', $view->translate('Enter the GeoJSON property key used for the popup comment, if any.'))
+            ->setValue($data['geojson_property_key_comment'] ?? null);
+        $showPropertyListElement = (new Element\Checkbox('o:block[__blockIndex__][o:data][geojson_show_property_list]'))
+            ->setLabel($view->translate('Show GeoJSON property list?'))
+            ->setOption('info', $view->translate('Do you want to show the GeoJSON property list if available?'))
+            ->setValue($data['geojson_show_property_list'] ?? false);
         $geojsonElement = (new Element\Textarea('o:block[__blockIndex__][o:data][geojson]'))
             ->setLabel($view->translate('GeoJSON'))
             ->setValue($data['geojson'] ?? null)
             ->setAttribute('rows', '18');
         $fieldset = (new Fieldset('geojson'))
             ->add($labelElement)
+            ->add($commentElement)
+            ->add($showPropertyListElement)
             ->add($geojsonElement);
 
         return sprintf(
@@ -63,10 +73,14 @@ class MapGeoJson extends AbstractMap
     protected function filterBlockData($data)
     {
         $geojson = $data['geojson'] ?? null;
-        $geojsonPropertyKeyLabel = $data['geojson_property_key_label'] ?? null;
+        $labelKey = $data['geojson_property_key_label'] ?? null;
+        $commentKey = $data['geojson_property_key_comment'] ?? null;
+        $showPropertyList = $data['geojson_show_property_list'] ?? false;
         $data = parent::filterBlockData($data);
         $data['geojson'] = $geojson;
-        $data['geojson_property_key_label'] = $geojsonPropertyKeyLabel;
+        $data['geojson_property_key_label'] = $labelKey;
+        $data['geojson_property_key_comment'] = $commentKey;
+        $data['geojson_show_property_list'] = $showPropertyList;
         return $data;
     }
 }
