@@ -161,7 +161,10 @@ function MappingBlock(mapDiv, timelineDiv) {
                             });
                             popup.append(dl);
                         }
-                        layer.bindPopup(popup[0]);
+                        // Show popup only when it has contents.
+                        if (popup.contents().length) {
+                            layer.bindPopup(popup[0]);
+                        }
                     }
                 }
                 // Add features to map.
