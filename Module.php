@@ -105,6 +105,7 @@ class Module extends AbstractModule
             ['Mapping\Api\Adapter\MappingFeatureAdapter',
                 'Mapping\Api\Adapter\MappingAdapter',
                 'Mapping\Entity\MappingFeature',
+                'Mapping\Entity\Mapping',
             ],
             ['show', 'browse', 'read', 'search']
             );
