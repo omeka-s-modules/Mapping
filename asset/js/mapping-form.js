@@ -182,6 +182,14 @@ const drawControl = new L.Control.Draw({
         featureGroup: drawnFeatures
     }
 });
+// Customize strings.
+// @see https://github.com/Leaflet/Leaflet.draw?tab=readme-ov-file#customizing-language-and-text-in-leafletdraw
+L.drawLocal.edit.toolbar.buttons = {
+    edit: 'Edit feature',
+    editDisabled: 'No features to edit',
+    remove: 'Delete feature',
+    removeDisabled: 'No features to delete'
+};
 map.addLayer(baseMaps['Streets']);
 map.addLayer(drawnFeatures);
 map.addControl(baseMapsControl);
