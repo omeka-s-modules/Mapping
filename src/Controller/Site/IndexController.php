@@ -8,6 +8,12 @@ class IndexController extends AbstractActionController
 {
     public function browseAction()
     {
+        // Limit to a reasonable amount of items that have features to avoid
+        // reaching the server memory limit and to improve client performance.
+        $query = $this->getRequest()->getQuery();
+        $query->set('page', $query->get('page', 1));
+        $query->set('per_page', $query->get('per_page', 5000));
+
         $itemsQuery = $this->params()->fromQuery();
 
         if ($this->siteSettings()->get('browse_attached_items', false)) {
@@ -19,16 +25,15 @@ class IndexController extends AbstractActionController
         $itemsQuery['site_id'] = $this->currentSite()->id();
         // Only get items that have features.
         $itemsQuery['has_features'] = true;
-        // Limit to a reasonable amount of items that have features to avoid
-        // reaching the server memory limit and to improve client performance.
-        $itemsQuery['limit'] = 5000;
         // Do not include geographic location query when searching items.
         unset(
             $itemsQuery['mapping_address'],
             $itemsQuery['mapping_radius'],
             $itemsQuery['mapping_radius_unit'],
         );
-        $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
+        $response = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id']);
+        $itemIds = $response->getContent();
+        $this->paginator($response->getTotalResults());
 
         // Get all features for all items that match the query, if any.
         $features = [];

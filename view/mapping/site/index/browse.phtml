@@ -19,6 +19,8 @@ $query['mapping_basemap_provider'] = $query['mapping_basemap_provider'] ?? '';
 ?>
 <?php echo $this->pageTitle($this->translate('Map'), 2); ?>
 
+<?php echo $this->pagination(); ?>
+
 <div id="mapping-map" style="height:700px; width: 80%; margin:0 auto;"
     data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
     data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
