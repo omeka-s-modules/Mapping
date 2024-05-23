@@ -31,7 +31,7 @@ L.Control.FitBounds = L.Control.extend({
     _fitBounds: function(e) {
         var bounds = this._layerGroup.getBounds();
         if (bounds.isValid()) {
-            this._map.fitBounds(bounds);
+            this._map.fitBounds(bounds, {padding: [50, 50]});
         }
     },
 });

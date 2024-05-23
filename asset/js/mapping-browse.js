@@ -52,7 +52,7 @@ $('.mapping-feature-popup-content').each(function() {
                 case 'LineString':
                 case 'Polygon':
                     layer.on('popupopen', function() {
-                        map.fitBounds(layer.getBounds());
+                        map.fitBounds(layer.getBounds(), {padding: [50, 50]});
                     });
                     featuresPoly.addLayer(layer);
                     break;
@@ -70,7 +70,7 @@ map.addLayer(baseMaps['Default'])
 
 const bounds = features.getBounds();
 if (bounds.isValid()) {
-    map.fitBounds(bounds);
+    map.fitBounds(bounds, {padding: [50, 50]});
 } else {
     map.setView([0, 0], 1);
 }
