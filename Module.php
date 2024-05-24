@@ -439,6 +439,19 @@ class Module extends AbstractModule
                 'value' => $siteSettings->get('mapping_basemap_provider'),
             ],
         ]);
+        $form->add([
+            'type' => 'number',
+            'name' => 'mapping_browse_per_page',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Map browse items per page', // @translate
+                'info' => 'Set the maximum number of items that have features to display per page on the map browse page. Limit to a reasonable amount to avoid reaching the server memory limit and to improve client performance.', // @translate
+                'placeholder' => '5000',
+            ],
+            'attributes' => [
+                'value' => $siteSettings->get('mapping_browse_per_page', '5000'),
+            ],
+        ]);
     }
 
     public function addSiteSettingsInputFilters(Event $event)

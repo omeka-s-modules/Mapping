@@ -12,7 +12,8 @@ class IndexController extends AbstractActionController
         // reaching the server memory limit and to improve client performance.
         $query = $this->getRequest()->getQuery();
         $query->set('page', $query->get('page', 1));
-        $query->set('per_page', $query->get('per_page', 5000));
+        $perPage = $this->siteSettings()->get('mapping_browse_per_page', 5000);
+        $query->set('per_page', $query->get('per_page', $perPage));
 
         $itemsQuery = $this->params()->fromQuery();
 
