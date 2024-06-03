@@ -24,6 +24,8 @@ $query['mapping_basemap_provider'] = $query['mapping_basemap_provider'] ?? '';
     data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
 ></div>
 
+<?php echo $this->pagination(); ?>
+
 <form id="advanced-search">
     <?php echo $this->partial('common/advanced-search', ['query' => $query, 'resourceType' => 'item']); ?>
     <button type="submit"><?php echo $this->translate('Search Map'); ?></button>
