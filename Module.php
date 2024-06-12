@@ -380,6 +380,19 @@ class Module extends AbstractModule
             [$this, 'updateFeatures'],
             10
         );
+        // Copy mapping-related data for the CopyResources module.
+        $sharedEventManager->attach(
+            '*',
+            'copy_resources.copy_site',
+            function (Event $event) {
+                $copyResources = $event->getParam('copy_resources');
+                $siteCopy = $event->getParam('resource_copy');
+
+                $copyResources->revertSiteBlockLayouts($siteCopy->id(), 'mappingMap');
+                $copyResources->revertSiteBlockLayouts($siteCopy->id(), 'mappingMapQuery');
+                $copyResources->revertSiteNavigationLinkTypes($siteCopy->id(), 'mapping');
+            }
+        );
     }
 
     public function addSiteSettings(Event $event)
