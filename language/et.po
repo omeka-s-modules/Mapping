@@ -5,16 +5,16 @@
 # 
 # Translators:
 # Moon Ika, 2019
-# Rivo Zängov <eraser@eraser.ee>, 2020
+# Rivo Zängov <eraser@eraser.ee>, 2024
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-07 12:55-0400\n"
+"POT-Creation-Date: 2024-06-13 08:34-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2020\n"
+"Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2024\n"
 "Language-Team: Estonian (https://app.transifex.com/omeka/teams/14184/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,32 +22,33 @@ msgstr ""
 "Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:388
-msgid "Map marker presence"
-msgstr ""
-
-#: Module.php:389
-#: view/common/advanced-search/mapping-item-marker-presence.phtml:5
-msgid "Has map markers"
-msgstr ""
-
-#: Module.php:389
-#: view/common/advanced-search/mapping-item-marker-presence.phtml:6
-msgid "Has no map markers"
-msgstr ""
-
-#: Module.php:396
-msgid "Geographic location"
-msgstr ""
-
-#: Module.php:456 view/admin/csv-mapping.phtml:3
-#: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
+#: Module.php:503 view/common/csv-import/mapping.phtml:3
+#: view/common/csv-import/mapping.phtml:6
+#: view/common/mapping-item-form.phtml:28
 msgid "Mapping"
 msgstr "Kaardid"
 
+#: Module.php:554
+msgid "Map feature presence"
+msgstr ""
+
+#: Module.php:555
+#: view/common/advanced-search/mapping-item-feature-presence.phtml:5
+msgid "Has map features"
+msgstr ""
+
+#: Module.php:555
+#: view/common/advanced-search/mapping-item-feature-presence.phtml:6
+msgid "Has no map features"
+msgstr ""
+
+#: Module.php:562
+msgid "Geographic location"
+msgstr ""
+
 #: src/Collecting/FormPromptMap.php:30
 msgid "Enter a marker label"
-msgstr ""
+msgstr "Sisesta markeri silt"
 
 #: src/Site/BlockLayout/AbstractMap.php:58
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
@@ -92,11 +93,11 @@ msgstr ""
 
 #: src/Site/BlockLayout/AbstractMap.php:85
 msgid "Enabled"
-msgstr ""
+msgstr "Sisse lülitatud"
 
 #: src/Site/BlockLayout/AbstractMap.php:86
 msgid "Disabled"
-msgstr ""
+msgstr "Välja lülitatud"
 
 #: src/Site/BlockLayout/AbstractMap.php:87
 msgid "Disabled until map click"
@@ -106,37 +107,25 @@ msgstr ""
 msgid "Attach items using this query. No query means all items."
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:7
-msgid "Select below"
-msgstr "Vali alt"
+#: view/common/advanced-search/mapping-item-feature-presence.phtml:3
+msgid "Search by map feature presence"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:8
-msgid "Latitude"
-msgstr "Laiuskraad"
-
-#: view/admin/csv-mapping.phtml:9
-msgid "Longitude"
-msgstr "Pikkuskraad"
-
-#: view/admin/csv-mapping.phtml:10
-msgid "Latitude/Longitude"
-msgstr "Laiuskraad/Pikkuskraad"
-
-#: view/admin/csv-mapping.phtml:11
-msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
+#: view/common/advanced-search/mapping-item-feature-presence.phtml:8
+msgid "Select map feature presence…"
 msgstr ""
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:5
 msgid "Address"
-msgstr ""
+msgstr "Aadress"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:9
 msgid "Radius"
-msgstr ""
+msgstr "Raadius"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:14
 msgid "Unit"
-msgstr ""
+msgstr "Ühik"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:16
 msgid "Kilometers"
@@ -150,17 +139,9 @@ msgstr "Miilid"
 msgid "Search by geographic location"
 msgstr ""
 
-#: view/common/advanced-search/mapping-item-marker-presence.phtml:3
-msgid "Search by map marker presence"
-msgstr ""
-
-#: view/common/advanced-search/mapping-item-marker-presence.phtml:8
-msgid "Select map marker presence…"
-msgstr ""
-
 #: view/common/batch-update/mapping-copy-coordinates.phtml:6
 msgid "Order"
-msgstr ""
+msgstr "Järjekord"
 
 #: view/common/batch-update/mapping-copy-coordinates.phtml:10
 msgid "Delimiter"
@@ -170,13 +151,13 @@ msgstr ""
 msgid "Assign media to marker?"
 msgstr ""
 
-#: view/common/batch-update/mapping-update-markers.phtml:2
+#: view/common/batch-update/mapping-update-features.phtml:2
 msgid "Media image"
-msgstr ""
+msgstr "Meedia pilt"
 
-#: view/common/batch-update/mapping-update-markers.phtml:7
+#: view/common/batch-update/mapping-update-features.phtml:7
 msgid "Label source"
-msgstr ""
+msgstr "Sildi allikas"
 
 #: view/common/block-layout/mapping-block-form.phtml:21
 msgid "Default View"
@@ -325,60 +306,104 @@ msgid ""
 "timeline."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-popup-content.phtml:12
-#: view/mapping/index/show.phtml:46
-#, php-format
-msgid "Item: %s"
-msgstr "Ühik: %s"
+#: view/common/csv-import/mapping.phtml:7
+msgid "Select below"
+msgstr "Vali alt"
 
-#: view/common/block-layout/mapping-block-popup-content.phtml:16
-#: view/mapping/index/show.phtml:42
+#: view/common/csv-import/mapping.phtml:8
+msgid "Latitude"
+msgstr "Laiuskraad"
+
+#: view/common/csv-import/mapping.phtml:9
+msgid "Longitude"
+msgstr "Pikkuskraad"
+
+#: view/common/csv-import/mapping.phtml:10
+msgid "Latitude/Longitude"
+msgstr "Laiuskraad/Pikkuskraad"
+
+#: view/common/csv-import/mapping.phtml:11
+msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
+msgstr ""
+
+#: view/common/mapping-feature-popup.phtml:17
 #, php-format
 msgid "Media: %s"
 msgstr "Meedia: %s"
 
-#: view/mapping/index/form.phtml:36
+#: view/common/mapping-feature-popup.phtml:21
+#, php-format
+msgid "Item: %s"
+msgstr "Ühik: %s"
+
+#: view/common/mapping-item-form.phtml:34
 msgid "Close Me"
 msgstr "Sulge"
 
-#: view/mapping/index/form.phtml:37
-msgid "Marker Image"
-msgstr "Markeri pilt"
+#: view/common/mapping-item-form.phtml:35
+msgid "Feature image"
+msgstr ""
 
-#: view/mapping/index/form.phtml:38
+#: view/common/mapping-item-form.phtml:36
 msgid " No Image"
 msgstr "Pilti pole"
 
-#: view/mapping/index/form.phtml:59
-msgid "Marker Label"
-msgstr "Markeri silt"
+#: view/common/mapping-item-form.phtml:57
+msgid "Feature label"
+msgstr ""
 
-#: view/mapping/index/form.phtml:62
-msgid "Select Marker Image"
-msgstr "Vali markeri pilt"
+#: view/common/mapping-item-form.phtml:60
+msgid "Select feature image"
+msgstr ""
 
-#: view/mapping/site/index/browse.phtml:25
+#: view/mapping/site/index/browse.phtml:31
 msgid "Search Map"
 msgstr "Otsi kaardilt"
 
-#: view/mapping/site/index/browse.phtml:41
-msgid "View media"
-msgstr "Vaata meediat"
-
-#: view/mapping/site/index/browse.phtml:45
-msgid "View item"
-msgstr "Vaata ühikut"
-
-#: Module.php:248
-msgid "Delete markers"
+#: Module.php:323
+msgid "Delete features"
 msgstr ""
 
-#: Module.php:256
+#: Module.php:334
 msgid "Copy coordinates to markers"
 msgstr ""
 
-#: Module.php:264
-msgid "Update markers"
+#: Module.php:342
+msgid "Update features"
+msgstr ""
+
+#: Module.php:413
+msgid "Add feature presence to advanced search"
+msgstr ""
+
+#: Module.php:424
+msgid "Add geographic location to advanced search"
+msgstr ""
+
+#: Module.php:435
+msgid "Disable clustering of map features"
+msgstr ""
+
+#: Module.php:436
+msgid ""
+"Map features are markers, polygons, polylines, and rectangles. Note that "
+"large features may not cluster."
+msgstr ""
+
+#: Module.php:448 src/Site/BlockLayout/AbstractMap.php:62
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11
+msgid "[Default provider]"
+msgstr "[Vaikimisi teenusepakkuja]"
+
+#: Module.php:460
+msgid "Map browse items per page"
+msgstr ""
+
+#: Module.php:461
+msgid ""
+"Set the maximum number of items that have features to display per page on "
+"the map browse page. Limit to a reasonable amount to avoid reaching the "
+"server memory limit and to improve client performance."
 msgstr ""
 
 #: src/Site/BlockLayout/Map.php:15
@@ -388,11 +413,6 @@ msgstr ""
 #: src/Site/BlockLayout/MapQuery.php:16
 msgid "Map by query"
 msgstr ""
-
-#: src/Site/BlockLayout/AbstractMap.php:62
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11
-msgid "[Default provider]"
-msgstr "[Vaikimisi teenusepakkuja]"
 
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
@@ -444,32 +464,32 @@ msgstr ""
 
 #: src/Form/Element/CopyCoordinates.php:65
 msgid "Comma [,]"
-msgstr ""
+msgstr "Koma [,]"
 
 #: src/Form/Element/CopyCoordinates.php:66
 msgid "Space [ ]"
-msgstr ""
+msgstr "Tühik [ ]"
 
 #: src/Form/Element/CopyCoordinates.php:67
 msgid "Slash [/]"
-msgstr ""
+msgstr "Kaldkriips [/]"
 
 #: src/Form/Element/CopyCoordinates.php:68
 msgid "Colon [:]"
-msgstr ""
+msgstr "Koolon [:]"
 
-#: src/Form/Element/UpdateMarkers.php:27
+#: src/Form/Element/UpdateFeatures.php:27
 msgid "[Remove label]"
-msgstr ""
+msgstr "[Eemalda silt]"
 
-#: src/Form/Element/UpdateMarkers.php:31
+#: src/Form/Element/UpdateFeatures.php:31
 msgid "Select label property"
-msgstr ""
+msgstr "Vali sildi omadus"
 
-#: src/Form/Element/UpdateMarkers.php:38
+#: src/Form/Element/UpdateFeatures.php:38
 msgid "Assigned media"
 msgstr ""
 
-#: src/Form/Element/UpdateMarkers.php:44
+#: src/Form/Element/UpdateFeatures.php:44
 msgid "[Unassign media]"
 msgstr ""

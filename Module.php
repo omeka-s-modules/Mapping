@@ -154,7 +154,7 @@ class Module extends AbstractModule
     {
         $conn = $services->get('Omeka\Connection');
 
-        $wrap = function($num, $min, $max) {
+        $wrap = function ($num, $min, $max) {
             $d = $max - $min;
             return ($num === $max) ? $num : fmod(fmod($num - $min, $d) + $d, $d) + $min;
         };

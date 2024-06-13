@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2023-08-07 12:55-0400\n"
+"POT-Creation-Date: 2024-06-13 08:34-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Angela-Marina Batarelo <angela-marina.batarelo@ericsson.com>, 2021\n"
 "Language-Team: Croatian (https://app.transifex.com/omeka/teams/14184/hr/)\n"
@@ -22,26 +22,9 @@ msgstr ""
 "Language: hr\n"
 "Plural-Forms: nplurals=3; plural=n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2;\n"
 
-#: Module.php:388
-msgid "Map marker presence"
-msgstr ""
-
-#: Module.php:389
-#: view/common/advanced-search/mapping-item-marker-presence.phtml:5
-msgid "Has map markers"
-msgstr ""
-
-#: Module.php:389
-#: view/common/advanced-search/mapping-item-marker-presence.phtml:6
-msgid "Has no map markers"
-msgstr ""
-
-#: Module.php:396
-msgid "Geographic location"
-msgstr ""
-
-#: Module.php:456 view/admin/csv-mapping.phtml:3
-#: view/admin/csv-mapping.phtml:6 view/mapping/index/form.phtml:30
+#: Module.php:503 view/common/csv-import/mapping.phtml:3
+#: view/common/csv-import/mapping.phtml:6
+#: view/common/mapping-item-form.phtml:28
 msgid "Mapping"
 msgstr ""
 "Mapiranje\n"
@@ -50,6 +33,24 @@ msgstr ""
 " \n"
 " \n"
 "  "
+
+#: Module.php:554
+msgid "Map feature presence"
+msgstr ""
+
+#: Module.php:555
+#: view/common/advanced-search/mapping-item-feature-presence.phtml:5
+msgid "Has map features"
+msgstr ""
+
+#: Module.php:555
+#: view/common/advanced-search/mapping-item-feature-presence.phtml:6
+msgid "Has no map features"
+msgstr ""
+
+#: Module.php:562
+msgid "Geographic location"
+msgstr ""
 
 #: src/Collecting/FormPromptMap.php:30
 msgid "Enter a marker label"
@@ -132,24 +133,12 @@ msgstr ""
 msgid "Attach items using this query. No query means all items."
 msgstr ""
 
-#: view/admin/csv-mapping.phtml:7
-msgid "Select below"
-msgstr "Odaberite u nastavku"
+#: view/common/advanced-search/mapping-item-feature-presence.phtml:3
+msgid "Search by map feature presence"
+msgstr ""
 
-#: view/admin/csv-mapping.phtml:8
-msgid "Latitude"
-msgstr "Zemljopisna širina"
-
-#: view/admin/csv-mapping.phtml:9
-msgid "Longitude"
-msgstr "Zemljopisna dužina"
-
-#: view/admin/csv-mapping.phtml:10
-msgid "Latitude/Longitude"
-msgstr "Zemljopisna širina/dužina"
-
-#: view/admin/csv-mapping.phtml:11
-msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
+#: view/common/advanced-search/mapping-item-feature-presence.phtml:8
+msgid "Select map feature presence…"
 msgstr ""
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:5
@@ -176,14 +165,6 @@ msgstr "Milje"
 msgid "Search by geographic location"
 msgstr ""
 
-#: view/common/advanced-search/mapping-item-marker-presence.phtml:3
-msgid "Search by map marker presence"
-msgstr ""
-
-#: view/common/advanced-search/mapping-item-marker-presence.phtml:8
-msgid "Select map marker presence…"
-msgstr ""
-
 #: view/common/batch-update/mapping-copy-coordinates.phtml:6
 msgid "Order"
 msgstr ""
@@ -196,11 +177,11 @@ msgstr ""
 msgid "Assign media to marker?"
 msgstr ""
 
-#: view/common/batch-update/mapping-update-markers.phtml:2
+#: view/common/batch-update/mapping-update-features.phtml:2
 msgid "Media image"
 msgstr ""
 
-#: view/common/batch-update/mapping-update-markers.phtml:7
+#: view/common/batch-update/mapping-update-features.phtml:7
 msgid "Label source"
 msgstr ""
 
@@ -487,39 +468,57 @@ msgstr ""
 " \n"
 " "
 
-#: view/common/block-layout/mapping-block-popup-content.phtml:12
-#: view/mapping/index/show.phtml:46
-#, php-format
-msgid "Item: %s"
-msgstr "Predmet: %s"
+#: view/common/csv-import/mapping.phtml:7
+msgid "Select below"
+msgstr "Odaberite u nastavku"
 
-#: view/common/block-layout/mapping-block-popup-content.phtml:16
-#: view/mapping/index/show.phtml:42
+#: view/common/csv-import/mapping.phtml:8
+msgid "Latitude"
+msgstr "Zemljopisna širina"
+
+#: view/common/csv-import/mapping.phtml:9
+msgid "Longitude"
+msgstr "Zemljopisna dužina"
+
+#: view/common/csv-import/mapping.phtml:10
+msgid "Latitude/Longitude"
+msgstr "Zemljopisna širina/dužina"
+
+#: view/common/csv-import/mapping.phtml:11
+msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
+msgstr ""
+
+#: view/common/mapping-feature-popup.phtml:17
 #, php-format
 msgid "Media: %s"
 msgstr "Medij: %s"
 
-#: view/mapping/index/form.phtml:36
+#: view/common/mapping-feature-popup.phtml:21
+#, php-format
+msgid "Item: %s"
+msgstr "Predmet: %s"
+
+#: view/common/mapping-item-form.phtml:34
 msgid "Close Me"
 msgstr "Zatvorite Me"
 
-#: view/mapping/index/form.phtml:37
-msgid "Marker Image"
-msgstr "Slika oznake"
+#: view/common/mapping-item-form.phtml:35
+msgid "Feature image"
+msgstr ""
 
-#: view/mapping/index/form.phtml:38
+#: view/common/mapping-item-form.phtml:36
 msgid " No Image"
 msgstr "Nema Slike"
 
-#: view/mapping/index/form.phtml:59
-msgid "Marker Label"
-msgstr "Oznaka"
+#: view/common/mapping-item-form.phtml:57
+msgid "Feature label"
+msgstr ""
 
-#: view/mapping/index/form.phtml:62
-msgid "Select Marker Image"
-msgstr "Odaberite sliku oznake"
+#: view/common/mapping-item-form.phtml:60
+msgid "Select feature image"
+msgstr ""
 
-#: view/mapping/site/index/browse.phtml:25
+#: view/mapping/site/index/browse.phtml:31
 msgid "Search Map"
 msgstr ""
 "Pretraži kartu\n"
@@ -531,24 +530,50 @@ msgstr ""
 " \n"
 " "
 
-#: view/mapping/site/index/browse.phtml:41
-msgid "View media"
-msgstr "Pogledajte medij"
-
-#: view/mapping/site/index/browse.phtml:45
-msgid "View item"
-msgstr "Pogledajte predmet"
-
-#: Module.php:248
-msgid "Delete markers"
+#: Module.php:323
+msgid "Delete features"
 msgstr ""
 
-#: Module.php:256
+#: Module.php:334
 msgid "Copy coordinates to markers"
 msgstr ""
 
-#: Module.php:264
-msgid "Update markers"
+#: Module.php:342
+msgid "Update features"
+msgstr ""
+
+#: Module.php:413
+msgid "Add feature presence to advanced search"
+msgstr ""
+
+#: Module.php:424
+msgid "Add geographic location to advanced search"
+msgstr ""
+
+#: Module.php:435
+msgid "Disable clustering of map features"
+msgstr ""
+
+#: Module.php:436
+msgid ""
+"Map features are markers, polygons, polylines, and rectangles. Note that "
+"large features may not cluster."
+msgstr ""
+
+#: Module.php:448 src/Site/BlockLayout/AbstractMap.php:62
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11
+msgid "[Default provider]"
+msgstr "[Zadani davatelj]"
+
+#: Module.php:460
+msgid "Map browse items per page"
+msgstr ""
+
+#: Module.php:461
+msgid ""
+"Set the maximum number of items that have features to display per page on "
+"the map browse page. Limit to a reasonable amount to avoid reaching the "
+"server memory limit and to improve client performance."
 msgstr ""
 
 #: src/Site/BlockLayout/Map.php:15
@@ -558,11 +583,6 @@ msgstr "Mapirajte po prilozima"
 #: src/Site/BlockLayout/MapQuery.php:16
 msgid "Map by query"
 msgstr "Mapirajte po upitu"
-
-#: src/Site/BlockLayout/AbstractMap.php:62
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11
-msgid "[Default provider]"
-msgstr "[Zadani davatelj]"
 
 #: src/Site/Navigation/Link/MapBrowse.php:13
 msgid "Map Browse"
@@ -636,18 +656,18 @@ msgstr ""
 msgid "Colon [:]"
 msgstr ""
 
-#: src/Form/Element/UpdateMarkers.php:27
+#: src/Form/Element/UpdateFeatures.php:27
 msgid "[Remove label]"
 msgstr ""
 
-#: src/Form/Element/UpdateMarkers.php:31
+#: src/Form/Element/UpdateFeatures.php:31
 msgid "Select label property"
 msgstr ""
 
-#: src/Form/Element/UpdateMarkers.php:38
+#: src/Form/Element/UpdateFeatures.php:38
 msgid "Assigned media"
 msgstr ""
 
-#: src/Form/Element/UpdateMarkers.php:44
+#: src/Form/Element/UpdateFeatures.php:44
 msgid "[Unassign media]"
 msgstr ""
