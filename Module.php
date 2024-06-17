@@ -380,10 +380,10 @@ class Module extends AbstractModule
             [$this, 'updateFeatures'],
             10
         );
-        // Copy mapping-related data for the CopyResources module.
+        // Copy Mapping-related data for the CopyResources module.
         $sharedEventManager->attach(
             '*',
-            'copy_resources.copy_site',
+            'copy_resources.sites.post',
             function (Event $event) {
                 $copyResources = $event->getParam('copy_resources');
                 $siteCopy = $event->getParam('resource_copy');
@@ -405,7 +405,7 @@ class Module extends AbstractModule
         );
         $sharedEventManager->attach(
             '*',
-            'copy_resources.copy_item',
+            'copy_resources.items.post',
             function (Event $event) {
                 $services = $this->getServiceLocator();
                 $api = $services->get('Omeka\ApiManager');
