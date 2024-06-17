@@ -393,6 +393,45 @@ class Module extends AbstractModule
                 $copyResources->revertSiteNavigationLinkTypes($siteCopy->id(), 'mapping');
             }
         );
+        $sharedEventManager->attach(
+            '*',
+            'copy_resources.items.pre',
+            function (Event $event) {
+                $jsonLd = $event->getParam('json_ld');
+                unset($jsonLd['o-module-mapping:mapping']);
+                unset($jsonLd['o-module-mapping:feature']);
+                $event->setParam('json_ld', $jsonLd);
+            }
+        );
+        $sharedEventManager->attach(
+            '*',
+            'copy_resources.copy_item',
+            function (Event $event) {
+                $services = $this->getServiceLocator();
+                $api = $services->get('Omeka\ApiManager');
+                $connection = $services->get('Omeka\Connection');
+
+                $item = $event->getParam('resource');
+                $itemCopy = $event->getParam('resource_copy');
+                $copyResources = $event->getParam('copy_resources');
+
+                $mappings = $api->search('mappings', ['item_id' => $item->id()])->getContent();
+                $features = $api->search('mapping_features', ['item_id' => $item->id()])->getContent();
+
+                foreach ($mappings as $mapping) {
+                    $callback = function (&$jsonLd) use ($itemCopy) {
+                        $jsonLd['o:item']['o:id'] = $itemCopy->id();
+                    };
+                    $copyResources->createResourceCopy('mappings', $mapping, $callback);
+                }
+                foreach ($features as $feature) {
+                    $callback = function (&$jsonLd) use ($itemCopy) {
+                        $jsonLd['o:item']['o:id'] = $itemCopy->id();
+                    };
+                    $copyResources->createResourceCopy('mapping_features', $feature, $callback);
+                }
+            }
+        );
     }
 
     public function addSiteSettings(Event $event)
