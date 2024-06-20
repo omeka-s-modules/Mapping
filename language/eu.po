@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-13 08:34-0400\n"
+"POT-Creation-Date: 2024-06-20 14:51-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Iametza Interaktiboa, 2022\n"
 "Language-Team: Basque (https://app.transifex.com/omeka/teams/14184/eu/)\n"
@@ -21,27 +21,27 @@ msgstr ""
 "Language: eu\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:503 view/common/csv-import/mapping.phtml:3
+#: Module.php:542 view/common/csv-import/mapping.phtml:3
 #: view/common/csv-import/mapping.phtml:6
 #: view/common/mapping-item-form.phtml:28
 msgid "Mapping"
 msgstr "Mapaketa"
 
-#: Module.php:554
+#: Module.php:593
 msgid "Map feature presence"
 msgstr ""
 
-#: Module.php:555
+#: Module.php:594
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:5
 msgid "Has map features"
 msgstr ""
 
-#: Module.php:555
+#: Module.php:594
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:6
 msgid "Has no map features"
 msgstr ""
 
-#: Module.php:562
+#: Module.php:601
 msgid "Geographic location"
 msgstr "Kokaleku geografikoa"
 
@@ -380,34 +380,34 @@ msgstr ""
 msgid "Update features"
 msgstr ""
 
-#: Module.php:413
+#: Module.php:452
 msgid "Add feature presence to advanced search"
 msgstr ""
 
-#: Module.php:424
+#: Module.php:463
 msgid "Add geographic location to advanced search"
 msgstr ""
 
-#: Module.php:435
+#: Module.php:474
 msgid "Disable clustering of map features"
 msgstr ""
 
-#: Module.php:436
+#: Module.php:475
 msgid ""
 "Map features are markers, polygons, polylines, and rectangles. Note that "
 "large features may not cluster."
 msgstr ""
 
-#: Module.php:448 src/Site/BlockLayout/AbstractMap.php:62
+#: Module.php:487 src/Site/BlockLayout/AbstractMap.php:62
 #: view/common/navigation-link-form/mapping-map-browse.phtml:11
 msgid "[Default provider]"
 msgstr "[Hornitzaile lehenetsia]"
 
-#: Module.php:460
+#: Module.php:499
 msgid "Map browse items per page"
 msgstr ""
 
-#: Module.php:461
+#: Module.php:500
 msgid ""
 "Set the maximum number of items that have features to display per page on "
 "the map browse page. Limit to a reasonable amount to avoid reaching the "
