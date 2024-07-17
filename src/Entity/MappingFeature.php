@@ -9,20 +9,8 @@ use Omeka\Entity\Media;
 /**
  * @Entity
  */
-class MappingFeature extends AbstractEntity
+class MappingFeature extends AbstractMappingFeature
 {
-    /**
-     * @Id
-     * @Column(
-     *     type="integer",
-     *     options={
-     *         "unsigned"=true
-     *     }
-     * )
-     * @GeneratedValue(strategy="AUTO")
-     */
-    protected $id;
-
     /**
      * @ManyToOne(
      *     targetEntity="Omeka\Entity\Item",
@@ -45,25 +33,6 @@ class MappingFeature extends AbstractEntity
      */
     protected $media;
 
-    /**
-     * @Column(
-     *     nullable=true
-     * )
-     */
-    protected $label;
-
-    /**
-     * @Column(
-     *     type="geography"
-     * )
-     */
-    protected $geography;
-
-    public function getId()
-    {
-        return $this->id;
-    }
-
     public function setItem(Item $item)
     {
         $this->item = $item;
@@ -82,35 +51,5 @@ class MappingFeature extends AbstractEntity
     public function getMedia()
     {
         return $this->media;
-    }
-
-    public function setLabel(?string $label)
-    {
-        $this->label = is_string($label) && '' === trim($label) ? null : $label;
-    }
-
-    public function getLabel()
-    {
-        return $this->label;
-    }
-
-    /**
-     * Get geography.
-     *
-     * @return GeographyInterface
-     */
-    public function getGeography()
-    {
-        return $this->geography;
-    }
-
-    /**
-     * Set geography.
-     *
-     * @param GeographyInterface $geography Geography to set
-     */
-    public function setGeography(GeographyInterface $geography)
-    {
-        $this->geography = $geography;
     }
 }

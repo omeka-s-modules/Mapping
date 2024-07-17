@@ -8,6 +8,8 @@ return [
         'invokables' => [
             'mappings' => Api\Adapter\MappingAdapter::class,
             'mapping_features' => Api\Adapter\MappingFeatureAdapter::class,
+            'item_set_mappings' => Api\Adapter\ItemSetMappingAdapter::class,
+            'item_set_mapping_features' => Api\Adapter\ItemSetMappingFeatureAdapter::class,
         ],
     ],
     'entity_manager' => [
