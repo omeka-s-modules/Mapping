@@ -1,7 +1,6 @@
 <?php
 namespace Mapping\Entity;
 
-use Omeka\Entity\AbstractEntity;
 use Omeka\Entity\Item;
 
 /**

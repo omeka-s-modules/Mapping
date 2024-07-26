@@ -2,12 +2,11 @@
 namespace Mapping\Api\Adapter;
 
 use Doctrine\ORM\QueryBuilder;
-use Omeka\Api\Adapter\AbstractEntityAdapter;
 use Omeka\Api\Request;
 use Omeka\Entity\EntityInterface;
 use Omeka\Stdlib\ErrorStore;
 
-class MappingAdapter extends AbstractEntityAdapter
+class MappingAdapter extends AbstractMappingAdapter
 {
     public function getResourceName()
     {
@@ -24,19 +23,14 @@ class MappingAdapter extends AbstractEntityAdapter
         return 'Mapping\Entity\Mapping';
     }
 
-    public function hydrate(Request $request, EntityInterface $entity,
-        ErrorStore $errorStore
-    ) {
+    public function hydrate(Request $request, EntityInterface $entity, ErrorStore $errorStore)
+    {
         $data = $request->getContent();
-        if (Request::CREATE === $request->getOperation()
-            && isset($data['o:item']['o:id'])
-        ) {
+        if (Request::CREATE === $request->getOperation() && isset($data['o:item']['o:id'])) {
             $item = $this->getAdapter('items')->findEntity($data['o:item']['o:id']);
             $entity->setItem($item);
         }
-        if ($this->shouldHydrate($request, 'o-module-mapping:bounds')) {
-            $entity->setBounds($request->getValue('o-module-mapping:bounds'));
-        }
+        parent::hydrate($request, $entity, $errorStore);
     }
 
     public function validateEntity(EntityInterface $entity, ErrorStore $errorStore)
@@ -44,12 +38,7 @@ class MappingAdapter extends AbstractEntityAdapter
         if (!$entity->getItem()) {
             $errorStore->addError('o:item', 'A mapping zone must have an item.'); // @translate
         }
-        $bounds = $entity->getBounds();
-        if (null !== $bounds
-            && 4 !== count(array_filter(explode(',', $bounds), 'is_numeric'))
-        ) {
-            $errorStore->addError('o-module-mapping:bounds', 'Map bounds must contain four numbers separated by commas'); // @translate
-        }
+        parent::validateEntity($entity, $errorStore);
     }
 
     public function buildQuery(QueryBuilder $qb, array $query)

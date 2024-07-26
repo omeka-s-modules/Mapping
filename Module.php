@@ -80,6 +80,8 @@ class Module extends AbstractModule
         $filter = $em->getFilters()->getFilter('resource_visibility');
         $filter->addRelatedEntity('Mapping\Entity\Mapping', 'item_id');
         $filter->addRelatedEntity('Mapping\Entity\MappingFeature', 'item_id');
+        $filter->addRelatedEntity('Mapping\Entity\ItemSetMapping', 'item_set_id');
+        $filter->addRelatedEntity('Mapping\Entity\ItemSetMappingFeature', 'item_set_id');
 
         $acl = $this->getServiceLocator()->get('Omeka\Acl');
         $acl->allow(
@@ -87,28 +89,39 @@ class Module extends AbstractModule
             'Mapping\Controller\Site\Index'
         );
         $acl->allow(
-            [Acl::ROLE_AUTHOR,
+            [
+                Acl::ROLE_AUTHOR,
                 Acl::ROLE_EDITOR,
                 Acl::ROLE_GLOBAL_ADMIN,
                 Acl::ROLE_REVIEWER,
                 Acl::ROLE_SITE_ADMIN,
             ],
-            ['Mapping\Api\Adapter\MappingFeatureAdapter',
-             'Mapping\Api\Adapter\MappingAdapter',
-             'Mapping\Entity\MappingFeature',
-             'Mapping\Entity\Mapping',
+            [
+                'Mapping\Api\Adapter\MappingFeatureAdapter',
+                'Mapping\Api\Adapter\MappingAdapter',
+                'Mapping\Entity\MappingFeature',
+                'Mapping\Entity\Mapping',
+                'Mapping\Api\Adapter\ItemSetMappingFeatureAdapter',
+                'Mapping\Api\Adapter\ItemSetMappingAdapter',
+                'Mapping\Entity\ItemSetMappingFeature',
+                'Mapping\Entity\ItemSetMapping',
             ]
         );
 
         $acl->allow(
             null,
-            ['Mapping\Api\Adapter\MappingFeatureAdapter',
+            [
+                'Mapping\Api\Adapter\MappingFeatureAdapter',
                 'Mapping\Api\Adapter\MappingAdapter',
                 'Mapping\Entity\MappingFeature',
                 'Mapping\Entity\Mapping',
+                'Mapping\Api\Adapter\ItemSetMappingFeatureAdapter',
+                'Mapping\Api\Adapter\ItemSetMappingAdapter',
+                'Mapping\Entity\ItemSetMappingFeature',
+                'Mapping\Entity\ItemSetMapping',
             ],
             ['show', 'browse', 'read', 'search']
-            );
+        );
 
         $em = $this->getServiceLocator()->get('Omeka\EntityManager');
         $em->getEventManager()->addEventListener(
@@ -278,9 +291,14 @@ class Module extends AbstractModule
             'view.search.filters',
             [$this, 'filterSearchFilters']
          );
-        // Add the "has_features" filter to item search.
+        // Add the "has_features" filter to item and item set searches.
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
+            'api.search.query',
+            [$this, 'handleApiSearchQuery']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Api\Adapter\ItemSetAdapter',
             'api.search.query',
             [$this, 'handleApiSearchQuery']
         );
@@ -619,20 +637,26 @@ class Module extends AbstractModule
 
     public function handleApiSearchQuery(Event $event)
     {
-        $itemAdapter = $event->getTarget();
+        $adapter = $event->getTarget();
+
         $qb = $event->getParam('queryBuilder');
         $query = $event->getParam('request')->getContent();
         if (isset($query['has_features']) && (is_numeric($query['has_features']) || is_bool($query['has_features']))) {
-            $mappingFeatureAlias = $itemAdapter->createAlias();
+            $mappingFeatureAlias = $adapter->createAlias();
+            if ($adapter instanceof ItemAdpater) {
+                $rootTable = 'item';
+            } elseif ($adapter instanceof ItemSetAdpater) {
+                $rootTable = 'item_set';
+            }
             if ($query['has_features']) {
                 $qb->innerJoin(
                     'Mapping\Entity\MappingFeature', $mappingFeatureAlias,
-                    'WITH', "$mappingFeatureAlias.item = omeka_root.id"
+                    'WITH', "$mappingFeatureAlias.$rootTable = omeka_root.id"
                 );
             } else {
                 $qb->leftJoin(
                     'Mapping\Entity\MappingFeature', $mappingFeatureAlias,
-                    'WITH', "$mappingFeatureAlias.item = omeka_root.id"
+                    'WITH', "$mappingFeatureAlias.$rootTable = omeka_root.id"
                 );
                 $qb->andWhere($qb->expr()->isNull($mappingFeatureAlias));
             }
@@ -641,8 +665,8 @@ class Module extends AbstractModule
         $radius = $query['mapping_radius'] ?? null;
         $radiusUnit = $query['mapping_radius_unit'] ?? null;
         if (isset($address) && '' !== trim($address) && isset($radius) && is_numeric($radius)) {
-            $mappingFeatureAdapter = $itemAdapter->getAdapter('mapping_features');
-            $mappingFeatureAdapter->buildGeographicLocationQuery($qb, $address, $radius, $radiusUnit, $itemAdapter);
+            $mappingFeatureAdapter = $adapter->getAdapter('mapping_features');
+            $mappingFeatureAdapter->buildGeographicLocationQuery($qb, $address, $radius, $radiusUnit, $adapter);
         }
     }
 
