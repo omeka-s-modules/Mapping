@@ -122,9 +122,13 @@ class Module extends AbstractModule
         $conn = $serviceLocator->get('Omeka\Connection');
         $conn->exec("CREATE TABLE mapping_feature (id INT UNSIGNED AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, media_id INT DEFAULT NULL, `label` VARCHAR(255) DEFAULT NULL, geography GEOMETRY NOT NULL COMMENT '(DC2Type:geography)', INDEX IDX_34879C46126F525E (item_id), INDEX IDX_34879C46EA9FDD75 (media_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;");
         $conn->exec("CREATE TABLE mapping (id INT AUTO_INCREMENT NOT NULL, item_id INT NOT NULL, bounds VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_49E62C8A126F525E (item_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;");
+        $conn->exec("CREATE TABLE item_set_mapping (id INT AUTO_INCREMENT NOT NULL, item_set_id INT NOT NULL, bounds VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_2E22925B960278D7 (item_set_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;");
+        $conn->exec("CREATE TABLE item_set_mapping_feature (id INT UNSIGNED AUTO_INCREMENT NOT NULL, item_set_id INT NOT NULL, `label` VARCHAR(255) DEFAULT NULL, geography GEOMETRY NOT NULL COMMENT '(DC2Type:geography)', INDEX IDX_2F1129C6960278D7 (item_set_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;");
         $conn->exec("ALTER TABLE mapping_feature ADD CONSTRAINT FK_34879C46126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;");
         $conn->exec("ALTER TABLE mapping_feature ADD CONSTRAINT FK_34879C46EA9FDD75 FOREIGN KEY (media_id) REFERENCES media (id) ON DELETE SET NULL;");
         $conn->exec("ALTER TABLE mapping ADD CONSTRAINT FK_49E62C8A126F525E FOREIGN KEY (item_id) REFERENCES item (id) ON DELETE CASCADE;");
+        $conn->exec("ALTER TABLE item_set_mapping ADD CONSTRAINT FK_2E22925B960278D7 FOREIGN KEY (item_set_id) REFERENCES item_set (id) ON DELETE CASCADE;");
+        $conn->exec("ALTER TABLE item_set_mapping_feature ADD CONSTRAINT FK_2F1129C6960278D7 FOREIGN KEY (item_set_id) REFERENCES item_set (id) ON DELETE CASCADE;");
     }
 
     public function uninstall(ServiceLocatorInterface $serviceLocator)
@@ -132,6 +136,8 @@ class Module extends AbstractModule
         $conn = $serviceLocator->get('Omeka\Connection');
         $conn->exec('DROP TABLE IF EXISTS mapping;');
         $conn->exec('DROP TABLE IF EXISTS mapping_feature');
+        $conn->exec('DROP TABLE IF EXISTS item_set_mapping;');
+        $conn->exec('DROP TABLE IF EXISTS item_set_mapping_feature');
     }
 
     public function upgrade($oldVersion, $newVersion, ServiceLocatorInterface $services)
@@ -142,6 +148,13 @@ class Module extends AbstractModule
         if (Comparator::lessThan($oldVersion, '2.0.0-alpha1')) {
             $conn = $services->get('Omeka\Connection');
             $conn->exec("UPDATE site_setting SET id = 'mapping_advanced_search_add_feature_presence' WHERE id = 'mapping_advanced_search_add_marker_presence'");
+        }
+        if (Comparator::lessThan($oldVersion, '2.1.0')) {
+            $conn = $services->get('Omeka\Connection');
+            $conn->exec("CREATE TABLE item_set_mapping (id INT AUTO_INCREMENT NOT NULL, item_set_id INT NOT NULL, bounds VARCHAR(255) DEFAULT NULL, UNIQUE INDEX UNIQ_2E22925B960278D7 (item_set_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;");
+            $conn->exec("CREATE TABLE item_set_mapping_feature (id INT UNSIGNED AUTO_INCREMENT NOT NULL, item_set_id INT NOT NULL, `label` VARCHAR(255) DEFAULT NULL, geography GEOMETRY NOT NULL COMMENT '(DC2Type:geography)', INDEX IDX_2F1129C6960278D7 (item_set_id), PRIMARY KEY(id)) DEFAULT CHARACTER SET utf8mb4 COLLATE `utf8mb4_unicode_ci` ENGINE = InnoDB;");
+            $conn->exec("ALTER TABLE item_set_mapping ADD CONSTRAINT FK_2E22925B960278D7 FOREIGN KEY (item_set_id) REFERENCES item_set (id) ON DELETE CASCADE;");
+            $conn->exec("ALTER TABLE item_set_mapping_feature ADD CONSTRAINT FK_2F1129C6960278D7 FOREIGN KEY (item_set_id) REFERENCES item_set (id) ON DELETE CASCADE;");
         }
     }
 
