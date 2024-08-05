@@ -24,6 +24,8 @@ abstract class AbstractMap extends AbstractBlockLayout
 
     protected $formElementManager;
 
+    protected $connection;
+
     public function prepareForm(PhpRenderer $view)
     {
         $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
@@ -65,6 +67,9 @@ abstract class AbstractMap extends AbstractBlockLayout
             'query' => [
                 'o:block[__blockIndex__][o:data][query]' => $data['query'],
             ],
+            'item_sets' => [
+                'o:block[__blockIndex__][o:data][item_sets]' => $data['item_sets'],
+            ],
         ]);
         $formHtml = [];
         $formHtml[] = $view->partial('common/block-layout/mapping-block-form/default-view', [
@@ -86,6 +91,12 @@ abstract class AbstractMap extends AbstractBlockLayout
         }
         if ($this instanceof \Mapping\Site\BlockLayout\MapQuery) {
             $formHtml[] = $view->partial('common/block-layout/mapping-block-form/query', [
+                'data' => $data,
+                'form' => $form,
+            ]);
+        }
+        if ($this instanceof \Mapping\Site\BlockLayout\MapItemSets) {
+            $formHtml[] = $view->partial('common/block-layout/mapping-block-form/item-sets', [
                 'data' => $data,
                 'form' => $form,
             ]);
@@ -215,6 +226,11 @@ abstract class AbstractMap extends AbstractBlockLayout
             $query = $data['query'];
         }
 
+        $itemSets = [];
+        if (isset($data['item_sets']) && is_array($data['item_sets'])) {
+            $itemSets = $data['item_sets'];
+        }
+
         return [
             'basemap_provider' => $basemapProvider,
             'max_zoom' => $maxZoom,
@@ -224,6 +240,7 @@ abstract class AbstractMap extends AbstractBlockLayout
             'wms' => $wmsOverlays,
             'timeline' => $timeline,
             'query' => $query,
+            'item_sets' => $itemSets,
         ];
     }
 
@@ -234,6 +251,10 @@ abstract class AbstractMap extends AbstractBlockLayout
      */
     public function timelineIsAvailable()
     {
+        if ($this instanceof \Mapping\Site\BlockLayout\MapItemSets) {
+            // The mappingItemSets layout does not support a timeline.
+            return false;
+        }
         // Available when the NumericDataTypes module is active and the version
         // >= 1.1.0 (when it introduced interval data type).
         $module = $this->moduleManager->getModule('NumericDataTypes');
@@ -394,5 +415,10 @@ abstract class AbstractMap extends AbstractBlockLayout
     public function setModuleManager(ModuleManager $moduleManager)
     {
         $this->moduleManager = $moduleManager;
+    }
+
+    public function setConnection(Connection $connection)
+    {
+        $this->connection = $connection;
     }
 }

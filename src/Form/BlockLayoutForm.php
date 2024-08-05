@@ -215,5 +215,25 @@ class BlockLayoutForm extends Form
                 'info' => 'Attach items using this query. No query means all items.', // @translate
             ],
         ]);
+
+        // Fieldset : item_sets
+        $this->add([
+            'type' => 'fieldset',
+            'name' => 'item_sets',
+        ]);
+        $fieldset = $this->get('item_sets');
+        $fieldset->add([
+            'type' => 'Omeka\Form\Element\ItemSetSelect',
+            'name' => 'o:block[__blockIndex__][o:data][item_sets]',
+            'options' => [
+                'label' => 'Item sets', // @translate
+                'empty_option' => '',
+            ],
+            'attributes' => [
+                'multiple' => true,
+                'class' => 'chosen-select item-set-select',
+                'data-placeholder' => 'Select item sets', // @translate
+            ]
+        ]);
     }
 }
