@@ -26,10 +26,13 @@ abstract class AbstractMap extends AbstractBlockLayout
      */
     protected $moduleManager;
 
-    public function __construct(HtmlPurifier $htmlPurifier, ModuleManager $moduleManager)
+    protected $formElementManager;
+
+    public function __construct(HtmlPurifier $htmlPurifier, ModuleManager $moduleManager, $formElementManager)
     {
         $this->htmlPurifier = $htmlPurifier;
         $this->moduleManager = $moduleManager;
+        $this->formElementManager = $formElementManager;
     }
 
     public function prepareForm(PhpRenderer $view)
@@ -54,51 +57,51 @@ abstract class AbstractMap extends AbstractBlockLayout
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
         $data = $this->filterBlockData($block ? $block->data() : []);
-        $basemapProviderSelect = (new Element\Select('o:block[__blockIndex__][o:data][basemap_provider]'))
-            ->setLabel($view->translate('Basemap provider'))
-            ->setOption('info', $view->translate('Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed.'))
-            ->setValue($data['basemap_provider'])
-            ->setValueOptions(Module::BASEMAP_PROVIDERS)
-            ->setEmptyOption('[Default provider]') // @translate
-            ->setAttribute('class', 'basemap-provider');
-        $minZoomInput = (new Element\Number('o:block[__blockIndex__][o:data][min_zoom]'))
-            ->setLabel($view->translate('Minimum zoom level'))
-            ->setOption('info', $view->translate('The minimum zoom level down to which the map will be displayed. The default is 0.'))
-            ->setValue($data['min_zoom'])
-            ->setAttribute('class', 'min-zoom')
-            ->setAttribute('min', 0)
-            ->setAttribute('step', 1)
-            ->setAttribute('placeholder', '0');
-        $maxZoomInput = (new Element\Number('o:block[__blockIndex__][o:data][max_zoom]'))
-            ->setLabel($view->translate('Maximum zoom level'))
-            ->setOption('info', $view->translate('Set the maximum zoom level up to which the map will be displayed. The default is 19.'))
-            ->setValue($data['max_zoom'])
-            ->setAttribute('class', 'max-zoom')
-            ->setAttribute('min', 0)
-            ->setAttribute('step', 1)
-            ->setAttribute('placeholder', '19');
-        $scrollWheelZoom = (new Element\Select('o:block[__blockIndex__][o:data][scroll_wheel_zoom]'))
-            ->setLabel($view->translate('Scroll wheel zoom'))
-            ->setOption('info', $view->translate('Set whether users can zoom with their mouse wheel when hovering over the map, either automatically upon page load or after clicking inside the map.'))
-            ->setValue($data['scroll_wheel_zoom'])
-            ->setValueOptions([
-                '' => $view->translate('Enabled'),
-                'disable' => $view->translate('Disabled'),
-                'click' => $view->translate('Disabled until map click'),
-
-            ]);
-        $form = $view->partial(
-            'common/block-layout/mapping-block-form',
-            [
+        $form = $this->formElementManager->get('Mapping\Form\BlockLayoutForm');
+        $form->setData([
+            'default_view' => [
+                'o:block[__blockIndex__][o:data][basemap_provider]' => $data['basemap_provider'],
+                'o:block[__blockIndex__][o:data][min_zoom]' => $data['min_zoom'],
+                'o:block[__blockIndex__][o:data][max_zoom]' => $data['max_zoom'],
+                'o:block[__blockIndex__][o:data][scroll_wheel_zoom]' => $data['scroll_wheel_zoom'],
+            ],
+            'timeline' => [
+                'o:block[__blockIndex__][o:data][timeline][title_headline]' => $data['timeline']['title_headline'],
+                'o:block[__blockIndex__][o:data][timeline][title_text]' => $data['timeline']['title_text'],
+                'o:block[__blockIndex__][o:data][timeline][fly_to]' => $data['timeline']['fly_to'],
+                'o:block[__blockIndex__][o:data][timeline][show_contemporaneous]' => $data['timeline']['show_contemporaneous'],
+                'o:block[__blockIndex__][o:data][timeline][timenav_position]' => $data['timeline']['timenav_position'],
+                'o:block[__blockIndex__][o:data][timeline][data_type_properties]' => $data['timeline']['data_type_properties'][0] ?? '',
+            ],
+            'query' => [
+                'o:block[__blockIndex__][o:data][query]' => $data['query'],
+            ],
+        ]);
+        $formHtml = [];
+        $formHtml[] = $view->partial('common/block-layout/mapping-block-form/default-view', [
+            'data' => $data,
+            'form' => $form,
+        ]);
+        $formHtml[] = $view->partial('common/block-layout/mapping-block-form/wms-overlays', [
+            'data' => $data,
+            'form' => $form,
+        ]);
+        if ($this->timelineIsAvailable()) {
+            $formHtml[] = $view->partial('common/block-layout/mapping-block-form/timeline', [
                 'data' => $data,
-                'timelineIsAvailable' => $this->timelineIsAvailable(),
-                'basemapProviderSelect' => $basemapProviderSelect,
-                'minZoomInput' => $minZoomInput,
-                'maxZoomInput' => $maxZoomInput,
-                'scrollWheelZoom' => $scrollWheelZoom,
-            ]
-        );
-        return $form;
+                'form' => $form,
+            ]);
+        }
+        if ($this instanceof \Mapping\Site\BlockLayout\Map) {
+            $formHtml[] = $view->blockAttachmentsForm($block, true, ['has_features' => true]);
+        }
+        if ($this instanceof \Mapping\Site\BlockLayout\MapQuery) {
+            $formHtml[] = $view->partial('common/block-layout/mapping-block-form/query', [
+                'data' => $data,
+                'form' => $form,
+            ]);
+        }
+        return implode('', $formHtml);
     }
 
     /**
@@ -226,6 +229,7 @@ abstract class AbstractMap extends AbstractBlockLayout
             'bounds' => $bounds,
             'wms' => $wmsOverlays,
             'timeline' => $timeline,
+            'query' => $data['query'] ?? '',
         ];
     }
 

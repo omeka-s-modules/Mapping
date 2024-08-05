@@ -1,0 +1,51 @@
+<?php
+$wmsOverlayTemplate = '
+<tr class="mapping-wms-overlay">
+    <td>
+        <input type="checkbox" class="mapping-wms-open">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][label]">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][base_url]">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][layers]">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][styles]">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][open]">
+        <span class="mapping-wms-overlay-title"></span>
+    </td>
+    <td>
+        <ul class="actions">
+            <a href="#" class="mapping-wms-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
+            <a href="#" class="mapping-wms-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
+        </ul>
+    </td>
+</tr>';
+?>
+<a href="#" class="expand"><h4><?php echo $this->translate('WMS Overlays'); ?></h4></a>
+<div class="collapsible">
+    <p><?php echo $this->translate('Add, edit, and delete Web Map Service (WMS) overlays below. You may check which overlay you want open by default.'); ?></p>
+    <table class="tablesaw mapping-wms-overlays" data-wms-overlay-template="<?php echo $this->escapeHtml($wmsOverlayTemplate); ?>">
+        <?php foreach ($data['wms'] as $wmsOverlay): ?>
+        <tr class="mapping-wms-overlay">
+            <td>
+                <input type="checkbox" class="mapping-wms-open"<?php echo $wmsOverlay['open'] ? ' checked="checked"' : '' ?>>
+                <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][label]" value="<?php echo $this->escapeHtml($wmsOverlay['label']); ?>">
+                <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][base_url]" value="<?php echo $this->escapeHtml($wmsOverlay['base_url']); ?>">
+                <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][layers]" value="<?php echo $this->escapeHtml($wmsOverlay['layers']); ?>">
+                <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][styles]" value="<?php echo $this->escapeHtml($wmsOverlay['styles']); ?>">
+                <input type="hidden" name="o:block[__blockIndex__][o:data][wms][__mappingWmsIndex__][open]" value="<?php echo $this->escapeHtml($wmsOverlay['open']); ?>">
+                <span class="mapping-wms-overlay-title"><?php echo $wmsOverlay['label']; ?></span>
+            </td>
+            <td>
+                <ul class="actions">
+                    <a href="#" class="mapping-wms-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
+                    <a href="#" class="mapping-wms-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
+                </ul>
+            </td>
+        </tr>
+        <?php endforeach; ?>
+    </table>
+    <div class="mapping-wms-fields">
+        <?php echo $this->formCollection($form->get('wms_overlays')); ?>
+    </div>
+    <button type="button" class="mapping-wms-add"><?php echo $this->translate('Add Overlay'); ?></button>
+    <button type="button" class="mapping-wms-edit" style="display:none;"><?php echo $this->translate('Save Changes'); ?></button>
+    <button type="button" class="mapping-wms-clear"><?php echo $this->translate('Clear Inputs'); ?></button>
+</div>

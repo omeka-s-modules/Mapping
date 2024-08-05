@@ -21,21 +21,6 @@ class MapQuery extends AbstractMap
         $block->setData($this->filterBlockData($block->getData()));
     }
 
-    public function form(PhpRenderer $view, SiteRepresentation $site,
-        SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
-    ) {
-        $form = parent::form($view, $site, $page, $block);
-        $data = $this->filterBlockData($block ? $block->data() : []);
-        $element = new Element\Query('o:block[__blockIndex__][o:data][query]');
-        $element->setValue($data['query'] ?? null)
-            ->setLabel($view->translate('Query'))
-            ->setOption('info', $view->translate('Attach items using this query. No query means all items.'));
-        $form .= '
-<a href="#" class="mapping-map-expander collapse"><h4>' . $view->translate('Query') . '</h4></a>
-<div class="collapsible">' . $view->formRow($element) . '</div>';
-        return $form;
-    }
-
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
         $data = $this->filterBlockData($block->data());
@@ -74,13 +59,5 @@ class MapQuery extends AbstractMap
             'timelineData' => $this->getTimelineData($events, $data, $view),
             'timelineOptions' => $this->getTimelineOptions($data),
         ]);
-    }
-
-    protected function filterBlockData($data)
-    {
-        $query = $data['query'] ?? null;
-        $data = parent::filterBlockData($data);
-        $data['query'] = $query;
-        return $data;
     }
 }

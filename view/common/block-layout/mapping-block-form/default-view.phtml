@@ -1,0 +1,11 @@
+<a href="#" class="mapping-map-expander expand"><h4><?php echo $this->translate('Default View'); ?></h4></a>
+<div class="collapsible">
+    <?php echo $this->formCollection($form->get('default_view'), false); ?>
+    <p><?php echo sprintf(
+        $this->translate('Set the default view using the in-map controls. The current zoom level is %s.'),
+        '<span class="current-zoom"></span>'
+    ); ?></p>
+    <div class="mapping-map" style="height:300px;">
+        <input type="hidden" name="o:block[__blockIndex__][o:data][bounds]" value="<?php echo $this->escapeHtml($data['bounds']); ?>">
+    </div>
+</div>

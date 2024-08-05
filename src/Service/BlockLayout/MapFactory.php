@@ -12,11 +12,12 @@ class MapFactory implements FactoryInterface
     {
         $htmlPurifier = $services->get('Omeka\HtmlPurifier');
         $moduleManager = $services->get('Omeka\ModuleManager');
+        $formElementManager = $services->get('FormElementManager');
         switch ($requestedName) {
             case 'mappingMapQuery':
-                return new MapQuery($htmlPurifier, $moduleManager);
+                return new MapQuery($htmlPurifier, $moduleManager, $formElementManager);
             default:
-                return new Map($htmlPurifier, $moduleManager);
+                return new Map($htmlPurifier, $moduleManager, $formElementManager);
         }
     }
 }
