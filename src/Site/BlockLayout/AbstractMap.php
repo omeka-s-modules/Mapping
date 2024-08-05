@@ -2,6 +2,10 @@
 namespace Mapping\Site\BlockLayout;
 
 use Composer\Semver\Comparator;
+use Doctrine\DBAL\Connection;
+use Laminas\Form\Element;
+use Laminas\Form\FormElementManager;
+use Laminas\View\Renderer\PhpRenderer;
 use Mapping\Module;
 use NumericDataTypes\DataType\Timestamp;
 use Omeka\Api\Exception\NotFoundException;
@@ -11,29 +15,14 @@ use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Module\Manager as ModuleManager;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
 use Omeka\Stdlib\HtmlPurifier;
-use Laminas\Form\Element;
-use Laminas\View\Renderer\PhpRenderer;
 
 abstract class AbstractMap extends AbstractBlockLayout
 {
-    /**
-     * @var HtmlPurifier
-     */
     protected $htmlPurifier;
 
-    /**
-     * @var ModuleManager
-     */
     protected $moduleManager;
 
     protected $formElementManager;
-
-    public function __construct(HtmlPurifier $htmlPurifier, ModuleManager $moduleManager, $formElementManager)
-    {
-        $this->htmlPurifier = $htmlPurifier;
-        $this->moduleManager = $moduleManager;
-        $this->formElementManager = $formElementManager;
-    }
 
     public function prepareForm(PhpRenderer $view)
     {
@@ -221,6 +210,11 @@ abstract class AbstractMap extends AbstractBlockLayout
             }
         }
 
+        $query = '';
+        if (isset($data['query']) && is_string($data['query'])) {
+            $query = $data['query'];
+        }
+
         return [
             'basemap_provider' => $basemapProvider,
             'max_zoom' => $maxZoom,
@@ -229,7 +223,7 @@ abstract class AbstractMap extends AbstractBlockLayout
             'bounds' => $bounds,
             'wms' => $wmsOverlays,
             'timeline' => $timeline,
-            'query' => $data['query'] ?? '',
+            'query' => $query,
         ];
     }
 
@@ -385,5 +379,20 @@ abstract class AbstractMap extends AbstractBlockLayout
             );
         }
         return $event;
+    }
+
+    public function setFormElementManager($formElementManager)
+    {
+        $this->formElementManager = $formElementManager;
+    }
+
+    public function setHtmlPurifier(HtmlPurifier $htmlPurifier)
+    {
+        $this->htmlPurifier = $htmlPurifier;
+    }
+
+    public function setModuleManager(ModuleManager $moduleManager)
+    {
+        $this->moduleManager = $moduleManager;
     }
 }
