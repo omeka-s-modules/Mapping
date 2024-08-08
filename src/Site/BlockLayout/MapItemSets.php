@@ -28,25 +28,33 @@ class MapItemSets extends AbstractMap
         $conn = $this->connection;
         $itemSetIds = array_map('intval', $data['item_sets']);
 
-        $sql = 'SELECT iis.item_set_id,
-                ST_AsGeoJSON(ST_Centroid(ST_ConvexHull(ST_Collect(geography)))) AS centroid
+        switch ($data['item_set_feature_type']) {
+            case 'point':
+                $geographySelect = 'ST_AsGeoJSON(ST_Centroid(ST_ConvexHull(ST_Collect(geography)))) AS geography';
+                break;
+            case 'polygon':
+            default:
+                $geographySelect = 'ST_AsGeoJSON(ST_ConvexHull(ST_Collect(geography))) AS geography';
+        }
+
+        $sql = sprintf('SELECT iis.item_set_id, %s
             FROM mapping_feature mf
             INNER JOIN item i ON mf.item_id = i.id
             INNER JOIN item_item_set iis ON i.id = iis.item_id
             WHERE iis.item_set_id IN (?)
-            GROUP BY iis.item_set_id';
+            GROUP BY iis.item_set_id', $geographySelect);
         $results = $conn->executeQuery($sql, [$itemSetIds], [Connection::PARAM_INT_ARRAY])->fetchAll();
-        $itemSets = [];
+        $features = [];
         foreach ($results as $result) {
             $itemSet = $view->api()->read('item_sets', $result['item_set_id'])->getContent();
-            $itemSets[] = [
+            $features[] = [
                 'item_set' => $itemSet,
-                'geography' => $result['centroid'],
+                'geography' => $result['geography'],
             ];
         }
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
-            'itemSets' => $itemSets,
+            'features' => $features,
             'isTimeline' => false,
         ]);
     }

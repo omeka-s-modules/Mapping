@@ -69,6 +69,7 @@ abstract class AbstractMap extends AbstractBlockLayout
             ],
             'item_sets' => [
                 'o:block[__blockIndex__][o:data][item_sets]' => $data['item_sets'],
+                'o:block[__blockIndex__][o:data][item_set_feature_type]' => $data['item_set_feature_type'],
             ],
         ]);
         $formHtml = [];
@@ -230,6 +231,10 @@ abstract class AbstractMap extends AbstractBlockLayout
         if (isset($data['item_sets']) && is_array($data['item_sets'])) {
             $itemSets = $data['item_sets'];
         }
+        $itemSetFeatureType = 'polygon';
+        if (isset($data['item_set_feature_type']) && in_array($data['item_set_feature_type'], ['polygon', 'point'])) {
+            $itemSetFeatureType = $data['item_set_feature_type'];
+        }
 
         return [
             'basemap_provider' => $basemapProvider,
@@ -241,6 +246,7 @@ abstract class AbstractMap extends AbstractBlockLayout
             'timeline' => $timeline,
             'query' => $query,
             'item_sets' => $itemSets,
+            'item_set_feature_type' => $itemSetFeatureType,
         ];
     }
 

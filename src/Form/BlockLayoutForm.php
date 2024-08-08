@@ -235,5 +235,17 @@ class BlockLayoutForm extends Form
                 'data-placeholder' => 'Select item sets', // @translate
             ]
         ]);
+        $fieldset->add([
+            'type' => 'select',
+            'name' => 'o:block[__blockIndex__][o:data][item_set_feature_type]',
+            'options' => [
+                'label' => 'Item set feature type', // @translate
+                'info' => 'Select the type of feature to represent each item set. Select "Polygon" for a bounding volume around the outermost features. Select "Point" for the central point of the bounding volume.',
+                'value_options' => [
+                    'polygon' => 'Polygon', // @translate
+                    'point' => 'Point', // @translate
+                ],
+            ],
+        ]);
     }
 }

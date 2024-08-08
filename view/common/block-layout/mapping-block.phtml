@@ -1,4 +1,6 @@
 <?php
+use Mapping\Api\Representation\MappingFeatureRepresentation;
+
 $this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
 $this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet.markercluster/dist/MarkerCluster.css', 'Mapping'));
 $this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css', 'Mapping'));
@@ -47,15 +49,13 @@ if ($isTimeline) {
         data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
     ></div>
 
-    <?php if ($this->itemSets): ?>
-    <?php foreach ($itemSets as $itemSet): ?>
-    <div class="mapping-feature-popup-content" style="display:none;" data-feature-geography="<?php echo $this->escapeHtml($itemSet['geography']); ?>"></div>
-    <?php endforeach; ?>
-    <?php endif; ?>
-
-    <?php if ($this->features): ?>
     <?php foreach ($features as $feature): ?>
-    <?php echo $this->partial('common/mapping-feature-popup', ['feature' => $feature]); ?>
-    <?php endforeach; ?>
+    <?php if ($feature instanceof MappingFeatureRepresentation): ?>
+        <?php echo $this->partial('common/mapping-feature-popup', ['feature' => $feature]); ?>
+    <?php elseif (is_array($feature) && isset($feature['item_set'])): ?>
+    <div class="mapping-feature-popup-content" style="display:none;" data-feature-geography="<?php echo $this->escapeHtml($feature['geography']); ?>">
+        <h2><?php echo $feature['item_set']->id(); ?></h2>
+    </div>
     <?php endif; ?>
+    <?php endforeach; ?>
 </div>
