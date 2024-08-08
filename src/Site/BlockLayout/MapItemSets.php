@@ -29,18 +29,24 @@ class MapItemSets extends AbstractMap
         $itemSetIds = array_map('intval', $data['item_sets']);
 
         $sql = 'SELECT iis.item_set_id,
-                GROUP_CONCAT(mf.id) AS feature_ids,
-                ST_ASTEXT(ST_CENTROID(ST_CONVEXHULL(ST_COLLECT(geography)))) AS centroid
+                ST_AsGeoJSON(ST_Centroid(ST_ConvexHull(ST_Collect(geography)))) AS centroid
             FROM mapping_feature mf
             INNER JOIN item i ON mf.item_id = i.id
             INNER JOIN item_item_set iis ON i.id = iis.item_id
             WHERE iis.item_set_id IN (?)
             GROUP BY iis.item_set_id';
-        $features = $conn->executeQuery($sql, [$itemSetIds], [Connection::PARAM_INT_ARRAY])->fetchAll();
-
+        $results = $conn->executeQuery($sql, [$itemSetIds], [Connection::PARAM_INT_ARRAY])->fetchAll();
+        $itemSets = [];
+        foreach ($results as $result) {
+            $itemSet = $view->api()->read('item_sets', $result['item_set_id'])->getContent();
+            $itemSets[] = [
+                'item_set' => $itemSet,
+                'geography' => $result['centroid'],
+            ];
+        }
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
-            'features' => $features,
+            'itemSets' => $itemSets,
             'isTimeline' => false,
         ]);
     }

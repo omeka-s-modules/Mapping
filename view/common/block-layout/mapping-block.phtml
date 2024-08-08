@@ -47,7 +47,15 @@ if ($isTimeline) {
         data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
     ></div>
 
+    <?php if ($this->itemSets): ?>
+    <?php foreach ($itemSets as $itemSet): ?>
+    <div class="mapping-feature-popup-content" style="display:none;" data-feature-geography="<?php echo $this->escapeHtml($itemSet['geography']); ?>"></div>
+    <?php endforeach; ?>
+    <?php endif; ?>
+
+    <?php if ($this->features): ?>
     <?php foreach ($features as $feature): ?>
     <?php echo $this->partial('common/mapping-feature-popup', ['feature' => $feature]); ?>
     <?php endforeach; ?>
+    <?php endif; ?>
 </div>
