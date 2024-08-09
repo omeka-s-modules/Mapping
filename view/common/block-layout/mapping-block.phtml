@@ -54,7 +54,8 @@ if ($isTimeline) {
         <?php echo $this->partial('common/mapping-feature-popup', ['feature' => $feature]); ?>
     <?php elseif (is_array($feature) && isset($feature['item_set'])): ?>
     <div class="mapping-feature-popup-content" style="display:none;" data-feature-geography="<?php echo $this->escapeHtml($feature['geography']); ?>">
-        <h2><?php echo $feature['item_set']->id(); ?></h2>
+        <h3><?php echo $feature['item_set']->displayTitle(); ?></h3>
+        <button type="button" class="mapping-show-item-set-item-features"><?php echo $this->translate('Show all'); ?></button>
     </div>
     <?php endif; ?>
     <?php endforeach; ?>
