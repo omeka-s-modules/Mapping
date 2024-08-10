@@ -19,13 +19,11 @@ class MapFactory implements FactoryInterface
                 break;
             case 'mappingMapQuery':
                 $blockLayout = new MapQuery;
-                $blockLayout->setHtmlPurifier($services->get('Omeka\HtmlPurifier'));
                 $blockLayout->setModuleManager($services->get('Omeka\ModuleManager'));
                 $blockLayout->setFormElementManager($services->get('FormElementManager'));
                 break;
             case 'mappingMap':
                 $blockLayout = new Map;
-                $blockLayout->setHtmlPurifier($services->get('Omeka\HtmlPurifier'));
                 $blockLayout->setModuleManager($services->get('Omeka\ModuleManager'));
                 $blockLayout->setFormElementManager($services->get('FormElementManager'));
                 break;
