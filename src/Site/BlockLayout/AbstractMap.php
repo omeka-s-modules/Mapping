@@ -39,7 +39,23 @@ abstract class AbstractMap extends AbstractBlockLayout
 
     public function prepareRender(PhpRenderer $view)
     {
+        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet.markercluster/dist/MarkerCluster.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
+
         $view->headLink()->appendStylesheet($view->assetUrl('css/mapping.css', 'Mapping'));
+
+        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet/dist/leaflet.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet-providers/leaflet-providers.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('node_modules/Leaflet.Deflate/dist/L.Deflate.js', 'Mapping'));
+
+        $view->headScript()->appendFile($view->assetUrl('js/control.opacity.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('js/mapping-block.js', 'Mapping'));
     }
 
     /**
