@@ -22,7 +22,7 @@ function MappingBlock(mapDiv, timelineDiv) {
         markerLayer: featuresPoint, // Enable clustering of poly features
         greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
     });
-    const featuresByItem = {};
+    const featuresByResource = {};
 
     // Set base maps and grouped overlays.
     let defaultProvider;
@@ -97,7 +97,7 @@ function MappingBlock(mapDiv, timelineDiv) {
 
     mapDiv.closest('.mapping-block').find('.mapping-feature-popup-content').each(function() {
         const popup = $(this).clone().show();
-        const itemId = popup.data('item-id');
+        const resourceId = popup.data('resource-id') ?? popup.data('item-id');
         const geography = popup.data('feature-geography');
         L.geoJSON(geography, {
             onEachFeature: function(feature, layer) {
@@ -114,10 +114,10 @@ function MappingBlock(mapDiv, timelineDiv) {
                         featuresPoly.addLayer(layer);
                         break;
                 }
-                if (!(itemId in featuresByItem)) {
-                    featuresByItem[itemId] = L.featureGroup();
+                if (!(resourceId in featuresByResource)) {
+                    featuresByResource[resourceId] = L.featureGroup();
                 }
-                featuresByItem[itemId].addLayer(layer);
+                featuresByResource[resourceId].addLayer(layer);
             }
         });
     });
@@ -160,14 +160,14 @@ function MappingBlock(mapDiv, timelineDiv) {
             if ($.isNumeric(e.unique_id)) {
                 // Changed to an event slide. Set the timeline event view.
                 map.removeLayer(features);
-                $.each(featuresByItem, function(itemId, itemFeatures) {
+                $.each(featuresByResource, function(resourceId, itemFeatures) {
                     map.removeLayer(itemFeatures);
                 });
                 // Changed to an event slide. Set the event's map view.
                 const currentEvent = this.config.event_dict[e.unique_id];
                 const currentEventStart = currentEvent.start_date.data.date_obj;
                 const currentEventEnd = ('undefined' === typeof currentEvent.end_date) ? null : currentEvent.end_date.data.date_obj;
-                const eventFeatures = featuresByItem[currentEvent.unique_id];
+                const eventFeatures = featuresByResource[currentEvent.unique_id];
                 // features.addLayer(eventFeatures);
                 map.addLayer(eventFeatures);
                 if ($.isNumeric(mapData['timeline']['fly_to'])) {
@@ -182,12 +182,12 @@ function MappingBlock(mapDiv, timelineDiv) {
                                 // For a timeline using intervals, a portion of this event
                                 // must fall within the interval of the current event.
                                 if (currentEventEnd && eventStart <= currentEventEnd && eventEnd >= currentEventStart) {
-                                    features.addLayer(featuresByItem[event.unique_id])
+                                    features.addLayer(featuresByResource[event.unique_id])
                                 }
                                 // For a timeline using timestamps, this event must have
                                 // the same timestamp as the current event.
                                 if (!currentEventEnd && currentEventStart.getTime() == eventStart.getTime()) {
-                                    features.addLayer(featuresByItem[event.unique_id])
+                                    features.addLayer(featuresByResource[event.unique_id])
                                 }
                             }
                         });
@@ -210,5 +210,13 @@ $(document).ready( function() {
             blockDiv.children('.mapping-map'),
             blockDiv.children('.mapping-timeline')
         );
+    });
+});
+
+$(document).on('click', '.mapping-feature-popup-show-item-set-items', function(e) {
+    const thisButton = $(this);
+    const mappingPopup = thisButton.closest('.mapping-feature-popup-content');
+    $.get(mappingPopup.data('url'), {item_set_id: mappingPopup.data('resourceId')}, function(data) {
+        // @todo: append response to .mapping-feature-popups and "new MappingBlock()""
     });
 });

@@ -53,4 +53,9 @@ class IndexController extends AbstractActionController
         $view->setVariable('features', $features);
         return $view;
     }
+
+    public function getItemSetItemFeaturePopupsAction()
+    {
+        // @todo: return markup for the item's set's item's features.
+    }
 }

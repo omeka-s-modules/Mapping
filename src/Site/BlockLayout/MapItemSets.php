@@ -71,18 +71,17 @@ class MapItemSets extends AbstractMap
             WHERE iis.item_set_id IN (?)
             GROUP BY iis.item_set_id', $geographySelect);
         $results = $conn->executeQuery($sql, [$itemSetIds], [Connection::PARAM_INT_ARRAY])->fetchAll();
-        $features = [];
+        $itemSets = [];
         foreach ($results as $result) {
             $itemSet = $view->api()->read('item_sets', $result['item_set_id'])->getContent();
-            $features[] = [
+            $itemSets[] = [
                 'item_set' => $itemSet,
                 'geography' => $result['geography'],
             ];
         }
-        return $view->partial('common/block-layout/mapping-block', [
+        return $view->partial('common/block-layout/mapping-block-item-sets', [
             'data' => $data,
-            'features' => $features,
-            'isTimeline' => false,
+            'itemSets' => $itemSets,
         ]);
     }
 }

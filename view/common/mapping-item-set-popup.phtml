@@ -1,0 +1,9 @@
+<div class="mapping-feature-popup-content"
+    data-feature-geography="<?php echo $this->escapeHtml($geography); ?>"
+    data-resource-id="<?php echo $itemSet->id(); ?>">
+
+    <h3><?php echo $itemSet->displayTitle(); ?></h3>
+    <?php echo $this->thumbnail($itemSet, 'medium'); ?>
+    <button type="button" class="mapping-feature-popup-show-item-set-items"><?php echo $this->translate('Show all'); ?></button>
+
+</div>
