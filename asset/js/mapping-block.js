@@ -206,17 +206,33 @@ function MappingBlock(mapDiv, timelineDiv) {
 $(document).ready( function() {
     $('.mapping-block').each(function() {
         const blockDiv = $(this);
-        mappingBlock = new MappingBlock(
-            blockDiv.children('.mapping-map'),
-            blockDiv.children('.mapping-timeline')
-        );
+        if (blockDiv.is(':visible')) {
+            mappingBlock = new MappingBlock(
+                blockDiv.children('.mapping-map'),
+                blockDiv.children('.mapping-timeline')
+            );
+        }
     });
 });
 
-$(document).on('click', '.mapping-feature-popup-show-item-set-items', function(e) {
+$(document).on('click', '.mapping-show-item-set-item-features', function(e) {
     const thisButton = $(this);
-    const mappingPopup = thisButton.closest('.mapping-feature-popup-content');
-    $.get(mappingPopup.data('url'), {item_set_id: mappingPopup.data('resourceId')}, function(data) {
-        // @todo: append response to .mapping-feature-popups and "new MappingBlock()""
+    const mappingFeaturePopup = thisButton.closest('.mapping-feature-popup-content');
+    const mappingBlock = thisButton.closest('.mapping-block');
+    const mappingMap = mappingBlock.children('.mapping-map');
+
+    const mappingBlockItemFeatures = mappingBlock.siblings('.mapping-item-set-item-features');
+
+    const itemSetId = mappingFeaturePopup.data('resource-id');
+    const url = mappingMap.data('url');
+
+    $.post(url, {item_set_id: itemSetId}, function(data) {
+        mappingBlock.hide();
+        mappingBlockItemFeatures.show();
+        mappingBlockItemFeatures.children('.mapping-feature-popups').append(data);
+        new MappingBlock(
+            mappingBlockItemFeatures.children('.mapping-map'),
+            [],
+        );
     });
 });

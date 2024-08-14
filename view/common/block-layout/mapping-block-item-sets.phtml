@@ -4,7 +4,7 @@
         data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
         data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
         data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
-        data-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-item-set-item-feature-popups'], true)); ?>"></div>
+        data-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-feature-popups-by-item-set'], true)); ?>"></div>
 
     <div class="mapping-feature-popups" style="display: none;">
         <?php foreach ($itemSets as $itemSet): ?>
@@ -14,7 +14,7 @@
 
 </div>
 
-<div class="mapping-block mapping-block-item-set-items" style="display: none;">
+<div class="mapping-block mapping-item-set-item-features" style="display: none;">
 
     <div class="mapping-map" style="height:500px;"
         data-data="[]"
