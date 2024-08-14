@@ -7,6 +7,11 @@ function MappingBlock(mapDiv, timelineDiv) {
         fullscreenControl: true,
         worldCopyJump:true
     });
+
+    // For easy reference, assign the map object directly to the map element. We're
+    // not using jQuery's data() because it somehow gets deleted after it's set.
+    mapDiv[0].mapping_map = map;
+
     const timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
     const timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
     const timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], timelineData, timelineOptions) : null;
@@ -201,38 +206,44 @@ function MappingBlock(mapDiv, timelineDiv) {
             }
         });
     }
+    return map;
 }
 
 $(document).ready( function() {
-    $('.mapping-block').each(function() {
+    $('.mapping-block:visible').each(function() {
         const blockDiv = $(this);
-        if (blockDiv.is(':visible')) {
-            mappingBlock = new MappingBlock(
-                blockDiv.children('.mapping-map'),
-                blockDiv.children('.mapping-timeline')
-            );
-        }
+        MappingBlock(
+            blockDiv.children('.mapping-map'),
+            blockDiv.children('.mapping-timeline')
+        );
     });
 });
 
 $(document).on('click', '.mapping-show-item-set-item-features', function(e) {
     const thisButton = $(this);
-    const mappingFeaturePopup = thisButton.closest('.mapping-feature-popup-content');
+    const mappingFeature = thisButton.closest('.mapping-feature-popup-content');
+
     const mappingBlock = thisButton.closest('.mapping-block');
+    const mappingBlockItems = mappingBlock.next('.mapping-block');
     const mappingMap = mappingBlock.children('.mapping-map');
+    const mappingMapItems = mappingBlockItems.children('.mapping-map');
 
-    const mappingBlockItemFeatures = mappingBlock.siblings('.mapping-item-set-item-features');
-
-    const itemSetId = mappingFeaturePopup.data('resource-id');
+    const itemSetId = mappingFeature.data('resource-id');
     const url = mappingMap.data('url');
 
     $.post(url, {item_set_id: itemSetId}, function(data) {
         mappingBlock.hide();
-        mappingBlockItemFeatures.show();
-        mappingBlockItemFeatures.children('.mapping-feature-popups').append(data);
-        new MappingBlock(
-            mappingBlockItemFeatures.children('.mapping-map'),
-            [],
-        );
+        mappingBlockItems.show().children('.mapping-feature-popups').append(data);
+        MappingBlock(mappingMapItems, []);
     });
+});
+
+$(document).on('click', '.mapping-show-item-set-features', function() {
+    const thisButton = $(this);
+    const mappingBlockItems = thisButton.closest('.mapping-block');
+    const mappingBlock = mappingBlockItems.prev('.mapping-block');
+    // We must call remove() to destroy the map so we can load another map into the element.
+    mappingBlockItems.children('.mapping-map')[0].mapping_map.remove();
+    mappingBlockItems.hide();
+    mappingBlock.show();
 });

@@ -51,6 +51,8 @@ class MapItemSets extends AbstractMap
     {
         $form = $this->formElementManager->get(BlockLayoutMapItemSetsForm::class);
         $data = $form->prepareBlockData($block->data());
+        $dataItems = $data;
+        $dataItems['bounds'] = null; // Do not use the configured bounds for the items map.
 
         $conn = $this->connection;
         $itemSetIds = array_map('intval', $data['item_sets']['ids']);
@@ -79,8 +81,10 @@ class MapItemSets extends AbstractMap
                 'geography' => $result['geography'],
             ];
         }
+
         return $view->partial('common/block-layout/mapping-block-item-sets', [
             'data' => $data,
+            'dataItems' => $dataItems,
             'itemSets' => $itemSets,
         ]);
     }
