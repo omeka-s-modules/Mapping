@@ -1,5 +1,11 @@
 function MappingBlock(mapDiv, timelineDiv) {
 
+    // Call remove() on an existing Leaflet map object to destroy it.
+    if (mapDiv[0].mapping_map) {
+        mapDiv[0].mapping_map.remove();
+    }
+
+    // Instantiate the Leaflet map object.
     const mapData = mapDiv.data('data');
     const map = new L.map(mapDiv[0], {
         minZoom: mapData.min_zoom ? mapData.min_zoom : 0,
@@ -8,13 +14,9 @@ function MappingBlock(mapDiv, timelineDiv) {
         worldCopyJump:true
     });
 
-    // For easy reference, assign the map object directly to the map element. We're
-    // not using jQuery's data() because it somehow gets deleted after it's set.
+    // For easy reference, assign the Leaflet map object directly to the map element.
     mapDiv[0].mapping_map = map;
 
-    const timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
-    const timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
-    const timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], timelineData, timelineOptions) : null;
     const features = L.featureGroup();
     const featuresPoint = mapDiv.data('disable-clustering')
         ? L.featureGroup()
@@ -65,23 +67,6 @@ function MappingBlock(mapDiv, timelineDiv) {
         }
     };
 
-    // Set the default view.
-    const setDefaultView = function() {
-        if (mapData['bounds']) {
-            const bounds = mapData['bounds'].split(',');
-            const southWest = [bounds[1], bounds[0]];
-            const northEast = [bounds[3], bounds[2]];
-            map.fitBounds([southWest, northEast]);
-        } else {
-            const bounds = features.getBounds();
-            if (bounds.isValid()) {
-                map.fitBounds(bounds);
-            } else {
-                map.setView([20, 0], 2);
-            }
-        }
-    };
-
     // Set the scroll wheel zoom behavior.
     switch (mapData['scroll_wheel_zoom']) {
         case 'disable':
@@ -100,6 +85,7 @@ function MappingBlock(mapDiv, timelineDiv) {
             break;
     }
 
+    // Gather features and add them as map layers.
     mapDiv.closest('.mapping-block').find('.mapping-feature-popup-content').each(function() {
         const popup = $(this).clone().show();
         const resourceId = popup.data('resource-id') ?? popup.data('item-id');
@@ -126,6 +112,23 @@ function MappingBlock(mapDiv, timelineDiv) {
             }
         });
     });
+
+    // Set the default view.
+    const setDefaultView = function() {
+        if (mapData['bounds']) {
+            const bounds = mapData['bounds'].split(',');
+            const southWest = [bounds[1], bounds[0]];
+            const northEast = [bounds[3], bounds[2]];
+            map.fitBounds([southWest, northEast]);
+        } else {
+            const bounds = features.getBounds();
+            if (bounds.isValid()) {
+                map.fitBounds(bounds);
+            } else {
+                map.setView([20, 0], 2);
+            }
+        }
+    };
 
     // Add the features to the map.
     features.addLayer(featuresPoint);
@@ -160,7 +163,12 @@ function MappingBlock(mapDiv, timelineDiv) {
         handleOpacityControl(e.layer, e.name);
     });
 
-    if (timeline) {
+    if (timelineDiv && timelineDiv.length) {
+        timeline = new TL.Timeline(
+            timelineDiv[0],
+            timelineDiv.data('data'),
+            timelineDiv.data('options')
+        )
         timeline.on('change', function(e) {
             if ($.isNumeric(e.unique_id)) {
                 // Changed to an event slide. Set the timeline event view.
@@ -206,7 +214,6 @@ function MappingBlock(mapDiv, timelineDiv) {
             }
         });
     }
-    return map;
 }
 
 $(document).ready( function() {
@@ -233,8 +240,8 @@ $(document).on('click', '.mapping-show-item-set-item-features', function(e) {
 
     $.post(url, {item_set_id: itemSetId}, function(data) {
         mappingBlock.hide();
-        mappingBlockItems.show().children('.mapping-feature-popups').append(data);
-        MappingBlock(mappingMapItems, []);
+        mappingBlockItems.show().children('.mapping-feature-popups').html(data);
+        MappingBlock(mappingMapItems);
     });
 });
 
@@ -242,8 +249,6 @@ $(document).on('click', '.mapping-show-item-set-features', function() {
     const thisButton = $(this);
     const mappingBlockItems = thisButton.closest('.mapping-block');
     const mappingBlock = mappingBlockItems.prev('.mapping-block');
-    // We must call remove() to destroy the map so we can load another map into the element.
-    mappingBlockItems.children('.mapping-map')[0].mapping_map.remove();
     mappingBlockItems.hide();
     mappingBlock.show();
 });
