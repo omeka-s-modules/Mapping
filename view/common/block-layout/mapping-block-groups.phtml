@@ -7,8 +7,8 @@
         data-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-feature-popups-by-item-set'], true)); ?>"></div>
 
     <div class="mapping-feature-popups" style="display: none;">
-        <?php foreach ($itemSets as $itemSet): ?>
-        <?php echo $this->partial('common/mapping-item-set-popup', ['itemSet' => $itemSet['item_set'], 'geography' => $itemSet['geography']]); ?>
+        <?php foreach ($groups as $group): ?>
+        <?php echo $this->partial($popupPartial, ['group' => $group['group'], 'geography' => $group['geography']]); ?>
         <?php endforeach; ?>
     </div>
 

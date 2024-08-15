@@ -4,7 +4,7 @@ namespace Mapping\Form;
 use Laminas\Form\Form;
 use Mapping\Form\Fieldset;
 
-class BlockLayoutMapItemSetsForm extends Form
+class BlockLayoutMapGroupsForm extends Form
 {
     public function init()
     {
@@ -17,8 +17,8 @@ class BlockLayoutMapItemSetsForm extends Form
             'name' => 'wms_overlays',
         ]);
         $this->add([
-            'type' => Fieldset\ItemSetsFieldset::class,
-            'name' => 'item_sets',
+            'type' => Fieldset\GroupsFieldset::class,
+            'name' => 'groups',
         ]);
     }
 
@@ -27,7 +27,7 @@ class BlockLayoutMapItemSetsForm extends Form
         $data = array_merge(
             $this->get('default_view')->filterBlockData($rawData),
             $this->get('wms_overlays')->filterBlockData($rawData),
-            $this->get('item_sets')->filterBlockData($rawData),
+            $this->get('groups')->filterBlockData($rawData),
         );
         $this->setData([
             'default_view' => [
@@ -36,9 +36,10 @@ class BlockLayoutMapItemSetsForm extends Form
                 'o:block[__blockIndex__][o:data][max_zoom]' => $data['max_zoom'],
                 'o:block[__blockIndex__][o:data][scroll_wheel_zoom]' => $data['scroll_wheel_zoom'],
             ],
-            'item_sets' => [
-                'o:block[__blockIndex__][o:data][item_sets][ids]' => $data['item_sets']['ids'],
-                'o:block[__blockIndex__][o:data][item_sets][feature_type]' => $data['item_sets']['feature_type'],
+            'groups' => [
+                'o:block[__blockIndex__][o:data][groups][type]' => $data['groups']['type'],
+                'o:block[__blockIndex__][o:data][groups][feature_type]' => $data['groups']['feature_type'],
+                'o:block[__blockIndex__][o:data][groups][type_data][item_set_ids]' => $data['groups']['type_data']['item_set_ids'],
             ],
         ]);
         return $data;
