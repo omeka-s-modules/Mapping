@@ -48,6 +48,7 @@ return [
     ],
     'form_elements' => [
         'factories' => [
+           'Mapping\Form\Fieldset\TimelineFieldset' => Service\Form\Fieldset\TimelineFieldsetFactory::class,
            'Mapping\Form\Element\CopyCoordinates' => Service\Form\Element\CopyCoordinatesFactory::class,
            'Mapping\Form\Element\UpdateFeatures' => Service\Form\Element\UpdateFeaturesFactory::class,
         ],
@@ -69,6 +70,7 @@ return [
         'factories' => [
             'mappingMap' => Service\BlockLayout\MapFactory::class,
             'mappingMapQuery' => Service\BlockLayout\MapFactory::class,
+            'mappingMapGroups' => Service\BlockLayout\MapFactory::class,
         ],
     ],
     'navigation_links' => [
@@ -98,6 +100,21 @@ return [
                                 '__NAMESPACE__' => 'Mapping\Controller\Site',
                                 'controller' => 'index',
                                 'action' => 'browse',
+                            ],
+                        ],
+                    ],
+                    'mapping' => [
+                        'type' => 'Segment',
+                        'options' => [
+                            'route' => '/mapping/:controller[/:action]',
+                            'defaults' => [
+                                '__NAMESPACE__' => 'Mapping\Controller\Site',
+                                'controller' => 'index',
+                                'action' => 'index',
+                            ],
+                            'constraints' => [
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ],
                         ],
                     ],

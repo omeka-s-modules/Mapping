@@ -1,5 +1,11 @@
 function MappingBlock(mapDiv, timelineDiv) {
 
+    // Call remove() on an existing Leaflet map object to destroy it.
+    if (mapDiv[0].mapping_map) {
+        mapDiv[0].mapping_map.remove();
+    }
+
+    // Instantiate the Leaflet map object.
     const mapData = mapDiv.data('data');
     const map = new L.map(mapDiv[0], {
         minZoom: mapData.min_zoom ? mapData.min_zoom : 0,
@@ -7,9 +13,10 @@ function MappingBlock(mapDiv, timelineDiv) {
         fullscreenControl: true,
         worldCopyJump:true
     });
-    const timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
-    const timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
-    const timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], timelineData, timelineOptions) : null;
+
+    // For easy reference, assign the Leaflet map object directly to the map element.
+    mapDiv[0].mapping_map = map;
+
     const features = L.featureGroup();
     const featuresPoint = mapDiv.data('disable-clustering')
         ? L.featureGroup()
@@ -22,7 +29,7 @@ function MappingBlock(mapDiv, timelineDiv) {
         markerLayer: featuresPoint, // Enable clustering of poly features
         greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
     });
-    const featuresByItem = {};
+    const featuresByResource = {};
 
     // Set base maps and grouped overlays.
     let defaultProvider;
@@ -60,23 +67,6 @@ function MappingBlock(mapDiv, timelineDiv) {
         }
     };
 
-    // Set the default view.
-    const setDefaultView = function() {
-        if (mapData['bounds']) {
-            const bounds = mapData['bounds'].split(',');
-            const southWest = [bounds[1], bounds[0]];
-            const northEast = [bounds[3], bounds[2]];
-            map.fitBounds([southWest, northEast]);
-        } else {
-            const bounds = features.getBounds();
-            if (bounds.isValid()) {
-                map.fitBounds(bounds);
-            } else {
-                map.setView([20, 0], 2);
-            }
-        }
-    };
-
     // Set the scroll wheel zoom behavior.
     switch (mapData['scroll_wheel_zoom']) {
         case 'disable':
@@ -95,9 +85,10 @@ function MappingBlock(mapDiv, timelineDiv) {
             break;
     }
 
+    // Gather features and add them as map layers.
     mapDiv.closest('.mapping-block').find('.mapping-feature-popup-content').each(function() {
         const popup = $(this).clone().show();
-        const itemId = popup.data('item-id');
+        const resourceId = popup.data('resource-id') ?? popup.data('item-id');
         const geography = popup.data('feature-geography');
         L.geoJSON(geography, {
             onEachFeature: function(feature, layer) {
@@ -114,13 +105,30 @@ function MappingBlock(mapDiv, timelineDiv) {
                         featuresPoly.addLayer(layer);
                         break;
                 }
-                if (!(itemId in featuresByItem)) {
-                    featuresByItem[itemId] = L.featureGroup();
+                if (!(resourceId in featuresByResource)) {
+                    featuresByResource[resourceId] = L.featureGroup();
                 }
-                featuresByItem[itemId].addLayer(layer);
+                featuresByResource[resourceId].addLayer(layer);
             }
         });
     });
+
+    // Set the default view.
+    const setDefaultView = function() {
+        if (mapData['bounds']) {
+            const bounds = mapData['bounds'].split(',');
+            const southWest = [bounds[1], bounds[0]];
+            const northEast = [bounds[3], bounds[2]];
+            map.fitBounds([southWest, northEast]);
+        } else {
+            const bounds = features.getBounds();
+            if (bounds.isValid()) {
+                map.fitBounds(bounds);
+            } else {
+                map.setView([20, 0], 2);
+            }
+        }
+    };
 
     // Add the features to the map.
     features.addLayer(featuresPoint);
@@ -155,19 +163,24 @@ function MappingBlock(mapDiv, timelineDiv) {
         handleOpacityControl(e.layer, e.name);
     });
 
-    if (timeline) {
+    if (timelineDiv && timelineDiv.length) {
+        timeline = new TL.Timeline(
+            timelineDiv[0],
+            timelineDiv.data('data'),
+            timelineDiv.data('options')
+        )
         timeline.on('change', function(e) {
             if ($.isNumeric(e.unique_id)) {
                 // Changed to an event slide. Set the timeline event view.
                 map.removeLayer(features);
-                $.each(featuresByItem, function(itemId, itemFeatures) {
+                $.each(featuresByResource, function(resourceId, itemFeatures) {
                     map.removeLayer(itemFeatures);
                 });
                 // Changed to an event slide. Set the event's map view.
                 const currentEvent = this.config.event_dict[e.unique_id];
                 const currentEventStart = currentEvent.start_date.data.date_obj;
                 const currentEventEnd = ('undefined' === typeof currentEvent.end_date) ? null : currentEvent.end_date.data.date_obj;
-                const eventFeatures = featuresByItem[currentEvent.unique_id];
+                const eventFeatures = featuresByResource[currentEvent.unique_id];
                 // features.addLayer(eventFeatures);
                 map.addLayer(eventFeatures);
                 if ($.isNumeric(mapData['timeline']['fly_to'])) {
@@ -182,12 +195,12 @@ function MappingBlock(mapDiv, timelineDiv) {
                                 // For a timeline using intervals, a portion of this event
                                 // must fall within the interval of the current event.
                                 if (currentEventEnd && eventStart <= currentEventEnd && eventEnd >= currentEventStart) {
-                                    features.addLayer(featuresByItem[event.unique_id])
+                                    features.addLayer(featuresByResource[event.unique_id])
                                 }
                                 // For a timeline using timestamps, this event must have
                                 // the same timestamp as the current event.
                                 if (!currentEventEnd && currentEventStart.getTime() == eventStart.getTime()) {
-                                    features.addLayer(featuresByItem[event.unique_id])
+                                    features.addLayer(featuresByResource[event.unique_id])
                                 }
                             }
                         });
@@ -204,11 +217,38 @@ function MappingBlock(mapDiv, timelineDiv) {
 }
 
 $(document).ready( function() {
-    $('.mapping-block').each(function() {
+    $('.mapping-block:visible').each(function() {
         const blockDiv = $(this);
-        mappingBlock = new MappingBlock(
+        MappingBlock(
             blockDiv.children('.mapping-map'),
             blockDiv.children('.mapping-timeline')
         );
     });
+});
+
+$(document).on('click', '.mapping-show-item-set-item-features', function(e) {
+    const thisButton = $(this);
+    const mappingFeature = thisButton.closest('.mapping-feature-popup-content');
+
+    const mappingBlock = thisButton.closest('.mapping-block');
+    const mappingBlockItems = mappingBlock.next('.mapping-block');
+    const mappingMap = mappingBlock.children('.mapping-map');
+    const mappingMapItems = mappingBlockItems.children('.mapping-map');
+
+    const itemSetId = mappingFeature.data('resource-id');
+    const url = mappingMap.data('url');
+
+    $.post(url, {item_set_id: itemSetId}, function(data) {
+        mappingBlock.hide();
+        mappingBlockItems.show().children('.mapping-feature-popups').html(data);
+        MappingBlock(mappingMapItems);
+    });
+});
+
+$(document).on('click', '.mapping-show-item-set-features', function() {
+    const thisButton = $(this);
+    const mappingBlockItems = thisButton.closest('.mapping-block');
+    const mappingBlock = mappingBlockItems.prev('.mapping-block');
+    mappingBlockItems.hide();
+    mappingBlock.show();
 });

@@ -1,0 +1,28 @@
+<div class="mapping-block">
+
+    <div class="mapping-map" style="height:500px;"
+        data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
+        data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
+        data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
+        data-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-feature-popups-by-item-set'], true)); ?>"></div>
+
+    <div class="mapping-feature-popups" style="display: none;">
+        <?php foreach ($groups as $group): ?>
+        <?php echo $this->partial($popupPartial, ['group' => $group['group'], 'geography' => $group['geography']]); ?>
+        <?php endforeach; ?>
+    </div>
+
+</div>
+
+<div class="mapping-block" style="display: none;">
+
+    <div class="mapping-map" style="height:500px;"
+        data-data="<?php echo $this->escapeHtml(json_encode($dataItems)); ?>"
+        data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
+        data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"></div>
+
+    <div class="mapping-feature-popups" style="display: none;"></div>
+
+    <button type="button" class="mapping-show-item-set-features"><?php echo $this->translate('Return to item sets'); ?></button>
+
+</div>

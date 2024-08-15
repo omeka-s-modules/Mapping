@@ -53,4 +53,19 @@ class IndexController extends AbstractActionController
         $view->setVariable('features', $features);
         return $view;
     }
+
+    public function getFeaturePopupsByItemSetAction()
+    {
+        $request = $this->getRequest();
+        $response = $this->getResponse();
+
+        $itemsQuery = ['item_set_id' => $this->params()->fromPost('item_set_id')];
+        $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
+        $featuresQuery = ['item_id' => $itemIds];
+        $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
+
+        $view = new ViewModel;
+        $view->setVariable('features', $features);
+        return $view;
+    }
 }

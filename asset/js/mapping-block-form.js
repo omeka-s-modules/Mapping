@@ -107,6 +107,10 @@ $('.block[data-block-layout^="mappingMap"]').each(function() {
     setMap($(this));
 });
 
+$('#blocks').on('o:block-added', '.block[data-block-layout="mappingMapGroups"]', function(e) {
+    $(this).find('.item-set-select').chosen();
+});
+
 // Handle preparing the WMS data for submission.
 $('form').submit(function(e) {
     $('.mapping-wms-overlay').each(function(index) {
