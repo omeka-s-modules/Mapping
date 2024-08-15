@@ -226,7 +226,7 @@ $(document).ready( function() {
     });
 });
 
-$(document).on('click', '.mapping-show-item-set-item-features', function(e) {
+$(document).on('click', '.mapping-show-group-item-features', function(e) {
     const thisButton = $(this);
     const mappingFeature = thisButton.closest('.mapping-feature-popup-content');
 
@@ -245,7 +245,7 @@ $(document).on('click', '.mapping-show-item-set-item-features', function(e) {
     });
 });
 
-$(document).on('click', '.mapping-show-item-set-features', function() {
+$(document).on('click', '.mapping-show-group-features', function() {
     const thisButton = $(this);
     const mappingBlockItems = thisButton.closest('.mapping-block');
     const mappingBlock = mappingBlockItems.prev('.mapping-block');
