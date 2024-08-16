@@ -80,7 +80,33 @@ class MapGroups extends AbstractMap
                         'geography' => $result['geography'],
                     ];
                 }
-                $popupPartial = 'common/mapping-group-popup-item-set';
+                $popupPartial = 'common/mapping-popup/item-set-group';
+                break;
+            case 'resource_classes':
+                $resourceClassIds = array_map('intval', $data['groups']['type_data']['resource_class_ids']);
+                switch ($data['groups']['feature_type']) {
+                    case 'point':
+                        $geographySelect = 'ST_AsGeoJSON(ST_Centroid(ST_ConvexHull(ST_Collect(geography)))) AS geography';
+                        break;
+                    case 'polygon':
+                    default:
+                        $geographySelect = 'ST_AsGeoJSON(ST_ConvexHull(ST_Collect(geography))) AS geography';
+                }
+                $sql = sprintf('SELECT r.resource_class_id, %s
+                    FROM mapping_feature mf
+                    INNER JOIN item i ON mf.item_id = i.id
+                    INNER JOIN resource r ON i.id = r.id
+                    WHERE r.resource_class_id IN (?)
+                    GROUP BY r.resource_class_id', $geographySelect);
+                $results = $this->connection->executeQuery($sql, [$resourceClassIds], [Connection::PARAM_INT_ARRAY])->fetchAll();
+                foreach ($results as $result) {
+                    $resourceClass = $view->api()->read('resource_classes', $result['resource_class_id'])->getContent();
+                    $groups[] = [
+                        'group' => $resourceClass,
+                        'geography' => $result['geography'],
+                    ];
+                }
+                $popupPartial = 'common/mapping-popup/resource-class-group';
                 break;
             default:
                 $groups = [];

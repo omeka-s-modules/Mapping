@@ -15,7 +15,11 @@ class GroupsFieldset extends Fieldset
                 'empty_option' => 'Select a type…', // @translate
                 'value_options' => [
                     'item_sets' => 'Item sets', // @translate
+                    'resource_classes' => 'Resource classes', // @translate
                 ],
+            ],
+            'attributes' => [
+                'class' => 'groups-type',
             ],
         ]);
         $this->add([
@@ -39,8 +43,21 @@ class GroupsFieldset extends Fieldset
             ],
             'attributes' => [
                 'multiple' => true,
-                'class' => 'chosen-select item-set-select',
+                'class' => 'chosen-select item_set_ids',
                 'data-placeholder' => 'Select item sets', // @translate
+            ]
+        ]);
+        $this->add([
+            'type' => 'Omeka\Form\Element\ResourceClassSelect',
+            'name' => 'o:block[__blockIndex__][o:data][groups][type_data][resource_class_ids]',
+            'options' => [
+                'label' => 'Resource classes', // @translate
+                'empty_option' => '',
+            ],
+            'attributes' => [
+                'multiple' => true,
+                'class' => 'chosen-select resource_class_ids',
+                'data-placeholder' => 'Select resource classes', // @translate
             ]
         ]);
     }
@@ -53,11 +70,12 @@ class GroupsFieldset extends Fieldset
                 'feature_type' => 'polygon',
                 'type_data' => [
                     'item_set_ids' => [],
+                    'resource_class_ids' => [],
                 ],
             ]
         ];
 
-        if (isset($rawData['groups']['type']) && in_array($rawData['groups']['type'], ['item_sets'])) {
+        if (isset($rawData['groups']['type']) && in_array($rawData['groups']['type'], ['item_sets', 'resource_classes'])) {
             $data['groups']['type'] = $rawData['groups']['type'];
         }
         if (isset($rawData['groups']['feature_type']) && in_array($rawData['groups']['feature_type'], ['polygon', 'point'])) {
@@ -65,6 +83,9 @@ class GroupsFieldset extends Fieldset
         }
         if (isset($rawData['groups']['type_data']['item_set_ids']) && is_array($rawData['groups']['type_data']['item_set_ids'])) {
             $data['groups']['type_data']['item_set_ids'] = $rawData['groups']['type_data']['item_set_ids'];
+        }
+        if (isset($rawData['groups']['type_data']['resource_class_ids']) && is_array($rawData['groups']['type_data']['resource_class_ids'])) {
+            $data['groups']['type_data']['resource_class_ids'] = $rawData['groups']['type_data']['resource_class_ids'];
         }
 
         return $data;

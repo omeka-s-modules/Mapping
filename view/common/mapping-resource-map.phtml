@@ -44,6 +44,8 @@ $basemapProvider = $this->status()->isSiteRequest() ? $this->siteSetting('mappin
     ></div>
 </div>
 
-<?php foreach ($features as $feature): ?>
-<?php echo $this->partial('common/mapping-feature-popup', ['feature' => $feature]); ?>
-<?php endforeach; ?>
+<div class="mapping-feature-popups" style="display: none;">
+    <?php foreach ($features as $feature): ?>
+    <?php echo $this->partial('common/mapping-feature-popup', ['feature' => $feature]); ?>
+    <?php endforeach; ?>
+</div>

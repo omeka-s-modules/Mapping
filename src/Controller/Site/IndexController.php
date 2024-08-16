@@ -69,6 +69,12 @@ class IndexController extends AbstractActionController
                 $featuresQuery = ['item_id' => $itemIds];
                 $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
                 break;
+            case 'resource_classes':
+                $itemsQuery = ['resource_class_id' => $group];
+                $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
+                $featuresQuery = ['item_id' => $itemIds];
+                $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
+                break;
             default:
                 $features = [];
         }

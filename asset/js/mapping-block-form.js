@@ -107,8 +107,31 @@ $('.block[data-block-layout^="mappingMap"]').each(function() {
     setMap($(this));
 });
 
+// Handle "mappingMapGroups" blocks.
+const prepareBlockMapGroups = function(block) {
+    console.log('foo');
+    const groupsType = block.find('select.groups-type').val();
+    block.find('select.item_set_ids, select.resource_class_ids').closest('.field').hide();
+    switch (groupsType) {
+        case 'item_sets':
+            block.find('select.item_set_ids').closest('.field').show();
+            break;
+        case 'resource_classes':
+            block.find('select.resource_class_ids').closest('.field').show();
+            break;
+    }
+    block.find('select.groups-type').one('change', function(e) {
+        prepareBlockMapGroups(block);
+    });
+};
+$('.block[data-block-layout="mappingMapGroups"]').each(function() {
+    const thisBlock = $(this);
+    prepareBlockMapGroups(thisBlock);
+});
 $('#blocks').on('o:block-added', '.block[data-block-layout="mappingMapGroups"]', function(e) {
-    $(this).find('.item-set-select').chosen();
+    const thisBlock = $(this);
+    thisBlock.find('.chosen-select').chosen();
+    prepareBlockMapGroups(thisBlock);
 });
 
 // Handle preparing the WMS data for submission.
