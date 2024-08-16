@@ -57,7 +57,6 @@ class MapGroups extends AbstractMap
         // Get group data according to type.
         switch ($data['groups']['type']) {
             case 'item_sets':
-                $popupPartial = 'common/mapping-item-set-popup';
                 $itemSetIds = array_map('intval', $data['groups']['type_data']['item_set_ids']);
                 switch ($data['groups']['feature_type']) {
                     case 'point':
@@ -81,6 +80,7 @@ class MapGroups extends AbstractMap
                         'geography' => $result['geography'],
                     ];
                 }
+                $popupPartial = 'common/mapping-group-popup-item-set';
                 break;
             default:
                 $groups = [];

@@ -235,10 +235,12 @@ $(document).on('click', '.mapping-show-group-item-features', function(e) {
     const mappingMap = mappingBlock.children('.mapping-map');
     const mappingMapItems = mappingBlockItems.children('.mapping-map');
 
-    const itemSetId = mappingFeature.data('resource-id');
-    const url = mappingMap.data('url');
-
-    $.post(url, {item_set_id: itemSetId}, function(data) {
+    const url = mappingMap.data('groupUrl');
+    const postData = {
+        group_type: mappingMap.data('groupType'),
+        group: mappingFeature.data('group')
+    };
+    $.post(url, postData, function(data) {
         mappingBlock.hide();
         mappingBlockItems.show().children('.mapping-feature-popups').html(data);
         MappingBlock(mappingMapItems);
