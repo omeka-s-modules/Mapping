@@ -111,13 +111,20 @@ $('.block[data-block-layout^="mappingMap"]').each(function() {
 const prepareBlockMapGroups = function(block) {
     console.log('foo');
     const groupsType = block.find('select.groups-type').val();
-    block.find('select.item_set_ids, select.resource_class_ids').closest('.field').hide();
+    block.find('.hidden_by_default').closest('.field').hide();
     switch (groupsType) {
         case 'item_sets':
             block.find('select.item_set_ids').closest('.field').show();
             break;
         case 'resource_classes':
             block.find('select.resource_class_ids').closest('.field').show();
+            break;
+        case 'values_is_exactly':
+            block.find('select.property_id').closest('.field').show();
+            block.find('textarea.values').closest('.field').show();
+            break;
+        case 'properties_has_any_value':
+            block.find('select.property_ids').closest('.field').show();
             break;
     }
     block.find('select.groups-type').one('change', function(e) {

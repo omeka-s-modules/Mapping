@@ -54,18 +54,20 @@ class MapGroups extends AbstractMap
         $dataItems = $data;
         $dataItems['bounds'] = null; // Do not use the configured bounds for the items map.
 
+        // Get the GROUP BY clause depending on feature type.
+        switch ($data['groups']['feature_type']) {
+            case 'point':
+                $geographySelect = 'ST_AsGeoJSON(ST_Centroid(ST_ConvexHull(ST_Collect(geography)))) AS geography';
+                break;
+            case 'polygon':
+            default:
+                $geographySelect = 'ST_AsGeoJSON(ST_ConvexHull(ST_Collect(geography))) AS geography';
+        }
+
         // Get group data according to type.
         switch ($data['groups']['type']) {
             case 'item_sets':
                 $itemSetIds = array_map('intval', $data['groups']['type_data']['item_set_ids']);
-                switch ($data['groups']['feature_type']) {
-                    case 'point':
-                        $geographySelect = 'ST_AsGeoJSON(ST_Centroid(ST_ConvexHull(ST_Collect(geography)))) AS geography';
-                        break;
-                    case 'polygon':
-                    default:
-                        $geographySelect = 'ST_AsGeoJSON(ST_ConvexHull(ST_Collect(geography))) AS geography';
-                }
                 $sql = sprintf('SELECT iis.item_set_id, %s
                     FROM mapping_feature mf
                     INNER JOIN item i ON mf.item_id = i.id
@@ -84,14 +86,6 @@ class MapGroups extends AbstractMap
                 break;
             case 'resource_classes':
                 $resourceClassIds = array_map('intval', $data['groups']['type_data']['resource_class_ids']);
-                switch ($data['groups']['feature_type']) {
-                    case 'point':
-                        $geographySelect = 'ST_AsGeoJSON(ST_Centroid(ST_ConvexHull(ST_Collect(geography)))) AS geography';
-                        break;
-                    case 'polygon':
-                    default:
-                        $geographySelect = 'ST_AsGeoJSON(ST_ConvexHull(ST_Collect(geography))) AS geography';
-                }
                 $sql = sprintf('SELECT r.resource_class_id, %s
                     FROM mapping_feature mf
                     INNER JOIN item i ON mf.item_id = i.id
@@ -107,6 +101,43 @@ class MapGroups extends AbstractMap
                     ];
                 }
                 $popupPartial = 'common/mapping-popup/resource-class-group';
+                break;
+            case 'values_is_exactly':
+                $propertyId = (int) $data['groups']['type_data']['property_id'];
+                $values = array_filter(explode("\n", $data['groups']['type_data']['values']));
+                $sql = sprintf('SELECT v.value, %s
+                    FROM mapping_feature mf
+                    INNER JOIN item i ON mf.item_id = i.id
+                    INNER JOIN value v ON i.id = v.resource_id
+                    WHERE v.property_id = ?
+                    AND v.value IN (?)
+                    GROUP BY v.value', $geographySelect);
+                $results = $this->connection->executeQuery($sql, [$propertyId, $values], [\PDO::PARAM_INT, Connection::PARAM_INT_ARRAY])->fetchAll();
+                foreach ($results as $result) {
+                    $groups[] = [
+                        'group' => ['property_id' => $propertyId, 'value' => $result['value']],
+                        'geography' => $result['geography'],
+                    ];
+                }
+                $popupPartial = 'common/mapping-popup/value-is-exactly-group';
+                break;
+            case 'properties_has_any_value':
+                $propertyIds = array_map('intval', $data['groups']['type_data']['property_ids']);
+                $sql = sprintf('SELECT v.property_id, %s
+                    FROM mapping_feature mf
+                    INNER JOIN item i ON mf.item_id = i.id
+                    INNER JOIN value v ON i.id = v.resource_id
+                    WHERE v.property_id IN (?)
+                    GROUP BY v.property_id', $geographySelect);
+                $results = $this->connection->executeQuery($sql, [$propertyIds], [Connection::PARAM_INT_ARRAY])->fetchAll();
+                foreach ($results as $result) {
+                    $property = $view->api()->read('properties', $result['property_id'])->getContent();
+                    $groups[] = [
+                        'group' => $property,
+                        'geography' => $result['geography'],
+                    ];
+                }
+                $popupPartial = 'common/mapping-popup/properties-has-any-value-group';
                 break;
             default:
                 $groups = [];

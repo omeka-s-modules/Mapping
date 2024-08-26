@@ -75,6 +75,35 @@ class IndexController extends AbstractActionController
                 $featuresQuery = ['item_id' => $itemIds];
                 $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
                 break;
+            case 'values_is_exactly':
+                $itemsQuery = [
+                    'property' => [
+                        [
+                            'joiner' => 'and',
+                            'type' => 'eq',
+                            'property' => $group['property_id'],
+                            'text' => $group['value'],
+                        ],
+                    ],
+                ];
+                $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
+                $featuresQuery = ['item_id' => $itemIds];
+                $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
+                break;
+            case 'properties_has_any_value':
+                $itemsQuery = [
+                    'property' => [
+                        [
+                            'joiner' => 'and',
+                            'type' => 'ex',
+                            'property' => $group,
+                        ],
+                    ],
+                ];
+                $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
+                $featuresQuery = ['item_id' => $itemIds];
+                $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
+                break;
             default:
                 $features = [];
         }

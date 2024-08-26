@@ -41,6 +41,9 @@ class BlockLayoutMapGroupsForm extends Form
                 'o:block[__blockIndex__][o:data][groups][feature_type]' => $data['groups']['feature_type'],
                 'o:block[__blockIndex__][o:data][groups][type_data][item_set_ids]' => $data['groups']['type_data']['item_set_ids'],
                 'o:block[__blockIndex__][o:data][groups][type_data][resource_class_ids]' => $data['groups']['type_data']['resource_class_ids'],
+                'o:block[__blockIndex__][o:data][groups][type_data][property_ids]' => $data['groups']['type_data']['property_ids'],
+                'o:block[__blockIndex__][o:data][groups][type_data][property_id]' => $data['groups']['type_data']['property_id'],
+                'o:block[__blockIndex__][o:data][groups][type_data][values]' => $data['groups']['type_data']['values'],
             ],
         ]);
         return $data;
