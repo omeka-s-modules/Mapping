@@ -119,7 +119,7 @@ const prepareBlockMapGroups = function(block) {
         case 'resource_classes':
             block.find('select.resource_class_ids').closest('.field').show();
             break;
-        case 'values_is_exactly':
+        case 'property_values_is_exactly':
             block.find('select.property_id').closest('.field').show();
             block.find('textarea.values').closest('.field').show();
             break;

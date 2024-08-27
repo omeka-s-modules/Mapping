@@ -13,6 +13,13 @@ use Omeka\Stdlib\ErrorStore;
 
 class MapGroups extends AbstractMap
 {
+    protected $popupPartials = [
+        'item_sets' => 'common/mapping-popup/item-set-group',
+        'resource_classes' => 'common/mapping-popup/resource-class-group',
+        'property_values_is_exactly' => 'common/mapping-popup/property-value-is-exactly-group',
+        'properties_has_any_value' => 'common/mapping-popup/property-has-any-value-group',
+    ];
+
     public function getLabel()
     {
         return 'Map by groups'; // @translate
@@ -82,7 +89,6 @@ class MapGroups extends AbstractMap
                         'geography' => $result['geography'],
                     ];
                 }
-                $popupPartial = 'common/mapping-popup/item-set-group';
                 break;
             case 'resource_classes':
                 $resourceClassIds = array_map('intval', $data['groups']['type_data']['resource_class_ids']);
@@ -100,9 +106,8 @@ class MapGroups extends AbstractMap
                         'geography' => $result['geography'],
                     ];
                 }
-                $popupPartial = 'common/mapping-popup/resource-class-group';
                 break;
-            case 'values_is_exactly':
+            case 'property_values_is_exactly':
                 $propertyId = (int) $data['groups']['type_data']['property_id'];
                 $values = array_filter(explode("\n", $data['groups']['type_data']['values']));
                 $sql = sprintf('SELECT v.value, %s
@@ -119,7 +124,6 @@ class MapGroups extends AbstractMap
                         'geography' => $result['geography'],
                     ];
                 }
-                $popupPartial = 'common/mapping-popup/value-is-exactly-group';
                 break;
             case 'properties_has_any_value':
                 $propertyIds = array_map('intval', $data['groups']['type_data']['property_ids']);
@@ -137,18 +141,16 @@ class MapGroups extends AbstractMap
                         'geography' => $result['geography'],
                     ];
                 }
-                $popupPartial = 'common/mapping-popup/properties-has-any-value-group';
                 break;
             default:
                 $groups = [];
-                $popupPartial = null;
         }
 
         return $view->partial('common/block-layout/mapping-block-groups', [
             'data' => $data,
             'dataItems' => $dataItems,
             'groups' => $groups,
-            'popupPartial' => $popupPartial,
+            'popupPartial' => $this->popupPartials[$data['groups']['type']] ?? null,
         ]);
     }
 }

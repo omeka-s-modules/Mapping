@@ -11,12 +11,12 @@ class GroupsFieldset extends Fieldset
             'type' => 'select',
             'name' => 'o:block[__blockIndex__][o:data][groups][type]',
             'options' => [
-                'label' => 'Groups type',
+                'label' => 'Group by',
                 'empty_option' => 'Select a type…', // @translate
                 'value_options' => [
                     'item_sets' => 'Item sets', // @translate
                     'resource_classes' => 'Resource classes', // @translate
-                    'values_is_exactly' => 'Values (is exactly)', // @translate
+                    'property_values_is_exactly' => 'Property values (is exactly)', // @translate
                     'properties_has_any_value' => 'Properties (has any value)', // @translate
                 ],
             ],
@@ -116,7 +116,7 @@ class GroupsFieldset extends Fieldset
             ]
         ];
 
-        if (isset($rawData['groups']['type']) && in_array($rawData['groups']['type'], ['item_sets', 'resource_classes', 'values_is_exactly', 'properties_has_any_value'])) {
+        if (isset($rawData['groups']['type']) && in_array($rawData['groups']['type'], ['item_sets', 'resource_classes', 'property_values_is_exactly', 'properties_has_any_value'])) {
             $data['groups']['type'] = $rawData['groups']['type'];
         }
         if (isset($rawData['groups']['feature_type']) && in_array($rawData['groups']['feature_type'], ['polygon', 'point'])) {

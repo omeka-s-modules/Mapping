@@ -65,17 +65,11 @@ class IndexController extends AbstractActionController
         switch ($groupType) {
             case 'item_sets':
                 $itemsQuery = ['item_set_id' => $group];
-                $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
-                $featuresQuery = ['item_id' => $itemIds];
-                $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
                 break;
             case 'resource_classes':
                 $itemsQuery = ['resource_class_id' => $group];
-                $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
-                $featuresQuery = ['item_id' => $itemIds];
-                $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
                 break;
-            case 'values_is_exactly':
+            case 'property_values_is_exactly':
                 $itemsQuery = [
                     'property' => [
                         [
@@ -86,9 +80,6 @@ class IndexController extends AbstractActionController
                         ],
                     ],
                 ];
-                $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
-                $featuresQuery = ['item_id' => $itemIds];
-                $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
                 break;
             case 'properties_has_any_value':
                 $itemsQuery = [
@@ -100,12 +91,16 @@ class IndexController extends AbstractActionController
                         ],
                     ],
                 ];
-                $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
-                $featuresQuery = ['item_id' => $itemIds];
-                $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
                 break;
             default:
-                $features = [];
+                $itemsQuery = [];
+        }
+
+        $features = [];
+        if ($itemsQuery) {
+            $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
+            $featuresQuery = ['item_id' => $itemIds];
+            $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
         }
 
         $view = new ViewModel;
