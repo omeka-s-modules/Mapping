@@ -17,6 +17,7 @@ class MapGroups extends AbstractMap
         'item_sets' => 'common/mapping-popup/item-set-group',
         'resource_classes' => 'common/mapping-popup/resource-class-group',
         'property_values_is_exactly' => 'common/mapping-popup/property-value-is-exactly-group',
+        'property_values_contains' => 'common/mapping-popup/property-value-contains-group',
         'properties_has_any_value' => 'common/mapping-popup/property-has-any-value-group',
     ];
 
@@ -109,7 +110,7 @@ class MapGroups extends AbstractMap
                 break;
             case 'property_values_is_exactly':
                 $propertyId = (int) $data['groups']['type_data']['property_id'];
-                $values = array_filter(explode("\n", $data['groups']['type_data']['values']));
+                $values = array_filter(array_map('trim', explode("\n", $data['groups']['type_data']['values'])));
                 $sql = sprintf('SELECT v.value, %s
                     FROM mapping_feature mf
                     INNER JOIN item i ON mf.item_id = i.id
@@ -121,6 +122,31 @@ class MapGroups extends AbstractMap
                 foreach ($results as $result) {
                     $groups[] = [
                         'group' => ['property_id' => $propertyId, 'value' => $result['value']],
+                        'geography' => $result['geography'],
+                    ];
+                }
+                break;
+            case 'property_values_contains':
+                $propertyId = (int) $data['groups']['type_data']['property_id'];
+                $values = array_filter(array_map('trim', explode("\n", $data['groups']['type_data']['values'])));
+                // Must use UNION instead of IN() because of wildcard LIKE query.
+                $unions = $queryParams = $queryTypes = [];
+                foreach ($values as $value) {
+                    $unions[] = sprintf('SELECT ? as contains_value, %s
+                        FROM mapping_feature mf
+                        INNER JOIN item i ON mf.item_id = i.id
+                        INNER JOIN value v ON i.id = v.resource_id
+                        WHERE v.property_id = ?
+                        AND v.value LIKE ?
+                        GROUP BY contains_value', $geographySelect);
+                        $queryParams = array_merge($queryParams, [$value, $propertyId, '%' . $value . '%']);
+                        $queryTypes = array_merge($queryTypes, [\PDO::PARAM_STR, \PDO::PARAM_INT, \PDO::PARAM_STR]);
+                }
+                $sql = implode(' UNION ', $unions);
+                $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
+                foreach ($results as $result) {
+                    $groups[] = [
+                        'group' => ['property_id' => $propertyId, 'value' => $result['contains_value']],
                         'geography' => $result['geography'],
                     ];
                 }

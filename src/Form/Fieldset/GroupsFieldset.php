@@ -17,6 +17,7 @@ class GroupsFieldset extends Fieldset
                     'item_sets' => 'Item sets', // @translate
                     'resource_classes' => 'Resource classes', // @translate
                     'property_values_is_exactly' => 'Property values (is exactly)', // @translate
+                    'property_values_contains' => 'Property values (contains)', // @translate
                     'properties_has_any_value' => 'Properties (has any value)', // @translate
                 ],
             ],
@@ -116,7 +117,7 @@ class GroupsFieldset extends Fieldset
             ]
         ];
 
-        if (isset($rawData['groups']['type']) && in_array($rawData['groups']['type'], ['item_sets', 'resource_classes', 'property_values_is_exactly', 'properties_has_any_value'])) {
+        if (isset($rawData['groups']['type']) && in_array($rawData['groups']['type'], ['item_sets', 'resource_classes', 'property_values_is_exactly', 'property_values_contains', 'properties_has_any_value'])) {
             $data['groups']['type'] = $rawData['groups']['type'];
         }
         if (isset($rawData['groups']['feature_type']) && in_array($rawData['groups']['feature_type'], ['polygon', 'point'])) {

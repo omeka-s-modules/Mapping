@@ -81,6 +81,18 @@ class IndexController extends AbstractActionController
                     ],
                 ];
                 break;
+            case 'property_values_contains':
+                $itemsQuery = [
+                    'property' => [
+                        [
+                            'joiner' => 'and',
+                            'type' => 'in',
+                            'property' => $group['property_id'],
+                            'text' => $group['value'],
+                        ],
+                    ],
+                ];
+                break;
             case 'properties_has_any_value':
                 $itemsQuery = [
                     'property' => [
