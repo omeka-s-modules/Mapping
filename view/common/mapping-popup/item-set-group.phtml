@@ -2,7 +2,7 @@
     data-feature-geography="<?php echo $this->escapeHtml($geography); ?>"
     data-group="<?php echo $group->id(); ?>">
 
-    <h3><?php echo $group->displayTitle(); ?></h3>
+    <h3><?php echo sprintf($this->translate('Items in "%s"'), $group->displayTitle()); ?></h3>
     <?php echo $this->thumbnail($group, 'medium'); ?>
     <button type="button" class="mapping-show-group-item-features"><?php echo $this->translate('Show all'); ?></button>
 
