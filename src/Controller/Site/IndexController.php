@@ -62,50 +62,44 @@ class IndexController extends AbstractActionController
         $groupType = $this->params()->fromPost('group_type');
         $group = $this->params()->fromPost('group');
 
+        $itemsQuery = ['site_id' => $this->currentSite()->id()];
+
         switch ($groupType) {
             case 'item_sets':
-                $itemsQuery = ['item_set_id' => $group];
+                $itemsQuery['item_set_id'] = $group;
                 break;
             case 'resource_classes':
-                $itemsQuery = ['resource_class_id' => $group];
+                $itemsQuery['resource_class_id'] = $group;
                 break;
             case 'property_values_is_exactly':
-                $itemsQuery = [
-                    'property' => [
-                        [
-                            'joiner' => 'and',
-                            'type' => 'eq',
-                            'property' => $group['property_id'],
-                            'text' => $group['value'],
-                        ],
+                $itemsQuery['property'] = [
+                    [
+                        'joiner' => 'and',
+                        'type' => 'eq',
+                        'property' => $group['property_id'],
+                        'text' => $group['value'],
                     ],
                 ];
                 break;
             case 'property_values_contains':
-                $itemsQuery = [
-                    'property' => [
-                        [
-                            'joiner' => 'and',
-                            'type' => 'in',
-                            'property' => $group['property_id'],
-                            'text' => $group['value'],
-                        ],
+                $itemsQuery['property'] = [
+                    [
+                        'joiner' => 'and',
+                        'type' => 'in',
+                        'property' => $group['property_id'],
+                        'text' => $group['value'],
                     ],
                 ];
                 break;
             case 'properties_has_any_value':
-                $itemsQuery = [
-                    'property' => [
-                        [
-                            'joiner' => 'and',
-                            'type' => 'ex',
-                            'property' => $group,
-                        ],
+                $itemsQuery['property'] = [
+                    [
+                        'joiner' => 'and',
+                        'type' => 'ex',
+                        'property' => $group,
                     ],
                 ];
                 break;
-            default:
-                $itemsQuery = [];
         }
 
         $features = [];
