@@ -71,7 +71,7 @@ class IndexController extends AbstractActionController
             case 'resource_classes':
                 $itemsQuery['resource_class_id'] = $group;
                 break;
-            case 'property_values_is_exactly':
+            case 'property_values_eq':
                 $itemsQuery['property'] = [
                     [
                         'joiner' => 'and',
@@ -81,7 +81,7 @@ class IndexController extends AbstractActionController
                     ],
                 ];
                 break;
-            case 'property_values_contains':
+            case 'property_values_in':
                 $itemsQuery['property'] = [
                     [
                         'joiner' => 'and',
@@ -91,7 +91,7 @@ class IndexController extends AbstractActionController
                     ],
                 ];
                 break;
-            case 'properties_has_any_value':
+            case 'properties_ex':
                 $itemsQuery['property'] = [
                     [
                         'joiner' => 'and',

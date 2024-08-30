@@ -19,9 +19,9 @@ class MapGroups extends AbstractMap
     protected $popupPartials = [
         'item_sets' => 'common/mapping-popup/item-set-group',
         'resource_classes' => 'common/mapping-popup/resource-class-group',
-        'property_values_is_exactly' => 'common/mapping-popup/property-value-is-exactly-group',
-        'property_values_contains' => 'common/mapping-popup/property-value-contains-group',
-        'properties_has_any_value' => 'common/mapping-popup/property-has-any-value-group',
+        'property_values_eq' => 'common/mapping-popup/property-value-eq-group',
+        'property_values_in' => 'common/mapping-popup/property-value-in-group',
+        'properties_ex' => 'common/mapping-popup/property-ex-group',
     ];
 
     public function getLabel()
@@ -129,7 +129,7 @@ class MapGroups extends AbstractMap
                     ];
                 }
                 break;
-            case 'property_values_is_exactly':
+            case 'property_values_eq':
                 $propertyId = (int) $data['groups']['type_data']['property_id'];
                 $values = array_filter(array_map('trim', explode("\n", $data['groups']['type_data']['values'])));
                 $sql = sprintf('SELECT value.value, %s
@@ -153,7 +153,7 @@ class MapGroups extends AbstractMap
                     ];
                 }
                 break;
-            case 'property_values_contains':
+            case 'property_values_in':
                 $propertyId = (int) $data['groups']['type_data']['property_id'];
                 $values = array_filter(array_map('trim', explode("\n", $data['groups']['type_data']['values'])));
                 // Must use UNION instead of IN() because of wildcard LIKE query.
@@ -180,7 +180,7 @@ class MapGroups extends AbstractMap
                     ];
                 }
                 break;
-            case 'properties_has_any_value':
+            case 'properties_ex':
                 $propertyIds = array_map('intval', $data['groups']['type_data']['property_ids']);
                 $sql = sprintf('SELECT value.property_id, %s
                     FROM mapping_feature

@@ -119,12 +119,12 @@ const prepareBlockMapGroups = function(block) {
         case 'resource_classes':
             block.find('select.resource_class_ids').closest('.field').show();
             break;
-        case 'property_values_is_exactly':
-        case 'property_values_contains':
+        case 'property_values_eq':
+        case 'property_values_in':
             block.find('select.property_id').closest('.field').show();
             block.find('textarea.values').closest('.field').show();
             break;
-        case 'properties_has_any_value':
+        case 'properties_ex':
             block.find('select.property_ids').closest('.field').show();
             break;
     }

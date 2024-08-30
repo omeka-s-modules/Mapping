@@ -5,6 +5,14 @@ use Laminas\Form\Fieldset;
 
 class GroupsFieldset extends Fieldset
 {
+    protected $groupByTypes = [
+        'item_sets' => 'Item sets', // @translate
+        'resource_classes' => 'Resource classes', // @translate
+        'property_values_eq' => 'Property values (is exactly)', // @translate
+        'property_values_in' => 'Property values (contains)', // @translate
+        'properties_ex' => 'Properties (has any value)', // @translate
+    ];
+
     public function init()
     {
         $this->add([
@@ -13,13 +21,7 @@ class GroupsFieldset extends Fieldset
             'options' => [
                 'label' => 'Group by',
                 'empty_option' => 'Select a type…', // @translate
-                'value_options' => [
-                    'item_sets' => 'Item sets', // @translate
-                    'resource_classes' => 'Resource classes', // @translate
-                    'property_values_is_exactly' => 'Property values (is exactly)', // @translate
-                    'property_values_contains' => 'Property values (contains)', // @translate
-                    'properties_has_any_value' => 'Properties (has any value)', // @translate
-                ],
+                'value_options' => $this->groupByTypes,
             ],
             'attributes' => [
                 'class' => 'groups-type',
@@ -117,7 +119,7 @@ class GroupsFieldset extends Fieldset
             ]
         ];
 
-        if (isset($rawData['groups']['type']) && in_array($rawData['groups']['type'], ['item_sets', 'resource_classes', 'property_values_is_exactly', 'property_values_contains', 'properties_has_any_value'])) {
+        if (isset($rawData['groups']['type']) && in_array($rawData['groups']['type'], array_keys($this->groupByTypes))) {
             $data['groups']['type'] = $rawData['groups']['type'];
         }
         if (isset($rawData['groups']['feature_type']) && in_array($rawData['groups']['feature_type'], ['polygon', 'point'])) {
