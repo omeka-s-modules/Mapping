@@ -1,0 +1,12 @@
+<?php
+$property = $this->api()->read('properties', $group['property_id'])->getContent();
+$item = $this->api()->read('items', $group['item_id'])->getContent();
+?>
+<div class="mapping-feature-popup-content"
+    data-feature-geography="<?php echo $this->escapeHtml($geography); ?>"
+    data-group="<?php echo $this->escapeHtml(json_encode($group)); ?>">
+
+    <h3><?php echo sprintf($this->translate('Items where %s is "%s"'), $property->label(), $item->displayTitle()); ?></h3>
+    <button type="button" class="mapping-show-group-item-features"><?php echo $this->translate('Show all'); ?></button>
+
+</div>

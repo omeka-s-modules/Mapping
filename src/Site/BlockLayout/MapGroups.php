@@ -21,6 +21,7 @@ class MapGroups extends AbstractMap
         'resource_classes' => 'common/mapping-popup/resource-class-group',
         'property_values_eq' => 'common/mapping-popup/property-value-eq-group',
         'property_values_in' => 'common/mapping-popup/property-value-in-group',
+        'property_values_res' => 'common/mapping-popup/property-value-res-group',
         'properties_ex' => 'common/mapping-popup/property-ex-group',
     ];
 
@@ -176,6 +177,30 @@ class MapGroups extends AbstractMap
                 foreach ($results as $result) {
                     $groups[] = [
                         'group' => ['property_id' => $propertyId, 'value' => $result['contains_value']],
+                        'geography' => $result['geography'],
+                    ];
+                }
+                break;
+            case 'property_values_res':
+                $propertyId = (int) $data['groups']['type_data']['property_id'];
+                $values = array_filter(array_map('trim', explode("\n", $data['groups']['type_data']['values'])));
+                $sql = sprintf('SELECT value.value_resource_id, %s
+                    FROM mapping_feature
+                    INNER JOIN item ON mapping_feature.item_id = item.id
+                    INNER JOIN value ON item.id = value.resource_id
+                    INNER JOIN item_site ON item.id = item_site.item_id
+                    WHERE value.value_resource_id IN (?)
+                    AND value.property_id = ?
+                    AND item_site.site_id = ?
+                    GROUP BY value.value_resource_id', $geographySelect);
+                $results = $this->connection->executeQuery(
+                    $sql,
+                    [$values, $propertyId, $siteId],
+                    [Connection::PARAM_INT_ARRAY, \PDO::PARAM_INT, \PDO::PARAM_INT]
+                )->fetchAll();
+                foreach ($results as $result) {
+                    $groups[] = [
+                        'group' => ['property_id' => $propertyId, 'item_id' => $result['value_resource_id']],
                         'geography' => $result['geography'],
                     ];
                 }

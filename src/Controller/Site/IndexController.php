@@ -91,6 +91,16 @@ class IndexController extends AbstractActionController
                     ],
                 ];
                 break;
+            case 'property_values_res':
+                $itemsQuery['property'] = [
+                    [
+                        'joiner' => 'and',
+                        'type' => 'res',
+                        'property' => $group['property_id'],
+                        'text' => $group['item_id'],
+                    ],
+                ];
+                break;
             case 'properties_ex':
                 $itemsQuery['property'] = [
                     [

@@ -121,6 +121,7 @@ const prepareBlockMapGroups = function(block) {
             break;
         case 'property_values_eq':
         case 'property_values_in':
+        case 'property_values_res':
             block.find('select.property_id').closest('.field').show();
             block.find('textarea.values').closest('.field').show();
             break;

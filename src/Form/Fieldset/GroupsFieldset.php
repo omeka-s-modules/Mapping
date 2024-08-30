@@ -10,6 +10,7 @@ class GroupsFieldset extends Fieldset
         'resource_classes' => 'Resource classes', // @translate
         'property_values_eq' => 'Property values (is exactly)', // @translate
         'property_values_in' => 'Property values (contains)', // @translate
+        'property_values_res' => 'Property values (is resource with ID)', // @translate
         'properties_ex' => 'Properties (has any value)', // @translate
     ];
 
@@ -95,7 +96,14 @@ class GroupsFieldset extends Fieldset
             'name' => 'o:block[__blockIndex__][o:data][groups][type_data][values]',
             'options' => [
                 'label' => 'Values', // @translate
-                'info' => 'Enter each value separated by a new line.', // @translate
+                'info' => '
+                <p>Enter the values, separated by new lines. The format of each value depends on the query type:</p>
+                <ul>
+                    <li>"Is exactly": enter a value that is an exact match to the property value.</li>
+                    <li>"Contains": enter a value that matches any part of the property value.</li>
+                    <li>"Is resource with ID": enter the resource ID.</li>
+                </ul>', // @translate
+                'escape_info' => false,
             ],
             'attributes' => [
                 'class' => 'values hidden_by_default',
