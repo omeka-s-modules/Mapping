@@ -10,7 +10,7 @@ class GroupsFieldset extends Fieldset
         'resource_classes' => 'Resource classes', // @translate
         'property_values_eq' => 'Property values (is exactly)', // @translate
         'property_values_in' => 'Property values (contains)', // @translate
-        'property_values_res' => 'Property values (is resource with ID)', // @translate
+        'property_values_res' => 'Property values (is item with ID)', // @translate
         'properties_ex' => 'Properties (has any value)', // @translate
     ];
 
@@ -101,7 +101,7 @@ class GroupsFieldset extends Fieldset
                 <ul>
                     <li>"Is exactly": enter a value that is an exact match to the property value.</li>
                     <li>"Contains": enter a value that matches any part of the property value.</li>
-                    <li>"Is resource with ID": enter the resource ID.</li>
+                    <li>"Is item with ID": enter the item ID.</li>
                 </ul>', // @translate
                 'escape_info' => false,
             ],

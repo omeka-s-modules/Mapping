@@ -3,7 +3,7 @@
     data-feature-geography="<?php echo $this->escapeHtml($geography); ?>"
     data-group="<?php echo $this->escapeHtml(json_encode($group)); ?>">
 
-    <h3><?php echo sprintf($this->translate('Items where %s contains "%s"'), $property->label(), $group['value']); ?></h3>
+    <h4><?php echo sprintf($this->translate('Items where "%s" contains "%s"'), $property->label(), $group['value']); ?></h4>
     <button type="button" class="mapping-show-group-item-features"><?php echo $this->translate('Show all'); ?></button>
 
 </div>
