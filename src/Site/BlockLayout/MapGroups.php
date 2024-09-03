@@ -200,7 +200,7 @@ class MapGroups extends AbstractMap
                 )->fetchAll();
                 foreach ($results as $result) {
                     $groups[] = [
-                        'group' => ['property_id' => $propertyId, 'item_id' => $result['value_resource_id']],
+                        'group' => ['property_id' => $propertyId, 'resource_id' => $result['value_resource_id']],
                         'geography' => $result['geography'],
                     ];
                 }
