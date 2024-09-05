@@ -1,4 +1,6 @@
-<?php $property = $this->api()->read('properties', $group['property_id'])->getContent() ?>
+<?php
+$property = $this->api()->read('properties', $group['property_id'])->getContent();
+?>
 <div class="mapping-feature-popup-content"
     data-feature-geography="<?php echo $this->escapeHtml($geography); ?>"
     data-group="<?php echo $this->escapeHtml(json_encode($group)); ?>">

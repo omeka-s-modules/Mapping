@@ -66,10 +66,12 @@ class IndexController extends AbstractActionController
 
         switch ($groupType) {
             case 'item_sets':
-                $itemsQuery['item_set_id'] = $group;
+                $itemsQuery['item_set_id'] = $group['item_set_id'];
+                $itemsQuery['resource_class_id'] = $group['resource_class_id'];
                 break;
             case 'resource_classes':
-                $itemsQuery['resource_class_id'] = $group;
+                $itemsQuery['resource_class_id'] = $group['resource_class_id'];
+                $itemsQuery['item_set_id'] = $group['item_set_id'];
                 break;
             case 'property_values_eq':
                 $itemsQuery['property'] = [
@@ -80,6 +82,8 @@ class IndexController extends AbstractActionController
                         'text' => $group['value'],
                     ],
                 ];
+                $itemsQuery['item_set_id'] = $group['item_set_id'];
+                $itemsQuery['resource_class_id'] = $group['resource_class_id'];
                 break;
             case 'property_values_in':
                 $itemsQuery['property'] = [
@@ -90,6 +94,8 @@ class IndexController extends AbstractActionController
                         'text' => $group['value'],
                     ],
                 ];
+                $itemsQuery['item_set_id'] = $group['item_set_id'];
+                $itemsQuery['resource_class_id'] = $group['resource_class_id'];
                 break;
             case 'property_values_res':
                 $itemsQuery['property'] = [
@@ -100,15 +106,19 @@ class IndexController extends AbstractActionController
                         'text' => $group['item_id'],
                     ],
                 ];
+                $itemsQuery['item_set_id'] = $group['item_set_id'];
+                $itemsQuery['resource_class_id'] = $group['resource_class_id'];
                 break;
             case 'properties_ex':
                 $itemsQuery['property'] = [
                     [
                         'joiner' => 'and',
                         'type' => 'ex',
-                        'property' => $group,
+                        'property' => $group['property_id'],
                     ],
                 ];
+                $itemsQuery['item_set_id'] = $group['item_set_id'];
+                $itemsQuery['resource_class_id'] = $group['resource_class_id'];
                 break;
         }
 

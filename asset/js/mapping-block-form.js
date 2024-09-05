@@ -114,19 +114,18 @@ const prepareBlockMapGroups = function(block) {
     block.find('.hidden_by_default').closest('.field').hide();
     switch (groupsType) {
         case 'item_sets':
-            block.find('select.item_set_ids').closest('.field').show();
+            block.find('select.item_set_ids,select.resource_class_id').closest('.field').show();
             break;
         case 'resource_classes':
-            block.find('select.resource_class_ids').closest('.field').show();
+            block.find('select.resource_class_ids, select.item_set_id').closest('.field').show();
             break;
         case 'property_values_eq':
         case 'property_values_in':
         case 'property_values_res':
-            block.find('select.property_id').closest('.field').show();
-            block.find('textarea.values').closest('.field').show();
+            block.find('select.property_id, textarea.values, select.item_set_id, select.resource_class_id').closest('.field').show();
             break;
         case 'properties_ex':
-            block.find('select.property_ids').closest('.field').show();
+            block.find('select.property_ids, select.item_set_id, select.resource_class_id').closest('.field').show();
             break;
     }
     block.find('select.groups-type').one('change', function(e) {

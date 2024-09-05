@@ -42,6 +42,31 @@ class GroupsFieldset extends Fieldset
         ]);
         $this->add([
             'type' => 'Omeka\Form\Element\ItemSetSelect',
+            'name' => 'o:block[__blockIndex__][o:data][groups][filter_data][item_set_id]',
+            'options' => [
+                'label' => 'Filter by item set', // @translate
+                'info' => '', // @translate
+                'empty_option' => '',
+            ],
+            'attributes' => [
+                'class' => 'chosen-select item_set_id hidden_by_default',
+                'data-placeholder' => 'Select item set', // @translate
+            ]
+        ]);
+        $this->add([
+            'type' => 'Omeka\Form\Element\ResourceClassSelect',
+            'name' => 'o:block[__blockIndex__][o:data][groups][filter_data][resource_class_id]',
+            'options' => [
+                'label' => 'Filter by resource class', // @translate
+                'empty_option' => '',
+            ],
+            'attributes' => [
+                'class' => 'chosen-select resource_class_id hidden_by_default',
+                'data-placeholder' => 'Select resource class', // @translate
+            ]
+        ]);
+        $this->add([
+            'type' => 'Omeka\Form\Element\ItemSetSelect',
             'name' => 'o:block[__blockIndex__][o:data][groups][type_data][item_set_ids]',
             'options' => [
                 'label' => 'Item sets', // @translate
@@ -117,12 +142,16 @@ class GroupsFieldset extends Fieldset
             'groups' => [
                 'type' => null,
                 'feature_type' => 'polygon',
+                'filter_data' => [
+                    'item_set_id' => null,
+                    'resource_class_id' => null,
+                ],
                 'type_data' => [
                     'item_set_ids' => [],
                     'resource_class_ids' => [],
                     'property_ids' => [],
                     'property_id' => null,
-                    'values' => '',
+                    'values' => null,
                 ],
             ]
         ];
@@ -132,6 +161,12 @@ class GroupsFieldset extends Fieldset
         }
         if (isset($rawData['groups']['feature_type']) && in_array($rawData['groups']['feature_type'], ['polygon', 'point'])) {
             $data['groups']['feature_type'] = $rawData['groups']['feature_type'];
+        }
+        if (isset($rawData['groups']['filter_data']['item_set_id']) && is_numeric($rawData['groups']['filter_data']['item_set_id'])) {
+            $data['groups']['filter_data']['item_set_id'] = $rawData['groups']['filter_data']['item_set_id'];
+        }
+        if (isset($rawData['groups']['filter_data']['resource_class_id']) && is_numeric($rawData['groups']['filter_data']['resource_class_id'])) {
+            $data['groups']['filter_data']['resource_class_id'] = $rawData['groups']['filter_data']['resource_class_id'];
         }
         if (isset($rawData['groups']['type_data']['item_set_ids']) && is_array($rawData['groups']['type_data']['item_set_ids'])) {
             $data['groups']['type_data']['item_set_ids'] = $rawData['groups']['type_data']['item_set_ids'];
