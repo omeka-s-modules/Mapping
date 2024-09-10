@@ -6,14 +6,6 @@ add interactive maps to Site Pages.
 See the [Omeka S user manual](http://omeka.org/s/docs/user-manual/modules/mapping/)
 for user documentation.
 
-## Installation
-
-See general end user documentation for [Installing a module](http://omeka.org/s/docs/user-manual/install/)
-
-We've pushed dependencies to /asset/node_modules, so there's no need to install
-them prior to testing or development. Remember to update dependencies before packaging
-this repository for release. Run `$ npm install` in the the module's /asset directory.
-
 # Copyright
 
 Mapping is Copyright © 2016-present Corporation for Digital Scholarship, Vienna,
