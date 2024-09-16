@@ -5,7 +5,7 @@ $itemSet = $this->api()->read('item_sets', $group['item_set_id'])->getContent();
     data-feature-geography="<?php echo $this->escapeHtml($geography); ?>"
     data-group="<?php echo $this->escapeHtml(json_encode($group)); ?>">
 
-    <h4><?php echo sprintf($this->translate('Items in "%s"'), $itemSet->linkPretty()); ?></h4>
+    <h4><?php echo sprintf($this->translate('%s items in "%s"'), $group['count'], $itemSet->linkPretty()); ?></h4>
     <button type="button" class="mapping-show-group-item-features"><?php echo $this->translate('Show all'); ?></button>
 
 </div>

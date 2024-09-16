@@ -103,7 +103,7 @@ class IndexController extends AbstractActionController
                         'joiner' => 'and',
                         'type' => 'res',
                         'property' => $group['property_id'],
-                        'text' => $group['item_id'],
+                        'text' => $group['resource_id'],
                     ],
                 ];
                 $itemsQuery['item_set_id'] = $group['item_set_id'];

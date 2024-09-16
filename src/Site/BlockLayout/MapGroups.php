@@ -116,7 +116,7 @@ class MapGroups extends AbstractMap
             $queryTypes[] = \PDO::PARAM_INT;
         }
 
-        $sql = sprintf('SELECT item_item_set.item_set_id, %s
+        $sql = sprintf('SELECT COUNT(DISTINCT item.id) AS count, item_item_set.item_set_id, %s
             FROM mapping_feature
             INNER JOIN item ON mapping_feature.item_id = item.id
             INNER JOIN item_item_set ON item.id = item_item_set.item_id
@@ -133,8 +133,10 @@ class MapGroups extends AbstractMap
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
         foreach ($results as $result) {
+            var_dump($result['count']);
             $groups[] = [
                 'group' => [
+                    'count' => $result['count'],
                     'item_set_id' => $result['item_set_id'],
                     'resource_class_id' => $resourceClassId,
                 ],
@@ -156,7 +158,7 @@ class MapGroups extends AbstractMap
             $queryTypes[] = \PDO::PARAM_INT;
         }
 
-        $sql = sprintf('SELECT resource.resource_class_id, %s
+        $sql = sprintf('SELECT COUNT(DISTINCT item.id) AS count, resource.resource_class_id, %s
             FROM mapping_feature
             INNER JOIN item ON mapping_feature.item_id = item.id
             INNER JOIN resource ON item.id = resource.id
@@ -175,6 +177,7 @@ class MapGroups extends AbstractMap
         foreach ($results as $result) {
             $groups[] = [
                 'group' => [
+                    'count' => $result['count'],
                     'resource_class_id' => $result['resource_class_id'],
                     'item_set_id' => $itemSetId,
                 ],
@@ -202,7 +205,7 @@ class MapGroups extends AbstractMap
             $queryTypes[] = \PDO::PARAM_INT;
         }
 
-        $sql = sprintf('SELECT value.value, %s
+        $sql = sprintf('SELECT COUNT(DISTINCT item.id) AS count, value.value, %s
             FROM mapping_feature
             INNER JOIN item ON mapping_feature.item_id = item.id
             INNER JOIN value ON item.id = value.resource_id
@@ -226,6 +229,7 @@ class MapGroups extends AbstractMap
         foreach ($results as $result) {
             $groups[] = [
                 'group' => [
+                    'count' => $result['count'],
                     'property_id' => $propertyId,
                     'value' => $result['value'],
                 ],
@@ -255,7 +259,7 @@ class MapGroups extends AbstractMap
                 $thisQueryParams[] = $resourceClassId;
                 $thisQueryTypes[] = \PDO::PARAM_INT;
             }
-            $unions[] = sprintf('SELECT ? as contains_value, %s
+            $unions[] = sprintf('SELECT COUNT(DISTINCT item.id) AS count, ? as contains_value, %s
                 FROM mapping_feature
                 INNER JOIN item ON mapping_feature.item_id = item.id
                 INNER JOIN value ON item.id = value.resource_id
@@ -283,6 +287,7 @@ class MapGroups extends AbstractMap
         foreach ($results as $result) {
             $groups[] = [
                 'group' => [
+                    'count' => $result['count'],
                     'property_id' => $propertyId,
                     'value' => $result['contains_value'],
                     'item_set_id' => $itemSetId,
@@ -311,7 +316,7 @@ class MapGroups extends AbstractMap
             $queryParams[] = $resourceClassId;
             $queryTypes[] = \PDO::PARAM_INT;
         }
-        $sql = sprintf('SELECT value.value_resource_id, %s
+        $sql = sprintf('SELECT COUNT(DISTINCT item.id) AS count, value.value_resource_id, %s
             FROM mapping_feature
             INNER JOIN item ON mapping_feature.item_id = item.id
             INNER JOIN value ON item.id = value.resource_id
@@ -335,6 +340,7 @@ class MapGroups extends AbstractMap
         foreach ($results as $result) {
             $groups[] = [
                 'group' => [
+                    'count' => $result['count'],
                     'property_id' => $propertyId,
                     'resource_id' => $result['value_resource_id'],
                     'item_set_id' => $itemSetId,
@@ -362,7 +368,7 @@ class MapGroups extends AbstractMap
             $queryParams[] = $resourceClassId;
             $queryTypes[] = \PDO::PARAM_INT;
         }
-        $sql = sprintf('SELECT value.property_id, %s
+        $sql = sprintf('SELECT COUNT(DISTINCT item.id) AS count, value.property_id, %s
             FROM mapping_feature
             INNER JOIN item ON mapping_feature.item_id = item.id
             INNER JOIN value ON item.id = value.resource_id
@@ -385,6 +391,7 @@ class MapGroups extends AbstractMap
         foreach ($results as $result) {
             $groups[] = [
                 'group' => [
+                    'count' => $result['count'],
                     'property_id' => $result['property_id'],
                     'item_set_id' => $itemSetId,
                     'resource_class_id' => $resourceClassId,

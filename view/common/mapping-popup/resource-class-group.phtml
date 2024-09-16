@@ -5,7 +5,7 @@ $resourceClass = $this->api()->read('resource_classes', $group['resource_class_i
     data-feature-geography="<?php echo $this->escapeHtml($geography); ?>"
     data-group="<?php echo $this->escapeHtml(json_encode($group)); ?>">
 
-    <h4><?php echo sprintf($this->translate('Items with class "%s"'), $resourceClass->label()); ?></h4>
+    <h4><?php echo sprintf($this->translate('%s items with class "%s"'), $group['count'], $resourceClass->label()); ?></h4>
     <button type="button" class="mapping-show-group-item-features"><?php echo $this->translate('Show all'); ?></button>
 
 </div>

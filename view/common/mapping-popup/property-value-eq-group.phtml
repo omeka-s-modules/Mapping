@@ -5,7 +5,7 @@ $property = $this->api()->read('properties', $group['property_id'])->getContent(
     data-feature-geography="<?php echo $this->escapeHtml($geography); ?>"
     data-group="<?php echo $this->escapeHtml(json_encode($group)); ?>">
 
-    <h4><?php echo sprintf($this->translate('Items where "%s" is exactly "%s"'), $property->label(), $group['value']); ?></h4>
+    <h4><?php echo sprintf($this->translate('%s items where "%s" is exactly "%s"'), $group['count'], $property->label(), $group['value']); ?></h4>
     <button type="button" class="mapping-show-group-item-features"><?php echo $this->translate('Show all'); ?></button>
 
 </div>

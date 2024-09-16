@@ -6,7 +6,7 @@ $resource = $this->api()->read('resources', $group['resource_id'])->getContent()
     data-feature-geography="<?php echo $this->escapeHtml($geography); ?>"
     data-group="<?php echo $this->escapeHtml(json_encode($group)); ?>">
 
-    <h4><?php echo sprintf($this->translate('Items where %s is "%s"'), $property->label(), $resource->linkPretty()); ?></h4>
+    <h4><?php echo sprintf($this->translate('%s items where "%s" is "%s"'), $group['count'], $property->label(), $resource->linkPretty()); ?></h4>
     <button type="button" class="mapping-show-group-item-features"><?php echo $this->translate('Show all'); ?></button>
 
 </div>
