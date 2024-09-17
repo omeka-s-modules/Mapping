@@ -107,7 +107,7 @@ class ItemMapping extends AbstractResourceMapper
                         'o:id' => $mappings->get('media', $remoteFeature['o:media']['o:id']),
                     ];
                 }
-                $localResource['o-module-mapping:marker'][] = $localFeature;
+                $localResource['o-module-mapping:feature'][] = $localFeature;
             }
         }
         // Map from legacy (pre-2.0) latitude and longitude keys.
@@ -125,7 +125,7 @@ class ItemMapping extends AbstractResourceMapper
                         'o:id' => $mappings->get('media', $remoteMarker['o:media']['o:id']),
                     ];
                 }
-                $localResource['o-module-mapping:marker'][] = $localMarker;
+                $localResource['o-module-mapping:feature'][] = $localMarker;
             }
         }
 
