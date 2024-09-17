@@ -133,7 +133,6 @@ class MapGroups extends AbstractMap
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
         foreach ($results as $result) {
-            var_dump($result['count']);
             $groups[] = [
                 'group' => [
                     'count' => $result['count'],
