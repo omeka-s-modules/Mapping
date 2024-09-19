@@ -24,6 +24,8 @@ abstract class AbstractMap extends AbstractBlockLayout
 
     protected $connection;
 
+    protected $apiManager;
+
     public function prepareForm(PhpRenderer $view)
     {
         $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
@@ -225,5 +227,10 @@ abstract class AbstractMap extends AbstractBlockLayout
     public function setConnection(Connection $connection)
     {
         $this->connection = $connection;
+    }
+
+    public function setApiManager($apiManager)
+    {
+        $this->apiManager = $apiManager;
     }
 }

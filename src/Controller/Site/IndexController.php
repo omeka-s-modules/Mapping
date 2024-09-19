@@ -12,7 +12,7 @@ class IndexController extends AbstractActionController
         // reaching the server memory limit and to improve client performance.
         $query = $this->getRequest()->getQuery();
         $query->set('page', $query->get('page', 1));
-        $perPage = $this->siteSettings()->get('mapping_browse_per_page', 5000);
+        $perPage = $this->siteSettings()->get('mapping_browse_per_page', 100000);
         $query->set('per_page', $query->get('per_page', $perPage));
 
         $itemsQuery = $this->params()->fromQuery();
@@ -37,16 +37,13 @@ class IndexController extends AbstractActionController
         $this->paginator($response->getTotalResults());
 
         // Get all features for all items that match the query, if any.
-        $features = [];
-        if ($itemIds) {
-            $featuresQuery = [
-                'item_id' => $itemIds,
-                'address' => $this->params()->fromQuery('mapping_address'),
-                'radius' => $this->params()->fromQuery('mapping_radius'),
-                'radius_unit' => $this->params()->fromQuery('mapping_radius_unit'),
-            ];
-            $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
-        }
+        $featuresQuery = [
+            'item_id' => $itemIds,
+            'address' => $this->params()->fromQuery('mapping_address'),
+            'radius' => $this->params()->fromQuery('mapping_radius'),
+            'radius_unit' => $this->params()->fromQuery('mapping_radius_unit'),
+        ];
+        $features = $this->api()->search('mapping_features', $featuresQuery)->getContent();
 
         $view = new ViewModel;
         $view->setVariable('query', $this->params()->fromQuery());
@@ -131,6 +128,17 @@ class IndexController extends AbstractActionController
 
         $view = new ViewModel;
         $view->setVariable('features', $features);
+        return $view;
+    }
+
+    public function getFeaturePopupContentAction()
+    {
+        $featureId = $this->params()->fromQuery('feature_id');
+        $feature = $this->api()->read('mapping_features', $featureId)->getContent();
+
+        $view = new ViewModel;
+        $view->setTerminal(true);
+        $view->setVariable('feature', $feature);
         return $view;
     }
 }

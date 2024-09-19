@@ -86,6 +86,7 @@ function MappingBlock(mapDiv, timelineDiv) {
     }
 
     // Gather features and add them as map layers.
+    const featurePopupContentUrl = mapDiv.data('featurePopupContentUrl');
     mapDiv.closest('.mapping-block').find('.mapping-feature-popup-content').each(function() {
         const popup = $(this).clone().show();
         const resourceId = popup.data('resource-id') ?? popup.data('item-id');
@@ -93,6 +94,13 @@ function MappingBlock(mapDiv, timelineDiv) {
         L.geoJSON(geography, {
             onEachFeature: function(feature, layer) {
                 layer.bindPopup(popup[0]);
+                if (featurePopupContentUrl) {
+                    layer.on('popupopen', function() {
+                        $.get(featurePopupContentUrl, {feature_id: popup.data('featureId')}, function(data) {
+                            popup.html(data);
+                        });
+                    });
+                }
                 switch (feature.type) {
                     case 'Point':
                         featuresPoint.addLayer(layer);

@@ -1,22 +1,4 @@
-<?php
-$item = $feature->item();
-$media = $feature->media();
-$label = $feature->label();
-?>
 <div class="mapping-feature-popup-content"
-    data-feature-geography="<?php echo $this->escapeHtml(json_encode($feature->geography())); ?>"
-    data-resource-id="<?php echo $this->escapeHtml($item->id()); ?>"
-    data-feature-id="<?php echo $this->escapeHtml($feature->id()); ?>">
-
-    <?php if ($label): ?>
-    <h3><?php echo $this->escapeHtml($label); ?></h3>
-    <?php endif; ?>
-
-    <?php if ($media): ?>
-    <?php echo $this->thumbnail($media, 'medium'); ?>
-    <div><?php echo sprintf($this->translate('Media: %s'), $media->link($media->displayTitle(null, $this->lang()), null, ['target' => '_blank'])); ?></div>
-    <?php endif; ?>
-
-    <div><?php echo sprintf($this->translate('Item: %s'), $item->link($item->displayTitle(null, $this->lang()), null, ['target' => '_blank'])); ?></div>
-
+    data-feature-id="<?php echo $this->escapeHtml($feature->id()); ?>"
+    data-feature-geography="<?php echo $this->escapeHtml(json_encode($feature->geography())); ?>">
 </div>

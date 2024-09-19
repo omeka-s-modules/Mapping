@@ -21,6 +21,7 @@ class MapFactory implements FactoryInterface
                 $blockLayout = new MapQuery;
                 $blockLayout->setModuleManager($services->get('Omeka\ModuleManager'));
                 $blockLayout->setFormElementManager($services->get('FormElementManager'));
+                $blockLayout->setApiManager($services->get('Omeka\ApiManager'));
                 break;
             case 'mappingMap':
                 $blockLayout = new Map;

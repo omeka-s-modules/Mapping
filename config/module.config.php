@@ -80,6 +80,7 @@ return [
     ],
     'controllers' => [
         'invokables' => [
+            'Mapping\Controller\Admin\Index' => Controller\Admin\IndexController::class,
             'Mapping\Controller\Site\Index' => Controller\Site\IndexController::class,
         ],
     ],
@@ -90,19 +91,27 @@ return [
     ],
     'router' => [
         'routes' => [
-            'site' => [
+            'admin' => [
                 'child_routes' => [
-                    'mapping-map-browse' => [
-                        'type' => 'Literal',
+                    'mapping' => [
+                        'type' => 'Segment',
                         'options' => [
-                            'route' => '/map-browse',
+                            'route' => '/mapping/:controller[/:action]',
                             'defaults' => [
-                                '__NAMESPACE__' => 'Mapping\Controller\Site',
+                                '__NAMESPACE__' => 'Mapping\Controller\Admin',
                                 'controller' => 'index',
-                                'action' => 'browse',
+                                'action' => 'index',
+                            ],
+                            'constraints' => [
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ],
                         ],
                     ],
+                ],
+            ],
+            'site' => [
+                'child_routes' => [
                     'mapping' => [
                         'type' => 'Segment',
                         'options' => [

@@ -39,12 +39,18 @@ const baseMaps = {
     'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
 };
 
+const featurePopupContentUrl = mappingMap.data('featurePopupContentUrl');
 $('.mapping-feature-popup-content').each(function() {
     const popup = $(this).clone().show();
     const geography = popup.data('feature-geography');
     L.geoJSON(geography, {
         onEachFeature: function(feature, layer) {
             layer.bindPopup(popup[0]);
+            layer.on('popupopen', function() {
+                $.get(featurePopupContentUrl, {feature_id: popup.data('featureId')}, function(data) {
+                    popup.html(data);
+                });
+            });
             switch (feature.type) {
                 case 'Point':
                     featuresPoint.addLayer(layer);
