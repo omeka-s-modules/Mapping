@@ -88,7 +88,7 @@ class Map extends AbstractMap
             }
             if ($isTimeline && $timelineIsAvailable) {
                 // Set the timeline event for this item.
-                $event = $this->getTimelineEvent($item, $data['timeline']['data_type_properties'], $view);
+                $event = $this->getTimelineEvent($item->id(), $data['timeline']['data_type_properties'], $view);
                 if ($event) {
                     $events[] = $event;
                 }

@@ -123,12 +123,13 @@ abstract class AbstractMap extends AbstractBlockLayout
      * Get a timeline event.
      *
      * @see https://timeline.knightlab.com/docs/json-format.html#json-slide
-     * @param ItemRepresentation $item
+     * @param int $itemId
      * @param array $dataTypeProperties
      * @return array
      */
-    public function getTimelineEvent($item, array $dataTypeProperties, $view)
+    public function getTimelineEvent($itemId, array $dataTypeProperties, $view)
     {
+        $item = $view->api()->read('items', $itemId)->getContent();
         $property = null;
         $dataType = null;
         $value = null;
