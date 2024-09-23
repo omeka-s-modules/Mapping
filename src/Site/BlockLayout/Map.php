@@ -77,30 +77,29 @@ class Map extends AbstractMap
         $isTimeline = (bool) $data['timeline']['data_type_properties'];
         $timelineIsAvailable = $this->timelineIsAvailable();
 
-        // Get features (and events, if applicable) from the attached items.
-        $events = [];
-        $features = [];
+        $itemIds = [];
         foreach ($block->attachments() as $attachment) {
             $item = $attachment->item();
-            if (!$item) {
-                // This attachment has no item. Do not add features.
-                continue;
-            }
-            if ($isTimeline && $timelineIsAvailable) {
+            if (!$item) continue;
+            $itemIds[] = $item->id();
+        }
+
+        // Get all events for the items.
+        $events = [];
+        if ($isTimeline && $timelineIsAvailable) {
+            foreach ($itemIds as $itemId) {
                 // Set the timeline event for this item.
-                $event = $this->getTimelineEvent($item->id(), $data['timeline']['data_type_properties'], $view);
+                $event = $this->getTimelineEvent($itemId, $data['timeline']['data_type_properties'], $view);
                 if ($event) {
                     $events[] = $event;
                 }
             }
-            // Set the map features for this item.
-            $itemFeatures = $view->api()->search('mapping_features', ['item_id' => $item->id()])->getContent();
-            $features = array_merge($features, $itemFeatures);
         }
 
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
-            'features' => $features,
+            'itemsQuery' => ['id' => implode(',', $itemIds)],
+            'featuresQuery' => [],
             'isTimeline' => $isTimeline,
             'timelineData' => $this->getTimelineData($events, $data, $view),
             'timelineOptions' => $this->getTimelineOptions($data),

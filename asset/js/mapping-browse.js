@@ -39,33 +39,56 @@ const baseMaps = {
     'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
 };
 
+// Load features asynchronously.
+const featuresUrl = mappingMap.data('featuresUrl');
 const featurePopupContentUrl = mappingMap.data('featurePopupContentUrl');
-$('.mapping-feature-popup-content').each(function() {
-    const popup = $(this).clone().show();
-    const geography = popup.data('feature-geography');
-    L.geoJSON(geography, {
-        onEachFeature: function(feature, layer) {
-            layer.bindPopup(popup[0]);
-            layer.on('popupopen', function() {
-                $.get(featurePopupContentUrl, {feature_id: popup.data('featureId')}, function(data) {
-                    popup.html(data);
+const getFeaturesQuery = {
+    features_page: 0,
+    items_query: JSON.stringify(mappingMap.data('itemsQuery')),
+    features_query: JSON.stringify(mappingMap.data('featuresQuery')),
+};
+let featuresPage = 0;
+const loadFeaturePopups = function() {
+    getFeaturesQuery.features_page = ++featuresPage;
+    $.get(featuresUrl, getFeaturesQuery)
+        .done(function(featuresData) {
+            if (!featuresData.length) {
+                return;
+            }
+            featuresData.forEach((featureData) => {
+                const featureId = featureData[0];
+                const resourceId = featureData[1];
+                const featureGeography = featureData[2];
+                L.geoJSON(featureGeography, {
+                    onEachFeature: function(feature, layer) {
+                        const popup = L.popup();
+                        layer.bindPopup(popup);
+                        if (featurePopupContentUrl) {
+                            layer.on('popupopen', function() {
+                                $.get(featurePopupContentUrl, {feature_id: featureId}, function(popupContent) {
+                                    popup.setContent(popupContent);
+                                });
+                            });
+                        }
+                        switch (feature.type) {
+                            case 'Point':
+                                featuresPoint.addLayer(layer);
+                                break;
+                            case 'LineString':
+                            case 'Polygon':
+                                layer.on('popupopen', function() {
+                                    map.fitBounds(layer.getBounds());
+                                });
+                                featuresPoly.addLayer(layer);
+                                break;
+                        }
+                    }
                 });
             });
-            switch (feature.type) {
-                case 'Point':
-                    featuresPoint.addLayer(layer);
-                    break;
-                case 'LineString':
-                case 'Polygon':
-                    layer.on('popupopen', function() {
-                        map.fitBounds(layer.getBounds(), {padding: [50, 50]});
-                    });
-                    featuresPoly.addLayer(layer);
-                    break;
-            }
-        }
-    });
-});
+            loadFeaturePopups();
+        });
+};
+loadFeaturePopups();
 
 features.addLayer(featuresPoint)
     .addLayer(featuresPoly);

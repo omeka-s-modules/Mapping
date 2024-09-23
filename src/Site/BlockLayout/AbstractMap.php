@@ -129,7 +129,15 @@ abstract class AbstractMap extends AbstractBlockLayout
      */
     public function getTimelineEvent($itemId, array $dataTypeProperties, $view)
     {
-        $item = $view->api()->read('items', $itemId)->getContent();
+        $query = [
+            'id' => $itemId,
+            'has_features' => true,
+        ];
+        $item = $view->api()->searchOne('items', $query)->getContent();
+        if (!$item) {
+            // This item has no features.
+            return;
+        }
         $property = null;
         $dataType = null;
         $value = null;

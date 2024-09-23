@@ -30,13 +30,10 @@ if ($isTimeline) {
         data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
         data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
         data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
-        data-feature-popup-content-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-feature-popup-content'], true)); ?>">
-    </div>
-
-    <div class="mapping-feature-popups" style="display: none;">
-        <?php foreach ($features as $feature): ?>
-        <?php echo $this->partial('common/mapping-feature-popup', ['feature' => $feature]); ?>
-        <?php endforeach; ?>
+        data-features-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-features'], true)); ?>"
+        data-feature-popup-content-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-feature-popup-content'], true)); ?>"
+        data-items-query="<?php echo $this->escapeHtml(json_encode($itemsQuery)); ?>"
+        data-features-query="<?php echo $this->escapeHtml(json_encode($featuresQuery)); ?>">
     </div>
 
 </div>

@@ -60,18 +60,16 @@ class MapQuery extends AbstractMap
         $isTimeline = (bool) $data['timeline']['data_type_properties'];
         $timelineIsAvailable = $this->timelineIsAvailable();
 
-        parse_str($data['query'], $query);
-        $query['site_id'] = $block->page()->site()->id();
-        $query['has_features'] = true;
-        $query['limit'] = 100000;
-        $itemIds = $this->apiManager->search('items', $query, ['returnScalar' => 'id'])->getContent();
-
-        // Get all features for all items that match the query, if any.
-        $features = $view->api()->search('mapping_features', ['item_id' => $itemIds])->getContent();
+        parse_str($data['query'], $itemsQuery);
+        $featuresQuery = [];
 
         // Get all events for the items.
         $events = [];
         if ($isTimeline && $timelineIsAvailable) {
+            $itemsQuery['site_id'] = $block->page()->site()->id();
+            $itemsQuery['has_features'] = true;
+            $itemsQuery['limit'] = 100000;
+            $itemIds = $this->apiManager->search('items', $query, ['returnScalar' => 'id'])->getContent();
             foreach ($itemIds as $itemId) {
                 // Set the timeline event for this item.
                 $event = $this->getTimelineEvent($itemId, $data['timeline']['data_type_properties'], $view);
@@ -83,7 +81,8 @@ class MapQuery extends AbstractMap
 
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
-            'features' => $features,
+            'itemsQuery' => $itemsQuery,
+            'featuresQuery' => $featuresQuery,
             'isTimeline' => $isTimeline,
             'timelineData' => $this->getTimelineData($events, $data, $view),
             'timelineOptions' => $this->getTimelineOptions($data),
