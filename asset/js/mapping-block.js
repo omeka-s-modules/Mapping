@@ -85,9 +85,44 @@ function MappingBlock(mapDiv, timelineDiv) {
             break;
     }
 
-    // Load features asynchronously.
     const featuresUrl = mapDiv.data('featuresUrl');
     const featurePopupContentUrl = mapDiv.data('featurePopupContentUrl');
+
+    // Load features synchronously.
+    mapDiv.closest('.mapping-block').find('.mapping-feature-popup-content').each(function() {
+        const popupContent = $(this);
+        const featureId = popupContent.data('featureId');
+        const featureGeography = popupContent.data('featureGeography');
+        L.geoJSON(featureGeography, {
+            onEachFeature: function(feature, layer) {
+                const popup = L.popup();
+                layer.bindPopup(popup);
+                if (featurePopupContentUrl) {
+                    layer.on('popupopen', function() {
+                        $.get(featurePopupContentUrl, {feature_id: featureId}, function(popupContent) {
+                            popup.setContent(popupContent);
+                        });
+                    });
+                } else {
+                    popup.setContent(popupContent[0]);
+                }
+                switch (feature.type) {
+                    case 'Point':
+                        featuresPoint.addLayer(layer);
+                        break;
+                    case 'LineString':
+                    case 'Polygon':
+                        layer.on('popupopen', function() {
+                            map.fitBounds(layer.getBounds());
+                        });
+                        featuresPoly.addLayer(layer);
+                        break;
+                }
+            }
+        });
+    });
+
+    // Load features asynchronously.
     const getFeaturesQuery = {
         features_page: 0,
         items_query: JSON.stringify(mapDiv.data('itemsQuery')),
@@ -138,7 +173,10 @@ function MappingBlock(mapDiv, timelineDiv) {
                 loadFeaturePopups();
             });
     };
-    loadFeaturePopups();
+    if (featuresUrl) {
+        loadFeaturePopups();
+    }
+
 
     // Set the default view.
     const setDefaultView = function() {
@@ -255,23 +293,12 @@ $(document).ready( function() {
 
 $(document).on('click', '.mapping-show-group-item-features', function(e) {
     const thisButton = $(this);
-    const mappingFeature = thisButton.closest('.mapping-feature-popup-content');
-
     const mappingBlock = thisButton.closest('.mapping-block');
     const mappingBlockItems = mappingBlock.next('.mapping-block');
-    const mappingMap = mappingBlock.children('.mapping-map');
-    const mappingMapItems = mappingBlockItems.children('.mapping-map');
-
-    const url = mappingMap.data('groupUrl');
-    const postData = {
-        group_type: mappingMap.data('groupType'),
-        group: mappingFeature.data('group')
-    };
-    $.post(url, postData, function(data) {
-        mappingBlock.hide();
-        mappingBlockItems.show().children('.mapping-feature-popups').html(data);
-        MappingBlock(mappingMapItems);
-    });
+    const mappingMap = mappingBlockItems.find('.mapping-map');
+    mappingBlock.hide();
+    mappingBlockItems.show();
+    MappingBlock(mappingMap);
 });
 
 $(document).on('click', '.mapping-show-group-features', function() {

@@ -140,6 +140,10 @@ class MapGroups extends AbstractMap
                     'resource_class_id' => $resourceClassId,
                 ],
                 'geography' => $result['geography'],
+                'items_query' => [
+                    'item_set_id' => $result['item_set_id'],
+                    'resource_class_id' => $resourceClassId,
+                ],
             ];
         }
         return $groups;
@@ -181,6 +185,10 @@ class MapGroups extends AbstractMap
                     'item_set_id' => $itemSetId,
                 ],
                 'geography' => $result['geography'],
+                'items_query' => [
+                    'item_set_id' => $itemSetId,
+                    'resource_class_id' => $result['resource_class_id'],
+                ],
             ];
         }
         return $groups;
@@ -233,6 +241,18 @@ class MapGroups extends AbstractMap
                     'value' => $result['value'],
                 ],
                 'geography' => $result['geography'],
+                'items_query' => [
+                    'item_set_id' => $itemSetId,
+                    'resource_class_id' => $resourceClassId,
+                    'property' => [
+                        [
+                            'joiner' => 'and',
+                            'type' => 'eq',
+                            'property' => $propertyId,
+                            'text' => $result['value'],
+                        ],
+                    ],
+                ],
             ];
         }
         return $groups;
@@ -293,6 +313,18 @@ class MapGroups extends AbstractMap
                     'resource_class_id' => $resourceClassId,
                 ],
                 'geography' => $result['geography'],
+                'items_query' => [
+                    'item_set_id' => $itemSetId,
+                    'resource_class_id' => $resourceClassId,
+                    'property' => [
+                        [
+                            'joiner' => 'and',
+                            'type' => 'in',
+                            'property' => $propertyId,
+                            'text' => $result['contains_value'],
+                        ],
+                    ],
+                ],
             ];
         }
         return $groups;
@@ -346,6 +378,18 @@ class MapGroups extends AbstractMap
                     'resource_class_id' => $resourceClassId,
                 ],
                 'geography' => $result['geography'],
+                'items_query' => [
+                    'item_set_id' => $itemSetId,
+                    'resource_class_id' => $resourceClassId,
+                    'property' => [
+                        [
+                            'joiner' => 'and',
+                            'type' => 'res',
+                            'property' => $propertyId,
+                            'text' => $result['value_resource_id'],
+                        ],
+                    ],
+                ],
             ];
         }
         return $groups;
@@ -396,6 +440,17 @@ class MapGroups extends AbstractMap
                     'resource_class_id' => $resourceClassId,
                 ],
                 'geography' => $result['geography'],
+                'items_query' => [
+                    'item_set_id' => $itemSetId,
+                    'resource_class_id' => $resourceClassId,
+                    'property' => [
+                        [
+                            'joiner' => 'and',
+                            'type' => 'ex',
+                            'property' => $result['property_id'],
+                        ],
+                    ],
+                ],
             ];
         }
         return $groups;
