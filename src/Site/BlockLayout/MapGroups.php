@@ -75,31 +75,31 @@ class MapGroups extends AbstractMap
         // while the "ideal" approach would need at least 20 queries.
         switch ($data['groups']['type']) {
             case 'item_sets':
-                $groups = $this->getGroupsItemSets($data, $siteId, $view);
+                $groupsData = $this->getGroupsItemSets($data, $siteId, $view);
                 break;
             case 'resource_classes':
-                $groups = $this->getGroupsResourceClasses($data, $siteId, $view);
+                $groupsData = $this->getGroupsResourceClasses($data, $siteId, $view);
                 break;
             case 'property_values_eq':
-                $groups = $this->getGroupsPropertyValuesEq($data, $siteId, $view);
+                $groupsData = $this->getGroupsPropertyValuesEq($data, $siteId, $view);
                 break;
             case 'property_values_in':
-                $groups = $this->getGroupsPropertyValuesIn($data, $siteId, $view);
+                $groupsData = $this->getGroupsPropertyValuesIn($data, $siteId, $view);
                 break;
             case 'property_values_res':
-                $groups = $this->getGroupsPropertyValuesRes($data, $siteId, $view);
+                $groupsData = $this->getGroupsPropertyValuesRes($data, $siteId, $view);
                 break;
             case 'properties_ex':
-                $groups = $this->getGroupsPropertyEx($data, $siteId, $view);
+                $groupsData = $this->getGroupsPropertyEx($data, $siteId, $view);
                 break;
             default:
-                $groups = [];
+                $groupsData = [];
         }
 
         return $view->partial('common/block-layout/mapping-block-groups', [
             'data' => $data,
             'dataItems' => $dataItems,
-            'groups' => $groups,
+            'groupsData' => $groupsData,
             'popupPartial' => $this->popupPartials[$data['groups']['type']] ?? null,
         ]);
     }
@@ -133,7 +133,7 @@ class MapGroups extends AbstractMap
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
         foreach ($results as $result) {
-            $groups[] = [
+            $groupsData[] = [
                 'group' => [
                     'count' => $result['count'],
                     'item_set_id' => $result['item_set_id'],
@@ -146,7 +146,7 @@ class MapGroups extends AbstractMap
                 ],
             ];
         }
-        return $groups;
+        return $groupsData;
     }
 
     protected function getGroupsResourceClasses($data, $siteId, PhpRenderer $view)
@@ -178,7 +178,7 @@ class MapGroups extends AbstractMap
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
         foreach ($results as $result) {
-            $groups[] = [
+            $groupsData[] = [
                 'group' => [
                     'count' => $result['count'],
                     'resource_class_id' => $result['resource_class_id'],
@@ -191,7 +191,7 @@ class MapGroups extends AbstractMap
                 ],
             ];
         }
-        return $groups;
+        return $groupsData;
     }
 
     protected function getGroupsPropertyValuesEq($data, $siteId, PhpRenderer $view)
@@ -234,7 +234,7 @@ class MapGroups extends AbstractMap
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
         foreach ($results as $result) {
-            $groups[] = [
+            $groupsData[] = [
                 'group' => [
                     'count' => $result['count'],
                     'property_id' => $propertyId,
@@ -255,7 +255,7 @@ class MapGroups extends AbstractMap
                 ],
             ];
         }
-        return $groups;
+        return $groupsData;
     }
 
     protected function getGroupsPropertyValuesIn($data, $siteId, PhpRenderer $view)
@@ -304,7 +304,7 @@ class MapGroups extends AbstractMap
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
         foreach ($results as $result) {
-            $groups[] = [
+            $groupsData[] = [
                 'group' => [
                     'count' => $result['count'],
                     'property_id' => $propertyId,
@@ -327,7 +327,7 @@ class MapGroups extends AbstractMap
                 ],
             ];
         }
-        return $groups;
+        return $groupsData;
     }
 
     protected function getGroupsPropertyValuesRes($data, $siteId, PhpRenderer $view)
@@ -369,7 +369,7 @@ class MapGroups extends AbstractMap
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
         foreach ($results as $result) {
-            $groups[] = [
+            $groupsData[] = [
                 'group' => [
                     'count' => $result['count'],
                     'property_id' => $propertyId,
@@ -392,7 +392,7 @@ class MapGroups extends AbstractMap
                 ],
             ];
         }
-        return $groups;
+        return $groupsData;
     }
 
     protected function getGroupsPropertyEx($data, $siteId, PhpRenderer $view)
@@ -432,7 +432,7 @@ class MapGroups extends AbstractMap
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
         foreach ($results as $result) {
-            $groups[] = [
+            $groupsData[] = [
                 'group' => [
                     'count' => $result['count'],
                     'property_id' => $result['property_id'],
@@ -453,7 +453,7 @@ class MapGroups extends AbstractMap
                 ],
             ];
         }
-        return $groups;
+        return $groupsData;
     }
 
     protected function getGeographySelect($data)

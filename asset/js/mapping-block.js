@@ -293,12 +293,18 @@ $(document).ready( function() {
 
 $(document).on('click', '.mapping-show-group-item-features', function(e) {
     const thisButton = $(this);
-    const mappingBlock = thisButton.closest('.mapping-block');
-    const mappingBlockItems = mappingBlock.next('.mapping-block');
-    const mappingMap = mappingBlockItems.find('.mapping-map');
-    mappingBlock.hide();
-    mappingBlockItems.show();
-    MappingBlock(mappingMap);
+    const groupPopup = thisButton.closest('.mapping-feature-popup-content');
+    const groupBlock = thisButton.closest('.mapping-block');
+    const itemsBlock = groupBlock.next('.mapping-block');
+    const itemsBlockMap = itemsBlock.find('.mapping-map');
+    groupBlock.hide();
+    itemsBlock.show();
+
+    // Prepare and load the items map.
+    itemsBlockMap.data('itemsQuery', groupPopup.data('itemsQuery'));
+    MappingBlock(itemsBlockMap);
+    const bounds = L.geoJSON(groupPopup.data('featureGeography')).getBounds();
+    itemsBlockMap[0].mapping_map.fitBounds(bounds);
 });
 
 $(document).on('click', '.mapping-show-group-features', function() {
