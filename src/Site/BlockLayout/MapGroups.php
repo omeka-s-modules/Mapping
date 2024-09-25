@@ -202,7 +202,7 @@ class MapGroups extends AbstractMap
         $resourceClassId = $data['groups']['filter_data']['resource_class_id'];
 
         $queryParams = [$values, $propertyId, $siteId];
-        $queryTypes = [Connection::PARAM_INT_ARRAY, \PDO::PARAM_INT, \PDO::PARAM_INT];
+        $queryTypes = [Connection::PARAM_STR_ARRAY, \PDO::PARAM_INT, \PDO::PARAM_INT];
         if ($itemSetId) {
             $queryParams[] = $itemSetId;
             $queryTypes[] = \PDO::PARAM_INT;
