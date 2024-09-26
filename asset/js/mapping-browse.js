@@ -19,6 +19,14 @@ const featuresPoly = L.deflate({
     greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
 });
 
+// Set the initial view to geographical center of world.
+map.setView([20, 0], 2);
+// Detect a map interaction by the user.
+let mapInteraction = false;
+map.on('zoomend moveend', function() {
+    mapInteraction = true;
+});
+
 // Set base maps and grouped overlays.
 const urlParams = new URLSearchParams(window.location.search);
 let defaultProvider;
@@ -53,6 +61,16 @@ const loadFeaturePopups = function() {
     $.get(featuresUrl, getFeaturesQuery)
         .done(function(featuresData) {
             if (!featuresData.length) {
+                // Stop fetching features after all have been loaded.
+                if (!mapInteraction) {
+                    // Fit to bounds only if there was no map interaction.
+                    const bounds = features.getBounds();
+                    if (bounds.isValid()) {
+                        map.fitBounds(bounds, {padding: [50, 50]});
+                    } else {
+                        map.setView([0, 0], 1);
+                    }
+                }
                 return;
             }
             featuresData.forEach((featureData) => {
@@ -96,12 +114,5 @@ map.addLayer(baseMaps['Default'])
     .addLayer(features)
     .addControl(new L.Control.Layers(baseMaps))
     .addControl(new L.Control.FitBounds(features));
-
-const bounds = features.getBounds();
-if (bounds.isValid()) {
-    map.fitBounds(bounds, {padding: [50, 50]});
-} else {
-    map.setView([0, 0], 1);
-}
 
 });
