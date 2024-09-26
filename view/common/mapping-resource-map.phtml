@@ -1,20 +1,28 @@
 <?php
 $mapping = null;
-$features = [];
+$disableClustering = null;
+$basemapProvider = null;
+
 switch (get_class($resource)) {
     case 'Omeka\Api\Representation\ItemRepresentation':
+        $itemsQuery = ['id' => $resource->id()];
         $mapping = $this->api()->searchOne('mappings', ['item_id' => $resource->id()])->getContent();
-        $features = $this->api()->search('mapping_features', ['item_id' => $resource->id()])->getContent();
         break;
     case 'Omeka\Api\Representation\ItemSetRepresentation':
-        $features = $this->api()->search('mapping_features', ['item_set_id' => $resource->id()])->getContent();
+        $itemsQuery = ['item_set_id' => $resource->id()];
         break;
     default:
         return;
 }
 
-if (!($mapping || $features)) {
-    return;
+if ($this->status()->isSiteRequest()) {
+    $featuresUrl = $this->url('site/mapping', ['controller' => 'index', 'action' => 'get-features'], true);
+    $featurePopupContentUrl = $this->url('site/mapping', ['controller' => 'index', 'action' => 'get-feature-popup-content'], true);
+    $disableClustering = $this->siteSetting('mapping_disable_clustering');
+    $basemapProvider = $this->siteSetting('mapping_basemap_provider');
+} else {
+    $featuresUrl = $this->url('admin/mapping', ['controller' => 'index', 'action' => 'get-features']);
+    $featurePopupContentUrl = $this->url('admin/mapping', ['controller' => 'index', 'action' => 'get-feature-popup-content']);
 }
 
 $this->headLink()->appendStylesheet($this->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
@@ -31,9 +39,6 @@ $this->headScript()->appendFile($this->assetUrl('node_modules/Leaflet.Deflate/di
 
 $this->headScript()->appendFile($this->assetUrl('js/mapping-show.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('js/control.fit-bounds.js', 'Mapping'));
-
-$disableClustering = $this->status()->isSiteRequest() ? $this->siteSetting('mapping_disable_clustering') : null;
-$basemapProvider = $this->status()->isSiteRequest() ? $this->siteSetting('mapping_basemap_provider') : null;
 ?>
 
 <div id="mapping-section" class="section">
@@ -41,12 +46,9 @@ $basemapProvider = $this->status()->isSiteRequest() ? $this->siteSetting('mappin
         data-mapping="<?php echo $this->escapeHtml(json_encode($mapping)); ?>"
         data-disable-clustering="<?php echo $disableClustering ? '1' : '0'; ?>"
         data-basemap-provider="<?php echo $basemapProvider ?? ''; ?>"
-        data-feature-popup-content-url="<?php echo $this->escapeHtml($this->url('admin/mapping', ['controller' => 'index', 'action' => 'get-feature-popup-content'])); ?>">
+        data-features-url="<?php echo $this->escapeHtml($featuresUrl); ?>"
+        data-feature-popup-content-url="<?php echo $this->escapeHtml($featurePopupContentUrl); ?>"
+        data-items-query="<?php echo $this->escapeHtml(json_encode($itemsQuery)); ?>"
+        data-features-query="[]">
     </div>
-</div>
-
-<div class="mapping-feature-popups" style="display: none;">
-    <?php foreach ($features as $feature): ?>
-    <?php echo $this->partial('common/mapping-feature-popup', ['feature' => $feature]); ?>
-    <?php endforeach; ?>
 </div>
