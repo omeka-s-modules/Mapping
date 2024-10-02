@@ -1,5 +1,71 @@
 const Mapping = {
     /**
+     *
+     * @param {DOM object} mapDiv The map div DOM object
+     * @param {object} mapOptions Leaflet map options
+     * @param {object} options Options for initializing the map
+     *      - disableClustering: (bool) Disable feature clustering?
+     *      - basemapProvider: (string) The default basemap provider
+     *      - excludeLayersControl: (bool) Exclude the layers control?
+     * @returns array
+     */
+    initializeMap: function(mapDiv, mapOptions, options) {
+        mapOptions.fullscreenControl = true;
+        mapOptions.worldCopyJump = true;
+
+        // Initialize the map and features.
+        const map = new L.map(mapDiv, mapOptions);
+        const features = L.featureGroup();
+        const featuresPoint = options.disableClustering
+            ? L.featureGroup()
+            : L.markerClusterGroup({
+                polygonOptions: {
+                    color: 'green'
+                }
+            });
+        const featuresPoly = L.deflate({
+            // Enable clustering of poly features
+            markerLayer: featuresPoint,
+            // Must set to false or small poly features will not be inflated at high zoom.
+            greedyCollapse: false
+        });
+
+        // Set base maps and grouped overlays.
+        const urlParams = new URLSearchParams(window.location.search);
+        let defaultProvider;
+        try {
+            defaultProvider = L.tileLayer.provider(urlParams.get('mapping_basemap_provider'));
+        } catch (error) {
+            try {
+                defaultProvider = L.tileLayer.provider(options.basemapProvider);
+            } catch (error) {
+                defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
+            }
+        }
+        const baseMaps = {
+            'Default': defaultProvider,
+            'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
+            'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
+            'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
+            'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
+        };
+
+        // Add features to the map.
+        features.addLayer(featuresPoint)
+            .addLayer(featuresPoly);
+        map.addLayer(defaultProvider)
+            .addLayer(features)
+            .addControl(new L.Control.FitBounds(features));
+        if (!options.excludeLayersControl) {
+            map.addControl(new L.Control.Layers(baseMaps));
+        }
+
+        // Set the initial view to the geographical center of world.
+        map.setView([20, 0], 2);
+
+        return [map, features, featuresPoint, featuresPoly, baseMaps];
+    },
+    /**
      * Load features into a map asynchronously.
      *
      * @param {L.map}    map                       The Leaflet map object

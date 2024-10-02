@@ -7,50 +7,26 @@ function MappingBlock(mapDiv, timelineDiv) {
 
     // Instantiate the Leaflet map object.
     const mapData = mapDiv.data('data');
-    const map = new L.map(mapDiv[0], {
+
+    const [
+        map,
+        features,
+        featuresPoint,
+        featuresPoly,
+        baseMaps
+    ] = Mapping.initializeMap(mapDiv[0], {
         minZoom: mapData.min_zoom ? mapData.min_zoom : 0,
-        maxZoom: mapData.max_zoom ? mapData.max_zoom : 19,
-        fullscreenControl: true,
-        worldCopyJump:true
+        maxZoom: mapData.max_zoom ? mapData.max_zoom : 19
+    }, {
+        disableClustering: mapDiv.data('disable-clustering'),
+        basemapProvider: mapDiv.data('basemap-provider'),
+        excludeLayersControl: true
     });
-    // Set the initial view to the geographical center of world.
-    map.setView([20, 0], 2);
 
     // For easy reference, assign the Leaflet map object directly to the map element.
     mapDiv[0].mapping_map = map;
 
-    const features = L.featureGroup();
-    const featuresPoint = mapDiv.data('disable-clustering')
-        ? L.featureGroup()
-        : L.markerClusterGroup({
-            polygonOptions: {
-                color: 'green'
-            }
-        });
-    const featuresPoly = L.deflate({
-        markerLayer: featuresPoint, // Enable clustering of poly features
-        greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
-    });
     const featuresByResource = {};
-
-    // Set base maps and grouped overlays.
-    let defaultProvider;
-    try {
-        defaultProvider = L.tileLayer.provider(mapData['basemap_provider']);
-    } catch (error) {
-        try {
-            defaultProvider = L.tileLayer.provider(mapDiv.data('basemap-provider'));
-        } catch (error) {
-            defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
-        }
-    }
-    const baseMaps = {
-        'Default': defaultProvider,
-        'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
-        'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
-        'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
-        'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
-    };
     const noOverlayLayer = new L.GridLayer();
     const groupedOverlays = {'Overlays': {'No overlay': noOverlayLayer}};
 
@@ -86,6 +62,21 @@ function MappingBlock(mapDiv, timelineDiv) {
             map.scrollWheelZoom.enable()
             break;
     }
+
+    // Set the default view.
+    const setDefaultView = function() {
+        if (mapData['bounds']) {
+            const bounds = mapData['bounds'].split(',');
+            const southWest = [bounds[1], bounds[0]];
+            const northEast = [bounds[3], bounds[2]];
+            map.fitBounds([southWest, northEast]);
+        } else {
+            const bounds = features.getBounds();
+            if (bounds.isValid()) {
+                map.fitBounds(bounds);
+            }
+        }
+    };
 
     const getFeaturesUrl = mapDiv.data('featuresUrl');
     const getFeaturePopupContentUrl = mapDiv.data('featurePopupContentUrl');
@@ -124,20 +115,6 @@ function MappingBlock(mapDiv, timelineDiv) {
         });
     });
 
-    // Set the default view.
-    const setDefaultView = function() {
-        if (mapData['bounds']) {
-            const bounds = mapData['bounds'].split(',');
-            const southWest = [bounds[1], bounds[0]];
-            const northEast = [bounds[3], bounds[2]];
-            map.fitBounds([southWest, northEast]);
-        } else {
-            const bounds = features.getBounds();
-            if (bounds.isValid()) {
-                map.fitBounds(bounds);
-            }
-        }
-    };
     // Load features asynchronously.
     if (getFeaturesUrl) {
         Mapping.loadFeaturesAsync(
@@ -153,14 +130,9 @@ function MappingBlock(mapDiv, timelineDiv) {
         );
     }
 
-    // Add the features to the map.
-    features.addLayer(featuresPoint);
-    features.addLayer(featuresPoly);
-    map.addLayer(features);
     setDefaultView();
 
     // Add base map and grouped WMS overlay layers.
-    map.addLayer(baseMaps['Default']);
     map.addLayer(noOverlayLayer);
     $.each(mapData['wms'], function(index, data) {
         wmsLayer = L.tileLayer.wms(data.base_url, {
