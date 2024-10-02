@@ -69,7 +69,7 @@ class MapQuery extends AbstractMap
             $itemsQuery['site_id'] = $block->page()->site()->id();
             $itemsQuery['has_features'] = true;
             $itemsQuery['limit'] = 100000;
-            $itemIds = $this->apiManager->search('items', $query, ['returnScalar' => 'id'])->getContent();
+            $itemIds = $this->apiManager->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
             foreach ($itemIds as $itemId) {
                 // Set the timeline event for this item.
                 $event = $this->getTimelineEvent($itemId, $data['timeline']['data_type_properties'], $view);
