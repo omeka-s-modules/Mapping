@@ -56,7 +56,7 @@ abstract class AbstractMap extends AbstractBlockLayout
         $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('node_modules/Leaflet.Deflate/dist/L.Deflate.js', 'Mapping'));
 
-        $view->headScript()->appendFile($view->assetUrl('js/Mapping.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('js/MappingModule.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.opacity.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.fit-bounds.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/mapping-block.js', 'Mapping'));

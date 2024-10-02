@@ -1,4 +1,4 @@
-const Mapping = {
+const MappingModule = {
     /**
      *
      * @param {DOM object} mapDiv The map div DOM object
@@ -152,7 +152,7 @@ const Mapping = {
                     });
                 });
                 // Load more features recursively.
-                Mapping.loadFeaturesAsync(
+                MappingModule.loadFeaturesAsync(
                     map,
                     featuresPoint,
                     featuresPoly,

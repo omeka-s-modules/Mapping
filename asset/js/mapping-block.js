@@ -14,7 +14,7 @@ function MappingBlock(mapDiv, timelineDiv) {
         featuresPoint,
         featuresPoly,
         baseMaps
-    ] = Mapping.initializeMap(mapDiv[0], {
+    ] = MappingModule.initializeMap(mapDiv[0], {
         minZoom: mapData.min_zoom ? mapData.min_zoom : 0,
         maxZoom: mapData.max_zoom ? mapData.max_zoom : 19
     }, {
@@ -117,7 +117,7 @@ function MappingBlock(mapDiv, timelineDiv) {
 
     // Load features asynchronously.
     if (getFeaturesUrl) {
-        Mapping.loadFeaturesAsync(
+        MappingModule.loadFeaturesAsync(
             map,
             featuresPoint,
             featuresPoly,

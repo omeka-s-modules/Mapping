@@ -8,12 +8,12 @@ const [
     featuresPoint,
     featuresPoly,
     baseMaps
-] = Mapping.initializeMap(mappingMap[0], {}, {
+] = MappingModule.initializeMap(mappingMap[0], {}, {
     disableClustering: mappingMap.data('disable-clustering'),
     basemapProvider: mappingMap.data('basemap-provider')
 });
 
-Mapping.loadFeaturesAsync(
+MappingModule.loadFeaturesAsync(
     map,
     featuresPoint,
     featuresPoly,
