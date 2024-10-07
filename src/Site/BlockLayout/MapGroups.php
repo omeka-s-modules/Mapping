@@ -40,6 +40,14 @@ class MapGroups extends AbstractMap
     public function form(PhpRenderer $view, SiteRepresentation $site,
         SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
     ) {
+        if (!$this->isSupported()) {
+            $serverVersion = $this->connection->getWrappedConnection()->getServerVersion();
+            return sprintf(
+                $view->translate('This block requires MySQL 8.0.24+ or MariaDB 11.7+. Your database version is %s.'),
+                $serverVersion
+            );
+        }
+
         $form = $this->formElementManager->get(BlockLayoutMapGroupsForm::class);
         $data = $form->prepareBlockData($block ? $block->data() : []);
 
@@ -61,6 +69,10 @@ class MapGroups extends AbstractMap
 
     public function render(PhpRenderer $view, SitePageBlockRepresentation $block)
     {
+        if (!$this->isSupported()) {
+            return '';
+        }
+
         $form = $this->formElementManager->get(BlockLayoutMapGroupsForm::class);
         $data = $form->prepareBlockData($block->data());
         $dataItems = $data;
@@ -102,6 +114,17 @@ class MapGroups extends AbstractMap
             'groupsData' => $groupsData,
             'popupPartial' => $this->popupPartials[$data['groups']['type']] ?? null,
         ]);
+    }
+
+    protected function isSupported()
+    {
+        try {
+            // The ST_COLLECT function must exist.
+            $this->connection->executeQuery('SELECT ST_COLLECT(null)');
+            return true;
+        } catch (\Exception $e) {
+            return false;
+        }
     }
 
     protected function getGroupsItemSets($data, $siteId, PhpRenderer $view)
