@@ -39,6 +39,10 @@ class MapQuery extends AbstractMap
             'data' => $data,
             'form' => $form,
         ]);
+        $formHtml[] = $view->partial('common/block-layout/mapping-block-form/geojson', [
+            'data' => $data,
+            'form' => $form,
+        ]);
         if ($this->timelineIsAvailable()) {
             $formHtml[] = $view->partial('common/block-layout/mapping-block-form/timeline', [
                 'data' => $data,

@@ -87,7 +87,7 @@ const MappingModule = {
         getFeaturePopupContentUrl,
         itemsQuery,
         featuresQuery,
-        onLoadSetView = () => null,
+        onFeaturesLoad = () => null,
         featuresByResource = {},
         featuresPage = 1
     ) {
@@ -108,12 +108,7 @@ const MappingModule = {
             .done(function(featuresData) {
                 if (!featuresData.length) {
                     // This page returned no features. Stop recursion.
-                    if (!map.mapping_map_interaction) {
-                        // Call onLoadSetView only when there was no map interaction.
-                        // This prevents the map view from changing after a change
-                        // has already been done.
-                        onLoadSetView();
-                    }
+                    onFeaturesLoad();
                     return;
                 }
                 // Iterate the features.
@@ -160,10 +155,83 @@ const MappingModule = {
                     getFeaturePopupContentUrl,
                     itemsQuery,
                     featuresQuery,
-                    onLoadSetView,
+                    onFeaturesLoad,
                     featuresByResource,
                     ++featuresPage
                 );
             });
     },
+    /**
+     * Load GeoJSON features into a map.
+     *
+     * @param {L.map}   map
+     * @param {L.layer} featuresPoint
+     * @param {L.layer} featuresPoly
+     * @param {object}  geojsonData
+     * @returns
+     */
+    loadGeojsonFeatures: function(map, featuresPoint, featuresPoly, geojsonData) {
+        if (!geojsonData.geojson) {
+            return;
+        }
+        L.geoJSON(JSON.parse(geojsonData.geojson), {
+            onEachFeature: function(feature, layer) {
+                if (feature.properties) {
+                    // Filter out non-string properties.
+                    $.each(feature.properties, function(key, value) {
+                        if ('string' !== typeof value) {
+                            delete feature.properties[key];
+                        }
+                    });
+                    if (!$.isEmptyObject(feature.properties)) {
+                        // Add the popup.
+                        const popup = $('<div>', {
+                            class: 'mapping-feature-popup-content',
+                        });
+                        // Add the popup label.
+                        const labelKey = geojsonData.property_key_label;
+                        if (feature.properties[labelKey] && 'string' === typeof feature.properties[labelKey]) {
+                            $('<h3>').text(feature.properties[labelKey]).appendTo(popup);
+                        }
+                        // Add the popup comment.
+                        const commentKey = geojsonData.property_key_comment;
+                        if (feature.properties[commentKey] && 'string' === typeof feature.properties[commentKey]) {
+                            $('<p>').text(feature.properties[commentKey]).appendTo(popup);
+                        }
+                        // Add the GeoJSON properties to the popup.
+                        if (geojsonData.show_property_list) {
+                            const dl = $('<dl>', {
+                                style: 'height: 200px; overflow: scroll;',
+                            });
+                            $.each(feature.properties, function(key, value) {
+                                if ('string' === typeof value) {
+                                    const dt = $('<dt>').text(key);
+                                    const dd = $('<dd>').text(value);
+                                    dl.append(dt, dd);
+                                }
+                            });
+                            popup.append(dl);
+                        }
+                        // Show popup only when it has contents.
+                        if (popup.contents().length) {
+                            layer.bindPopup(popup[0]);
+                        }
+                    }
+                }
+                // Add features to map.
+                switch (feature.geometry.type) {
+                    case 'Point':
+                        featuresPoint.addLayer(layer);
+                        break;
+                    case 'LineString':
+                    case 'Polygon':
+                        layer.on('popupopen', function() {
+                            map.fitBounds(layer.getBounds());
+                        });
+                        featuresPoly.addLayer(layer);
+                        break;
+                }
+            }
+        });
+    }
 };

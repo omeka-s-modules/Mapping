@@ -33,6 +33,14 @@ const setView = function() {
     }
 };
 
+const onFeaturesLoad = function() {
+    if (!map.mapping_map_interaction) {
+        // Call setView only when there was no map interaction. This prevents the
+        // map view from changing after a change has already been done.
+        setView();
+    }
+};
+
 MappingModule.loadFeaturesAsync(
     map,
     featuresPoint,
@@ -41,7 +49,7 @@ MappingModule.loadFeaturesAsync(
     mappingMap.data('featurePopupContentUrl'),
     JSON.stringify(mappingMap.data('itemsQuery')),
     JSON.stringify(mappingMap.data('featuresQuery')),
-    setView
+    onFeaturesLoad
 );
 
 // Switching sections changes map dimensions, so make the necessary adjustments.

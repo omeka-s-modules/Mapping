@@ -117,6 +117,17 @@ function MappingBlock(mapDiv, timelineDiv) {
 
     // Load features asynchronously.
     if (getFeaturesUrl) {
+        const onFeaturesLoad = function() {
+            // Load GeoJson features after loading item features and before setting
+            // the default view. This prevents the map view from updating prematurely.
+            MappingModule.loadGeojsonFeatures(map, featuresPoint, featuresPoly, mapData.geojson);
+            if (!map.mapping_map_interaction) {
+                // Call setDefaultView only when there was no map interaction. This
+                // prevents the map view from changing after a change has already
+                // been done.
+                setDefaultView();
+            }
+        };
         MappingModule.loadFeaturesAsync(
             map,
             featuresPoint,
@@ -125,7 +136,7 @@ function MappingBlock(mapDiv, timelineDiv) {
             getFeaturePopupContentUrl,
             JSON.stringify(mapDiv.data('itemsQuery')),
             JSON.stringify(mapDiv.data('featuresQuery')),
-            setDefaultView,
+            onFeaturesLoad,
             featuresByResource
         );
     }
