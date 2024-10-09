@@ -170,7 +170,7 @@ const MappingModule = {
      * @param {object}  geojsonData
      * @returns
      */
-    loadGeojsonFeatures: function(map, featuresPoint, featuresPoly, geojsonData) {
+    loadGeojsonFeatures: function(map, featuresPoint, featuresPoly, geojsonData = {}) {
         if (!geojsonData.geojson) {
             return;
         }

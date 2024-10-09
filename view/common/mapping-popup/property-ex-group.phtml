@@ -1,5 +1,26 @@
 <?php
 $property = $this->api()->read('properties', $group['property_id'])->getContent();
+$itemSet = $group['item_set_id'] ? $this->api()->read('item_sets', $group['item_set_id'])->getContent() : null;
+$resourceClass = $group['resource_class_id'] ? $this->api()->read('resource_classes', $group['resource_class_id'])->getContent() : null;
 ?>
 <h4><?php echo sprintf($this->translate('%s items with "%s"'), $group['count'], $property->label()); ?></h4>
 <button type="button" class="mapping-show-group-item-features"><?php echo $this->translate('Show all'); ?></button>
+
+<div class="mapping-search-filters-template" style="display: none">
+    <div class="filter">
+        <div class="filter-label"><?php echo sprintf($this->translate('%s has any value'), $property->label()); ?></div>
+        <div class="filter-value"></div>
+    </div>
+    <?php if ($itemSet): ?>
+    <div class="filter">
+        <div class="filter-label"><?php echo $this->translate('In item set'); ?></div>
+        <div class="filter-value"><?php echo $itemSet->displayTitle(); ?></div>
+    </div>
+    <?php endif; ?>
+    <?php if ($resourceClass): ?>
+    <div class="filter">
+        <div class="filter-label"><?php echo $this->translate('Class'); ?></div>
+        <div class="filter-value"><?php echo $resourceClass->label(); ?></div>
+    </div>
+    <?php endif; ?>
+</div>

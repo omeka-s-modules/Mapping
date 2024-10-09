@@ -238,6 +238,10 @@ $(document).on('click', '.mapping-show-group-item-features', function(e) {
     const groupBlock = thisButton.closest('.mapping-block');
     const itemsBlock = groupBlock.next('.mapping-block');
     const itemsBlockMap = itemsBlock.find('.mapping-map');
+
+    // Copy filters markup to items block.
+    itemsBlock.find('.search-filters').html(groupPopup.find('.mapping-search-filters-template').html());
+
     groupBlock.hide();
     itemsBlock.show();
 

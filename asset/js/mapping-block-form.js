@@ -109,7 +109,6 @@ $('.block[data-block-layout^="mappingMap"]').each(function() {
 
 // Handle "mappingMapGroups" blocks.
 const prepareBlockMapGroups = function(block) {
-    console.log('foo');
     const groupsType = block.find('select.groups-type').val();
     block.find('.hidden_by_default').closest('.field').hide();
     switch (groupsType) {

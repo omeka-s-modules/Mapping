@@ -262,6 +262,8 @@ class MapGroups extends AbstractMap
                     'count' => $result['count'],
                     'property_id' => $propertyId,
                     'value' => $result['value'],
+                    'item_set_id' => $itemSetId,
+                    'resource_class_id' => $resourceClassId,
                 ],
                 'geography' => $result['geography'],
                 'items_query' => [
