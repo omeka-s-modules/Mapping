@@ -3,8 +3,8 @@ $property = $this->api()->read('properties', $group['property_id'])->getContent(
 $itemSet = $group['item_set_id'] ? $this->api()->read('item_sets', $group['item_set_id'])->getContent() : null;
 $resourceClass = $group['resource_class_id'] ? $this->api()->read('resource_classes', $group['resource_class_id'])->getContent() : null;
 ?>
-<h4><?php echo sprintf($this->translate('%s items with "%s"'), $group['count'], $property->label()); ?></h4>
-<button type="button" class="mapping-show-group-item-features"><?php echo $this->translate('Show all'); ?></button>
+<span class="group-type"><?php echo sprintf($this->translate('%s has any value'), $property->label()); ?></span>
+<button type="button" class="mapping-show-group-item-features"><?php echo sprintf($this->translate('View all results (%s total)'), $group['count']); ?></button>
 
 <div class="mapping-search-filters-template" style="display: none">
     <div class="filter">

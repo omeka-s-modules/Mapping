@@ -4,8 +4,9 @@ $resource = $this->api()->read('resources', $group['resource_id'])->getContent()
 $itemSet = $group['item_set_id'] ? $this->api()->read('item_sets', $group['item_set_id'])->getContent() : null;
 $resourceClass = $group['resource_class_id'] ? $this->api()->read('resource_classes', $group['resource_class_id'])->getContent() : null;
 ?>
-<h4><?php echo sprintf($this->translate('%s items where "%s" is "%s"'), $group['count'], $property->label(), $resource->linkPretty()); ?></h4>
-<button type="button" class="mapping-show-group-item-features"><?php echo $this->translate('Show all'); ?></button>
+<span class="group-type"><?php echo $property->label(); ?></span>
+<span class="group-value"><?php echo $resource->linkPretty(); ?></span>
+<button type="button" class="mapping-show-group-item-features"><?php echo sprintf($this->translate('View all results (%s total)'), $group['count']); ?></button>
 
 <div class="mapping-search-filters-template" style="display: none">
     <div class="filter">

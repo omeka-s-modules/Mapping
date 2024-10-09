@@ -13,3 +13,32 @@
 .leaflet-control-geosearch form input {
   border: 0 !important;
 }
+
+.leaflet-popup-content-wrapper {
+  overflow: hidden;
+}
+
+.group-value {
+  font-weight: bold;
+  font-size: 1.125rem;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.group-type {
+  padding: 8px 21px;
+  background: #e3e3e3;
+  display: block;
+  margin: -14px -25px 14px -21px;
+}
+
+.mapping-show-group-item-features {
+  font-size: 14px;
+  padding: 5px 7px;
+  min-height: 0;
+  line-height: 1;
+}
+
+.mapping-show-group-features {
+  margin-top: 1rem;
+}
