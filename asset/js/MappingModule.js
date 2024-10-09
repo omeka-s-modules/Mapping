@@ -127,18 +127,7 @@ const MappingModule = {
                                     });
                                 });
                             }
-                            switch (feature.type) {
-                                case 'Point':
-                                    featuresPoint.addLayer(layer);
-                                    break;
-                                case 'LineString':
-                                case 'Polygon':
-                                    layer.on('popupopen', function() {
-                                        map.fitBounds(layer.getBounds());
-                                    });
-                                    featuresPoly.addLayer(layer);
-                                    break;
-                            }
+                            MappingModule.addFeature(map, featuresPoint, featuresPoly, layer, feature.type);
                             if (!(resourceId in featuresByResource)) {
                                 featuresByResource[resourceId] = L.featureGroup();
                             }
@@ -218,20 +207,31 @@ const MappingModule = {
                         }
                     }
                 }
-                // Add features to map.
-                switch (feature.geometry.type) {
-                    case 'Point':
-                        featuresPoint.addLayer(layer);
-                        break;
-                    case 'LineString':
-                    case 'Polygon':
-                        layer.on('popupopen', function() {
-                            map.fitBounds(layer.getBounds());
-                        });
-                        featuresPoly.addLayer(layer);
-                        break;
-                }
+                MappingModule.addFeature(map, featuresPoint, featuresPoly, layer, feature.geometry.type);
             }
         });
+    },
+    /**
+     * Add a feature layer to its respective layer.
+     *
+     * @param {L.map} map
+     * @param {L.layer} featuresPoint
+     * @param {L.layer} featuresPoly
+     * @param {L.layer} layer
+     * @param {string} type
+     */
+    addFeature: function(map, featuresPoint, featuresPoly, layer, type) {
+        switch (type) {
+            case 'Point':
+                featuresPoint.addLayer(layer);
+                break;
+            case 'LineString':
+            case 'Polygon':
+                layer.on('popupopen', function() {
+                    map.fitBounds(layer.getBounds());
+                });
+                featuresPoly.addLayer(layer);
+                break;
+        }
     }
 };

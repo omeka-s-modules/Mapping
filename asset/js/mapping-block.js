@@ -99,18 +99,7 @@ function MappingBlock(mapDiv, timelineDiv) {
                 } else {
                     popup.setContent(popupContent[0]);
                 }
-                switch (feature.type) {
-                    case 'Point':
-                        featuresPoint.addLayer(layer);
-                        break;
-                    case 'LineString':
-                    case 'Polygon':
-                        layer.on('popupopen', function() {
-                            map.fitBounds(layer.getBounds());
-                        });
-                        featuresPoly.addLayer(layer);
-                        break;
-                }
+                MappingModule.addFeature(map, featuresPoint, featuresPoly, layer, feature.type);
             }
         });
     });
