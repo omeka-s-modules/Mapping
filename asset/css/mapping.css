@@ -18,6 +18,23 @@
   overflow: hidden;
 }
 
+.group-filter {
+  display: inline-flex;
+  margin-bottom: .5rem;
+  border: 1px solid #e3e3e3;
+  border-radius: 2px;
+}
+
+.group-filter > * {
+  display: inline-block;
+  padding: .25rem .5rem;
+}
+
+.group-filter-label {
+  font-weight: bold;
+  background-color: #e3e3e3;
+}
+
 .group-value {
   font-weight: bold;
   font-size: 1.125rem;

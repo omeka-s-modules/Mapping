@@ -1,0 +1,16 @@
+<?php if (isset($itemSet) || isset($resourceClass)): ?>
+<div class="group-filters">
+    <?php if (isset($itemSet)): ?>
+    <div class="group-filter">
+        <div class="group-filter-label"><?php echo $this->translate('In item set'); ?></div>
+        <div class="group-filter-value"><?php echo $itemSet->displayTitle(); ?></div>
+    </div>
+    <?php endif; ?>
+    <?php if (isset($resourceClass)): ?>
+    <div class="group-filter">
+        <div class="group-filter-label"><?php echo $this->translate('Class'); ?></div>
+        <div class="group-filter-value"><?php echo $resourceClass->label(); ?></div>
+    </div>
+    <?php endif; ?>
+</div>
+<?php endif; ?>
