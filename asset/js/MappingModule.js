@@ -228,7 +228,11 @@ const MappingModule = {
             case 'LineString':
             case 'Polygon':
                 layer.on('popupopen', function() {
+                    layer.setStyle({color: '#9fc6fc'});
                     map.fitBounds(layer.getBounds());
+                });
+                layer.on('popupclose', function() {
+                    layer.setStyle({color: '#3388ff'});
                 });
                 featuresPoly.addLayer(layer);
                 break;
