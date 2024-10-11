@@ -3,14 +3,12 @@ $label = $feature->label();
 $media = $feature->media();
 $item = $feature->item();
 ?>
+<span class="group-type">
+<?php echo ($label) ? $this->escapeHtml($label) : $this->translate('Item'); ?>
+</span>
 
-<?php if ($label): ?>
-<h3><?php echo $this->escapeHtml($label); ?></h3>
-<?php endif; ?>
+<span class="group-value"><?php echo $item->link($item->displayTitle(null, $this->lang()), null, ['target' => '_blank']); ?></span>
 
 <?php if ($media): ?>
 <?php echo $this->thumbnail($media, 'medium'); ?>
-<div><?php echo sprintf($this->translate('Media: %s'), $media->link($media->displayTitle(null, $this->lang()), null, ['target' => '_blank'])); ?></div>
 <?php endif; ?>
-
-<div><?php echo sprintf($this->translate('Item: %s'), $item->link($item->displayTitle(null, $this->lang()), null, ['target' => '_blank'])); ?></div>
