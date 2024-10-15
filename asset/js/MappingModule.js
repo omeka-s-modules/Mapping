@@ -180,12 +180,12 @@ const MappingModule = {
                         // Add the popup label.
                         const labelKey = geojsonData.property_key_label;
                         if (feature.properties[labelKey] && 'string' === typeof feature.properties[labelKey]) {
-                            $('<h3>').text(feature.properties[labelKey]).appendTo(popup);
+                            $('<span>', {class: 'group-type'}).text(feature.properties[labelKey]).appendTo(popup);
                         }
                         // Add the popup comment.
                         const commentKey = geojsonData.property_key_comment;
                         if (feature.properties[commentKey] && 'string' === typeof feature.properties[commentKey]) {
-                            $('<p>').text(feature.properties[commentKey]).appendTo(popup);
+                            $('<span>', {class: 'group-value'}).text(feature.properties[commentKey]).appendTo(popup);
                         }
                         // Add the GeoJSON properties to the popup.
                         if (geojsonData.show_property_list) {
