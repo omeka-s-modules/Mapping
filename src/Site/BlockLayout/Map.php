@@ -87,6 +87,9 @@ class Map extends AbstractMap
             if (!$item) continue;
             $itemIds[] = $item->id();
         }
+        // An empty string would get all features, so set 0 if there are no items.
+        $itemsQuery = ['id' => $itemIds ? implode(',', $itemIds) : 0];
+        $featuresQuery = [];
 
         // Get all events for the items.
         $events = [];
@@ -102,8 +105,8 @@ class Map extends AbstractMap
 
         return $view->partial('common/block-layout/mapping-block', [
             'data' => $data,
-            'itemsQuery' => ['id' => implode(',', $itemIds)],
-            'featuresQuery' => [],
+            'itemsQuery' => $itemsQuery,
+            'featuresQuery' => $featuresQuery,
             'isTimeline' => $isTimeline,
             'timelineData' => $this->getTimelineData($events, $data, $view),
             'timelineOptions' => $this->getTimelineOptions($data),
