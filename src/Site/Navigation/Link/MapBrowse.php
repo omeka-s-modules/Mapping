@@ -10,7 +10,7 @@ class MapBrowse implements LinkInterface
 {
     public function getName()
     {
-        return 'Map Browse'; // @translate
+        return 'Map browse'; // @translate
     }
 
     public function getFormTemplate()
