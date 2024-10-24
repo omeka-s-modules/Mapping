@@ -16,7 +16,8 @@ class IndexController extends AbstractActionController
         $featuresQuery = json_decode($this->params()->fromQuery('features_query'), true);
         $featuresQuery['page'] = $this->params()->fromQuery('features_page');
         $featuresQuery['per_page'] = 10000;
-        $featuresQuery['item_id'] = $itemIds;
+        // An empty string would get all features, so set 0 if there are no items.
+        $featuresQuery['item_id'] = $itemIds ? $itemIds : 0;
         $featureResponse = $this->api()->search('mapping_features', $featuresQuery);
 
         $features = [];

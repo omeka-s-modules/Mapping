@@ -3,16 +3,26 @@ $mapping = null;
 $disableClustering = null;
 $basemapProvider = null;
 
+$hasMapping = false;
+$hasFeatures = false;
 switch (get_class($resource)) {
     case 'Omeka\Api\Representation\ItemRepresentation':
         $itemsQuery = ['id' => $resource->id()];
-        $mapping = $this->api()->searchOne('mappings', ['item_id' => $resource->id()])->getContent();
+        $mappingResponse = $this->api()->searchOne('mappings', ['item_id' => $resource->id()]);
+        $mapping = $mappingResponse->getContent();
+        $hasMapping = $mappingResponse->getTotalResults();
+        $hasFeatures = $this->api()->search('mapping_features', ['item_id' => $resource->id(), 'limit' => 0])->getTotalResults();
         break;
     case 'Omeka\Api\Representation\ItemSetRepresentation':
         $itemsQuery = ['item_set_id' => $resource->id()];
+        $hasFeatures = $this->api()->search('mapping_features', ['item_set_id' => $resource->id(), 'limit' => 0])->getTotalResults();
         break;
     default:
         return;
+}
+// Don't render the map if there is no mapping data.
+if (!$hasMapping && !$hasFeatures) {
+    return;
 }
 
 if ($this->status()->isSiteRequest()) {

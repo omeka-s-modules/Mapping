@@ -538,7 +538,7 @@ class Module extends AbstractModule
                 default:
                     return;
             }
-            if (!($hasMapping || $hasFeatures)) {
+            if (!$hasMapping && !$hasFeatures) {
                 return;
             }
         }
