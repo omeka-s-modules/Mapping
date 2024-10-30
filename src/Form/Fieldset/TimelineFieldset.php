@@ -6,6 +6,8 @@ use Omeka\Stdlib\HtmlPurifier;
 
 class TimelineFieldset extends Fieldset
 {
+    protected $htmlPurifier;
+
     public function init()
     {
         $this->add([
