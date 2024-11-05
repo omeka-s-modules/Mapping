@@ -20,7 +20,7 @@ class GeojsonFieldset extends Fieldset
             'type' => 'text',
             'name' => 'o:block[__blockIndex__][o:data][geojson][property_key_comment]',
             'options' => [
-                'label' => 'Label property key', // @translate
+                'label' => 'Comment property key', // @translate
                 'info' => 'Enter the GeoJSON property key used for the popup comment, if any.', // @translate
             ],
         ]);
