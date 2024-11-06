@@ -2,6 +2,7 @@
 namespace Mapping\Form\Fieldset;
 
 use Laminas\Form\Fieldset;
+use NumericDataTypes\Form\Element\NumericPropertySelect;
 use Omeka\Stdlib\HtmlPurifier;
 
 class TimelineFieldset extends Fieldset
@@ -68,21 +69,23 @@ class TimelineFieldset extends Fieldset
                 ],
             ],
         ]);
-        $this->add([
-            'type' => 'NumericDataTypes\Form\Element\NumericPropertySelect',
-            'name' => 'o:block[__blockIndex__][o:data][timeline][data_type_properties]',
-            'options' => [
-                'label' => 'Property', // @translate
-                'info' => 'Select the timestamp or interval property to use when populating the timeline.', // @translate
-                'empty_option' => '',
-                'numeric_data_type' => ['timestamp', 'interval'],
-                'numeric_data_type_disambiguate' => true,
-            ],
-            'attributes' => [
-                'class' => 'chosen-select',
-                'data-placeholder' => 'Select property…', // @translate
-            ],
-        ]);
+        if (class_exists(NumericPropertySelect::class)) {
+            $this->add([
+                'type' => NumericPropertySelect::class,
+                'name' => 'o:block[__blockIndex__][o:data][timeline][data_type_properties]',
+                'options' => [
+                    'label' => 'Property', // @translate
+                    'info' => 'Select the timestamp or interval property to use when populating the timeline.', // @translate
+                    'empty_option' => '',
+                    'numeric_data_type' => ['timestamp', 'interval'],
+                    'numeric_data_type_disambiguate' => true,
+                ],
+                'attributes' => [
+                    'class' => 'chosen-select',
+                    'data-placeholder' => 'Select property…', // @translate
+                ],
+            ]);
+        }
     }
 
     public function filterBlockData(array $rawData)
