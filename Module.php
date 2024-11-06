@@ -651,17 +651,21 @@ class Module extends AbstractModule
      */
     public function filterItemJsonLd(Event $event)
     {
-        $item = $event->getTarget();
+        $itemId = $event->getTarget()->id();
+        if (!$itemId) {
+            // Account for deleted items.
+            return;
+        }
         $jsonLd = $event->getParam('jsonLd');
         $api = $this->getServiceLocator()->get('Omeka\ApiManager');
         // Add mapping data.
-        $response = $api->search('mappings', ['item_id' => $item->id()]);
+        $response = $api->search('mappings', ['item_id' => $itemId]);
         foreach ($response->getContent() as $mapping) {
             // There's zero or one mapping per item.
             $jsonLd['o-module-mapping:mapping'] = $mapping;
         }
         // Add feature data.
-        $response = $api->search('mapping_features', ['item_id' => $item->id()]);
+        $response = $api->search('mapping_features', ['item_id' => $itemId]);
         foreach ($response->getContent() as $feature) {
             // There's zero or more features per item.
             $jsonLd['o-module-mapping:feature'][] = $feature;
