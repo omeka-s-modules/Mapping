@@ -33,6 +33,9 @@ return [
         'template_path_stack' => [
             dirname(__DIR__) . '/view',
         ],
+        'strategies' => [
+            'ViewJsonStrategy',
+        ],
     ],
     'view_helpers' => [
         'invokables' => [
