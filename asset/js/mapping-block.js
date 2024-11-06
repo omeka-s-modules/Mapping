@@ -26,10 +26,6 @@ function MappingBlock(mapDiv, timelineDiv) {
     // For easy reference, assign the Leaflet map object directly to the map element.
     mapDiv[0].mapping_map = map;
 
-    const featuresByResource = {};
-    const noOverlayLayer = new L.GridLayer();
-    const groupedOverlays = {'Overlays': {'No overlay': noOverlayLayer}};
-
     // Set and prepare opacity control.
     let opacityControl;
     const handleOpacityControl = function(overlay, label) {
@@ -44,6 +40,36 @@ function MappingBlock(mapDiv, timelineDiv) {
             map.addControl(opacityControl);
         }
     };
+
+    // Add base map and grouped WMS overlay layers.
+    const featuresByResource = {};
+    const noOverlayLayer = new L.GridLayer();
+    const groupedLayers = L.control.groupedLayers(
+        baseMaps,
+        {'Overlays': {'No overlay': noOverlayLayer}},
+        {exclusiveGroups: ['Overlays']}
+    ).addTo(map);
+    map.addLayer(noOverlayLayer);
+    $.each(mapData['wms'], function(index, data) {
+        wmsLayer = L.tileLayer.wms(data.base_url, {
+            layers: data.layers,
+            styles: data.styles,
+            format: 'image/png',
+            transparent: true,
+        });
+        if (data.open) {
+            // This WMS overlay is open by default.
+            map.removeLayer(noOverlayLayer);
+            map.addLayer(wmsLayer);
+            handleOpacityControl(wmsLayer, data.label);
+        }
+        groupedLayers.addOverlay(wmsLayer, data.label, 'Overlays');
+    });
+
+    // Handle the overlay opacity control.
+    map.on('overlayadd', function(e) {
+        handleOpacityControl(e.layer, e.name);
+    });
 
     // Set the scroll wheel zoom behavior.
     switch (mapData['scroll_wheel_zoom']) {
@@ -131,32 +157,6 @@ function MappingBlock(mapDiv, timelineDiv) {
     }
 
     setDefaultView();
-
-    // Add base map and grouped WMS overlay layers.
-    map.addLayer(noOverlayLayer);
-    $.each(mapData['wms'], function(index, data) {
-        wmsLayer = L.tileLayer.wms(data.base_url, {
-            layers: data.layers,
-            styles: data.styles,
-            format: 'image/png',
-            transparent: true,
-        });
-        if (data.open) {
-            // This WMS overlay is open by default.
-            map.removeLayer(noOverlayLayer);
-            map.addLayer(wmsLayer);
-            handleOpacityControl(wmsLayer, data.label);
-        }
-        groupedOverlays['Overlays'][data.label] = wmsLayer;
-    });
-    L.control.groupedLayers(baseMaps, groupedOverlays, {
-        exclusiveGroups: ['Overlays']
-    }).addTo(map);
-
-    // Handle the overlay opacity control.
-    map.on('overlayadd', function(e) {
-        handleOpacityControl(e.layer, e.name);
-    });
 
     if (timelineDiv && timelineDiv.length) {
         timeline = new TL.Timeline(
