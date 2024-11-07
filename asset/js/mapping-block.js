@@ -8,6 +8,14 @@ function MappingBlock(mapDiv, timelineDiv) {
     // Instantiate the Leaflet map object.
     const mapData = mapDiv.data('data');
 
+    // Set the basemap provider.
+    let basemapProvider;
+    if (mapData.basemap_provider) {
+        basemapProvider = mapData.basemap_provider;
+    } else if (mapDiv.data('basemap-provider')) {
+        basemapProvider = mapDiv.data('basemap-provider');
+    }
+
     const [
         map,
         features,
@@ -19,7 +27,7 @@ function MappingBlock(mapDiv, timelineDiv) {
         maxZoom: mapData.max_zoom ? mapData.max_zoom : 19
     }, {
         disableClustering: mapDiv.data('disable-clustering'),
-        basemapProvider: mapDiv.data('basemap-provider'),
+        basemapProvider: basemapProvider,
         excludeLayersControl: true
     });
 
