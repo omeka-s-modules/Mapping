@@ -151,6 +151,7 @@ class MapGroups extends AbstractMap
         );
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
+        $groupsData = [];
         foreach ($results as $result) {
             $groupsData[] = [
                 'group' => [
@@ -196,6 +197,7 @@ class MapGroups extends AbstractMap
         );
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
+        $groupsData = [];
         foreach ($results as $result) {
             $groupsData[] = [
                 'group' => [
@@ -252,6 +254,7 @@ class MapGroups extends AbstractMap
         );
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
+        $groupsData = [];
         foreach ($results as $result) {
             $groupsData[] = [
                 'group' => [
@@ -324,6 +327,7 @@ class MapGroups extends AbstractMap
         $sql = implode(' UNION ', $unions);
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
+        $groupsData = [];
         foreach ($results as $result) {
             $groupsData[] = [
                 'group' => [
@@ -389,6 +393,7 @@ class MapGroups extends AbstractMap
         );
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
+        $groupsData = [];
         foreach ($results as $result) {
             $groupsData[] = [
                 'group' => [
@@ -452,6 +457,7 @@ class MapGroups extends AbstractMap
         );
 
         $results = $this->connection->executeQuery($sql, $queryParams, $queryTypes)->fetchAll();
+        $groupsData = [];
         foreach ($results as $result) {
             $groupsData[] = [
                 'group' => [

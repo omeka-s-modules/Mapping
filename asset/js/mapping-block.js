@@ -61,7 +61,10 @@ function MappingBlock(mapDiv, timelineDiv) {
 
     // Add overlays.
     const addOverlays = async function () {
-        for (const overlayData of mapData['overlays']) {
+        if (!mapData.overlays) {
+            return;
+        }
+        for (const overlayData of mapData.overlays) {
             let overlayLayer;
             switch (overlayData.type) {
                 case 'wms':
