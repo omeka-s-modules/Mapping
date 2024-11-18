@@ -56,10 +56,6 @@ class MapGroups extends AbstractMap
             'data' => $data,
             'form' => $form,
         ]);
-        $formHtml[] = $view->partial('common/block-layout/mapping-block-form/wms-overlays', [
-            'data' => $data,
-            'form' => $form,
-        ]);
         $formHtml[] = $view->partial('common/block-layout/mapping-block-form/groups', [
             'data' => $data,
             'form' => $form,

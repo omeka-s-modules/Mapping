@@ -49,7 +49,7 @@ function MappingBlock(mapDiv, timelineDiv) {
         }
     };
 
-    // Add base map and grouped WMS overlay layers.
+    // Add base map and grouped layers.
     const featuresByResource = {};
     const noOverlayLayer = new L.GridLayer();
     const groupedLayers = L.control.groupedLayers(
@@ -58,21 +58,37 @@ function MappingBlock(mapDiv, timelineDiv) {
         {exclusiveGroups: ['Overlays']}
     ).addTo(map);
     map.addLayer(noOverlayLayer);
-    $.each(mapData['wms'], function(index, data) {
-        wmsLayer = L.tileLayer.wms(data.base_url, {
-            layers: data.layers,
-            styles: data.styles,
-            format: 'image/png',
-            transparent: true,
-        });
-        if (data.open) {
-            // This WMS overlay is open by default.
-            map.removeLayer(noOverlayLayer);
-            map.addLayer(wmsLayer);
-            handleOpacityControl(wmsLayer, data.label);
+
+    // Add overlays.
+    const addOverlays = async function () {
+        for (const overlayData of mapData['overlays']) {
+            let overlayLayer;
+            switch (overlayData.type) {
+                case 'wms':
+                    overlayLayer = L.tileLayer.wms(overlayData.base_url, {
+                        layers: overlayData.layers,
+                        styles: overlayData.styles,
+                        format: 'image/png',
+                        transparent: true,
+                    });
+                    break;
+                case 'iiif':
+                    overlayLayer = new Allmaps.WarpedMapLayer()
+                    await overlayLayer.addGeoreferenceAnnotationByUrl(overlayData.url)
+                    break;
+            }
+            if (overlayLayer) {
+                if (overlayData.open) {
+                    // This overlay is open by default.
+                    map.removeLayer(noOverlayLayer);
+                    map.addLayer(overlayLayer);
+                    handleOpacityControl(overlayLayer, overlayData.label);
+                }
+                groupedLayers.addOverlay(overlayLayer, overlayData.label, 'Overlays');
+            }
         }
-        groupedLayers.addOverlay(wmsLayer, data.label, 'Overlays');
-    });
+    }
+    addOverlays();
 
     // Handle the overlay opacity control.
     map.on('overlayadd', function(e) {

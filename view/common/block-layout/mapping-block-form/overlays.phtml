@@ -1,0 +1,26 @@
+<?php
+$overlayTemplate = <<<END
+<li class="mapping-overlay sortable-row">
+    <span class="sortable-handle"></span>
+    <input type="checkbox" class="mapping-overlay-open">
+    <span class="mapping-overlay-label"></span>
+    <ul class="actions">
+        <a href="#" class="mapping-overlay-edit o-icon-edit" aria-label="Edit" title="Edit" ></a>
+        <a href="#" class="mapping-overlay-delete o-icon-delete" aria-label="Delete" title="Delete"></a>
+    </ul>
+    <input type="hidden" class="mapping-overlay-input" name="o:block[__blockIndex__][o:data][overlays][]">
+</li>
+END;
+?>
+<a href="#" class="expand"><h4><?php echo $this->translate('Overlays'); ?></h4></a>
+<div class="mapping-overlays-container sortable-rows collapsible"
+    data-overlays-data="<?php echo $this->escapeHtml(json_encode($data['overlays'])); ?>"
+    data-overlay-template="<?php echo $this->escapeHtml($overlayTemplate); ?>">
+    <p><?php echo $this->translate('Add, edit, and delete overlays below. You may check which overlay you want open by default.'); ?></p>
+    <ul class="mapping-overlays"></ul>
+    <div class="mapping-overlays-form">
+        <?php echo $this->formCollection($form->get('overlays')); ?>
+    </div>
+    <button type="button" class="mapping-overlays-save-button"><?php echo $this->translate('Save overlay'); ?></button>
+    <button type="button" class="mapping-overlays-cancel-button"><?php echo $this->translate('Cancel'); ?></button>
+</div>

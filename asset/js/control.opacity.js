@@ -6,19 +6,20 @@ L.Control.Opacity = L.Control.extend({
         opacityDecText: '▼',
     },
 
-    initialize: function (overlay, label) {
+    initialize: function (overlay, label, map) {
         this._overlay = overlay;
         this._label = label;
+        this._map = map;
         this._opacity = 1.0;
     },
 
     onAdd: function (map) {
         this._opacity = this._overlay.options.opacity;
 
-        var opacityName = 'mapping-control-opacity',
-            container = L.DomUtil.create('div', opacityName + ' leaflet-bar');
-        var opacityIncTitle = 'Increase opacity of "' + this._label + '" overlay';
-        var opacityDecTitle = 'Decrease opacity of "' + this._label + '" overlay';
+        var opacityName = 'mapping-control-opacity';
+        var container = L.DomUtil.create('div', opacityName + ' leaflet-bar');
+        var opacityIncTitle = `Increase opacity of overlay "${this._label}"`;
+        var opacityDecTitle = `Decrease opacity of overlay "${this._label}"`;
 
         this._opacityIncButton  = this._createButton(
             this.options.opacityIncText, opacityIncTitle,
@@ -26,6 +27,20 @@ L.Control.Opacity = L.Control.extend({
         this._opacityDecButton = this._createButton(
             this.options.opacityDecText, opacityDecTitle,
             opacityName + '-dec', container, this._opacityDec, this);
+
+        // Add the "Fly to overlay" button.
+        if ('function' === typeof this._overlay.getBounds) {
+            var fitButton = L.DomUtil.create('a', 'foo', container);
+            fitButton.innerHTML = '⊡';
+            fitButton.style.fontSize = '20px';
+            fitButton.title = `Fly to overlay "${this._label}"`;
+            fitButton.href = '#';
+            L.DomEvent
+                .on(fitButton, 'click', L.DomEvent.preventDefault)
+                .on(fitButton, 'click', function (e) {
+                    this._map.flyToBounds(this._overlay.getBounds());
+                }, this);
+        }
 
         return container;
     },

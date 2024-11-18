@@ -143,6 +143,9 @@ class Module extends AbstractModule
             $conn = $services->get('Omeka\Connection');
             $conn->exec("UPDATE site_setting SET id = 'mapping_advanced_search_add_feature_presence' WHERE id = 'mapping_advanced_search_add_marker_presence'");
         }
+        if (Comparator::lessThan($oldVersion, '2.2.0')) {
+            $this->upgradeToV2_2($services);
+        }
     }
 
     /**
@@ -192,6 +195,41 @@ class Module extends AbstractModule
 
         // Drop the mapping_marker table now that we're done with it.
         $conn->executeStatement('DROP TABLE mapping_marker;');
+    }
+
+    /**
+     * Upgrade to Mapping version 2.2.
+     *
+     * @param ServiceLocatorInterface $services
+     */
+    public function upgradeToV2_2(ServiceLocatorInterface $services)
+    {
+        // Transfer "wms" data to new "overlays" data.
+        $entityManager = $services->get('Omeka\EntityManager');
+        $blocks = $entityManager
+            ->getRepository('Omeka\Entity\SitePageBlock')
+            ->findBy(['layout' => ['mappingMap', 'mappingMapQuery']]);
+        foreach ($blocks as $block) {
+            $data = $block->getData();
+            if (!(isset($data['wms']) && is_array($data['wms']) && $data['wms'])) {
+                continue;
+            }
+            $overlaysData = [];
+            foreach ($data['wms'] as $wmsData) {
+                $overlayData = [
+                    'type' => 'wms',
+                    'label' => $wmsData['label'],
+                    'base_url' => $wmsData['base_url'],
+                    'layers' => $wmsData['layers'],
+                    'styles' => $wmsData['styles'],
+                    'open' => (bool) ($wmsData['open'] ?? false),
+                ];
+                $overlaysData[] = $overlayData;
+            }
+            $data['overlays'] = $overlaysData;
+            $block->setData($data);
+        }
+        $entityManager->flush();
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)

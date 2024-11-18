@@ -55,7 +55,7 @@ class Map extends AbstractMap
             'data' => $data,
             'form' => $form,
         ]);
-        $formHtml[] = $view->partial('common/block-layout/mapping-block-form/wms-overlays', [
+        $formHtml[] = $view->partial('common/block-layout/mapping-block-form/overlays', [
             'data' => $data,
             'form' => $form,
         ]);

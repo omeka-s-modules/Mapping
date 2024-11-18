@@ -13,10 +13,6 @@ class BlockLayoutMapGroupsForm extends Form
             'name' => 'default_view',
         ]);
         $this->add([
-            'type' => Fieldset\WmsOverlaysFieldset::class,
-            'name' => 'wms_overlays',
-        ]);
-        $this->add([
             'type' => Fieldset\GroupsFieldset::class,
             'name' => 'groups',
         ]);
@@ -26,7 +22,6 @@ class BlockLayoutMapGroupsForm extends Form
     {
         $data = array_merge(
             $this->get('default_view')->filterBlockData($rawData),
-            $this->get('wms_overlays')->filterBlockData($rawData),
             $this->get('groups')->filterBlockData($rawData),
         );
         $this->setData([
