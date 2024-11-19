@@ -189,9 +189,7 @@ const MappingModule = {
                         }
                         // Add the GeoJSON properties to the popup.
                         if (geojsonData.show_property_list) {
-                            const dl = $('<dl>', {
-                                style: 'height: 200px; overflow: scroll;',
-                            });
+                            const dl = $('<dl class="geojson-properties">');
                             $.each(feature.properties, function(key, value) {
                                 if ('string' === typeof value) {
                                     const dt = $('<dt>').text(key);

@@ -69,3 +69,8 @@
 .mapping-show-group-features {
   margin-top: 1rem;
 }
+
+.geojson-properties {
+  overflow-y: auto;
+  max-height: 200px;
+}
