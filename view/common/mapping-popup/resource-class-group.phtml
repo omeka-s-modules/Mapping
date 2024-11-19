@@ -4,16 +4,16 @@ $itemSet = $group['item_set_id'] ? $this->api()->read('item_sets', $group['item_
 ?>
 <span class="group-type"><?php echo $this->translate('Class'); ?></span>
 <span class="group-value"><?php echo $resourceClass->label(); ?></span>
-<?php 
+<?php
     echo $this->partial('common/mapping-popup/group-filters.phtml', [
         'itemSet' => $itemSet
     ]);
 ?>
-<button type="button" class="mapping-show-group-item-features"><?php echo sprintf($this->translate('View all results (%s total)'), $group['count']); ?></button> 
+<button type="button" class="mapping-show-group-item-features"><?php echo sprintf($this->translate('View all results (%s total)'), $group['count']); ?></button>
 
-<?php 
+<?php
     echo $this->partial('common/mapping-popup/search-filters-template.phtml', [
         'itemSet' => $itemSet,
-        'resourceClass' => $resourceClass
+        'resourceClass' => $resourceClass,
     ]);
 ?>

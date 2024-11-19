@@ -5,7 +5,7 @@ $resourceClass = $group['resource_class_id'] ? $this->api()->read('resource_clas
 ?>
 <span class="group-type"><?php echo sprintf($this->translate('%s contains'), $property->label()); ?></span>
 <span class="group-value"><?php echo $group['value']; ?></span>
-<?php 
+<?php
     echo $this->partial('common/mapping-popup/group-filters.phtml', [
         'itemSet' => $itemSet,
         'resourceClass' => $resourceClass
@@ -13,11 +13,11 @@ $resourceClass = $group['resource_class_id'] ? $this->api()->read('resource_clas
 ?>
 <button type="button" class="mapping-show-group-item-features"><?php echo sprintf($this->translate('View all results (%s total)'), $group['count']); ?></button>
 
-<?php 
+<?php
     echo $this->partial('common/mapping-popup/search-filters-template.phtml', [
         'itemSet' => $itemSet,
         'resourceClass' => $resourceClass,
         'groupLabel' => sprintf($this->translate('%s contains'), $property->label()),
-        'groupValue' => $group['value']
+        'groupValue' => $group['value'],
     ]);
 ?>
