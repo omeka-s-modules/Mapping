@@ -143,8 +143,8 @@ class Module extends AbstractModule
             $conn = $services->get('Omeka\Connection');
             $conn->exec("UPDATE site_setting SET id = 'mapping_advanced_search_add_feature_presence' WHERE id = 'mapping_advanced_search_add_marker_presence'");
         }
-        if (Comparator::lessThan($oldVersion, '2.2.0')) {
-            $this->upgradeToV2_2($services);
+        if (Comparator::lessThan($oldVersion, '2.1.0')) {
+            $this->upgradeToV2_1($services);
         }
     }
 
@@ -198,11 +198,11 @@ class Module extends AbstractModule
     }
 
     /**
-     * Upgrade to Mapping version 2.2.
+     * Upgrade to Mapping version 2.1.
      *
      * @param ServiceLocatorInterface $services
      */
-    public function upgradeToV2_2(ServiceLocatorInterface $services)
+    public function upgradeToV2_1(ServiceLocatorInterface $services)
     {
         // Transfer "wms" data to new "overlays" data.
         $entityManager = $services->get('Omeka\EntityManager');
