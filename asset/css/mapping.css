@@ -59,6 +59,17 @@
   font-weight: bold;
 }
 
+.mapping-group-item-features-bar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.mapping-group-item-features-bar .filter {
+  display: inline-flex;
+  margin-right: .5rem;
+}
+
 .mapping-show-group-item-features {
   font-size: 14px;
   padding: 5px 7px;
@@ -67,7 +78,7 @@
 }
 
 .mapping-show-group-features {
-  margin-top: 1rem;
+  margin: 0 0 1rem;
 }
 
 .geojson-properties {
