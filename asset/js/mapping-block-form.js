@@ -223,8 +223,9 @@ $(document).on('click', '.mapping-overlay-open', function(e) {
     overlay.find('.mapping-overlay-open').prop('checked', isOpen);
 });
 
-// Handle mapping overlays on form submit.
+// Handle form onSubmit actions.
 $('form').on('submit', function(e) {
+    // Handle mapping overlays on form submit.
     $('.mapping-overlays').each(function() {
         const overlays = $(this);
         const overlaysContainer = overlays.closest('.mapping-overlays-container');
@@ -237,6 +238,20 @@ $('form').on('submit', function(e) {
             overlayInput.val(JSON.stringify(overlayData));
             overlayInput.attr('name', overlayInput.attr('name').replace('__blockIndex__', block.data('blockIndex')));
         });;
+    });
+    // Handle GeoJSON validation on form submit.
+    $('.mapping-geojson').each(function() {
+        const thisTextarea = $(this);
+        const geoJSON = thisTextarea.val().trim();
+        if (!geoJSON) {
+            return;
+        }
+        try {
+            JSON.parse(geoJSON);
+        } catch (error) {
+            e.preventDefault();
+            alert('Invalid GeoJSON in Mapping block');
+        }
     });
 });
 
