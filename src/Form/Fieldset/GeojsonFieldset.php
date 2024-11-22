@@ -13,7 +13,7 @@ class GeojsonFieldset extends Fieldset
             'name' => 'o:block[__blockIndex__][o:data][geojson][property_key_label]',
             'options' => [
                 'label' => 'Label property key', // @translate
-                'info' => 'Enter the GeoJSON property key used for the popup label, if any.', // @translate
+                'info' => 'Enter the GeoJSON property key to use for the popup label, if desired.', // @translate
             ],
         ]);
         $this->add([
@@ -21,7 +21,7 @@ class GeojsonFieldset extends Fieldset
             'name' => 'o:block[__blockIndex__][o:data][geojson][property_key_comment]',
             'options' => [
                 'label' => 'Comment property key', // @translate
-                'info' => 'Enter the GeoJSON property key used for the popup comment, if any.', // @translate
+                'info' => 'Enter the GeoJSON property key to use for the popup comment, if desired.', // @translate
             ],
         ]);
         $this->add([
@@ -29,7 +29,7 @@ class GeojsonFieldset extends Fieldset
             'name' => 'o:block[__blockIndex__][o:data][geojson][show_property_list]',
             'options' => [
                 'label' => 'Show GeoJSON property list?', // @translate
-                'info' => 'Do you want to show the GeoJSON property list if available?', // @translate
+                'info' => 'Do you want to show all the available GeoJSON properties in the popup?', // @translate
             ],
         ]);
         $this->add([
@@ -39,6 +39,7 @@ class GeojsonFieldset extends Fieldset
                 'label' => 'GeoJSON', // @translate
             ],
             'attributes' => [
+                'class' => 'mapping-geojson',
                 'rows' => '18',
             ],
         ]);

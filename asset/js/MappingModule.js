@@ -225,6 +225,7 @@ const MappingModule = {
                 break;
             case 'LineString':
             case 'Polygon':
+            case 'MultiPolygon':
                 layer.on('popupopen', function() {
                     layer.setStyle({color: '#9fc6fc'});
                     map.fitBounds(layer.getBounds());
