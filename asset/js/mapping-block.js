@@ -28,7 +28,8 @@ function MappingBlock(mapDiv, timelineDiv) {
     }, {
         disableClustering: mapDiv.data('disable-clustering'),
         basemapProvider: basemapProvider,
-        excludeLayersControl: true
+        excludeLayersControl: true,
+        excludeFitBoundsControl: (timelineDiv && timelineDiv.length),
     });
 
     // For easy reference, assign the Leaflet map object directly to the map element.

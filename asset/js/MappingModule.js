@@ -7,6 +7,7 @@ const MappingModule = {
      *      - disableClustering: (bool) Disable feature clustering?
      *      - basemapProvider: (string) The default basemap provider
      *      - excludeLayersControl: (bool) Exclude the layers control?
+     *      - excludeFitBoundsControl: (bool) Exclude the fit bounds control?
      * @returns array
      */
     initializeMap: function(mapDiv, mapOptions, options) {
@@ -50,14 +51,14 @@ const MappingModule = {
             'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
         };
 
-        // Add features to the map.
-        features.addLayer(featuresPoint)
-            .addLayer(featuresPoly);
-        map.addLayer(defaultProvider)
-            .addLayer(features)
-            .addControl(new L.Control.FitBounds(features));
+        // Add features and controls to the map.
+        features.addLayer(featuresPoint).addLayer(featuresPoly);
+        map.addLayer(defaultProvider).addLayer(features);
         if (!options.excludeLayersControl) {
             map.addControl(new L.Control.Layers(baseMaps));
+        }
+        if (!options.excludeFitBoundsControl) {
+            map.addControl(new L.Control.FitBounds(features));
         }
 
         // Set the initial view to the geographical center of world.
