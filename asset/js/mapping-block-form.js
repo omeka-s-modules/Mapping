@@ -90,6 +90,7 @@ const initOverlaysContainer = function(block) {
 const resetOverlaysContainer = function(block) {
     const overlaysContainer = block.find('.mapping-overlays-container');
     overlaysContainer.find('.mapping-overlays-form :input').val('');
+    overlaysContainer.find('.mapping-overlay-label').closest('.field').hide();
     overlaysContainer.find('.mapping-overlays-fieldset-wms').hide();
     overlaysContainer.find('.mapping-overlays-fieldset-iiif').hide();
     overlaysContainer.find('.mapping-overlays-save-button').hide();
@@ -100,7 +101,7 @@ const resetOverlaysContainer = function(block) {
 // Populate an overlay with data.
 const populateOverlay = function(overlay, overlayData) {
     overlay.find('.mapping-overlay-input').data('overlayData', overlayData);
-    overlay.find('.mapping-overlay-label').text(overlayData.label);
+    overlay.find('.mapping-overlay-label-span').text(overlayData.label);
 };
 
 // Handle the overlay type select.
@@ -110,6 +111,7 @@ $(document).on('change', '.mapping-overlays-type-select', function(e) {
     const block = overlaysContainer.closest('.block');
     const overlayType = thisSelect.val();
     resetOverlaysContainer(block);
+    overlaysContainer.find('.mapping-overlay-label').closest('.field').show();
     thisSelect.val(overlayType);
     switch (overlayType) {
         case 'wms':
@@ -122,6 +124,8 @@ $(document).on('change', '.mapping-overlays-type-select', function(e) {
             overlaysContainer.find('.mapping-overlays-save-button').show();
             overlaysContainer.find('.mapping-overlays-cancel-button').show();
             break;
+        default:
+            resetOverlaysContainer(block);
     }
 });
 
@@ -136,28 +140,29 @@ $(document).on('click', '.mapping-overlays-save-button', function(e) {
         overlay = $($.parseHTML(overlaysContainer.data('overlayTemplate')));
     }
     const overlaysSelect = overlaysContainer.find('.mapping-overlays-type-select');
+    const overlayLabel = overlaysContainer.find('.mapping-overlay-label').val().trim();
+    if (!overlayLabel) {
+        alert('An overlay must have a label.');
+        return;
+    }
+    const overlayData = {
+        type: overlaysSelect.val(),
+        label: overlayLabel,
+    };
     let overlayFieldset;
-    let overlayData;
     switch (overlaysSelect.val()) {
         case 'wms':
             overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-wms');
-            overlayData = {
-                type: 'wms',
-                label: overlayFieldset.find('.mapping-overlay-wms-label').val(),
-                base_url: overlayFieldset.find('.mapping-overlay-wms-base-url').val(),
-                layers: overlayFieldset.find('.mapping-overlay-wms-layers').val(),
-                styles: overlayFieldset.find('.mapping-overlay-wms-styles').val(),
-            };
+            overlayData.base_url = overlayFieldset.find('.mapping-overlay-wms-base-url').val();
+            overlayData.layers = overlayFieldset.find('.mapping-overlay-wms-layers').val();
+            overlayData.styles = overlayFieldset.find('.mapping-overlay-wms-styles').val();
             break;
         case 'iiif':
             overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-iiif');
-            overlayData = {
-                type: 'iiif',
-                label: overlayFieldset.find('.mapping-overlay-iiif-label').val(),
-                url: overlayFieldset.find('.mapping-overlay-iiif-url').val(),
-            };
+            overlayData.url = overlayFieldset.find('.mapping-overlay-iiif-url').val();
             break;
     }
+    console.log(overlayData);
     if (overlayFieldset) {
         populateOverlay(overlay, overlayData);
         if (!isEditing) {
@@ -190,19 +195,22 @@ $(document).on('click', '.mapping-overlay-edit', function(e) {
     const overlayData = overlay.find('.mapping-overlay-input').data('overlayData');
     let overlayFieldset;
     resetOverlaysContainer(block);
+    overlaysContainer.find('.mapping-overlay-label').val(overlayData.label).closest('.field').show();
     switch (overlayData.type) {
         case 'wms':
             overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-wms');
-            overlayFieldset.find('.mapping-overlay-wms-label').val(overlayData.label);
+            overlayFieldset.find('.mapping-overlay-label').val(overlayData.label);
             overlayFieldset.find('.mapping-overlay-wms-base-url').val(overlayData.base_url);
             overlayFieldset.find('.mapping-overlay-wms-layers').val(overlayData.layers);
             overlayFieldset.find('.mapping-overlay-wms-styles').val(overlayData.styles);
             break;
         case 'iiif':
             overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-iiif');
-            overlayFieldset.find('.mapping-overlay-iiif-label').val(overlayData.label);
+            overlayFieldset.find('.mapping-overlay-label').val(overlayData.label);
             overlayFieldset.find('.mapping-overlay-iiif-url').val(overlayData.url);
             break;
+        default:
+            resetOverlaysContainer(block);
     }
     if (overlayFieldset) {
         overlayFieldset.show();

@@ -23,6 +23,16 @@ class OverlaysFieldset extends Fieldset
                 'class' => 'mapping-overlays-type-select',
             ],
         ]);
+        $this->add([
+            'type' => 'text',
+            'name' => 'label',
+            'options' => [
+                'label' => 'Label', // @translate
+            ],
+            'attributes' => [
+                'class' => 'mapping-overlay-label',
+            ],
+        ]);
 
         $this->add([
             'type' => 'fieldset',
@@ -32,16 +42,6 @@ class OverlaysFieldset extends Fieldset
             ],
         ]);
         $fieldset = $this->get('mapping-overlays-fieldset-wms');
-        $fieldset->add([
-            'type' => 'text',
-            'name' => 'label',
-            'options' => [
-                'label' => 'Label', // @translate
-            ],
-            'attributes' => [
-                'class' => 'mapping-overlay-wms-label',
-            ],
-        ]);
         $fieldset->add([
             'type' => 'url',
             'name' => 'base_url',
@@ -83,16 +83,6 @@ class OverlaysFieldset extends Fieldset
             ],
         ]);
         $fieldset = $this->get('mapping-overlays-fieldset-iiif');
-        $fieldset->add([
-            'type' => 'text',
-            'name' => 'label',
-            'options' => [
-                'label' => 'Label', // @translate
-            ],
-            'attributes' => [
-                'class' => 'mapping-overlay-iiif-label',
-            ],
-        ]);
         $fieldset->add([
             'type' => 'url',
             'name' => 'url',
