@@ -93,6 +93,7 @@ const resetOverlaysContainer = function(block) {
     overlaysContainer.find('.mapping-overlay-label').closest('.field').hide();
     overlaysContainer.find('.mapping-overlays-fieldset-wms').hide();
     overlaysContainer.find('.mapping-overlays-fieldset-iiif').hide();
+    overlaysContainer.find('.mapping-overlays-fieldset-geojson').hide();
     overlaysContainer.find('.mapping-overlays-save-button').hide();
     overlaysContainer.find('.mapping-overlays-cancel-button').hide();
     overlaysContainer.find('.mapping-overlay-editing').removeClass('mapping-overlay-editing');
@@ -121,6 +122,11 @@ $(document).on('change', '.mapping-overlays-type-select', function(e) {
             break;
         case 'iiif':
             overlaysContainer.find('.mapping-overlays-fieldset-iiif').show();
+            overlaysContainer.find('.mapping-overlays-save-button').show();
+            overlaysContainer.find('.mapping-overlays-cancel-button').show();
+            break;
+        case 'geojson':
+            overlaysContainer.find('.mapping-overlays-fieldset-geojson').show();
             overlaysContainer.find('.mapping-overlays-save-button').show();
             overlaysContainer.find('.mapping-overlays-cancel-button').show();
             break;
@@ -160,6 +166,13 @@ $(document).on('click', '.mapping-overlays-save-button', function(e) {
         case 'iiif':
             overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-iiif');
             overlayData.url = overlayFieldset.find('.mapping-overlay-iiif-url').val();
+            break;
+        case 'geojson':
+            overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-geojson');
+            overlayData.geojson = overlayFieldset.find('.mapping-overlay-geojson-geojson').val();
+            overlayData.property_key_label = overlayFieldset.find('.mapping-overlay-geojson-property-key-label').val();
+            overlayData.property_key_comment = overlayFieldset.find('.mapping-overlay-geojson-property-key-comment').val();
+            overlayData.show_property_list = overlayFieldset.find('.mapping-overlay-geojson-show-property-list').is(':checked');
             break;
     }
     if (overlayFieldset) {
@@ -207,6 +220,14 @@ $(document).on('click', '.mapping-overlay-edit', function(e) {
             overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-iiif');
             overlayFieldset.find('.mapping-overlay-label').val(overlayData.label);
             overlayFieldset.find('.mapping-overlay-iiif-url').val(overlayData.url);
+            break;
+        case 'geojson':
+            overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-geojson');
+            overlayFieldset.find('.mapping-overlay-label').val(overlayData.label);
+            overlayFieldset.find('.mapping-overlay-geojson-geojson').val(overlayData.geojson);
+            overlayFieldset.find('.mapping-overlay-geojson-property-key-label').val(overlayData.property_key_label);
+            overlayFieldset.find('.mapping-overlay-geojson-property-key-comment').val(overlayData.property_key_comment);
+            overlayFieldset.find('.mapping-overlay-geojson-show-property-list').prop('checked', overlayData.show_property_list);
             break;
         default:
             resetOverlaysContainer(block);

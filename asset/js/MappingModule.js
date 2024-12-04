@@ -152,65 +152,6 @@ const MappingModule = {
             });
     },
     /**
-     * Load GeoJSON features into a map.
-     *
-     * @param {L.map}   map
-     * @param {L.layer} featuresPoint
-     * @param {L.layer} featuresPoly
-     * @param {object}  geojsonData
-     * @returns
-     */
-    loadGeojsonFeatures: function(map, featuresPoint, featuresPoly, geojsonData = {}) {
-        if (!geojsonData.geojson) {
-            return;
-        }
-        L.geoJSON(JSON.parse(geojsonData.geojson), {
-            onEachFeature: function(feature, layer) {
-                if (feature.properties) {
-                    // Filter out non-string properties.
-                    $.each(feature.properties, function(key, value) {
-                        if ('string' !== typeof value) {
-                            delete feature.properties[key];
-                        }
-                    });
-                    if (!$.isEmptyObject(feature.properties)) {
-                        // Add the popup.
-                        const popup = $('<div>', {
-                            class: 'mapping-feature-popup-content',
-                        });
-                        // Add the popup label.
-                        const labelKey = geojsonData.property_key_label;
-                        if (feature.properties[labelKey] && 'string' === typeof feature.properties[labelKey]) {
-                            $('<span>', {class: 'group-type'}).text(feature.properties[labelKey]).appendTo(popup);
-                        }
-                        // Add the popup comment.
-                        const commentKey = geojsonData.property_key_comment;
-                        if (feature.properties[commentKey] && 'string' === typeof feature.properties[commentKey]) {
-                            $('<span>', {class: 'group-value'}).text(feature.properties[commentKey]).appendTo(popup);
-                        }
-                        // Add the GeoJSON properties to the popup.
-                        if (geojsonData.show_property_list) {
-                            const dl = $('<dl class="geojson-properties">');
-                            $.each(feature.properties, function(key, value) {
-                                if ('string' === typeof value) {
-                                    const dt = $('<dt>').text(key);
-                                    const dd = $('<dd>').text(value);
-                                    dl.append(dt, dd);
-                                }
-                            });
-                            popup.append(dl);
-                        }
-                        // Show popup only when it has contents.
-                        if (popup.contents().length) {
-                            layer.bindPopup(popup[0]);
-                        }
-                    }
-                }
-                MappingModule.addFeature(map, featuresPoint, featuresPoly, layer, feature.geometry.type);
-            }
-        });
-    },
-    /**
      * Add a feature layer to its respective layer.
      *
      * @param {L.map} map

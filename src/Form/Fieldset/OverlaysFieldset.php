@@ -31,6 +31,7 @@ class OverlaysFieldset extends Fieldset
                 'value_options' => [
                     'wms' => 'Web Map Service (WMS)', // @translate
                     'iiif' => 'IIIF Georeference Annotation', // @translate
+                    'geojson' => 'GeoJSON', // @translate
                 ],
             ],
             'attributes' => [
@@ -108,6 +109,58 @@ class OverlaysFieldset extends Fieldset
             ],
         ]);
 
+        $this->add([
+            'type' => 'fieldset',
+            'name' => 'mapping-overlays-fieldset-geojson',
+            'attributes' => [
+                'class' => 'mapping-overlays-fieldset-geojson'
+            ],
+        ]);
+        $fieldset = $this->get('mapping-overlays-fieldset-geojson');
+        $fieldset->add([
+            'type' => 'textarea',
+            'name' => 'geojson',
+            'options' => [
+                'label' => 'GeoJSON', // @translate
+            ],
+            'attributes' => [
+                'class' => 'mapping-overlay-geojson-geojson',
+                'rows' => '10',
+            ],
+        ]);
+        $fieldset->add([
+            'type' => 'text',
+            'name' => 'property_key_label',
+            'options' => [
+                'label' => 'Label property key', // @translate
+                'info' => 'Enter the GeoJSON property key to use for the popup label, if desired.', // @translate
+            ],
+            'attributes' => [
+                'class' => 'mapping-overlay-geojson-property-key-label',
+            ],
+        ]);
+        $fieldset->add([
+            'type' => 'text',
+            'name' => 'property_key_comment',
+            'options' => [
+                'label' => 'Comment property key', // @translate
+                'info' => 'Enter the GeoJSON property key to use for the popup comment, if desired.', // @translate
+            ],
+            'attributes' => [
+                'class' => 'mapping-overlay-geojson-property-key-comment',
+            ],
+        ]);
+        $fieldset->add([
+            'type' => 'checkbox',
+            'name' => 'show_property_list',
+            'options' => [
+                'label' => 'Show GeoJSON property list?', // @translate
+                'info' => 'Do you want to show all the available GeoJSON properties in the popup?', // @translate
+            ],
+            'attributes' => [
+                'class' => 'mapping-overlay-geojson-show-property-list',
+            ],
+        ]);
     }
 
     public function filterBlockData(array $rawData)
@@ -132,7 +185,7 @@ class OverlaysFieldset extends Fieldset
                 if (!isset($overlayData['type'])) {
                     continue; // Overlay type is required.
                 }
-                if (!in_array($overlayData['type'], ['wms', 'iiif'])) {
+                if (!in_array($overlayData['type'], ['wms', 'iiif', 'geojson'])) {
                     continue; // Overlay type is invalid.
                 }
                 $data['overlays'][] = $overlayData;

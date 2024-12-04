@@ -57,13 +57,15 @@ function MappingBlock(mapDiv, timelineDiv) {
     // Add base map and grouped layers.
     const featuresByResource = {};
     const noOverlayLayer = new L.GridLayer();
+    const groupedLayersGroups = {'Overlays': {}};
     const groupedLayersOptions = {};
     if ('inclusive' !== mapData.overlay_mode) {
+        groupedLayersGroups['Overlays']['No overlay'] = noOverlayLayer;
         groupedLayersOptions.exclusiveGroups = ['Overlays'];
     }
     const groupedLayers = L.control.groupedLayers(
         baseMaps,
-        {'Overlays': {'No overlay': noOverlayLayer}},
+        groupedLayersGroups,
         groupedLayersOptions
     ).addTo(map);
     map.addLayer(noOverlayLayer);
@@ -73,8 +75,7 @@ function MappingBlock(mapDiv, timelineDiv) {
         if (!mapData.overlays) {
             return;
         }
-        // Add overlays in reverse order so they layer in natural order.
-        for (const overlayData of mapData.overlays.reverse()) {
+        for (const overlayData of mapData.overlays) {
             let overlayLayer;
             switch (overlayData.type) {
                 case 'wms':
@@ -88,6 +89,52 @@ function MappingBlock(mapDiv, timelineDiv) {
                 case 'iiif':
                     overlayLayer = new Allmaps.WarpedMapLayer()
                     await overlayLayer.addGeoreferenceAnnotationByUrl(overlayData.url)
+                    break;
+                case 'geojson':
+                    overlayLayer = L.geoJSON(JSON.parse(overlayData.geojson), {
+                        onEachFeature: function(feature, layer) {
+                            if (feature.properties) {
+                                // Filter out non-string properties.
+                                $.each(feature.properties, function(key, value) {
+                                    if ('string' !== typeof value) {
+                                        delete feature.properties[key];
+                                    }
+                                });
+                                if (!$.isEmptyObject(feature.properties)) {
+                                    // Add the popup.
+                                    const popup = $('<div>', {
+                                        class: 'mapping-feature-popup-content',
+                                    });
+                                    // Add the popup label.
+                                    const labelKey = overlayData.property_key_label;
+                                    if (feature.properties[labelKey] && 'string' === typeof feature.properties[labelKey]) {
+                                        $('<span>', {class: 'group-type'}).text(feature.properties[labelKey]).appendTo(popup);
+                                    }
+                                    // Add the popup comment.
+                                    const commentKey = overlayData.property_key_comment;
+                                    if (feature.properties[commentKey] && 'string' === typeof feature.properties[commentKey]) {
+                                        $('<span>', {class: 'group-value'}).text(feature.properties[commentKey]).appendTo(popup);
+                                    }
+                                    // Add the GeoJSON properties to the popup.
+                                    if (overlayData.show_property_list) {
+                                        const dl = $('<dl class="geojson-properties">');
+                                        $.each(feature.properties, function(key, value) {
+                                            if ('string' === typeof value) {
+                                                const dt = $('<dt>').text(key);
+                                                const dd = $('<dd>').text(value);
+                                                dl.append(dt, dd);
+                                            }
+                                        });
+                                        popup.append(dl);
+                                    }
+                                    // Show popup only when it has contents.
+                                    if (popup.contents().length) {
+                                        layer.bindPopup(popup[0]);
+                                    }
+                                }
+                            }
+                        }
+                    });
                     break;
             }
             if (overlayLayer) {
@@ -170,9 +217,6 @@ function MappingBlock(mapDiv, timelineDiv) {
     // Load features asynchronously.
     if (getFeaturesUrl) {
         const onFeaturesLoad = function() {
-            // Load GeoJson features after loading item features and before setting
-            // the default view. This prevents the map view from updating prematurely.
-            MappingModule.loadGeojsonFeatures(map, featuresPoint, featuresPoly, mapData.geojson);
             if (!map.mapping_map_interaction) {
                 // Call setDefaultView only when there was no map interaction. This
                 // prevents the map view from changing after a change has already

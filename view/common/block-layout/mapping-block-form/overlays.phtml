@@ -26,6 +26,7 @@ $overlaysFieldset = $form->get('overlays');
         echo $this->formRow($overlaysFieldset->get('label'));
         echo $this->formCollection($overlaysFieldset->get('mapping-overlays-fieldset-wms'));
         echo $this->formCollection($overlaysFieldset->get('mapping-overlays-fieldset-iiif'));
+        echo $this->formCollection($overlaysFieldset->get('mapping-overlays-fieldset-geojson'));
         ?>
     </div>
     <button type="button" class="mapping-overlays-save-button"><?php echo $this->translate('Save overlay'); ?></button>
