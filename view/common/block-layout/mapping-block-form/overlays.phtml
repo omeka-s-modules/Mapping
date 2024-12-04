@@ -11,15 +11,22 @@ $overlayTemplate = <<<END
     <input type="hidden" class="mapping-overlay-input" name="o:block[__blockIndex__][o:data][overlays][]">
 </li>
 END;
+$overlaysFieldset = $form->get('overlays');
 ?>
 <a href="#" class="expand"><h4><?php echo $this->translate('Overlays'); ?></h4></a>
 <div class="mapping-overlays-container sortable-rows collapsible"
     data-overlays-data="<?php echo $this->escapeHtml(json_encode($data['overlays'])); ?>"
     data-overlay-template="<?php echo $this->escapeHtml($overlayTemplate); ?>">
     <p><?php echo $this->translate('Add, edit, and delete overlays below. You may check which overlay you want open by default.'); ?></p>
+    <?php echo $this->formRow($overlaysFieldset->get('o:block[__blockIndex__][o:data][overlay_mode]')); ?>
     <ul class="mapping-overlays"></ul>
     <div class="mapping-overlays-form">
-        <?php echo $this->formCollection($form->get('overlays')); ?>
+        <?php
+        echo $this->formRow($overlaysFieldset->get('type'));
+        echo $this->formRow($overlaysFieldset->get('label'));
+        echo $this->formCollection($overlaysFieldset->get('mapping-overlays-fieldset-wms'));
+        echo $this->formCollection($overlaysFieldset->get('mapping-overlays-fieldset-iiif'));
+        ?>
     </div>
     <button type="button" class="mapping-overlays-save-button"><?php echo $this->translate('Save overlay'); ?></button>
     <button type="button" class="mapping-overlays-cancel-button"><?php echo $this->translate('Cancel'); ?></button>

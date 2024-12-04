@@ -162,7 +162,6 @@ $(document).on('click', '.mapping-overlays-save-button', function(e) {
             overlayData.url = overlayFieldset.find('.mapping-overlay-iiif-url').val();
             break;
     }
-    console.log(overlayData);
     if (overlayFieldset) {
         populateOverlay(overlay, overlayData);
         if (!isEditing) {
@@ -226,9 +225,22 @@ $(document).on('click', '.mapping-overlay-open', function(e) {
     const thisCheckbox = $(this);
     const isOpen = thisCheckbox.prop('checked');
     const overlay = thisCheckbox.closest('.mapping-overlay');
-    const overlays = $(this).closest('.mapping-overlays');
-    overlays.find('.mapping-overlay-open').prop('checked', false);
+    const overlays = thisCheckbox.closest('.mapping-overlays');
+    const overlaysContainer = overlays.closest('.mapping-overlays-container');
+    const overlayModeSelect = overlaysContainer.find('.mapping-overlay-mode-select');
+    if ('inclusive' !== overlayModeSelect.val()) {
+        overlays.find('.mapping-overlay-open').prop('checked', false);
+    }
     overlay.find('.mapping-overlay-open').prop('checked', isOpen);
+});
+
+// Handle overlay mode select.
+$(document).on('change', '.mapping-overlay-mode-select', function(e) {
+    const thisSelect = $(this);
+    const overlaysContainer = thisSelect.closest('.mapping-overlays-container');
+    if ('inclusive' !== thisSelect.val()) {
+        overlaysContainer.find('.mapping-overlay-open').prop('checked', false);
+    }
 });
 
 // Handle form onSubmit actions.
@@ -238,6 +250,8 @@ $('form').on('submit', function(e) {
         const overlays = $(this);
         const overlaysContainer = overlays.closest('.mapping-overlays-container');
         const block = overlaysContainer.closest('.block');
+        const overlayModeSelect = overlaysContainer.find('.mapping-overlay-mode-select');
+        overlayModeSelect.attr('name', overlayModeSelect.attr('name').replace('__blockIndex__', block.data('blockIndex')));
         overlaysContainer.find('.mapping-overlay').each(function() {
             const overlay = $(this);
             const overlayInput = overlay.find('.mapping-overlay-input');

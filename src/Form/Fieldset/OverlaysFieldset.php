@@ -10,6 +10,20 @@ class OverlaysFieldset extends Fieldset
     {
         $this->add([
             'type' => 'select',
+            'name' => 'o:block[__blockIndex__][o:data][overlay_mode]',
+            'options' => [
+                'label' => 'Overlay mode', // @translate
+                'empty_option' => 'Exclusive', // @translate
+                'value_options' => [
+                    'inclusive' => 'Inclusive', // @translate
+                ],
+            ],
+            'attributes' => [
+                'class' => 'mapping-overlay-mode-select',
+            ],
+        ]);
+        $this->add([
+            'type' => 'select',
             'name' => 'type',
             'options' => [
                 'label' => 'Overlay', // @translate
@@ -99,8 +113,13 @@ class OverlaysFieldset extends Fieldset
     public function filterBlockData(array $rawData)
     {
         $data = [
+            'overlay_mode' => '',
             'overlays' => [],
         ];
+
+        if (isset($rawData['overlay_mode'])) {
+            $data['overlay_mode'] = $rawData['overlay_mode'];
+        }
 
         if (isset($rawData['overlays']) && is_array($rawData['overlays'])) {
             foreach ($rawData['overlays'] as $overlayData) {

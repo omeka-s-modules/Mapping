@@ -38,6 +38,10 @@ function MappingBlock(mapDiv, timelineDiv) {
     // Set and prepare opacity control.
     let opacityControl;
     const handleOpacityControl = function(overlay, label) {
+        if ('inclusive' === mapData.overlay_mode) {
+            // Do not display opacity control when overlay mode is inclusive.
+            return;
+        }
         if (opacityControl) {
             // Only one control at a time.
             map.removeControl(opacityControl);
@@ -53,10 +57,14 @@ function MappingBlock(mapDiv, timelineDiv) {
     // Add base map and grouped layers.
     const featuresByResource = {};
     const noOverlayLayer = new L.GridLayer();
+    const groupedLayersOptions = {};
+    if ('inclusive' !== mapData.overlay_mode) {
+        groupedLayersOptions.exclusiveGroups = ['Overlays'];
+    }
     const groupedLayers = L.control.groupedLayers(
         baseMaps,
         {'Overlays': {'No overlay': noOverlayLayer}},
-        {exclusiveGroups: ['Overlays']}
+        groupedLayersOptions
     ).addTo(map);
     map.addLayer(noOverlayLayer);
 
@@ -65,7 +73,8 @@ function MappingBlock(mapDiv, timelineDiv) {
         if (!mapData.overlays) {
             return;
         }
-        for (const overlayData of mapData.overlays) {
+        // Add overlays in reverse order so they layer in natural order.
+        for (const overlayData of mapData.overlays.reverse()) {
             let overlayLayer;
             switch (overlayData.type) {
                 case 'wms':

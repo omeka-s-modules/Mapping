@@ -46,6 +46,9 @@ class BlockLayoutMapQueryForm extends Form
                 'o:block[__blockIndex__][o:data][max_zoom]' => $data['max_zoom'],
                 'o:block[__blockIndex__][o:data][scroll_wheel_zoom]' => $data['scroll_wheel_zoom'],
             ],
+            'overlays' => [
+                'o:block[__blockIndex__][o:data][overlay_mode]' => $data['overlay_mode'],
+            ],
             'geojson' => [
                 'o:block[__blockIndex__][o:data][geojson][property_key_label]' => $data['geojson']['property_key_label'],
                 'o:block[__blockIndex__][o:data][geojson][property_key_comment]' => $data['geojson']['property_key_comment'],
