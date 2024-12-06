@@ -46,6 +46,7 @@ class OverlaysFieldset extends Fieldset
             ],
             'attributes' => [
                 'class' => 'mapping-overlay-label',
+                'required' => true,
             ],
         ]);
 
