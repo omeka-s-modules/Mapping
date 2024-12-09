@@ -43,10 +43,10 @@ class OverlaysFieldset extends Fieldset
             'name' => 'label',
             'options' => [
                 'label' => 'Label', // @translate
+                'show_required' => true,
             ],
             'attributes' => [
                 'class' => 'mapping-overlay-label',
-                'required' => true,
             ],
         ]);
 
