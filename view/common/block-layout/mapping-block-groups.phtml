@@ -20,11 +20,6 @@
 
 <div class="mapping-block" style="display: none;">
 
-    <div class="mapping-group-item-features-bar">
-        <div class="search-filters"></div>
-        <button type="button" class="mapping-show-group-features"><?php echo $this->translate('Return to groups'); ?></button>
-    </div>
-
     <div class="mapping-map" style="height:500px;"
         data-data="<?php echo $this->escapeHtml(json_encode($dataItems)); ?>"
         data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
@@ -33,6 +28,11 @@
         data-feature-popup-content-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-feature-popup-content'], true)); ?>"
         data-items-query="[]"
         data-features-query="[]">
+    </div>
+
+    <div class="mapping-group-item-features-bar">
+        <div class="search-filters"></div>
+        <button type="button" class="mapping-show-group-features"><?php echo $this->translate('Return to groups'); ?></button>
     </div>
 
 </div>
