@@ -529,19 +529,6 @@ class Module extends AbstractModule
                 'value' => $siteSettings->get('mapping_basemap_provider'),
             ],
         ]);
-        $browsePerPage = $siteSettings->get('mapping_browse_per_page');
-        $form->add([
-            'type' => 'number',
-            'name' => 'mapping_browse_per_page',
-            'options' => [
-                'element_group' => 'mapping',
-                'label' => 'Map browse items per page', // @translate
-                'info' => 'Set the maximum number of items that have features to display per page on the map browse page. Limit to a reasonable amount to avoid reaching the server memory limit and to improve client performance.', // @translate
-            ],
-            'attributes' => [
-                'value' => is_numeric($browsePerPage) ? $browsePerPage : '100000',
-            ],
-        ]);
     }
 
     public function addSiteSettingsInputFilters(Event $event)
@@ -549,10 +536,6 @@ class Module extends AbstractModule
         $inputFilter = $event->getParam('inputFilter');
         $inputFilter->add([
             'name' => 'mapping_basemap_provider',
-            'allow_empty' => true,
-        ]);
-        $inputFilter->add([
-            'name' => 'mapping_browse_per_page',
             'allow_empty' => true,
         ]);
     }
