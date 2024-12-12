@@ -318,8 +318,6 @@ $(document).on('click', '.mapping-show-group-item-features', function(e) {
     // Prepare and load the items map.
     itemsBlockMap.data('itemsQuery', groupPopup.data('itemsQuery'));
     MappingBlock(itemsBlockMap);
-    const bounds = L.geoJSON(groupPopup.data('featureGeography')).getBounds();
-    itemsBlockMap[0].mapping_map.fitBounds(bounds);
 });
 
 $(document).on('click', '.mapping-show-group-features', function() {
