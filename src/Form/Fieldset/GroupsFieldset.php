@@ -10,7 +10,7 @@ class GroupsFieldset extends Fieldset
         'resource_classes' => 'Resource classes', // @translate
         'property_values_eq' => 'Property values (is exactly)', // @translate
         'property_values_in' => 'Property values (contains)', // @translate
-        'property_values_res' => 'Property values (is item with ID)', // @translate
+        'property_values_res' => 'Property values (is resource with ID)', // @translate
         'properties_ex' => 'Properties (has any value)', // @translate
     ];
 
