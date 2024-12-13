@@ -63,6 +63,8 @@
   display: flex;
   justify-content: space-between;
   flex-wrap: wrap;
+  align-items: flex-start;
+  margin-top: 1rem;
 }
 
 .mapping-group-item-features-bar .filter {
