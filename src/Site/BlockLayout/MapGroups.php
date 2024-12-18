@@ -241,7 +241,7 @@ class MapGroups extends AbstractMap
             %s
             %s
             WHERE value.value IN (?)
-            AND value.property_id = ?
+            AND value.property_id %s ?
             AND item_site.site_id = ?
             %s
             %s
@@ -249,6 +249,7 @@ class MapGroups extends AbstractMap
             $this->getGeographySelect($data),
             $itemSetId ? 'INNER JOIN item_item_set ON item.id = item_item_set.item_id' : '',
             $resourceClassId ? 'INNER JOIN resource ON item.id = resource.id' : '',
+            $propertyId ? '=' : '!=',
             $itemSetId ? 'AND item_item_set.item_set_id = ?' : '',
             $resourceClassId ? 'AND resource.resource_class_id = ?' : ''
         );
@@ -310,7 +311,7 @@ class MapGroups extends AbstractMap
                 %s
                 %s
                 WHERE value.value LIKE ?
-                AND value.property_id = ?
+                AND value.property_id %s ?
                 AND item_site.site_id = ?
                 %s
                 %s
@@ -318,6 +319,7 @@ class MapGroups extends AbstractMap
                 $this->getGeographySelect($data),
                 $itemSetId ? 'INNER JOIN item_item_set ON item.id = item_item_set.item_id' : '',
                 $resourceClassId ? 'INNER JOIN resource ON item.id = resource.id' : '',
+                $propertyId ? '=' : '!=',
                 $itemSetId ? 'AND item_item_set.item_set_id = ?' : '',
                 $resourceClassId ? 'AND resource.resource_class_id = ?' : ''
             );
@@ -380,7 +382,7 @@ class MapGroups extends AbstractMap
             %s
             %s
             WHERE value.value_resource_id IN (?)
-            AND value.property_id = ?
+            AND value.property_id %s ?
             AND item_site.site_id = ?
             %s
             %s
@@ -388,6 +390,7 @@ class MapGroups extends AbstractMap
             $this->getGeographySelect($data),
             $itemSetId ? 'INNER JOIN item_item_set ON item.id = item_item_set.item_id' : '',
             $resourceClassId ? 'INNER JOIN resource ON item.id = resource.id' : '',
+            $propertyId ? '=' : '!=',
             $itemSetId ? 'AND item_item_set.item_set_id = ?' : '',
             $resourceClassId ? 'AND resource.resource_class_id = ?' : ''
         );
