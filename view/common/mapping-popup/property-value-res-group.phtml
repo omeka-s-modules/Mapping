@@ -19,6 +19,6 @@ $resourceClass = $group['resource_class_id'] ? $this->api()->read('resource_clas
         'itemSet' => $itemSet,
         'resourceClass' => $resourceClass,
         'groupLabel' => $property ? $property->label() : $this->translate('[Any property]'),
-        'groupValue' => $resource->linkPretty(),
+        'groupValue' => $resource->link($resource->displayTitle()),
     ]);
 ?>
