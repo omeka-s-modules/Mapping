@@ -25,6 +25,12 @@
   font-weight: bold;
 }
 
+.leaflet-container .resource-link img {
+  display: block;
+  height: auto;
+  margin: 0 0 .5rem;
+}
+
 .group-filters {
   margin-bottom: .5rem;
 }
