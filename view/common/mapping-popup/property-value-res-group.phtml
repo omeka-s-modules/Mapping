@@ -1,0 +1,24 @@
+<?php
+$property = $group['property_id'] ? $this->api()->read('properties', $group['property_id'])->getContent() : null;
+$resource = $this->api()->read('resources', $group['resource_id'])->getContent();
+$itemSet = $group['item_set_id'] ? $this->api()->read('item_sets', $group['item_set_id'])->getContent() : null;
+$resourceClass = $group['resource_class_id'] ? $this->api()->read('resource_classes', $group['resource_class_id'])->getContent() : null;
+?>
+<span class="group-type"><?php echo sprintf($this->translate('%s is'), $property ? $property->label() : $this->translate('[Any property]')); ?></span>
+<span class="group-value"><?php echo $resource->linkPretty(); ?></span>
+<?php
+    echo $this->partial('common/mapping-popup/group-filters.phtml', [
+        'itemSet' => $itemSet,
+        'resourceClass' => $resourceClass
+    ]);
+?>
+<button type="button" class="mapping-show-group-item-features"><?php echo sprintf($this->translate('View all results (%s total)'), $group['count']); ?></button>
+
+<?php
+    echo $this->partial('common/mapping-popup/search-filters-template.phtml', [
+        'itemSet' => $itemSet,
+        'resourceClass' => $resourceClass,
+        'groupLabel' => $property ? $property->label() : $this->translate('[Any property]'),
+        'groupValue' => $resource->link($resource->displayTitle()),
+    ]);
+?>

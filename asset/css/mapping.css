@@ -13,3 +13,83 @@
 .leaflet-control-geosearch form input {
   border: 0 !important;
 }
+
+.leaflet-popup-content-wrapper {
+  overflow: hidden;
+}
+
+.leaflet-container a.leaflet-popup-close-button {
+  right: 4px;
+  top: 6px;
+  line-height: 18px;
+  font-weight: bold;
+}
+
+.leaflet-container .resource-link img {
+  display: block;
+  height: auto;
+  margin: 0 0 .5rem;
+}
+
+.group-filters {
+  margin-bottom: .5rem;
+}
+
+.group-filter {
+  display: inline-flex;
+  margin-bottom: .5rem;
+  border: 1px solid #e3e3e3;
+  border-radius: 2px;
+}
+
+.group-filter > * {
+  display: inline-block;
+  padding: .25rem .5rem;
+}
+
+.group-filter-label {
+  background-color: #e3e3e3;
+}
+
+.group-value {
+  font-size: 1.125rem;
+  display: block;
+  margin-bottom: 14px;
+}
+
+.group-type {
+  padding: 8px 21px;
+  background: #e3e3e3;
+  display: block;
+  margin: -14px -25px 14px -21px;
+  font-weight: bold;
+}
+
+.mapping-group-item-features-bar {
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  margin-top: 1rem;
+}
+
+.mapping-group-item-features-bar .filter {
+  display: inline-flex;
+  margin-right: .5rem;
+}
+
+.mapping-show-group-item-features {
+  font-size: 14px;
+  padding: 5px 7px;
+  min-height: 0;
+  line-height: 1;
+}
+
+.mapping-show-group-features {
+  margin: 0 0 1rem;
+}
+
+.geojson-properties {
+  overflow-y: auto;
+  max-height: 200px;
+}

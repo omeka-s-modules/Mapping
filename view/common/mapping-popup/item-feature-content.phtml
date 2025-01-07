@@ -1,0 +1,14 @@
+<?php
+$label = $feature->label();
+$media = $feature->media();
+$item = $feature->item();
+?>
+<span class="group-type">
+<?php echo ($label) ? $this->escapeHtml($label) : $this->translate('Item'); ?>
+</span>
+
+<span class="group-value"><?php echo $item->link($item->displayTitle(null, $this->lang()), null, ['target' => '_blank']); ?></span>
+
+<?php if ($media): ?>
+<?php echo $this->thumbnail($media, 'medium'); ?>
+<?php endif; ?>

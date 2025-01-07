@@ -3,37 +3,16 @@ $(document).ready( function() {
 const mappingMap = $('#mapping-map');
 const mappingData = mappingMap.data('mapping');
 
-const map = L.map('mapping-map', {
-    fullscreenControl: true,
-    worldCopyJump:true
+const [
+    map,
+    features,
+    featuresPoint,
+    featuresPoly,
+    baseMaps
+] = MappingModule.initializeMap(mappingMap[0], {}, {
+    disableClustering: mappingMap.data('disable-clustering'),
+    basemapProvider: mappingMap.data('basemap-provider')
 });
-const features = L.featureGroup();
-const featuresPoint = mappingMap.data('disable-clustering')
-    ? L.featureGroup()
-    : L.markerClusterGroup({
-        polygonOptions: {
-            color: 'green'
-        }
-    });
-const featuresPoly = L.deflate({
-    markerLayer: featuresPoint, // Enable clustering of poly features
-    greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
-});
-
-// Set base maps.
-let defaultProvider;
-try {
-    defaultProvider = L.tileLayer.provider(mappingMap.data('basemap-provider'));
-} catch (error) {
-    defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
-}
-const baseMaps = {
-    'Default': defaultProvider,
-    'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
-    'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
-    'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
-    'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
-};
 
 let defaultBounds = null;
 if (mappingData && mappingData['o-module-mapping:bounds'] !== null) {
@@ -43,35 +22,6 @@ if (mappingData && mappingData['o-module-mapping:bounds'] !== null) {
     defaultBounds = [southWest, northEast];
 }
 
-$('.mapping-feature-popup-content').each(function() {
-    const popup = $(this).clone().show();
-    const geography = popup.data('feature-geography');
-    L.geoJSON(geography, {
-        onEachFeature: function(feature, layer) {
-            layer.bindPopup(popup[0]);
-            switch (feature.type) {
-                case 'Point':
-                    featuresPoint.addLayer(layer);
-                    break;
-                case 'LineString':
-                case 'Polygon':
-                    layer.on('popupopen', function() {
-                        map.fitBounds(layer.getBounds(), {padding: [50, 50]});
-                    });
-                    featuresPoly.addLayer(layer);
-                    break;
-            }
-        }
-    });
-});
-
-features.addLayer(featuresPoint)
-    .addLayer(featuresPoly);
-map.addLayer(baseMaps['Default'])
-    .addLayer(features)
-    .addControl(new L.Control.Layers(baseMaps))
-    .addControl(new L.Control.FitBounds(features));
-
 const setView = function() {
     if (defaultBounds) {
         map.fitBounds(defaultBounds);
@@ -79,13 +29,28 @@ const setView = function() {
         const bounds = features.getBounds();
         if (bounds.isValid()) {
             map.fitBounds(bounds, {padding: [50, 50]});
-        } else {
-            map.setView([20, 0], 2)
         }
     }
 };
 
-setView();
+const onFeaturesLoad = function() {
+    if (!map.mapping_map_interaction) {
+        // Call setView only when there was no map interaction. This prevents the
+        // map view from changing after a change has already been done.
+        setView();
+    }
+};
+
+MappingModule.loadFeaturesAsync(
+    map,
+    featuresPoint,
+    featuresPoly,
+    mappingMap.data('featuresUrl'),
+    mappingMap.data('featurePopupContentUrl'),
+    JSON.stringify(mappingMap.data('itemsQuery')),
+    JSON.stringify(mappingMap.data('featuresQuery')),
+    onFeaturesLoad
+);
 
 // Switching sections changes map dimensions, so make the necessary adjustments.
 $('#mapping-section').one('o:section-opened', function(e) {

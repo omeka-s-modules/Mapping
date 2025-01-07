@@ -1,0 +1,20 @@
+<div class="mapping-search-filters-template" style="display: none">
+    <?php if (isset($groupLabel)): ?>
+    <div class="filter">
+        <div class="filter-label"><?php echo $groupLabel; ?></div>
+        <div class="filter-value"><?php echo $groupValue; ?></div>
+    </div>
+    <?php endif; ?>
+    <?php if (isset($itemSet)): ?>
+    <div class="filter">
+        <div class="filter-label"><?php echo $this->translate('In item set'); ?></div>
+        <div class="filter-value"><?php echo $itemSet->displayTitle(); ?></div>
+    </div>
+    <?php endif; ?>
+    <?php if (isset($resourceClass)): ?>
+    <div class="filter">
+        <div class="filter-label"><?php echo $this->translate('Class'); ?></div>
+        <div class="filter-value"><?php echo $resourceClass->label(); ?></div>
+    </div>
+    <?php endif; ?>
+</div>

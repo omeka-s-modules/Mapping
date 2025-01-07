@@ -33,6 +33,9 @@ return [
         'template_path_stack' => [
             dirname(__DIR__) . '/view',
         ],
+        'strategies' => [
+            'ViewJsonStrategy',
+        ],
     ],
     'view_helpers' => [
         'invokables' => [
@@ -48,6 +51,7 @@ return [
     ],
     'form_elements' => [
         'factories' => [
+           'Mapping\Form\Fieldset\TimelineFieldset' => Service\Form\Fieldset\TimelineFieldsetFactory::class,
            'Mapping\Form\Element\CopyCoordinates' => Service\Form\Element\CopyCoordinatesFactory::class,
            'Mapping\Form\Element\UpdateFeatures' => Service\Form\Element\UpdateFeaturesFactory::class,
         ],
@@ -69,6 +73,7 @@ return [
         'factories' => [
             'mappingMap' => Service\BlockLayout\MapFactory::class,
             'mappingMapQuery' => Service\BlockLayout\MapFactory::class,
+            'mappingMapGroups' => Service\BlockLayout\MapFactory::class,
         ],
     ],
     'navigation_links' => [
@@ -78,6 +83,7 @@ return [
     ],
     'controllers' => [
         'invokables' => [
+            'Mapping\Controller\Admin\Index' => Controller\Admin\IndexController::class,
             'Mapping\Controller\Site\Index' => Controller\Site\IndexController::class,
         ],
     ],
@@ -88,16 +94,39 @@ return [
     ],
     'router' => [
         'routes' => [
+            'admin' => [
+                'child_routes' => [
+                    'mapping' => [
+                        'type' => 'Segment',
+                        'options' => [
+                            'route' => '/mapping/:controller[/:action]',
+                            'defaults' => [
+                                '__NAMESPACE__' => 'Mapping\Controller\Admin',
+                                'controller' => 'index',
+                                'action' => 'index',
+                            ],
+                            'constraints' => [
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                            ],
+                        ],
+                    ],
+                ],
+            ],
             'site' => [
                 'child_routes' => [
-                    'mapping-map-browse' => [
-                        'type' => 'Literal',
+                    'mapping' => [
+                        'type' => 'Segment',
                         'options' => [
-                            'route' => '/map-browse',
+                            'route' => '/mapping/:controller[/:action]',
                             'defaults' => [
                                 '__NAMESPACE__' => 'Mapping\Controller\Site',
                                 'controller' => 'index',
-                                'action' => 'browse',
+                                'action' => 'index',
+                            ],
+                            'constraints' => [
+                                'controller' => '[a-zA-Z][a-zA-Z0-9_-]*',
+                                'action' => '[a-zA-Z][a-zA-Z0-9_-]*',
                             ],
                         ],
                     ],

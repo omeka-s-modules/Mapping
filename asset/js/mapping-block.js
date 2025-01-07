@@ -1,53 +1,47 @@
 function MappingBlock(mapDiv, timelineDiv) {
 
-    const mapData = mapDiv.data('data');
-    const map = new L.map(mapDiv[0], {
-        minZoom: mapData.min_zoom ? mapData.min_zoom : 0,
-        maxZoom: mapData.max_zoom ? mapData.max_zoom : 19,
-        fullscreenControl: true,
-        worldCopyJump:true
-    });
-    const timelineData = timelineDiv.length ? timelineDiv.data('data') : null;
-    const timelineOptions = timelineDiv.length ? timelineDiv.data('options') : null;
-    const timeline = timelineDiv.length ? new TL.Timeline(timelineDiv[0], timelineData, timelineOptions) : null;
-    const features = L.featureGroup();
-    const featuresPoint = mapDiv.data('disable-clustering')
-        ? L.featureGroup()
-        : L.markerClusterGroup({
-            polygonOptions: {
-                color: 'green'
-            }
-        });
-    const featuresPoly = L.deflate({
-        markerLayer: featuresPoint, // Enable clustering of poly features
-        greedyCollapse: false // Must set to false or small poly features will not be inflated at high zoom.
-    });
-    const featuresByItem = {};
-
-    // Set base maps and grouped overlays.
-    let defaultProvider;
-    try {
-        defaultProvider = L.tileLayer.provider(mapData['basemap_provider']);
-    } catch (error) {
-        try {
-            defaultProvider = L.tileLayer.provider(mapDiv.data('basemap-provider'));
-        } catch (error) {
-            defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
-        }
+    // Call remove() on an existing Leaflet map object to destroy it.
+    if (mapDiv[0].mapping_map) {
+        mapDiv[0].mapping_map.remove();
     }
-    const baseMaps = {
-        'Default': defaultProvider,
-        'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
-        'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
-        'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
-        'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
-    };
-    const noOverlayLayer = new L.GridLayer();
-    const groupedOverlays = {'Overlays': {'No overlay': noOverlayLayer}};
+
+    // Instantiate the Leaflet map object.
+    const mapData = mapDiv.data('data');
+
+    // Set the basemap provider.
+    let basemapProvider;
+    if (mapData.basemap_provider) {
+        basemapProvider = mapData.basemap_provider;
+    } else if (mapDiv.data('basemap-provider')) {
+        basemapProvider = mapDiv.data('basemap-provider');
+    }
+
+    const [
+        map,
+        features,
+        featuresPoint,
+        featuresPoly,
+        baseMaps
+    ] = MappingModule.initializeMap(mapDiv[0], {
+        minZoom: mapData.min_zoom ? mapData.min_zoom : 0,
+        maxZoom: mapData.max_zoom ? mapData.max_zoom : 19
+    }, {
+        disableClustering: mapDiv.data('disable-clustering'),
+        basemapProvider: basemapProvider,
+        excludeLayersControl: true,
+        excludeFitBoundsControl: (timelineDiv && timelineDiv.length),
+    });
+
+    // For easy reference, assign the Leaflet map object directly to the map element.
+    mapDiv[0].mapping_map = map;
 
     // Set and prepare opacity control.
     let opacityControl;
     const handleOpacityControl = function(overlay, label) {
+        if ('inclusive' === mapData.overlay_mode) {
+            // Do not display opacity control when overlay mode is inclusive.
+            return;
+        }
         if (opacityControl) {
             // Only one control at a time.
             map.removeControl(opacityControl);
@@ -60,22 +54,106 @@ function MappingBlock(mapDiv, timelineDiv) {
         }
     };
 
-    // Set the default view.
-    const setDefaultView = function() {
-        if (mapData['bounds']) {
-            const bounds = mapData['bounds'].split(',');
-            const southWest = [bounds[1], bounds[0]];
-            const northEast = [bounds[3], bounds[2]];
-            map.fitBounds([southWest, northEast]);
-        } else {
-            const bounds = features.getBounds();
-            if (bounds.isValid()) {
-                map.fitBounds(bounds);
-            } else {
-                map.setView([20, 0], 2);
+    // Add base map and grouped layers.
+    const featuresByResource = {};
+    const noOverlayLayer = new L.GridLayer();
+    const groupedLayersGroups = {'Overlays': {}};
+    const groupedLayersOptions = {};
+    if ('inclusive' !== mapData.overlay_mode) {
+        groupedLayersGroups['Overlays']['No overlay'] = noOverlayLayer;
+        groupedLayersOptions.exclusiveGroups = ['Overlays'];
+    }
+    const groupedLayers = L.control.groupedLayers(
+        baseMaps,
+        groupedLayersGroups,
+        groupedLayersOptions
+    ).addTo(map);
+    map.addLayer(noOverlayLayer);
+
+    // Add overlays.
+    const addOverlays = async function () {
+        if (!mapData.overlays) {
+            return;
+        }
+        for (const overlayData of mapData.overlays) {
+            let overlayLayer;
+            switch (overlayData.type) {
+                case 'wms':
+                    overlayLayer = L.tileLayer.wms(overlayData.base_url, {
+                        layers: overlayData.layers,
+                        styles: overlayData.styles,
+                        format: 'image/png',
+                        transparent: true,
+                    });
+                    break;
+                case 'iiif':
+                    overlayLayer = new Allmaps.WarpedMapLayer()
+                    await overlayLayer.addGeoreferenceAnnotationByUrl(overlayData.url)
+                    break;
+                case 'geojson':
+                    overlayLayer = L.geoJSON(JSON.parse(overlayData.geojson), {
+                        onEachFeature: function(feature, layer) {
+                            if (feature.properties) {
+                                // Filter out non-string properties.
+                                $.each(feature.properties, function(key, value) {
+                                    if ('string' !== typeof value) {
+                                        delete feature.properties[key];
+                                    }
+                                });
+                                if (!$.isEmptyObject(feature.properties)) {
+                                    // Add the popup.
+                                    const popup = $('<div>', {
+                                        class: 'mapping-feature-popup-content',
+                                    });
+                                    // Add the popup label.
+                                    const labelKey = overlayData.property_key_label;
+                                    if (feature.properties[labelKey] && 'string' === typeof feature.properties[labelKey]) {
+                                        $('<span>', {class: 'group-type'}).text(feature.properties[labelKey]).appendTo(popup);
+                                    }
+                                    // Add the popup comment.
+                                    const commentKey = overlayData.property_key_comment;
+                                    if (feature.properties[commentKey] && 'string' === typeof feature.properties[commentKey]) {
+                                        $('<span>', {class: 'group-value'}).text(feature.properties[commentKey]).appendTo(popup);
+                                    }
+                                    // Add the GeoJSON properties to the popup.
+                                    if (overlayData.show_property_list) {
+                                        const dl = $('<dl class="geojson-properties">');
+                                        $.each(feature.properties, function(key, value) {
+                                            if ('string' === typeof value) {
+                                                const dt = $('<dt>').text(key);
+                                                const dd = $('<dd>').text(value);
+                                                dl.append(dt, dd);
+                                            }
+                                        });
+                                        popup.append(dl);
+                                    }
+                                    // Show popup only when it has contents.
+                                    if (popup.contents().length) {
+                                        layer.bindPopup(popup[0]);
+                                    }
+                                }
+                            }
+                        }
+                    });
+                    break;
+            }
+            if (overlayLayer) {
+                if (overlayData.open) {
+                    // This overlay is open by default.
+                    map.removeLayer(noOverlayLayer);
+                    map.addLayer(overlayLayer);
+                    handleOpacityControl(overlayLayer, overlayData.label);
+                }
+                groupedLayers.addOverlay(overlayLayer, overlayData.label, 'Overlays');
             }
         }
-    };
+    }
+    addOverlays();
+
+    // Handle the overlay opacity control.
+    map.on('overlayadd', function(e) {
+        handleOpacityControl(e.layer, e.name);
+    });
 
     // Set the scroll wheel zoom behavior.
     switch (mapData['scroll_wheel_zoom']) {
@@ -95,79 +173,90 @@ function MappingBlock(mapDiv, timelineDiv) {
             break;
     }
 
+    // Set the default view.
+    const setDefaultView = function() {
+        if (mapData['bounds']) {
+            const bounds = mapData['bounds'].split(',');
+            const southWest = [bounds[1], bounds[0]];
+            const northEast = [bounds[3], bounds[2]];
+            map.fitBounds([southWest, northEast]);
+        } else {
+            const bounds = features.getBounds();
+            if (bounds.isValid()) {
+                map.fitBounds(bounds);
+            }
+        }
+    };
+
+    const getFeaturesUrl = mapDiv.data('featuresUrl');
+    const getFeaturePopupContentUrl = mapDiv.data('featurePopupContentUrl');
+
+    // Load features synchronously.
     mapDiv.closest('.mapping-block').find('.mapping-feature-popup-content').each(function() {
-        const popup = $(this).clone().show();
-        const itemId = popup.data('item-id');
-        const geography = popup.data('feature-geography');
-        L.geoJSON(geography, {
+        const popupContent = $(this);
+        const featureId = popupContent.data('featureId');
+        const featureGeography = popupContent.data('featureGeography');
+        L.geoJSON(featureGeography, {
             onEachFeature: function(feature, layer) {
-                layer.bindPopup(popup[0]);
-                switch (feature.type) {
-                    case 'Point':
-                        featuresPoint.addLayer(layer);
-                        break;
-                    case 'LineString':
-                    case 'Polygon':
-                        layer.on('popupopen', function() {
-                            map.fitBounds(layer.getBounds());
+                const popup = L.popup();
+                layer.bindPopup(popup);
+                if (getFeaturePopupContentUrl) {
+                    layer.on('popupopen', function() {
+                        $.get(getFeaturePopupContentUrl, {feature_id: featureId}, function(popupContent) {
+                            popup.setContent(popupContent);
                         });
-                        featuresPoly.addLayer(layer);
-                        break;
+                    });
+                } else {
+                    popup.setContent(popupContent[0]);
                 }
-                if (!(itemId in featuresByItem)) {
-                    featuresByItem[itemId] = L.featureGroup();
-                }
-                featuresByItem[itemId].addLayer(layer);
+                MappingModule.addFeature(map, featuresPoint, featuresPoly, layer, feature.type);
             }
         });
     });
 
-    // Add the features to the map.
-    features.addLayer(featuresPoint);
-    features.addLayer(featuresPoly);
-    map.addLayer(features);
+    // Load features asynchronously.
+    if (getFeaturesUrl) {
+        const onFeaturesLoad = function() {
+            if (!map.mapping_map_interaction) {
+                // Call setDefaultView only when there was no map interaction. This
+                // prevents the map view from changing after a change has already
+                // been done.
+                setDefaultView();
+            }
+        };
+        MappingModule.loadFeaturesAsync(
+            map,
+            featuresPoint,
+            featuresPoly,
+            getFeaturesUrl,
+            getFeaturePopupContentUrl,
+            JSON.stringify(mapDiv.data('itemsQuery')),
+            JSON.stringify(mapDiv.data('featuresQuery')),
+            onFeaturesLoad,
+            featuresByResource
+        );
+    }
+
     setDefaultView();
 
-    // Add base map and grouped WMS overlay layers.
-    map.addLayer(baseMaps['Default']);
-    map.addLayer(noOverlayLayer);
-    $.each(mapData['wms'], function(index, data) {
-        wmsLayer = L.tileLayer.wms(data.base_url, {
-            layers: data.layers,
-            styles: data.styles,
-            format: 'image/png',
-            transparent: true,
-        });
-        if (data.open) {
-            // This WMS overlay is open by default.
-            map.removeLayer(noOverlayLayer);
-            map.addLayer(wmsLayer);
-            handleOpacityControl(wmsLayer, data.label);
-        }
-        groupedOverlays['Overlays'][data.label] = wmsLayer;
-    });
-    L.control.groupedLayers(baseMaps, groupedOverlays, {
-        exclusiveGroups: ['Overlays']
-    }).addTo(map);
-
-    // Handle the overlay opacity control.
-    map.on('overlayadd', function(e) {
-        handleOpacityControl(e.layer, e.name);
-    });
-
-    if (timeline) {
+    if (timelineDiv && timelineDiv.length) {
+        timeline = new TL.Timeline(
+            timelineDiv[0],
+            timelineDiv.data('data'),
+            timelineDiv.data('options')
+        )
         timeline.on('change', function(e) {
             if ($.isNumeric(e.unique_id)) {
                 // Changed to an event slide. Set the timeline event view.
                 map.removeLayer(features);
-                $.each(featuresByItem, function(itemId, itemFeatures) {
+                $.each(featuresByResource, function(resourceId, itemFeatures) {
                     map.removeLayer(itemFeatures);
                 });
                 // Changed to an event slide. Set the event's map view.
                 const currentEvent = this.config.event_dict[e.unique_id];
                 const currentEventStart = currentEvent.start_date.data.date_obj;
                 const currentEventEnd = ('undefined' === typeof currentEvent.end_date) ? null : currentEvent.end_date.data.date_obj;
-                const eventFeatures = featuresByItem[currentEvent.unique_id];
+                const eventFeatures = featuresByResource[currentEvent.unique_id];
                 // features.addLayer(eventFeatures);
                 map.addLayer(eventFeatures);
                 if ($.isNumeric(mapData['timeline']['fly_to'])) {
@@ -182,12 +271,12 @@ function MappingBlock(mapDiv, timelineDiv) {
                                 // For a timeline using intervals, a portion of this event
                                 // must fall within the interval of the current event.
                                 if (currentEventEnd && eventStart <= currentEventEnd && eventEnd >= currentEventStart) {
-                                    features.addLayer(featuresByItem[event.unique_id])
+                                    features.addLayer(featuresByResource[event.unique_id])
                                 }
                                 // For a timeline using timestamps, this event must have
                                 // the same timestamp as the current event.
                                 if (!currentEventEnd && currentEventStart.getTime() == eventStart.getTime()) {
-                                    features.addLayer(featuresByItem[event.unique_id])
+                                    features.addLayer(featuresByResource[event.unique_id])
                                 }
                             }
                         });
@@ -204,11 +293,37 @@ function MappingBlock(mapDiv, timelineDiv) {
 }
 
 $(document).ready( function() {
-    $('.mapping-block').each(function() {
+    $('.mapping-block:visible').each(function() {
         const blockDiv = $(this);
-        mappingBlock = new MappingBlock(
+        MappingBlock(
             blockDiv.children('.mapping-map'),
             blockDiv.children('.mapping-timeline')
         );
     });
+});
+
+$(document).on('click', '.mapping-show-group-item-features', function(e) {
+    const thisButton = $(this);
+    const groupPopup = thisButton.closest('.mapping-feature-popup-content');
+    const groupBlock = thisButton.closest('.mapping-block');
+    const itemsBlock = groupBlock.next('.mapping-block');
+    const itemsBlockMap = itemsBlock.find('.mapping-map');
+
+    // Copy filters markup to items block.
+    itemsBlock.find('.search-filters').html(groupPopup.find('.mapping-search-filters-template').html());
+
+    groupBlock.hide();
+    itemsBlock.show();
+
+    // Prepare and load the items map.
+    itemsBlockMap.data('itemsQuery', groupPopup.data('itemsQuery'));
+    MappingBlock(itemsBlockMap);
+});
+
+$(document).on('click', '.mapping-show-group-features', function() {
+    const thisButton = $(this);
+    const mappingBlockItems = thisButton.closest('.mapping-block');
+    const mappingBlock = mappingBlockItems.prev('.mapping-block');
+    mappingBlockItems.hide();
+    mappingBlock.show();
 });

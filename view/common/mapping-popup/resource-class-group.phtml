@@ -1,0 +1,19 @@
+<?php
+$resourceClass = $this->api()->read('resource_classes', $group['resource_class_id'])->getContent();
+$itemSet = $group['item_set_id'] ? $this->api()->read('item_sets', $group['item_set_id'])->getContent() : null;
+?>
+<span class="group-type"><?php echo $this->translate('Class'); ?></span>
+<span class="group-value"><?php echo $resourceClass->label(); ?></span>
+<?php
+    echo $this->partial('common/mapping-popup/group-filters.phtml', [
+        'itemSet' => $itemSet
+    ]);
+?>
+<button type="button" class="mapping-show-group-item-features"><?php echo sprintf($this->translate('View all results (%s total)'), $group['count']); ?></button>
+
+<?php
+    echo $this->partial('common/mapping-popup/search-filters-template.phtml', [
+        'itemSet' => $itemSet,
+        'resourceClass' => $resourceClass,
+    ]);
+?>

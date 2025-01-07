@@ -143,6 +143,9 @@ class Module extends AbstractModule
             $conn = $services->get('Omeka\Connection');
             $conn->exec("UPDATE site_setting SET id = 'mapping_advanced_search_add_feature_presence' WHERE id = 'mapping_advanced_search_add_marker_presence'");
         }
+        if (Comparator::lessThan($oldVersion, '2.1.0')) {
+            $this->upgradeToV2_1($services);
+        }
     }
 
     /**
@@ -192,6 +195,41 @@ class Module extends AbstractModule
 
         // Drop the mapping_marker table now that we're done with it.
         $conn->executeStatement('DROP TABLE mapping_marker;');
+    }
+
+    /**
+     * Upgrade to Mapping version 2.1.
+     *
+     * @param ServiceLocatorInterface $services
+     */
+    public function upgradeToV2_1(ServiceLocatorInterface $services)
+    {
+        // Transfer "wms" data to new "overlays" data.
+        $entityManager = $services->get('Omeka\EntityManager');
+        $blocks = $entityManager
+            ->getRepository('Omeka\Entity\SitePageBlock')
+            ->findBy(['layout' => ['mappingMap', 'mappingMapQuery']]);
+        foreach ($blocks as $block) {
+            $data = $block->getData();
+            if (!(isset($data['wms']) && is_array($data['wms']) && $data['wms'])) {
+                continue;
+            }
+            $overlaysData = [];
+            foreach ($data['wms'] as $wmsData) {
+                $overlayData = [
+                    'type' => 'wms',
+                    'label' => $wmsData['label'],
+                    'base_url' => $wmsData['base_url'],
+                    'layers' => $wmsData['layers'],
+                    'styles' => $wmsData['styles'],
+                    'open' => (bool) ($wmsData['open'] ?? false),
+                ];
+                $overlaysData[] = $overlayData;
+            }
+            $data['overlays'] = $overlaysData;
+            $block->setData($data);
+        }
+        $entityManager->flush();
     }
 
     public function attachListeners(SharedEventManagerInterface $sharedEventManager)
@@ -491,19 +529,6 @@ class Module extends AbstractModule
                 'value' => $siteSettings->get('mapping_basemap_provider'),
             ],
         ]);
-        $form->add([
-            'type' => 'number',
-            'name' => 'mapping_browse_per_page',
-            'options' => [
-                'element_group' => 'mapping',
-                'label' => 'Map browse items per page', // @translate
-                'info' => 'Set the maximum number of items that have features to display per page on the map browse page. Limit to a reasonable amount to avoid reaching the server memory limit and to improve client performance.', // @translate
-                'placeholder' => '5000',
-            ],
-            'attributes' => [
-                'value' => $siteSettings->get('mapping_browse_per_page', '5000'),
-            ],
-        ]);
     }
 
     public function addSiteSettingsInputFilters(Event $event)
@@ -534,7 +559,7 @@ class Module extends AbstractModule
                 default:
                     return;
             }
-            if (!($hasMapping || $hasFeatures)) {
+            if (!$hasMapping && !$hasFeatures) {
                 return;
             }
         }
@@ -647,17 +672,21 @@ class Module extends AbstractModule
      */
     public function filterItemJsonLd(Event $event)
     {
-        $item = $event->getTarget();
+        $itemId = $event->getTarget()->id();
+        if (!$itemId) {
+            // Account for deleted items.
+            return;
+        }
         $jsonLd = $event->getParam('jsonLd');
         $api = $this->getServiceLocator()->get('Omeka\ApiManager');
         // Add mapping data.
-        $response = $api->search('mappings', ['item_id' => $item->id()]);
+        $response = $api->search('mappings', ['item_id' => $itemId]);
         foreach ($response->getContent() as $mapping) {
             // There's zero or one mapping per item.
             $jsonLd['o-module-mapping:mapping'] = $mapping;
         }
         // Add feature data.
-        $response = $api->search('mapping_features', ['item_id' => $item->id()]);
+        $response = $api->search('mapping_features', ['item_id' => $itemId]);
         foreach ($response->getContent() as $feature) {
             // There's zero or more features per item.
             $jsonLd['o-module-mapping:feature'][] = $feature;

@@ -69,156 +69,281 @@ var setMap = function(block) {
     });
 };
 
-/**
- * Set WMS data to page form.
- *
- * @param block The page block (div) jQuery object
- * @param wmsOverlay The WMS overlay (li) jQuery object
- * @return bool Whether the WMS data is valid
- */
-var setWmsData = function(block, wmsOverlay) {
-    var wmsLabel = block.find('input.mapping-wms-label').val();
-    var wmsBaseUrl = block.find('input.mapping-wms-base-url').val();
-    var wmsLayers = block.find('input.mapping-wms-layers').val();
-    var wmsStyles = block.find('input.mapping-wms-styles').val();
-
-    // Label and base URL are required for WMS overlays.
-    if (!wmsLabel || !wmsBaseUrl) {
-        return false;
+// Initialize the overlay container.
+const initOverlaysContainer = function(block) {
+    const overlaysContainer = block.find('.mapping-overlays-container');
+    if (!overlaysContainer.length) {
+        return;
     }
+    const overlays = overlaysContainer.find('.mapping-overlays');
+    overlaysContainer.data('overlaysData').forEach(function(overlayData) {
+        const overlay = $($.parseHTML(overlaysContainer.data('overlayTemplate')));
+        overlay.find('.mapping-overlay-open').prop('checked', overlayData.open);
+        populateOverlay(overlay, overlayData);
+        overlays.append(overlay);
+    });
+    new Sortable(overlays[0], {draggable: '.mapping-overlay', handle: '.sortable-handle'});
+    resetOverlaysContainer(block);
+};
 
-    wmsOverlay.find('.mapping-wms-overlay-title').html(wmsLabel);
-    wmsOverlay.find('input[name$="[label]"]').val(wmsLabel);
-    wmsOverlay.find('input[name$="[base_url]"]').val(wmsBaseUrl);
-    wmsOverlay.find('input[name$="[layers]"]').val(wmsLayers);
-    wmsOverlay.find('input[name$="[styles]"]').val(wmsStyles);
-
-    block.find('.mapping-wms-fields :input').val('');
-    return true;
+// Reset the overlay container.
+const resetOverlaysContainer = function(block) {
+    const overlaysContainer = block.find('.mapping-overlays-container');
+    overlaysContainer.find('.mapping-overlays-form :input').val('');
+    overlaysContainer.find('.mapping-overlay-label').closest('.field').hide();
+    overlaysContainer.find('.mapping-overlays-fieldset-wms').hide();
+    overlaysContainer.find('.mapping-overlays-fieldset-iiif').hide();
+    overlaysContainer.find('.mapping-overlays-fieldset-geojson').hide();
+    overlaysContainer.find('.mapping-overlays-save-button').hide();
+    overlaysContainer.find('.mapping-overlays-cancel-button').hide();
+    overlaysContainer.find('.mapping-overlay-editing').removeClass('mapping-overlay-editing');
 }
+
+// Populate an overlay with data.
+const populateOverlay = function(overlay, overlayData) {
+    overlay.find('.mapping-overlay-input').data('overlayData', overlayData);
+    overlay.find('.mapping-overlay-label-span').text(overlayData.label);
+};
+
+// Handle the overlay type select.
+$(document).on('change', '.mapping-overlays-type-select', function(e) {
+    const thisSelect = $(this);
+    const overlaysContainer = thisSelect.closest('.mapping-overlays-container');
+    const block = overlaysContainer.closest('.block');
+    const overlayType = thisSelect.val();
+    resetOverlaysContainer(block);
+    overlaysContainer.find('.mapping-overlay-label').closest('.field').show();
+    thisSelect.val(overlayType);
+    switch (overlayType) {
+        case 'wms':
+            overlaysContainer.find('.mapping-overlays-fieldset-wms').show();
+            overlaysContainer.find('.mapping-overlays-save-button').show();
+            overlaysContainer.find('.mapping-overlays-cancel-button').show();
+            break;
+        case 'iiif':
+            overlaysContainer.find('.mapping-overlays-fieldset-iiif').show();
+            overlaysContainer.find('.mapping-overlays-save-button').show();
+            overlaysContainer.find('.mapping-overlays-cancel-button').show();
+            break;
+        case 'geojson':
+            overlaysContainer.find('.mapping-overlays-fieldset-geojson').show();
+            overlaysContainer.find('.mapping-overlays-save-button').show();
+            overlaysContainer.find('.mapping-overlays-cancel-button').show();
+            break;
+        default:
+            resetOverlaysContainer(block);
+    }
+});
+
+// Handle the overlay form save button.
+$(document).on('click', '.mapping-overlays-save-button', function(e) {
+    const overlaysContainer = $(this).closest('.mapping-overlays-container');
+    const block = overlaysContainer.closest('.block');
+    const overlays = overlaysContainer.find('.mapping-overlays');
+    let overlay = overlays.find('.mapping-overlay-editing');
+    const isEditing = overlay.length;
+    if (!isEditing) {
+        overlay = $($.parseHTML(overlaysContainer.data('overlayTemplate')));
+    }
+    const overlaysSelect = overlaysContainer.find('.mapping-overlays-type-select');
+    const overlayLabel = overlaysContainer.find('.mapping-overlay-label').val().trim();
+    if (!overlayLabel) {
+        alert('An overlay must have a label.');
+        return;
+    }
+    const overlayData = {
+        type: overlaysSelect.val(),
+        label: overlayLabel,
+    };
+    let overlayFieldset;
+    switch (overlaysSelect.val()) {
+        case 'wms':
+            overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-wms');
+            overlayData.base_url = overlayFieldset.find('.mapping-overlay-wms-base-url').val();
+            overlayData.layers = overlayFieldset.find('.mapping-overlay-wms-layers').val();
+            overlayData.styles = overlayFieldset.find('.mapping-overlay-wms-styles').val();
+            break;
+        case 'iiif':
+            overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-iiif');
+            overlayData.url = overlayFieldset.find('.mapping-overlay-iiif-url').val();
+            break;
+        case 'geojson':
+            overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-geojson');
+            overlayData.geojson = overlayFieldset.find('.mapping-overlay-geojson-geojson').val();
+            overlayData.property_key_label = overlayFieldset.find('.mapping-overlay-geojson-property-key-label').val();
+            overlayData.property_key_comment = overlayFieldset.find('.mapping-overlay-geojson-property-key-comment').val();
+            overlayData.show_property_list = overlayFieldset.find('.mapping-overlay-geojson-show-property-list').is(':checked');
+            break;
+    }
+    if (overlayFieldset) {
+        populateOverlay(overlay, overlayData);
+        if (!isEditing) {
+            overlays.append(overlay);
+        }
+    }
+    resetOverlaysContainer(block);
+});
+
+// Handle the overlay form cancel button.
+$(document).on('click', '.mapping-overlays-cancel-button', function(e) {
+    const block = $(this).closest('.block');
+    resetOverlaysContainer(block);
+});
+
+// Handle the overlay delete button.
+$(document).on('click', '.mapping-overlay-delete', function(e) {
+    e.preventDefault();
+    const overlay = $(this).closest('.mapping-overlay');
+    overlay.remove();
+});
+
+// Handle the overlay edit button.
+$(document).on('click', '.mapping-overlay-edit', function(e) {
+    e.preventDefault();
+    const overlay = $(this).closest('.mapping-overlay');
+    const block = overlay.closest('.block');
+    const overlaysContainer = overlay.closest('.mapping-overlays-container');
+    const overlaysSelect = overlaysContainer.find('.mapping-overlays-type-select');
+    const overlayData = overlay.find('.mapping-overlay-input').data('overlayData');
+    let overlayFieldset;
+    resetOverlaysContainer(block);
+    overlaysContainer.find('.mapping-overlay-label').val(overlayData.label).closest('.field').show();
+    switch (overlayData.type) {
+        case 'wms':
+            overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-wms');
+            overlayFieldset.find('.mapping-overlay-label').val(overlayData.label);
+            overlayFieldset.find('.mapping-overlay-wms-base-url').val(overlayData.base_url);
+            overlayFieldset.find('.mapping-overlay-wms-layers').val(overlayData.layers);
+            overlayFieldset.find('.mapping-overlay-wms-styles').val(overlayData.styles);
+            break;
+        case 'iiif':
+            overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-iiif');
+            overlayFieldset.find('.mapping-overlay-label').val(overlayData.label);
+            overlayFieldset.find('.mapping-overlay-iiif-url').val(overlayData.url);
+            break;
+        case 'geojson':
+            overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-geojson');
+            overlayFieldset.find('.mapping-overlay-label').val(overlayData.label);
+            overlayFieldset.find('.mapping-overlay-geojson-geojson').val(overlayData.geojson);
+            overlayFieldset.find('.mapping-overlay-geojson-property-key-label').val(overlayData.property_key_label);
+            overlayFieldset.find('.mapping-overlay-geojson-property-key-comment').val(overlayData.property_key_comment);
+            overlayFieldset.find('.mapping-overlay-geojson-show-property-list').prop('checked', overlayData.show_property_list);
+            break;
+        default:
+            resetOverlaysContainer(block);
+    }
+    if (overlayFieldset) {
+        overlayFieldset.show();
+        overlaysContainer.find('.mapping-overlays-save-button').show();
+        overlaysContainer.find('.mapping-overlays-cancel-button').show();
+        overlaysSelect.val(overlayData.type);
+        overlay.addClass('mapping-overlay-editing');
+    }
+});
+
+// Handle the overlay open checkbox.
+$(document).on('click', '.mapping-overlay-open', function(e) {
+    const thisCheckbox = $(this);
+    const isOpen = thisCheckbox.prop('checked');
+    const overlay = thisCheckbox.closest('.mapping-overlay');
+    const overlays = thisCheckbox.closest('.mapping-overlays');
+    const overlaysContainer = overlays.closest('.mapping-overlays-container');
+    const overlayModeSelect = overlaysContainer.find('.mapping-overlay-mode-select');
+    if ('inclusive' !== overlayModeSelect.val()) {
+        overlays.find('.mapping-overlay-open').prop('checked', false);
+    }
+    overlay.find('.mapping-overlay-open').prop('checked', isOpen);
+});
+
+// Handle overlay mode select.
+$(document).on('change', '.mapping-overlay-mode-select', function(e) {
+    const thisSelect = $(this);
+    const overlaysContainer = thisSelect.closest('.mapping-overlays-container');
+    if ('inclusive' !== thisSelect.val()) {
+        overlaysContainer.find('.mapping-overlay-open').prop('checked', false);
+    }
+});
+
+// Handle form onSubmit actions.
+$('form').on('submit', function(e) {
+    // Handle mapping overlays on form submit.
+    $('.mapping-overlays').each(function() {
+        const overlays = $(this);
+        const overlaysContainer = overlays.closest('.mapping-overlays-container');
+        const block = overlaysContainer.closest('.block');
+        const overlayModeSelect = overlaysContainer.find('.mapping-overlay-mode-select');
+        overlayModeSelect.attr('name', overlayModeSelect.attr('name').replace('__blockIndex__', block.data('blockIndex')));
+        overlaysContainer.find('.mapping-overlay').each(function() {
+            const overlay = $(this);
+            const overlayInput = overlay.find('.mapping-overlay-input');
+            const overlayData = overlayInput.data('overlayData');
+            overlayData.open = overlay.find('.mapping-overlay-open').prop('checked');
+            overlayInput.val(JSON.stringify(overlayData));
+            overlayInput.attr('name', overlayInput.attr('name').replace('__blockIndex__', block.data('blockIndex')));
+        });;
+    });
+    // Handle GeoJSON validation on form submit.
+    $('.mapping-geojson').each(function() {
+        const thisTextarea = $(this);
+        const geoJSON = thisTextarea.val().trim();
+        if (!geoJSON) {
+            return;
+        }
+        try {
+            JSON.parse(geoJSON);
+        } catch (error) {
+            e.preventDefault();
+            alert('Invalid GeoJSON in Mapping block');
+        }
+    });
+});
+
+// Handle "mappingMapGroups" blocks.
+const prepareBlockMapGroups = function(block) {
+    const groupsType = block.find('select.groups-type').val();
+    block.find('.hidden_by_default').closest('.field').hide();
+    switch (groupsType) {
+        case 'item_sets':
+            block.find('select.item_set_ids,select.resource_class_id').closest('.field').show();
+            break;
+        case 'resource_classes':
+            block.find('select.resource_class_ids, select.item_set_id').closest('.field').show();
+            break;
+        case 'property_values_eq':
+        case 'property_values_in':
+        case 'property_values_res':
+            block.find('select.property_id, textarea.values, select.item_set_id, select.resource_class_id').closest('.field').show();
+            break;
+        case 'properties_ex':
+            block.find('select.property_ids, select.item_set_id, select.resource_class_id').closest('.field').show();
+            break;
+    }
+    block.find('select.groups-type').one('change', function(e) {
+        prepareBlockMapGroups(block);
+    });
+};
+$('.block[data-block-layout="mappingMapGroups"]').each(function() {
+    const thisBlock = $(this);
+    prepareBlockMapGroups(thisBlock);
+});
+$('#blocks').on('o:block-added', '.block[data-block-layout="mappingMapGroups"]', function(e) {
+    const thisBlock = $(this);
+    thisBlock.find('.chosen-select').chosen();
+    prepareBlockMapGroups(thisBlock);
+});
 
 // Handle setting the map for added blocks.
 $('#blocks').on('o:block-added', '.block[data-block-layout^="mappingMap"]', function(e) {
-    setMap($(this));
+    const block = $(this);
+    setMap(block);
+    initOverlaysContainer(block);
 });
 
 // Handle setting the map for existing blocks.
 $('.block[data-block-layout^="mappingMap"]').each(function() {
-    setMap($(this));
-});
-
-// Handle preparing the WMS data for submission.
-$('form').submit(function(e) {
-    $('.mapping-wms-overlay').each(function(index) {
-        $(this).find('input[type="hidden"]').each(function() {
-            var thisInput = $(this);
-            var name = thisInput.attr('name').replace('[__mappingWmsIndex__]', '[' + index + ']');
-            thisInput.attr('name', name);
-        });
-    });
-    // We need to replace blockIndex here. Otherwise, dynamically created WMS
-    // inputs are ignored.
-    $('.block[data-block-layout^="mappingMap"]').each(function() {
-        var thisBlock = $(this);
-        thisBlock.find('.mapping-wms-overlay').find('input[type="hidden"]').each(function() {
-            var thisInput = $(this);
-            var name = thisInput.attr('name').replace('[__blockIndex__]', '[' + thisBlock.data('blockIndex') + ']');
-            thisInput.attr('name', name);
-        });
-    });
-});
-
-// Handle adding a new WMS overlay.
-$('#blocks').on('click', '.mapping-wms-add', function(e) {
-    e.preventDefault();
-
-    var block = $(this).closest('.block');
-    block.find('.mapping-wms-add').show();
-    block.find('.mapping-wms-edit').hide();
-    var wmsOverlays = block.find('.mapping-wms-overlays');
-    var wmsOverlay = $($.parseHTML(wmsOverlays.data('wmsOverlayTemplate')));
-
-    if (setWmsData(block, wmsOverlay)) {
-        wmsOverlays.append(wmsOverlay);
-    } else {
-        alert('A label and base URL are required for WMS overlays.');
-    }
-});
-
-// Handle editing an existing WMS overlay.
-$('#blocks').on('click', '.mapping-wms-edit', function(e) {
-    e.preventDefault();
-
-    var block = $(this).closest('.block');
-    block.find('.mapping-wms-add').show();
-    block.find('.mapping-wms-edit').hide();
-    var wmsOverlay = block.find('.mapping-wms-overlay-editing');
-    wmsOverlay.removeClass('mapping-wms-overlay-editing');
-
-    if (!setWmsData(block, wmsOverlay)) {
-        alert('A label and base URL are required for WMS overlays.');
-    }
-});
-
-// Handle clearing the WMS input form.
-$('#blocks').on('click', '.mapping-wms-clear', function(e) {
-    e.preventDefault();
-
-    var block = $(this).closest('.block');
-    block.find('.mapping-wms-add').show();
-    block.find('.mapping-wms-edit').hide();
-    block.find('.mapping-wms-fields :input').val('');
-    block.find('li.mapping-wms-overlay').removeClass('mapping-wms-overlay-editing');
-});
-
-// Handle populating existing WMS data to the WMS input form.
-$('#blocks').on('click', '.mapping-wms-overlay-edit', function(e) {
-    e.preventDefault();
-
-    var block = $(this).closest('.block');
-    block.find('.mapping-wms-add').hide();
-    block.find('.mapping-wms-edit').show();
-    var wmsOverlay = $(this).closest('.mapping-wms-overlay');
-    $('.mapping-wms-overlay-editing').removeClass('mapping-wms-overlay-editing');
-    wmsOverlay.addClass('mapping-wms-overlay-editing');
-
-    var wmsLabel = wmsOverlay.find('input[name$="[label]"]').val();
-    var wmsBaseUrl = wmsOverlay.find('input[name$="[base_url]"]').val();
-    var wmsLayers = wmsOverlay.find('input[name$="[layers]"]').val();
-    var wmsStyles = wmsOverlay.find('input[name$="[styles]"]').val();
-
-    block.find('input.mapping-wms-label').val(wmsLabel);
-    block.find('input.mapping-wms-base-url').val(wmsBaseUrl);
-    block.find('input.mapping-wms-layers').val(wmsLayers);
-    block.find('input.mapping-wms-styles').val(wmsStyles);
-});
-
-// Handle WMS overlay deletion.
-$('#blocks').on('click', '.mapping-wms-overlay-delete', function(e) {
-    e.preventDefault();
-
-    var wmsOverlay = $(this).closest('.mapping-wms-overlay');
-    if (wmsOverlay.hasClass('mapping-wms-overlay-editing')) {
-        var block = $(this).closest('.block');
-        block.find('.mapping-wms-add').show();
-        block.find('.mapping-wms-edit').hide();
-        block.find('.mapping-wms-fields :input').val('');
-    }
-    wmsOverlay.remove();
-});
-
-// Handle WMS overlay open/closed checkboxes.
-$('#blocks').on('change', '.mapping-wms-open', function(e) {
-    var thisCheckbox = $(this);
-    var isChecked = thisCheckbox.prop('checked');
-    var wmsOverlay = thisCheckbox.closest('.mapping-wms-overlay');
-    var wmsOverlays = thisCheckbox.closest('.mapping-wms-overlays');
-
-    wmsOverlays.find('.mapping-wms-open').prop('checked', false);
-    thisCheckbox.prop('checked', isChecked);
-
-    wmsOverlays.find('input[name$="[open]"]').val(0);
-    wmsOverlay.find('input[name$="[open]"]').val(isChecked ? 1 : 0);
+    const block = $(this);
+    setMap(block);
+    initOverlaysContainer(block);
 });
 
 });

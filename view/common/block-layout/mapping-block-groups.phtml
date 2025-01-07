@@ -1,0 +1,38 @@
+<div class="mapping-block">
+
+    <div class="mapping-map" style="height:500px;"
+        data-data="<?php echo $this->escapeHtml(json_encode($data)); ?>"
+        data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
+        data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>">
+    </div>
+
+    <div class="mapping-feature-popups" style="display: none;">
+        <?php foreach ($groupsData as $groupData): ?>
+        <div class="mapping-feature-popup-content"
+            data-feature-geography="<?php echo $this->escapeHtml($groupData['geography']); ?>"
+            data-items-query="<?php echo $this->escapeHtml(json_encode($groupData['items_query'])); ?>">
+            <?php echo $this->partial($popupPartial, ['group' => $groupData['group']]); ?>
+        </div>
+        <?php endforeach; ?>
+    </div>
+
+</div>
+
+<div class="mapping-block" style="display: none;">
+
+    <div class="mapping-map" style="height:500px;"
+        data-data="<?php echo $this->escapeHtml(json_encode($dataItems)); ?>"
+        data-disable-clustering="<?php echo $this->siteSetting('mapping_disable_clustering') ? '1' : '0'; ?>"
+        data-basemap-provider="<?php echo $this->escapeHtml($this->siteSetting('mapping_basemap_provider')); ?>"
+        data-features-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-features'], true)); ?>"
+        data-feature-popup-content-url="<?php echo $this->escapeHtml($this->url('site/mapping', ['controller' => 'index', 'action' => 'get-feature-popup-content'], true)); ?>"
+        data-items-query="[]"
+        data-features-query="[]">
+    </div>
+
+    <div class="mapping-group-item-features-bar">
+        <div class="search-filters"></div>
+        <button type="button" class="mapping-show-group-features"><?php echo $this->translate('Return to groups'); ?></button>
+    </div>
+
+</div>

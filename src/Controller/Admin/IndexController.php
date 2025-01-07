@@ -1,41 +1,14 @@
 <?php
-namespace Mapping\Controller\Site;
+namespace Mapping\Controller\Admin;
 
 use Laminas\Mvc\Controller\AbstractActionController;
 use Laminas\View\Model\ViewModel;
 
 class IndexController extends AbstractActionController
 {
-    public function browseAction()
-    {
-        $itemsQuery = $this->params()->fromQuery();
-        unset(
-            $itemsQuery['mapping_address'],
-            $itemsQuery['mapping_radius'],
-            $itemsQuery['mapping_radius_unit'],
-        );
-        if ($this->siteSettings()->get('browse_attached_items', false)) {
-            $itemsQuery['site_attachments_only'] = true;
-        }
-
-        // Get all features for all items that match the query, if any.
-        $featuresQuery = [
-            'address' => $this->params()->fromQuery('mapping_address'),
-            'radius' => $this->params()->fromQuery('mapping_radius'),
-            'radius_unit' => $this->params()->fromQuery('mapping_radius_unit'),
-        ];
-
-        $view = new ViewModel;
-        $view->setVariable('query', $this->params()->fromQuery());
-        $view->setVariable('itemsQuery', $itemsQuery);
-        $view->setVariable('featuresQuery', $featuresQuery);
-        return $view;
-    }
-
     public function getFeaturesAction()
     {
         $itemsQuery = json_decode($this->params()->fromQuery('items_query'), true);
-        $itemsQuery['site_id'] = $this->currentSite()->id();
         $itemsQuery['has_features'] = true;
         $itemsQuery['limit'] = 100000;
         $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();

@@ -10,7 +10,7 @@ class MapBrowse implements LinkInterface
 {
     public function getName()
     {
-        return 'Map Browse'; // @translate
+        return 'Map browse'; // @translate
     }
 
     public function getFormTemplate()
@@ -36,9 +36,11 @@ class MapBrowse implements LinkInterface
             $query['mapping_basemap_provider'] = $basemapProvider;
         }
         return [
-            'route' => 'site/mapping-map-browse',
+            'route' => 'site/mapping',
             'params' => [
                 'site-slug' => $site->slug(),
+                'controller' => 'index',
+                'action' => 'browse',
             ],
             'query' => $query,
         ];
