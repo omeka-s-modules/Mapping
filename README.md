@@ -1,10 +1,10 @@
 # Mapping
 
 Mapping is a module for Omeka S which allows you to geolocate Omeka S items and
-add interactive maps to Site Pages.
+add interactive maps to your sites and pages.
 
-See the [Omeka S user manual](http://omeka.org/s/docs/user-manual/modules/mapping/)
-for user documentation.
+- [Omeka S user manual](http://omeka.org/s/docs/user-manual/modules/mapping/)
+- [Omeka S developer documentation](https://omeka.org/s/docs/developer/module_docs/Mapping/)
 
 # Copyright
 
