@@ -45,13 +45,12 @@ class GroupsFieldset extends Fieldset
             'name' => 'o:block[__blockIndex__][o:data][groups][filter_data][item_set_id]',
             'options' => [
                 'label' => 'Filter by item set', // @translate
-                'info' => '', // @translate
                 'empty_option' => '',
             ],
             'attributes' => [
                 'class' => 'chosen-select item_set_id hidden_by_default',
                 'data-placeholder' => 'Select item set', // @translate
-            ]
+            ],
         ]);
         $this->add([
             'type' => 'Omeka\Form\Element\ResourceClassSelect',
@@ -63,7 +62,7 @@ class GroupsFieldset extends Fieldset
             'attributes' => [
                 'class' => 'chosen-select resource_class_id hidden_by_default',
                 'data-placeholder' => 'Select resource class', // @translate
-            ]
+            ],
         ]);
         $this->add([
             'type' => 'Omeka\Form\Element\ItemSetSelect',
@@ -76,7 +75,7 @@ class GroupsFieldset extends Fieldset
                 'multiple' => true,
                 'class' => 'chosen-select item_set_ids hidden_by_default',
                 'data-placeholder' => 'Select item sets', // @translate
-            ]
+            ],
         ]);
         $this->add([
             'type' => 'Omeka\Form\Element\ResourceClassSelect',
@@ -89,7 +88,7 @@ class GroupsFieldset extends Fieldset
                 'multiple' => true,
                 'class' => 'chosen-select resource_class_ids hidden_by_default',
                 'data-placeholder' => 'Select resource classes', // @translate
-            ]
+            ],
         ]);
         $this->add([
             'type' => 'Omeka\Form\Element\PropertySelect',
@@ -102,7 +101,7 @@ class GroupsFieldset extends Fieldset
                 'multiple' => true,
                 'class' => 'chosen-select property_ids hidden_by_default',
                 'data-placeholder' => 'Select properties', // @translate
-            ]
+            ],
         ]);
         $this->add([
             'type' => 'Omeka\Form\Element\PropertySelect',
@@ -114,7 +113,7 @@ class GroupsFieldset extends Fieldset
             'attributes' => [
                 'class' => 'chosen-select property_id hidden_by_default',
                 'data-placeholder' => 'Select property', // @translate
-            ]
+            ],
         ]);
         $this->add([
             'type' => 'textarea',
@@ -132,7 +131,7 @@ class GroupsFieldset extends Fieldset
             ],
             'attributes' => [
                 'class' => 'values hidden_by_default',
-            ]
+            ],
         ]);
     }
 
@@ -153,7 +152,7 @@ class GroupsFieldset extends Fieldset
                     'property_id' => null,
                     'values' => null,
                 ],
-            ]
+            ],
         ];
 
         if (isset($rawData['groups']['type']) && in_array($rawData['groups']['type'], array_keys($this->groupByTypes))) {

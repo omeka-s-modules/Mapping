@@ -2,7 +2,6 @@
 namespace Mapping\Form\Fieldset;
 
 use Laminas\Form\Fieldset;
-use Mapping\Module;
 
 class OverlaysFieldset extends Fieldset
 {
@@ -54,7 +53,7 @@ class OverlaysFieldset extends Fieldset
             'type' => 'fieldset',
             'name' => 'mapping-overlays-fieldset-wms',
             'attributes' => [
-                'class' => 'mapping-overlays-fieldset-wms'
+                'class' => 'mapping-overlays-fieldset-wms',
             ],
         ]);
         $fieldset = $this->get('mapping-overlays-fieldset-wms');
@@ -95,7 +94,7 @@ class OverlaysFieldset extends Fieldset
             'type' => 'fieldset',
             'name' => 'mapping-overlays-fieldset-iiif',
             'attributes' => [
-                'class' => 'mapping-overlays-fieldset-iiif'
+                'class' => 'mapping-overlays-fieldset-iiif',
             ],
         ]);
         $fieldset = $this->get('mapping-overlays-fieldset-iiif');
@@ -114,7 +113,7 @@ class OverlaysFieldset extends Fieldset
             'type' => 'fieldset',
             'name' => 'mapping-overlays-fieldset-geojson',
             'attributes' => [
-                'class' => 'mapping-overlays-fieldset-geojson'
+                'class' => 'mapping-overlays-fieldset-geojson',
             ],
         ]);
         $fieldset = $this->get('mapping-overlays-fieldset-geojson');

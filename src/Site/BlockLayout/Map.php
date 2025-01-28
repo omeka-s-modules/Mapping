@@ -80,7 +80,9 @@ class Map extends AbstractMap
         $itemIds = [];
         foreach ($block->attachments() as $attachment) {
             $item = $attachment->item();
-            if (!$item) continue;
+            if (!$item) {
+                continue;
+            }
             $itemIds[] = $item->id();
         }
         // An empty string would get all features, so set 0 if there are no items.

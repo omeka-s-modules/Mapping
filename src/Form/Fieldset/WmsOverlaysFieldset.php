@@ -2,7 +2,6 @@
 namespace Mapping\Form\Fieldset;
 
 use Laminas\Form\Fieldset;
-use Mapping\Module;
 
 class WmsOverlaysFieldset extends Fieldset
 {

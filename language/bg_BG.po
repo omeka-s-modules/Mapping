@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2024-06-20 14:51-0400\n"
+"POT-Creation-Date: 2025-01-27 19:33-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Tzvetan Tzvetanski <ceibg.org@gmail.com>, 2021\n"
 "Language-Team: Bulgarian (Bulgaria) (https://app.transifex.com/omeka/teams/14184/bg_BG/)\n"
@@ -21,27 +21,27 @@ msgstr ""
 "Language: bg_BG\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:542 view/common/csv-import/mapping.phtml:3
+#: Module.php:567 view/common/csv-import/mapping.phtml:3
 #: view/common/csv-import/mapping.phtml:6
 #: view/common/mapping-item-form.phtml:28
 msgid "Mapping"
 msgstr "Обозначаване на карта/картографиране"
 
-#: Module.php:593
+#: Module.php:618
 msgid "Map feature presence"
 msgstr ""
 
-#: Module.php:594
+#: Module.php:619
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:5
 msgid "Has map features"
 msgstr ""
 
-#: Module.php:594
+#: Module.php:619
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:6
 msgid "Has no map features"
 msgstr ""
 
-#: Module.php:601
+#: Module.php:626
 msgid "Geographic location"
 msgstr ""
 
@@ -49,68 +49,11 @@ msgstr ""
 msgid "Enter a marker label"
 msgstr ""
 
-#: src/Site/BlockLayout/AbstractMap.php:58
-#: view/common/navigation-link-form/mapping-map-browse.phtml:16
-msgid "Basemap provider"
-msgstr "Доставчик на базови карти"
-
-#: src/Site/BlockLayout/AbstractMap.php:59
+#: src/Site/BlockLayout/MapGroups.php:45
+#, php-format
 msgid ""
-"Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
-"providers are offered AS-IS. There is no guarantee of service or speed."
-msgstr ""
-"Изберете доставчика на основната карта. По подразбиране е "
-"OpenStreetMap.Mapnik. Тези доставчици се предлагат такива, каквито са. Няма "
-"гаранция за обслужване или скорост."
-
-#: src/Site/BlockLayout/AbstractMap.php:65
-msgid "Minimum zoom level"
-msgstr "Минимално ниво на увеличаването"
-
-#: src/Site/BlockLayout/AbstractMap.php:66
-msgid ""
-"The minimum zoom level down to which the map will be displayed. The default "
-"is 0."
-msgstr ""
-"Минималното ниво на увеличението, до което ще бъде показана картата. По "
-"подразбиране е 0."
-
-#: src/Site/BlockLayout/AbstractMap.php:73
-msgid "Maximum zoom level"
-msgstr "Максимално ниво на увеличаването"
-
-#: src/Site/BlockLayout/AbstractMap.php:74
-msgid ""
-"Set the maximum zoom level up to which the map will be displayed. The "
-"default is 19."
-msgstr ""
-"Задайте максималното ниво на увеличение, до което картата ще се показва. По "
-"подразбиране е 19."
-
-#: src/Site/BlockLayout/AbstractMap.php:81
-msgid "Scroll wheel zoom"
-msgstr ""
-
-#: src/Site/BlockLayout/AbstractMap.php:82
-msgid ""
-"Set whether users can zoom with their mouse wheel when hovering over the "
-"map, either automatically upon page load or after clicking inside the map."
-msgstr ""
-
-#: src/Site/BlockLayout/AbstractMap.php:85
-msgid "Enabled"
-msgstr ""
-
-#: src/Site/BlockLayout/AbstractMap.php:86
-msgid "Disabled"
-msgstr ""
-
-#: src/Site/BlockLayout/AbstractMap.php:87
-msgid "Disabled until map click"
-msgstr ""
-
-#: src/Site/BlockLayout/MapQuery.php:32
-msgid "Attach items using this query. No query means all items."
+"This block requires MySQL 8.0.24+ or MariaDB 11.7+. Your database version is"
+" %s."
 msgstr ""
 
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:3
@@ -165,11 +108,11 @@ msgstr ""
 msgid "Label source"
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:21
+#: view/common/block-layout/mapping-block-form/default-view.phtml:1
 msgid "Default View"
 msgstr "Изглед по подразбиране"
 
-#: view/common/block-layout/mapping-block-form.phtml:28
+#: view/common/block-layout/mapping-block-form/default-view.phtml:5
 #, php-format
 msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
@@ -178,148 +121,31 @@ msgstr ""
 "Задайте изгледа по подразбиране, като използвате контролите в картата. "
 "Текущото ниво на увеличение е %s."
 
-#: view/common/block-layout/mapping-block-form.phtml:36
-msgid "WMS Overlays"
-msgstr "WMS наслагвания"
-
-#: view/common/block-layout/mapping-block-form.phtml:38
-msgid ""
-"Add, edit, and delete Web Map Service (WMS) overlays below. You may check "
-"which overlay you want open by default."
+#: view/common/block-layout/mapping-block-form/groups.phtml:1
+msgid "Groups"
 msgstr ""
-"Добавяне, редактиране и изтриване на слоеве за уеб карти (WMS) по-долу. "
-"Можете да проверите кое наслагване искате да се отвори по подразбиране."
 
-#: view/common/block-layout/mapping-block-form.phtml:72
-msgid "Base URL"
-msgstr "Базов URL"
+#: view/common/block-layout/mapping-block-form/overlays.phtml:16
+msgid "Overlays"
+msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:81
-msgid "Layers"
-msgstr "Слоеве"
+#: view/common/block-layout/mapping-block-form/overlays.phtml:20
+msgid ""
+"Add, edit, and delete overlays below. You may check which overlay you want "
+"open by default."
+msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:83
-msgid "The WMS layers, if any (comma-separated)."
-msgstr "WMS слоевете, ако има такива (разделени със запетая)."
+#: view/common/block-layout/mapping-block-form/overlays.phtml:32
+msgid "Save overlay"
+msgstr ""
 
-#: view/common/block-layout/mapping-block-form.phtml:94
-msgid "The WMS styles, if any (comma-separated)."
-msgstr "WMS стилове, ако има такива (разделени със запетая)."
-
-#: view/common/block-layout/mapping-block-form.phtml:102
-msgid "Add Overlay"
-msgstr "Добавяне на наслагване"
-
-#: view/common/block-layout/mapping-block-form.phtml:103
-msgid "Save Changes"
-msgstr "Запазване на промените"
-
-#: view/common/block-layout/mapping-block-form.phtml:104
-msgid "Clear Inputs"
-msgstr "Изчистване на входираното"
-
-#: view/common/block-layout/mapping-block-form.phtml:108
+#: view/common/block-layout/mapping-block-form/timeline.phtml:1
 msgid "Timeline"
 msgstr "Хронология"
 
-#: view/common/block-layout/mapping-block-form.phtml:112
-msgid "Title headline"
-msgstr "Главно заглавие"
-
-#: view/common/block-layout/mapping-block-form.phtml:127
-msgid "Title text"
-msgstr "Заглавие на текста"
-
-#: view/common/block-layout/mapping-block-form.phtml:143
-msgid "Fly to"
-msgstr "отиди до"
-
-#: view/common/block-layout/mapping-block-form.phtml:146
-msgid "Select the map view to fly to when navigating between events."
+#: view/common/block-layout/mapping-block-groups.phtml:35
+msgid "Return to groups"
 msgstr ""
-"Изберете изгледа на картата, до който да отидете, когато навигирате между "
-"събития."
-
-#: view/common/block-layout/mapping-block-form.phtml:153
-msgid "Default view"
-msgstr "Изглед по подразбиране"
-
-#: view/common/block-layout/mapping-block-form.phtml:154
-msgid "Event marker, zoom 0"
-msgstr "Маркер за събитие, мащабиране 0"
-
-#: view/common/block-layout/mapping-block-form.phtml:155
-msgid "Event marker, zoom 2"
-msgstr "Маркер за събитие, мащабиране 2"
-
-#: view/common/block-layout/mapping-block-form.phtml:156
-msgid "Event marker, zoom 4"
-msgstr "Маркер за събитие, мащабиране 4"
-
-#: view/common/block-layout/mapping-block-form.phtml:157
-msgid "Event marker, zoom 6"
-msgstr "Маркер за събитие, мащабиране 6"
-
-#: view/common/block-layout/mapping-block-form.phtml:158
-msgid "Event marker, zoom 8"
-msgstr "Маркер за събитие, мащабиране 8"
-
-#: view/common/block-layout/mapping-block-form.phtml:159
-msgid "Event marker, zoom 10"
-msgstr "Маркер за събитие, мащабиране 10"
-
-#: view/common/block-layout/mapping-block-form.phtml:160
-msgid "Event marker, zoom 12"
-msgstr "Маркер за събитие, мащабиране 12"
-
-#: view/common/block-layout/mapping-block-form.phtml:161
-msgid "Event marker, zoom 14"
-msgstr "Маркер за събитие, мащабиране 14"
-
-#: view/common/block-layout/mapping-block-form.phtml:162
-msgid "Event marker, zoom 16"
-msgstr "Маркер за събитие, мащабиране 16"
-
-#: view/common/block-layout/mapping-block-form.phtml:163
-msgid "Event marker, zoom 18"
-msgstr "Маркер за събитие, мащабиране 18"
-
-#: view/common/block-layout/mapping-block-form.phtml:174
-msgid "Show contemporaneous events?"
-msgstr "Показване на съвременни събития?"
-
-#: view/common/block-layout/mapping-block-form.phtml:177
-msgid ""
-"Check this if you want to show all events on the map that exist in the same "
-"time period as the current event (default view only)."
-msgstr ""
-"Проверете това, ако искате да покажете всички събития на картата, които "
-"съществуват в същия период от време като текущото събитие (само изглед по "
-"подразбиране)."
-
-#: view/common/block-layout/mapping-block-form.phtml:192
-msgid "Timeline navigation position"
-msgstr "Позиция за навигация по времевата линия"
-
-#: view/common/block-layout/mapping-block-form.phtml:195
-msgid "Select the position of the timeline navigation."
-msgstr "Изберете позицията на навигацията по времевата линия."
-
-#: view/common/block-layout/mapping-block-form.phtml:203
-msgid "Full width, below story slider and map"
-msgstr ""
-
-#: view/common/block-layout/mapping-block-form.phtml:204
-msgid "Full width, above story slider and map"
-msgstr ""
-
-#: view/common/block-layout/mapping-block-form.phtml:218
-msgid ""
-"Select the timestamp or interval property to use when populating the "
-"timeline."
-msgstr ""
-"Изберете свойството за клеймо или интервал, което да използвате при "
-"попълване на времевата линия."
 
 #: view/common/csv-import/mapping.phtml:7
 msgid "Select below"
@@ -341,16 +167,6 @@ msgstr "Ширина/дължина"
 msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
 msgstr ""
 
-#: view/common/mapping-feature-popup.phtml:17
-#, php-format
-msgid "Media: %s"
-msgstr "Медия: %s"
-
-#: view/common/mapping-feature-popup.phtml:21
-#, php-format
-msgid "Item: %s"
-msgstr "Елемент: %s"
-
 #: view/common/mapping-item-form.phtml:34
 msgid "Close Me"
 msgstr "Затвори ме"
@@ -371,67 +187,36 @@ msgstr ""
 msgid "Select feature image"
 msgstr ""
 
-#: view/mapping/site/index/browse.phtml:31
+#: view/common/mapping-popup/property-ex-group.phtml:6
+#: view/common/mapping-popup/property-ex-group.phtml:19
+#, php-format
+msgid "%s has any value"
+msgstr ""
+
+#: view/common/mapping-popup/property-value-eq-group.phtml:6
+#: view/common/mapping-popup/property-value-eq-group.phtml:20
+#, php-format
+msgid "%s is exactly"
+msgstr ""
+
+#: view/common/mapping-popup/property-value-in-group.phtml:6
+#: view/common/mapping-popup/property-value-in-group.phtml:20
+#, php-format
+msgid "%s contains"
+msgstr ""
+
+#: view/common/mapping-popup/property-value-res-group.phtml:7
+#, php-format
+msgid "%s is"
+msgstr ""
+
+#: view/common/navigation-link-form/mapping-map-browse.phtml:16
+msgid "Basemap provider"
+msgstr "Доставчик на базови карти"
+
+#: view/mapping/site/index/browse.phtml:34
 msgid "Search Map"
 msgstr "Търсене на карта"
-
-#: Module.php:323
-msgid "Delete features"
-msgstr ""
-
-#: Module.php:334
-msgid "Copy coordinates to markers"
-msgstr ""
-
-#: Module.php:342
-msgid "Update features"
-msgstr ""
-
-#: Module.php:452
-msgid "Add feature presence to advanced search"
-msgstr ""
-
-#: Module.php:463
-msgid "Add geographic location to advanced search"
-msgstr ""
-
-#: Module.php:474
-msgid "Disable clustering of map features"
-msgstr ""
-
-#: Module.php:475
-msgid ""
-"Map features are markers, polygons, polylines, and rectangles. Note that "
-"large features may not cluster."
-msgstr ""
-
-#: Module.php:487 src/Site/BlockLayout/AbstractMap.php:62
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11
-msgid "[Default provider]"
-msgstr "[Доставчик по подразбиране]"
-
-#: Module.php:499
-msgid "Map browse items per page"
-msgstr ""
-
-#: Module.php:500
-msgid ""
-"Set the maximum number of items that have features to display per page on "
-"the map browse page. Limit to a reasonable amount to avoid reaching the "
-"server memory limit and to improve client performance."
-msgstr ""
-
-#: src/Site/BlockLayout/Map.php:15
-msgid "Map by attachments"
-msgstr "Карта по прикачени файлове"
-
-#: src/Site/BlockLayout/MapQuery.php:16
-msgid "Map by query"
-msgstr "Карта по заявка"
-
-#: src/Site/Navigation/Link/MapBrowse.php:13
-msgid "Map Browse"
-msgstr "Преглед на картата"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
@@ -445,6 +230,333 @@ msgstr "Зоната за картографиране трябва да има 
 msgid "Map bounds must contain four numbers separated by commas"
 msgstr ""
 "Границите на картата трябва да съдържат четири числа, разделени със запетаи"
+
+#: src/Site/BlockLayout/MapQuery.php:16
+msgid "Map by query"
+msgstr "Карта по заявка"
+
+#: src/Site/BlockLayout/Map.php:16
+msgid "Map by attachments"
+msgstr "Карта по прикачени файлове"
+
+#: src/Site/BlockLayout/MapGroups.php:29
+msgid "Map by groups"
+msgstr ""
+
+#: src/Site/Navigation/Link/MapBrowse.php:13
+msgid "Map browse"
+msgstr ""
+
+#: src/Form/Fieldset/DefaultViewFieldset.php:16
+msgid ""
+"Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
+"providers are offered AS-IS. There is no guarantee of service or speed."
+msgstr ""
+"Изберете доставчика на основната карта. По подразбиране е "
+"OpenStreetMap.Mapnik. Тези доставчици се предлагат такива, каквито са. Няма "
+"гаранция за обслужване или скорост."
+
+#: src/Form/Fieldset/DefaultViewFieldset.php:28
+msgid "Minimum zoom level"
+msgstr "Минимално ниво на увеличаването"
+
+#: src/Form/Fieldset/DefaultViewFieldset.php:29
+msgid ""
+"Set the minimum zoom level down to which the map will be displayed. The "
+"default is 0."
+msgstr ""
+
+#: src/Form/Fieldset/DefaultViewFieldset.php:42
+msgid "Maximum zoom level"
+msgstr "Максимално ниво на увеличаването"
+
+#: src/Form/Fieldset/DefaultViewFieldset.php:43
+msgid ""
+"Set the maximum zoom level up to which the map will be displayed. The "
+"default is 19."
+msgstr ""
+"Задайте максималното ниво на увеличение, до което картата ще се показва. По "
+"подразбиране е 19."
+
+#: src/Form/Fieldset/DefaultViewFieldset.php:56
+msgid "Scroll wheel zoom"
+msgstr ""
+
+#: src/Form/Fieldset/DefaultViewFieldset.php:57
+msgid ""
+"Set whether users can zoom with their mouse wheel when hovering over the "
+"map, either automatically upon page load or after clicking inside the map."
+msgstr ""
+
+#: src/Form/Fieldset/DefaultViewFieldset.php:60
+msgid "Disabled"
+msgstr ""
+
+#: src/Form/Fieldset/DefaultViewFieldset.php:61
+msgid "Disabled until map click"
+msgstr ""
+
+#: src/Form/Fieldset/TimelineFieldset.php:18
+msgid "Title headline"
+msgstr "Главно заглавие"
+
+#: src/Form/Fieldset/TimelineFieldset.php:25
+msgid "Title text"
+msgstr "Заглавие на текста"
+
+#: src/Form/Fieldset/TimelineFieldset.php:35
+msgid "Fly to"
+msgstr "отиди до"
+
+#: src/Form/Fieldset/TimelineFieldset.php:36
+msgid "Select the map view to fly to when navigating between events."
+msgstr ""
+"Изберете изгледа на картата, до който да отидете, когато навигирате между "
+"събития."
+
+#: src/Form/Fieldset/TimelineFieldset.php:37
+msgid "Default view"
+msgstr "Изглед по подразбиране"
+
+#: src/Form/Fieldset/TimelineFieldset.php:39
+msgid "Event marker, zoom 0"
+msgstr "Маркер за събитие, мащабиране 0"
+
+#: src/Form/Fieldset/TimelineFieldset.php:40
+msgid "Event marker, zoom 2"
+msgstr "Маркер за събитие, мащабиране 2"
+
+#: src/Form/Fieldset/TimelineFieldset.php:41
+msgid "Event marker, zoom 4"
+msgstr "Маркер за събитие, мащабиране 4"
+
+#: src/Form/Fieldset/TimelineFieldset.php:42
+msgid "Event marker, zoom 6"
+msgstr "Маркер за събитие, мащабиране 6"
+
+#: src/Form/Fieldset/TimelineFieldset.php:43
+msgid "Event marker, zoom 8"
+msgstr "Маркер за събитие, мащабиране 8"
+
+#: src/Form/Fieldset/TimelineFieldset.php:44
+msgid "Event marker, zoom 10"
+msgstr "Маркер за събитие, мащабиране 10"
+
+#: src/Form/Fieldset/TimelineFieldset.php:45
+msgid "Event marker, zoom 12"
+msgstr "Маркер за събитие, мащабиране 12"
+
+#: src/Form/Fieldset/TimelineFieldset.php:46
+msgid "Event marker, zoom 14"
+msgstr "Маркер за събитие, мащабиране 14"
+
+#: src/Form/Fieldset/TimelineFieldset.php:47
+msgid "Event marker, zoom 16"
+msgstr "Маркер за събитие, мащабиране 16"
+
+#: src/Form/Fieldset/TimelineFieldset.php:48
+msgid "Event marker, zoom 18"
+msgstr "Маркер за събитие, мащабиране 18"
+
+#: src/Form/Fieldset/TimelineFieldset.php:56
+msgid "Show contemporaneous events?"
+msgstr "Показване на съвременни събития?"
+
+#: src/Form/Fieldset/TimelineFieldset.php:57
+msgid ""
+"Check this if you want to show all events on the map that exist in the same "
+"time period as the current event (default view only)."
+msgstr ""
+"Проверете това, ако искате да покажете всички събития на картата, които "
+"съществуват в същия период от време като текущото събитие (само изглед по "
+"подразбиране)."
+
+#: src/Form/Fieldset/TimelineFieldset.php:64
+msgid "Timeline navigation position"
+msgstr "Позиция за навигация по времевата линия"
+
+#: src/Form/Fieldset/TimelineFieldset.php:65
+msgid "Select the position of the timeline navigation."
+msgstr "Изберете позицията на навигацията по времевата линия."
+
+#: src/Form/Fieldset/TimelineFieldset.php:67
+msgid "Full width, below story slider and map"
+msgstr ""
+
+#: src/Form/Fieldset/TimelineFieldset.php:68
+msgid "Full width, above story slider and map"
+msgstr ""
+
+#: src/Form/Fieldset/TimelineFieldset.php:78
+msgid ""
+"Select the timestamp or interval property to use when populating the "
+"timeline."
+msgstr ""
+"Изберете свойството за клеймо или интервал, което да използвате при "
+"попълване на времевата линия."
+
+#: src/Form/Fieldset/QueryFieldset.php:16
+msgid "Attach items using this query. No query means all items."
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:14
+msgid "Overlay mode"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:15
+msgid "Exclusive"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:17
+msgid "Inclusive"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:28
+msgid "Overlay"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:29
+msgid "Select overlay type"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:31
+msgid "Web Map Service (WMS)"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:32
+msgid "IIIF Georeference Annotation"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:33
+#: src/Form/Fieldset/OverlaysFieldset.php:124
+msgid "GeoJSON"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:64
+#: src/Form/Fieldset/WmsOverlaysFieldset.php:24
+msgid "Base URL"
+msgstr "Базов URL"
+
+#: src/Form/Fieldset/OverlaysFieldset.php:74
+#: src/Form/Fieldset/WmsOverlaysFieldset.php:34
+msgid "Layers"
+msgstr "Слоеве"
+
+#: src/Form/Fieldset/OverlaysFieldset.php:75
+#: src/Form/Fieldset/WmsOverlaysFieldset.php:35
+msgid "The WMS layers, if any (comma-separated)."
+msgstr "WMS слоевете, ако има такива (разделени със запетая)."
+
+#: src/Form/Fieldset/OverlaysFieldset.php:85
+#: src/Form/Fieldset/WmsOverlaysFieldset.php:45
+msgid "Styles"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:86
+#: src/Form/Fieldset/WmsOverlaysFieldset.php:46
+msgid "The WMS styles, if any (comma-separated)."
+msgstr "WMS стилове, ако има такива (разделени със запетая)."
+
+#: src/Form/Fieldset/OverlaysFieldset.php:135
+msgid "Label property key"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:136
+msgid "Enter the GeoJSON property key to use for the popup label, if desired."
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:146
+msgid "Comment property key"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:147
+msgid ""
+"Enter the GeoJSON property key to use for the popup comment, if desired."
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:157
+msgid "Show GeoJSON property list?"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:158
+msgid "Do you want to show all the available GeoJSON properties in the popup?"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:10
+#: src/Form/Fieldset/GroupsFieldset.php:84
+msgid "Resource classes"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:11
+msgid "Property values (is exactly)"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:12
+msgid "Property values (contains)"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:13
+msgid "Property values (is resource with ID)"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:14
+msgid "Properties (has any value)"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:24
+msgid "Select a type…"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:35
+msgid "Feature type"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:38
+msgid "Polygon"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:39
+msgid "Point"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:59
+msgid "Filter by resource class"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:64
+msgid "Select resource class"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:90
+msgid "Select resource classes"
+msgstr ""
+
+#: src/Form/Fieldset/GroupsFieldset.php:123
+msgid ""
+"\n"
+"                <p>Enter the values, separated by new lines. The format of each value depends on the query type:</p>\n"
+"                <ul>\n"
+"                    <li>\"Is exactly\": enter a value that is an exact match to the property value.</li>\n"
+"                    <li>\"Contains\": enter a value that matches any part of the property value.</li>\n"
+"                    <li>\"Is resource with ID\": enter the resource ID (item, item set, media).</li>\n"
+"                </ul>"
+msgstr ""
+
+#: src/Form/Element/UpdateFeatures.php:27
+msgid "[Remove label]"
+msgstr ""
+
+#: src/Form/Element/UpdateFeatures.php:31
+msgid "Select label property"
+msgstr ""
+
+#: src/Form/Element/UpdateFeatures.php:38
+msgid "Assigned media"
+msgstr ""
+
+#: src/Form/Element/UpdateFeatures.php:44
+msgid "[Unassign media]"
+msgstr ""
 
 #: src/Form/Element/CopyCoordinates.php:30
 msgid "Copy from one item property containing both latitude and longitude"
@@ -494,18 +606,36 @@ msgstr ""
 msgid "Colon [:]"
 msgstr ""
 
-#: src/Form/Element/UpdateFeatures.php:27
-msgid "[Remove label]"
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:525
+msgid "[Default provider]"
+msgstr "[Доставчик по подразбиране]"
+
+#: Module.php:361
+msgid "Delete features"
 msgstr ""
 
-#: src/Form/Element/UpdateFeatures.php:31
-msgid "Select label property"
+#: Module.php:372
+msgid "Copy coordinates to markers"
 msgstr ""
 
-#: src/Form/Element/UpdateFeatures.php:38
-msgid "Assigned media"
+#: Module.php:380
+msgid "Update features"
 msgstr ""
 
-#: src/Form/Element/UpdateFeatures.php:44
-msgid "[Unassign media]"
+#: Module.php:490
+msgid "Add feature presence to advanced search"
+msgstr ""
+
+#: Module.php:501
+msgid "Add geographic location to advanced search"
+msgstr ""
+
+#: Module.php:512
+msgid "Disable clustering of map features"
+msgstr ""
+
+#: Module.php:513
+msgid ""
+"Map features are markers, polygons, polylines, and rectangles. Note that "
+"large features may not cluster."
 msgstr ""

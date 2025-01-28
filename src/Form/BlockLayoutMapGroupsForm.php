@@ -2,7 +2,6 @@
 namespace Mapping\Form;
 
 use Laminas\Form\Form;
-use Mapping\Form\Fieldset;
 
 class BlockLayoutMapGroupsForm extends Form
 {

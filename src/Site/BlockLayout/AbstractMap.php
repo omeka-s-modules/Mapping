@@ -3,18 +3,12 @@ namespace Mapping\Site\BlockLayout;
 
 use Composer\Semver\Comparator;
 use Doctrine\DBAL\Connection;
-use Laminas\Form\Element;
-use Laminas\Form\FormElementManager;
 use Laminas\View\Renderer\PhpRenderer;
 use Mapping\Module;
 use NumericDataTypes\DataType\Timestamp;
 use Omeka\Api\Exception\NotFoundException;
-use Omeka\Api\Representation\SiteRepresentation;
-use Omeka\Api\Representation\SitePageRepresentation;
-use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Module\Manager as ModuleManager;
 use Omeka\Site\BlockLayout\AbstractBlockLayout;
-use Omeka\Stdlib\HtmlPurifier;
 
 abstract class AbstractMap extends AbstractBlockLayout
 {

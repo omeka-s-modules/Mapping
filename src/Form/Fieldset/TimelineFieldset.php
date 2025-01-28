@@ -98,7 +98,7 @@ class TimelineFieldset extends Fieldset
                 'show_contemporaneous' => null,
                 'timenav_position' => null,
                 'data_type_properties' => null,
-            ]
+            ],
         ];
 
         if (isset($rawData['timeline']['title_headline'])) {
