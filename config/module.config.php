@@ -154,4 +154,14 @@ return [
             'main' => ['mapping'],
         ],
     ],
+    'static_site_export' => [
+        'shortcodes' => [
+            'omeka-mapping-features' => sprintf('%s/modules/Mapping/src/StaticSiteExport/omeka-mapping-features.html', OMEKA_PATH),
+        ],
+        'resource_page_block_layouts' => [
+            'invokables' => [
+                'mapping' => StaticSiteExport\ResourcePageBlockLayout\Mapping::class,
+            ],
+        ],
+    ],
 ];

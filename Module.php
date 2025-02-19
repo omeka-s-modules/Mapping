@@ -470,6 +470,25 @@ class Module extends AbstractModule
                 }
             }
         );
+        // Add feature data to StaticSiteExport item bundle.
+        $sharedEventManager->attach(
+            'StaticSiteExport\Job\ExportStaticSite',
+            'static_site_export.bundle.item',
+            function (Event $event) {
+                $job = $event->getTarget();
+                $resource = $event->getParam('resource');
+                $features = $job->get('Omeka\ApiManager')
+                    ->search('mapping_features', ['item_id' => $resource->id()])
+                    ->getContent();
+                if (!$features) {
+                    return;
+                }
+                $job->makeFile(
+                    sprintf('content/items/%s/mapping_features.json', $resource->id()),
+                    json_encode($features)
+                );
+            }
+        );
     }
 
     public function addSiteSettings(Event $event)
