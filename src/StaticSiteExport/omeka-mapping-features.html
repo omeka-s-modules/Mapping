@@ -1,3 +1,5 @@
 {{ $page := site.GetPage (.Get "page") }}
 {{ $resource := $page.Resources.Get (.Get "resource") }}
-{{ debug.Dump $resource }}
+{{ with $resource | transform.Unmarshal }}
+    {{ debug.Dump . }}
+{{ end }}
