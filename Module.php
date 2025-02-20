@@ -485,9 +485,17 @@ class Module extends AbstractModule
                 }
                 $mappingFeatures = [];
                 foreach ($features as $feature) {
+                    $item = $feature->item();
                     $media = $feature->media();
+                    $popupLabel =$feature->label();
+                    if (!$popupLabel && $media) {
+                        $popupLabel = $media->displayTitle();
+                    }
+                    if (!$popupLabel ) {
+                        $popupLabel = $item->displayTitle();
+                    }
                     $mappingFeatures[] = [
-                        'label' => $feature->label(),
+                        'label' => $popupLabel,
                         'mediaId' => $media ? $media->id() : null,
                         'geoJSON' => json_decode(json_encode($feature->geography()), true),
                     ];

@@ -31,11 +31,12 @@ class Mapping implements ResourcePageBlockLayoutInterface
         if (!$hasFeatures) {
             return '';
         }
-        // Set the dependencies and return the mapping shortcode.
+        // Set the dependencies.
         $frontMatter['css'][] = 'vendor/leaflet/leaflet.css';
         $frontMatter['js'][] = 'vendor/leaflet/leaflet.js';
         $frontMatter['css'][] = 'vendor/omeka-mapping/mapping-features.css';
         $frontMatter['js'][] = 'vendor/omeka-mapping/mapping-features.js';
+        // Return the mapping shortcode.
         return sprintf('{{< omeka-mapping-features page="%s" >}}', $page);
     }
 }

@@ -1,5 +1,8 @@
 {{ $page := site.GetPage (.Get "page") }}
 {{ $resource := $page.Resources.Get "mapping-features.json" }}
 {{ with $resource }}
-<div class="mapping-features-map" data-mapping-features-url="{{ .Permalink }}"></div>
+<div class="mapping-features-map"
+    data-rel-url="{{ relURL "" }}"
+    data-mapping-features-url="{{ .Permalink }}">
+</div>
 {{ end }}
