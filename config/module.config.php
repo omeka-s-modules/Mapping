@@ -155,6 +155,10 @@ return [
         ],
     ],
     'static_site_export' => [
+        'vendor_packages' => [
+            'omeka-mapping' => sprintf('%s/modules/Mapping/src/StaticSiteExport/omeka-mapping', OMEKA_PATH),
+            'leaflet' => sprintf('%s/modules/Mapping/src/StaticSiteExport/leaflet', OMEKA_PATH),
+        ],
         'shortcodes' => [
             'omeka-mapping-features' => sprintf('%s/modules/Mapping/src/StaticSiteExport/omeka-mapping-features.html', OMEKA_PATH),
         ],

@@ -483,9 +483,18 @@ class Module extends AbstractModule
                 if (!$features) {
                     return;
                 }
+                $mappingFeatures = [];
+                foreach ($features as $feature) {
+                    $media = $feature->media();
+                    $mappingFeatures[] = [
+                        'label' => $feature->label(),
+                        'mediaId' => $media ? $media->id() : null,
+                        'geoJSON' => json_decode(json_encode($feature->geography()), true),
+                    ];
+                }
                 $job->makeFile(
-                    sprintf('content/items/%s/mapping_features.json', $resource->id()),
-                    json_encode($features)
+                    sprintf('content/items/%s/mapping-features.json', $resource->id()),
+                    json_encode($mappingFeatures)
                 );
             }
         );
