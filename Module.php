@@ -483,20 +483,25 @@ class Module extends AbstractModule
                 if (!$features) {
                     return;
                 }
+                // Set all features for this resource.
                 $mappingFeatures = [];
                 foreach ($features as $feature) {
                     $item = $feature->item();
                     $media = $feature->media();
-                    $popupLabel =$feature->label();
-                    if (!$popupLabel && $media) {
-                        $popupLabel = $media->displayTitle();
+                    // Get the feature label.
+                    $label = $feature->label() ?? '';
+                    if (0 === strlen($label) && $media) {
+                        $label = $media->displayTitle();
                     }
-                    if (!$popupLabel ) {
-                        $popupLabel = $item->displayTitle();
+                    if (0 === strlen($label)) {
+                        $label = $item->displayTitle();
                     }
+                    // Set the data for this feature.
                     $mappingFeatures[] = [
-                        'label' => $popupLabel,
+                        'label' => $label,
+                        'itemId' => $item->id(),
                         'mediaId' => $media ? $media->id() : null,
+                        'hasThumbnails' => $media ? $media->hasThumbnails() : null,
                         'geoJSON' => json_decode(json_encode($feature->geography()), true),
                     ];
                 }

@@ -1,13 +1,4 @@
 document.addEventListener('DOMContentLoaded', function(event) {
-    // Function to check whether the passed URL exists.
-    const checkUrl = async function(url) {
-        try {
-            const response = await fetch(url);
-            return response.ok;
-        } catch (error) {
-            return false;
-        }
-    }
     // Iterate all features maps on the page.
     document.querySelectorAll('.mapping-features-map').forEach((mapDiv) => {
         const map = L.map(mapDiv);
@@ -27,17 +18,14 @@ document.addEventListener('DOMContentLoaded', function(event) {
                     // Create the popup content.
                     const popupDiv = document.createElement('div');
                     const popupHeading = document.createElement('h2');
-                    const popupHeadingContent = document.createTextNode(featureData.label);
-                    popupHeading.appendChild(popupHeadingContent);
+                    const popupHeadingText = document.createTextNode(featureData.label);
+                    popupHeading.appendChild(popupHeadingText);
                     popupDiv.appendChild(popupHeading);
-                    const popupImg = document.createElement('img');
-                    const popupImgSrc = `${mapDiv.dataset.relUrl}media/${featureData.mediaId}/thumbnail_medium.jpg`;
-                    checkUrl(popupImgSrc).then((exists) => {
-                        if (exists) {
-                            popupImg.src = popupImgSrc;
-                            popupDiv.appendChild(popupImg);
-                        }
-                    });
+                    if (featureData.hasThumbnails) {
+                        const popupImg = document.createElement('img');
+                        popupImg.src = mapDiv.dataset.relUrl + 'media/' + featureData.mediaId + '/thumbnail_medium.jpg';
+                        popupDiv.appendChild(popupImg);
+                    }
                     // Create the feature and bind the popup.
                     const feature = L.geoJson(featureData.geoJSON);
                     feature.bindPopup(popupDiv);
