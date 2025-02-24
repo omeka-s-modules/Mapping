@@ -12,8 +12,9 @@ class Mapping implements ResourcePageBlockLayoutInterface
 {
     public function getMarkdown(
         JobInterface $job,
-        ArrayObject $frontMatter,
-        AbstractResourceEntityRepresentation $resource
+        AbstractResourceEntityRepresentation $resource,
+        ArrayObject $frontMatterPage,
+        ArrayObject $frontMatterBlock
     ): string {
         if ($resource instanceof ItemRepresentation) {
             $queryKey = 'item_id';
@@ -32,10 +33,10 @@ class Mapping implements ResourcePageBlockLayoutInterface
             return '';
         }
         // Set the dependencies.
-        $frontMatter['css'][] = 'vendor/leaflet/leaflet.css';
-        $frontMatter['js'][] = 'vendor/leaflet/leaflet.js';
-        $frontMatter['css'][] = 'vendor/omeka-mapping/mapping-features.css';
-        $frontMatter['js'][] = 'vendor/omeka-mapping/mapping-features.js';
+        $frontMatterPage['css'][] = 'vendor/leaflet/leaflet.css';
+        $frontMatterPage['js'][] = 'vendor/leaflet/leaflet.js';
+        $frontMatterPage['css'][] = 'vendor/omeka-mapping/mapping-features.css';
+        $frontMatterPage['js'][] = 'vendor/omeka-mapping/mapping-features.js';
         // Return the mapping shortcode.
         return sprintf('{{< omeka-mapping-features page="%s" >}}', $page);
     }
