@@ -21,8 +21,11 @@ document.addEventListener('DOMContentLoaded', function(event) {
                         // Create the popup content.
                         const popupDiv = document.createElement('div');
                         const popupHeading = document.createElement('h2');
+                        const popupHeadingLink = document.createElement('a');
                         const popupHeadingText = document.createTextNode(featureData.label);
-                        popupHeading.appendChild(popupHeadingText);
+                        popupHeadingLink.href =  mapDiv.dataset.relUrl + 'items/' + itemId
+                        popupHeadingLink.appendChild(popupHeadingText);
+                        popupHeading.appendChild(popupHeadingLink);
                         popupDiv.appendChild(popupHeading);
                         if (featureData.hasThumbnails) {
                             const popupImg = document.createElement('img');
