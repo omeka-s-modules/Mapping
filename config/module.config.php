@@ -162,6 +162,11 @@ return [
         'shortcodes' => [
             'omeka-mapping-features' => sprintf('%s/modules/Mapping/src/StaticSiteExport/omeka-mapping-features.html', OMEKA_PATH),
         ],
+        'block_layouts' => [
+            'invokables' => [
+                'mappingMap' => StaticSiteExport\BlockLayout\Map::class,
+            ],
+        ],
         'resource_page_block_layouts' => [
             'invokables' => [
                 'mapping' => StaticSiteExport\ResourcePageBlockLayout\Mapping::class,

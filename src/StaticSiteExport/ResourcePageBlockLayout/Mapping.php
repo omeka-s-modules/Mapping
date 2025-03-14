@@ -16,18 +16,12 @@ class Mapping implements ResourcePageBlockLayoutInterface
         ArrayObject $frontMatterPage,
         ArrayObject $frontMatterBlock
     ): string {
-        if ($resource instanceof ItemRepresentation) {
-            $queryKey = 'item_id';
-            $page = sprintf('items/%s', $resource->id());
-        } elseif ($resource instanceof ItemSetRepresentation) {
-            $queryKey = 'item_set_id';
-            $page = sprintf('item-sets/%s', $resource->id());
-        } else {
+        if (!($resource instanceof ItemRepresentation)) {
             return '';
         }
         // Get all features of this resource.
         $hasFeatures = $job->get('Omeka\ApiManager')
-            ->search('mapping_features', [$queryKey => $resource->id(), 'limit' => 0])
+            ->search('mapping_features', ['item_id' => $resource->id(), 'limit' => 0])
             ->getTotalResults();
         if (!$hasFeatures) {
             return '';
@@ -37,7 +31,10 @@ class Mapping implements ResourcePageBlockLayoutInterface
         $frontMatterPage['js'][] = 'vendor/leaflet/leaflet.js';
         $frontMatterPage['css'][] = 'vendor/omeka-mapping/mapping-features.css';
         $frontMatterPage['js'][] = 'vendor/omeka-mapping/mapping-features.js';
+
+        $frontMatterBlock['params']['mapping']['ids'] = [$resource->id()];
+
         // Return the mapping shortcode.
-        return sprintf('{{< omeka-mapping-features page="%s" >}}', $page);
+        return '{{< omeka-mapping-features >}}';
     }
 }

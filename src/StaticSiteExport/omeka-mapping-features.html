@@ -1,8 +1,6 @@
-{{ $page := site.GetPage (.Get "page") }}
-{{ $resource := $page.Resources.Get "mapping-features.json" }}
-{{ with $resource }}
+{{ if .Page.Params.mapping.ids }}
 <div class="mapping-features-map"
     data-rel-url="{{ relURL "" }}"
-    data-mapping-features-url="{{ .Permalink }}">
+    data-mapping-ids="{{ .Page.Params.mapping.ids | jsonify }}">
 </div>
 {{ end }}
