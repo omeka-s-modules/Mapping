@@ -165,6 +165,7 @@ return [
         'block_layouts' => [
             'invokables' => [
                 'mappingMap' => StaticSiteExport\BlockLayout\Map::class,
+                'mappingMapQuery' => StaticSiteExport\BlockLayout\MapQuery::class,
             ],
         ],
         'resource_page_block_layouts' => [

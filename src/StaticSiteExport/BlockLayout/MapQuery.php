@@ -6,7 +6,7 @@ use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Job\JobInterface;
 use StaticSiteExport\BlockLayout\BlockLayoutInterface;
 
-class Map implements BlockLayoutInterface
+class MapQuery implements BlockLayoutInterface
 {
     public function getMarkdown(
         JobInterface $job,
@@ -21,17 +21,15 @@ class Map implements BlockLayoutInterface
         $frontMatterPage['js'][] = 'vendor/omeka-mapping/mapping-features.js';
 
         // Set the item IDs to the block's front matter.
-        $itemIds = [];
-        foreach ($block->attachments() as $attachment) {
-            if (!$attachment->item()) {
-                continue;
-            }
-            $itemIds[] = $attachment->item()->id();
-        }
+        $api = $job->get('Omeka\ApiManager');
+        $blockData = $block->data();
+        parse_str($data['query'], $itemsQuery);
+        $itemsQuery['site_id'] = $block->page()->site()->id();
+        $itemsQuery['has_features'] = true;
+        $itemIds = $api->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
         $frontMatterBlock['params']['mapping']['ids'] = array_values($itemIds);
 
         // Return the mapping shortcode.
         return '{{< omeka-mapping-features >}}';
-
     }
 }
