@@ -173,5 +173,10 @@ return [
                 'mapping' => StaticSiteExport\ResourcePageBlockLayout\Mapping::class,
             ],
         ],
+        'navigation_links' => [
+            'invokables' => [
+                'mapping' => StaticSiteExport\NavigationLink\Mapping::class,
+            ],
+        ],
     ],
 ];

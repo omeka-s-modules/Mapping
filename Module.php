@@ -470,6 +470,15 @@ class Module extends AbstractModule
                 }
             }
         );
+        $sharedEventManager->attach(
+            'StaticSiteExport\Job\ExportStaticSite',
+            'static_site_export.create_site_directory',
+            function (Event $event) {
+                $job = $event->getTarget();
+                $job->makeDirectory('content/mapping');
+                $job->makeFile('content/mapping/browse.md');
+            }
+        );
         // Add feature data to StaticSiteExport item bundle.
         $sharedEventManager->attach(
             'StaticSiteExport\Job\ExportStaticSite',
