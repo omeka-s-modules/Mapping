@@ -19,7 +19,7 @@ class mapping implements NavigationLinkInterface
             'name' => $navLink['data']['label'] ?: $job->translate('Map browse'),
             'identifier' => $id,
             'parent' => $parentId,
-            'pageRef' => '/mapping/browse',
+            'pageRef' => '/mapping',
             'weight' => $weight,
         ]);
     }

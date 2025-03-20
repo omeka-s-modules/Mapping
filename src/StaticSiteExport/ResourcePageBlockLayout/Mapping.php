@@ -2,6 +2,7 @@
 namespace Mapping\StaticSiteExport\ResourcePageBlockLayout;
 
 use ArrayObject;
+use Mapping\Module;
 use Omeka\Api\Representation\AbstractResourceEntityRepresentation;
 use Omeka\Api\Representation\ItemRepresentation;
 use Omeka\Api\Representation\ItemSetRepresentation;
@@ -32,9 +33,19 @@ class Mapping implements ResourcePageBlockLayoutInterface
         $frontMatterPage['css'][] = 'vendor/omeka-mapping/mapping-features.css';
         $frontMatterPage['js'][] = 'vendor/omeka-mapping/mapping-features.js';
 
-        $frontMatterBlock['params']['mapping']['ids'] = [$resource->id()];
+        // Make the mapping-features.json file.
+        $features = $job->get('Omeka\ApiManager')
+            ->search('mapping_features', ['item_id' => $resource->id()])
+            ->getContent();
+        $job->makeFile(
+            sprintf('content/items/%s/mapping-features.json', $resource->id()),
+            json_encode(Module::getMappingFeaturesForStaticSiteExport($features))
+        );
 
         // Return the mapping shortcode.
-        return '{{< omeka-mapping-features >}}';
+        return sprintf(
+            '{{< omeka-mapping-features page="%s" resource="mapping-features.json">}}',
+            sprintf('items/%s', $resource->id())
+        );
     }
 }
