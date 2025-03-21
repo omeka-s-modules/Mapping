@@ -473,7 +473,7 @@ class Module extends AbstractModule
         // StaticSiteExport: add feature data to browse.
         $sharedEventManager->attach(
             'StaticSiteExport\Job\ExportStaticSite',
-            'static_site_export.create_site_directory',
+            'static_site_export.site_export.post',
             function (Event $event) {
                 $job = $event->getTarget();
                 $api = $job->get('Omeka\ApiManager');
