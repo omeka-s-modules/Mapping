@@ -25,7 +25,7 @@ class MapQuery implements BlockLayoutInterface
 
         // Make the mapping-features.json file.
         $blockData = $block->data();
-        parse_str($data['query'], $itemsQuery);
+        parse_str($blockData['query'], $itemsQuery);
         $itemsQuery['site_id'] = $block->page()->site()->id();
         $itemsQuery['has_features'] = true;
         $itemIds = $api->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
