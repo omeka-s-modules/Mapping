@@ -23,6 +23,12 @@ class Map implements BlockLayoutInterface
         $frontMatterPage['css'][] = 'vendor/omeka-mapping/mapping-features.css';
         $frontMatterPage['js'][] = 'vendor/omeka-mapping/mapping-features.js';
 
+        // Make the mapping-config.json file.
+        $job->makeFile(
+            sprintf('content/pages/%s/mapping-config-%s.json', $block->page()->slug(), $block->id()),
+            json_encode(Module::prepareMappingConfigForStaticSite($block->data()))
+        );
+
         // Make the mapping-features.json file.
         $itemIds = [];
         foreach ($block->attachments() as $attachment) {
@@ -37,13 +43,14 @@ class Map implements BlockLayoutInterface
         $features = $api->search('mapping_features', $featuresQuery)->getContent();
         $job->makeFile(
             sprintf('content/pages/%s/mapping-features-%s.json', $block->page()->slug(), $block->id()),
-            json_encode(Module::getMappingFeaturesForStaticSiteExport($features))
+            json_encode(Module::prepareMappingFeaturesForStaticSite($features))
         );
 
         // Return the mapping shortcode.
         return sprintf(
-            '{{< omeka-mapping-features page="%s" resource="%s">}}',
+            '{{< omeka-mapping-features page="%s" configResource="%s" featuresResource="%s" >}}',
             sprintf('pages/%s', $block->page()->slug()),
+            sprintf('mapping-config-%s.json', $block->id()),
             sprintf('mapping-features-%s.json', $block->id())
         );
     }

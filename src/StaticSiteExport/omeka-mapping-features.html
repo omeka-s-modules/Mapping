@@ -1,9 +1,9 @@
 {{ $page := site.GetPage (.Get "page") }}
-{{ $resource := $page.Resources.Get (.Get "resource") }}
-{{ with $resource }}
+{{ $configResource := $page.Resources.Get (.Get "configResource") }}
+{{ $featuresResource := $page.Resources.Get (.Get "featuresResource") }}
 <div class="mapping-features-map"
     data-rel-url="{{ relURL "" }}"
-    data-mapping-features-url="{{ .RelPermalink }}">
+    data-config-url="{{ with $configResource }}{{ .RelPermalink }}{{ end }}"
+    data-features-url="{{ with $featuresResource }}{{ .RelPermalink }}{{ end }}">
 </div>
-{{ end }}
 

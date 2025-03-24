@@ -6,6 +6,7 @@ use Doctrine\ORM\Events;
 use Mapping\Db\Event\Listener\DetachOrphanMappings;
 use Omeka\Api\Exception as ApiException;
 use Omeka\Api\Request;
+use Mapping\Api\Representation\MappingRepresentation;
 use Mapping\Entity\MappingFeature;
 use Mapping\Form\Element\CopyCoordinates;
 use Mapping\Form\Element\UpdateFeatures;
@@ -515,19 +516,38 @@ class Module extends AbstractModule
                 );
                 $job->makeFile(
                     'content/mapping/mapping-features.json',
-                    json_encode(self::getMappingFeaturesForStaticSiteExport($features))
+                    json_encode(self::prepareMappingFeaturesForStaticSite($features))
                 );
             }
         );
     }
 
     /**
-     * Get a prepared array of Mapping features for StaticSiteExport.
+     * Prepare an array of Mapping configuration for use by StaticSiteExport.
+     *
+     * @param array $data
+     * @return array
+     */
+    public static function prepareMappingConfigForStaticSite($data)
+    {
+        $mappingConfig = [
+            'bounds' => null,
+        ];
+        if ($data instanceof MappingRepresentation) {
+            $mappingConfig['bounds'] = $data->bounds();
+        } elseif (is_array($data)) {
+            $mappingConfig['bounds'] = $data['bounds'];
+        }
+        return $mappingConfig;
+    }
+
+    /**
+     * Prepare an array of Mapping features for use by StaticSiteExport.
      *
      * @param array $features An array of feature representations
      * @return array
      */
-    public static function getMappingFeaturesForStaticSiteExport(array $features)
+    public static function prepareMappingFeaturesForStaticSite(array $features)
     {
         // Set all features for this resource.
         $mappingFeatures = [];

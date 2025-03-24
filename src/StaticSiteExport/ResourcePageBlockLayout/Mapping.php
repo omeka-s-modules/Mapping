@@ -20,32 +20,41 @@ class Mapping implements ResourcePageBlockLayoutInterface
         if (!($resource instanceof ItemRepresentation)) {
             return '';
         }
-        // Get all features of this resource.
-        $hasFeatures = $job->get('Omeka\ApiManager')
-            ->search('mapping_features', ['item_id' => $resource->id(), 'limit' => 0])
-            ->getTotalResults();
-        if (!$hasFeatures) {
+        $api = $job->get('Omeka\ApiManager');
+
+        // Get mappings and all features of this item. There can only ever be
+        // one "mappings" for one item.
+        $mappings = $api->search('mappings', ['item_id' => $resource->id()])->getContent();
+        $mappings = isset($mappings[0]) ? $mappings[0] : null;
+        $features = $api->search('mapping_features', ['item_id' => $resource->id()])->getContent();
+
+        if (!$mappings && !$features) {
             return '';
         }
+
         // Set the dependencies.
         $frontMatterPage['css'][] = 'vendor/leaflet/leaflet.css';
         $frontMatterPage['js'][] = 'vendor/leaflet/leaflet.js';
         $frontMatterPage['css'][] = 'vendor/omeka-mapping/mapping-features.css';
         $frontMatterPage['js'][] = 'vendor/omeka-mapping/mapping-features.js';
 
+        // Make the mapping-config.json file.
+        $job->makeFile(
+            sprintf('content/items/%s/mapping-config.json', $resource->id()),
+            json_encode(Module::prepareMappingConfigForStaticSite($mappings))
+        );
         // Make the mapping-features.json file.
-        $features = $job->get('Omeka\ApiManager')
-            ->search('mapping_features', ['item_id' => $resource->id()])
-            ->getContent();
         $job->makeFile(
             sprintf('content/items/%s/mapping-features.json', $resource->id()),
-            json_encode(Module::getMappingFeaturesForStaticSiteExport($features))
+            json_encode(Module::prepareMappingFeaturesForStaticSite($features))
         );
 
         // Return the mapping shortcode.
         return sprintf(
-            '{{< omeka-mapping-features page="%s" resource="mapping-features.json">}}',
-            sprintf('items/%s', $resource->id())
+            '{{< omeka-mapping-features page="%s" configResource="%s" featuresResource="%s" >}}',
+            sprintf('items/%s', $resource->id()),
+            'mapping-config.json',
+            'mapping-features.json'
         );
     }
 }
