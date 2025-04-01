@@ -19,8 +19,11 @@ class MapQuery implements BlockLayoutInterface
 
         // Set the dependencies to the page's front matter.
         $frontMatterPage['css'][] = 'vendor/leaflet/leaflet.css';
-        $frontMatterPage['js'][] = 'vendor/leaflet/leaflet.js';
+        $frontMatterPage['css'][] = 'vendor/leaflet.markercluster/MarkerCluster.css';
+        $frontMatterPage['css'][] = 'vendor/leaflet.markercluster/MarkerCluster.Default.css';
         $frontMatterPage['css'][] = 'vendor/omeka-mapping/mapping-features.css';
+        $frontMatterPage['js'][] = 'vendor/leaflet/leaflet.js';
+        $frontMatterPage['js'][] = 'vendor/leaflet.markercluster/leaflet.markercluster-src.js';
         $frontMatterPage['js'][] = 'vendor/omeka-mapping/mapping-features.js';
 
         // Make the mapping-config.json file.

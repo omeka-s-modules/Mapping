@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', function(event) {
             center: [0, 0],
             zoom: 2
         });
-        const featureGroup = L.featureGroup();
+        const featureGroup = L.markerClusterGroup();
         L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png').addTo(map);
         map.scrollWheelZoom.disable()
         map.on('click', function() {
