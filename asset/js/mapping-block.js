@@ -84,6 +84,11 @@ function MappingBlock(mapDiv, timelineDiv) {
                         styles: overlayData.styles,
                         format: 'image/png',
                         transparent: true,
+                        // Leaflet sets the default maxZoom for TileLayer to 18.
+                        // Here we set a high maxZoom for WMS layers that zoom
+                        // beyond that. This way the only realistic limitation
+                        // is the map's default maxZoom.
+                        maxZoom: 30,
                     });
                     break;
                 case 'iiif':
