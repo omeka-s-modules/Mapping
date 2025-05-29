@@ -21,24 +21,27 @@ document.addEventListener('DOMContentLoaded', function(event) {
         });
         // Get the features data and add the features to the map.
         featuresData.forEach((featureData) => {
-            // Create the popup content.
-            const popupDiv = document.createElement('div');
-            const popupHeading = document.createElement('h2');
-            const popupHeadingLink = document.createElement('a');
-            const popupHeadingText = document.createTextNode(featureData.label);
-            popupHeadingLink.href =  relUrl + 'items/' + featureData.itemId
-            popupHeadingLink.appendChild(popupHeadingText);
-            popupHeading.appendChild(popupHeadingLink);
-            popupDiv.appendChild(popupHeading);
-            if (featureData.hasThumbnails) {
-                const popupImg = document.createElement('img');
-                popupImg.src = relUrl + 'media/' + featureData.mediaId + '/thumbnail_medium.jpg';
-                popupDiv.appendChild(popupImg);
-            }
-            // Create the feature and bind the popup.
-            const feature = L.geoJson(featureData.geoJSON);
-            feature.bindPopup(popupDiv);
-            featureGroup.addLayer(feature);
+            L.geoJSON(featureData.geoJSON, {
+                onEachFeature: function(feature, layer) {
+                    // Create the popup content.
+                    const popupDiv = document.createElement('div');
+                    const popupHeading = document.createElement('h2');
+                    const popupHeadingLink = document.createElement('a');
+                    const popupHeadingText = document.createTextNode(featureData.label);
+                    popupHeadingLink.href =  relUrl + 'items/' + featureData.itemId
+                    popupHeadingLink.appendChild(popupHeadingText);
+                    popupHeading.appendChild(popupHeadingLink);
+                    popupDiv.appendChild(popupHeading);
+                    if (featureData.hasThumbnails) {
+                        const popupImg = document.createElement('img');
+                        popupImg.src = relUrl + 'media/' + featureData.mediaId + '/thumbnail_medium.jpg';
+                        popupDiv.appendChild(popupImg);
+                    }
+                    // Create the feature and bind the popup.
+                    layer.bindPopup(popupDiv);
+                    featureGroup.addLayer(layer);
+                }
+            });
         });
         featureGroup.addTo(map);
 
