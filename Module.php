@@ -496,10 +496,13 @@ class Module extends AbstractModule
                     'title' => $job->translate('Map browse'),
                     'css' => [
                         'vendor/leaflet/leaflet.css',
+                        'vendor/leaflet.markercluster/MarkerCluster.css',
+                        'vendor/leaflet.markercluster/MarkerCluster.Default.css',
                         'vendor/omeka-mapping/mapping-features.css',
                     ],
                     'js' => [
                         'vendor/leaflet/leaflet.js',
+                        'vendor/leaflet.markercluster/leaflet.markercluster-src.js',
                         'vendor/omeka-mapping/mapping-features.js',
                     ],
                 ];
@@ -511,12 +514,16 @@ class Module extends AbstractModule
                     sprintf(
                         "%s\n%s",
                         json_encode($frontMatter, JSON_PRETTY_PRINT),
-                        '{{< omeka-mapping-features page="mapping" resource="mapping-features.json">}}'
+                        '{{< omeka-mapping-features page="mapping" configResource="mapping-config.json" featuresResource="mapping-features.json">}}'
                     )
                 );
                 $job->makeFile(
                     'content/mapping/mapping-features.json',
                     json_encode(self::prepareMappingFeaturesForStaticSite($features))
+                );
+                $job->makeFile(
+                    'content/mapping/mapping-config.json',
+                    json_encode(self::prepareMappingConfigForStaticSite([]))
                 );
             }
         );
@@ -536,7 +543,7 @@ class Module extends AbstractModule
         if ($data instanceof MappingRepresentation) {
             $mappingConfig['bounds'] = $data->bounds();
         } elseif (is_array($data)) {
-            $mappingConfig['bounds'] = $data['bounds'];
+            $mappingConfig['bounds'] = $data['bounds'] ?? null;
         }
         return $mappingConfig;
     }
