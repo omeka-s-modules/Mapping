@@ -4,16 +4,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2024
+# Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2025
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-27 19:33-0500\n"
+"POT-Creation-Date: 2025-08-14 12:07-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2024\n"
+"Last-Translator: Rubén Alcaraz Martínez <rubenalcarazmartinez@gmail.com>, 2025\n"
 "Language-Team: Catalan (Spain) (https://app.transifex.com/omeka/teams/14184/ca_ES/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,27 +21,31 @@ msgstr ""
 "Language: ca_ES\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:567 view/common/csv-import/mapping.phtml:3
+#: Module.php:496 src/StaticSiteExport/NavigationLink/Mapping.php:19
+msgid "Map browse"
+msgstr "Consulta el mapa"
+
+#: Module.php:676 view/common/csv-import/mapping.phtml:3
 #: view/common/csv-import/mapping.phtml:6
 #: view/common/mapping-item-form.phtml:28
 msgid "Mapping"
 msgstr "Mapping"
 
-#: Module.php:618
+#: Module.php:727
 msgid "Map feature presence"
-msgstr ""
+msgstr "Presència de característiques al mapa"
 
-#: Module.php:619
+#: Module.php:728
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:5
 msgid "Has map features"
-msgstr ""
+msgstr "El mapa té característiques"
 
-#: Module.php:619
+#: Module.php:728
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:6
 msgid "Has no map features"
-msgstr ""
+msgstr "El mapa no té característiques"
 
-#: Module.php:626
+#: Module.php:735
 msgid "Geographic location"
 msgstr "Localització geogràfica"
 
@@ -55,14 +59,16 @@ msgid ""
 "This block requires MySQL 8.0.24+ or MariaDB 11.7+. Your database version is"
 " %s."
 msgstr ""
+"Aquest bloc requereix MySQL 8.0.24+ o MariaDB 11.7+. La versió de la vostra "
+"base de dades és %s."
 
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:3
 msgid "Search by map feature presence"
-msgstr ""
+msgstr "Cerca per característiques del mapa"
 
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:8
 msgid "Select map feature presence…"
-msgstr ""
+msgstr "Selecciona la característica del mapa..."
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:5
 msgid "Address"
@@ -98,15 +104,15 @@ msgstr "Delimitador"
 
 #: view/common/batch-update/mapping-copy-coordinates.phtml:21
 msgid "Assign media to marker?"
-msgstr ""
+msgstr "Assigna un fitxer multimèdia al marcador"
 
 #: view/common/batch-update/mapping-update-features.phtml:2
 msgid "Media image"
-msgstr ""
+msgstr "Imatge del fitxer multimèdia"
 
 #: view/common/batch-update/mapping-update-features.phtml:7
 msgid "Label source"
-msgstr ""
+msgstr "Font de l'etiqueta"
 
 #: view/common/block-layout/mapping-block-form/default-view.phtml:1
 msgid "Default View"
@@ -123,21 +129,23 @@ msgstr ""
 
 #: view/common/block-layout/mapping-block-form/groups.phtml:1
 msgid "Groups"
-msgstr ""
+msgstr "Grups"
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:16
 msgid "Overlays"
-msgstr ""
+msgstr "Capes superposades"
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:20
 msgid ""
 "Add, edit, and delete overlays below. You may check which overlay you want "
 "open by default."
 msgstr ""
+"Afegeix, edita i elimina capes superposades. Podeu marcar quina capa voleu "
+"que estigui oberta per defecte."
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:32
 msgid "Save overlay"
-msgstr ""
+msgstr "Desa la capa superposada"
 
 #: view/common/block-layout/mapping-block-form/timeline.phtml:1
 msgid "Timeline"
@@ -145,7 +153,7 @@ msgstr "Línia de temps"
 
 #: view/common/block-layout/mapping-block-groups.phtml:35
 msgid "Return to groups"
-msgstr ""
+msgstr "Torna als grups"
 
 #: view/common/csv-import/mapping.phtml:7
 msgid "Select below"
@@ -165,7 +173,7 @@ msgstr "Latitud/Longitud"
 
 #: view/common/csv-import/mapping.phtml:11
 msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
-msgstr ""
+msgstr "Límits predeterminats (sw_lng,sw_lat,ne_lng,ne_lat)"
 
 #: view/common/mapping-item-form.phtml:34
 msgid "Close Me"
@@ -181,34 +189,34 @@ msgstr "Sense imatge"
 
 #: view/common/mapping-item-form.phtml:57
 msgid "Feature label"
-msgstr ""
+msgstr "Etiqueta de la característica"
 
 #: view/common/mapping-item-form.phtml:60
 msgid "Select feature image"
-msgstr ""
+msgstr "Seleccioneu la imatge de la característica"
 
 #: view/common/mapping-popup/property-ex-group.phtml:6
 #: view/common/mapping-popup/property-ex-group.phtml:19
 #, php-format
 msgid "%s has any value"
-msgstr ""
+msgstr "%s té qualsevol valor"
 
 #: view/common/mapping-popup/property-value-eq-group.phtml:6
 #: view/common/mapping-popup/property-value-eq-group.phtml:20
 #, php-format
 msgid "%s is exactly"
-msgstr ""
+msgstr "%s és exactament"
 
 #: view/common/mapping-popup/property-value-in-group.phtml:6
 #: view/common/mapping-popup/property-value-in-group.phtml:20
 #, php-format
 msgid "%s contains"
-msgstr ""
+msgstr "%s conté"
 
 #: view/common/mapping-popup/property-value-res-group.phtml:7
 #, php-format
 msgid "%s is"
-msgstr ""
+msgstr "%s és"
 
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
@@ -220,37 +228,37 @@ msgstr "Cerca al mapa"
 
 #: src/Collecting/PromptMap.php:26
 msgid "You must select a location on the map."
-msgstr ""
+msgstr "Heu de seleccionar una localització al mapa."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."
-msgstr ""
+msgstr "La zona ha de comptar amb un recurs."
 
 #: src/Api/Adapter/MappingAdapter.php:51
 msgid "Map bounds must contain four numbers separated by commas"
 msgstr ""
+"Els límits del mapa s'ha de definir amb quatre valors separats per comes."
 
 #: src/Site/BlockLayout/MapQuery.php:16
 msgid "Map by query"
-msgstr ""
+msgstr "Mapa a partir d'una cerca"
 
 #: src/Site/BlockLayout/Map.php:16
 msgid "Map by attachments"
-msgstr ""
+msgstr "Mapa amb fitxers adjunts"
 
 #: src/Site/BlockLayout/MapGroups.php:29
 msgid "Map by groups"
-msgstr ""
-
-#: src/Site/Navigation/Link/MapBrowse.php:13
-msgid "Map browse"
-msgstr ""
+msgstr "Mapa amb grups"
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:16
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed."
 msgstr ""
+"Seleccioneu el proveïdor del mapa base. El valor per defecte és "
+"OpenStreetMap.Mapnik. Aquests proveïdors s'ofereixen tal com són. No es "
+"garanteix ni el servei ni la velocitat."
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:28
 msgid "Minimum zoom level"
@@ -261,6 +269,8 @@ msgid ""
 "Set the minimum zoom level down to which the map will be displayed. The "
 "default is 0."
 msgstr ""
+"Establiu el nivell mínim de zoom fins al qual es mostrarà el mapa. El valor "
+"per defecte és 0."
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:42
 msgid "Maximum zoom level"
@@ -271,6 +281,8 @@ msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
 msgstr ""
+"Establiu el nivell màxim de zoom fins al qual es mostrarà el mapa. El valor "
+"per defecte és 19."
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:56
 msgid "Scroll wheel zoom"
@@ -281,6 +293,9 @@ msgid ""
 "Set whether users can zoom with their mouse wheel when hovering over the "
 "map, either automatically upon page load or after clicking inside the map."
 msgstr ""
+"Establiu si els usuaris poden fer zoom amb la roda del ratolí quan passen el"
+" cursor per sobre del mapa, ja sigui automàticament en carregar la pàgina o "
+"després de fer clic dins del mapa."
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:60
 msgid "Disabled"
@@ -288,7 +303,7 @@ msgstr "Desactivat"
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:61
 msgid "Disabled until map click"
-msgstr ""
+msgstr "Desactivat fins que es faci clic al mapa"
 
 #: src/Form/Fieldset/TimelineFieldset.php:18
 msgid "Title headline"
@@ -300,11 +315,13 @@ msgstr "Títol"
 
 #: src/Form/Fieldset/TimelineFieldset.php:35
 msgid "Fly to"
-msgstr ""
+msgstr "Nivell de zoom"
 
 #: src/Form/Fieldset/TimelineFieldset.php:36
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
+"Selecciona la vista del mapa que es mostrarà en desplaçar-se entre "
+"esdeveniments."
 
 #: src/Form/Fieldset/TimelineFieldset.php:37
 msgid "Default view"
@@ -359,65 +376,72 @@ msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
 msgstr ""
+"Marca aquesta opció si vols mostrar tots els esdeveniments al mapa que "
+"existeixin en el mateix període temporal que l'esdeveniment actual (només en"
+" la vista predeterminada)."
 
 #: src/Form/Fieldset/TimelineFieldset.php:64
 msgid "Timeline navigation position"
-msgstr ""
+msgstr "Posició de la navegació de la línia de temps"
 
 #: src/Form/Fieldset/TimelineFieldset.php:65
 msgid "Select the position of the timeline navigation."
-msgstr ""
+msgstr "Selecciona la posició de la navegació de la línia de temps."
 
 #: src/Form/Fieldset/TimelineFieldset.php:67
 msgid "Full width, below story slider and map"
-msgstr ""
+msgstr "Amplada completa, sota el carrusel d'històries i el mapa"
 
 #: src/Form/Fieldset/TimelineFieldset.php:68
 msgid "Full width, above story slider and map"
-msgstr ""
+msgstr "Amplada completa, abans del carrusel d'històries i el mapa"
 
 #: src/Form/Fieldset/TimelineFieldset.php:78
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
 msgstr ""
+"Seleccioneu la propietat de marca temporal o d'interval que s'usarà per "
+"omplir la línia temporal."
 
 #: src/Form/Fieldset/QueryFieldset.php:16
 msgid "Attach items using this query. No query means all items."
 msgstr ""
+"Adjunteu els recursos mitjançant aquesta consulta. Si no n'hi ha cap, "
+"s'adjuntaran tots els recursos."
 
 #: src/Form/Fieldset/OverlaysFieldset.php:14
 msgid "Overlay mode"
-msgstr ""
+msgstr "Mode de capa superposada"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:15
 msgid "Exclusive"
-msgstr ""
+msgstr "Exclusiu"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:17
 msgid "Inclusive"
-msgstr ""
+msgstr "No exclusiu"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:28
 msgid "Overlay"
-msgstr ""
+msgstr "Capa superposada"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:29
 msgid "Select overlay type"
-msgstr ""
+msgstr "Seleccioneu el tipus de capa superposada"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:31
 msgid "Web Map Service (WMS)"
-msgstr ""
+msgstr "Web Map Service (WMS)"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:32
 msgid "IIIF Georeference Annotation"
-msgstr ""
+msgstr "IIIF Georeference Annotation"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:33
 #: src/Form/Fieldset/OverlaysFieldset.php:124
 msgid "GeoJSON"
-msgstr ""
+msgstr "GeoJSON"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:64
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:24
@@ -437,7 +461,7 @@ msgstr "Capes WMS (separades per coma)"
 #: src/Form/Fieldset/OverlaysFieldset.php:85
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:45
 msgid "Styles"
-msgstr ""
+msgstr "Estils"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:86
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:46
@@ -446,77 +470,83 @@ msgstr "Estils WMS (separats per coma)"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:135
 msgid "Label property key"
-msgstr ""
+msgstr "Clau de la propietat de l'etiqueta"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:136
 msgid "Enter the GeoJSON property key to use for the popup label, if desired."
 msgstr ""
+"Introduïu la clau de propietat GeoJSON que voleu usar per a l'etiqueta del "
+"missatge emergent, si s'escau."
 
 #: src/Form/Fieldset/OverlaysFieldset.php:146
 msgid "Comment property key"
-msgstr ""
+msgstr "Clau de la propietat del comentari"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:147
 msgid ""
 "Enter the GeoJSON property key to use for the popup comment, if desired."
 msgstr ""
+"Introduïu la clau de propietat GeoJSON que voleu usar per al missatge "
+"emergent, si s'escau."
 
 #: src/Form/Fieldset/OverlaysFieldset.php:157
 msgid "Show GeoJSON property list?"
-msgstr ""
+msgstr "Voleu mostrar la llista de propietats GeoJSON?"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:158
 msgid "Do you want to show all the available GeoJSON properties in the popup?"
 msgstr ""
+"Voleu mostrar totes les propietats GeoJSON disponibles al comentari "
+"emergent?"
 
 #: src/Form/Fieldset/GroupsFieldset.php:10
 #: src/Form/Fieldset/GroupsFieldset.php:84
 msgid "Resource classes"
-msgstr ""
+msgstr "Classes del recurs"
 
 #: src/Form/Fieldset/GroupsFieldset.php:11
 msgid "Property values (is exactly)"
-msgstr ""
+msgstr "Valors de la propietat (és exactament)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:12
 msgid "Property values (contains)"
-msgstr ""
+msgstr "Valors de la propietat (conté)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:13
 msgid "Property values (is resource with ID)"
-msgstr ""
+msgstr "Valors de la propietat (el recurs té l'ID)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:14
 msgid "Properties (has any value)"
-msgstr ""
+msgstr "Propietats (té qualsevol valor)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:24
 msgid "Select a type…"
-msgstr ""
+msgstr "Selecciona un tipus..."
 
 #: src/Form/Fieldset/GroupsFieldset.php:35
 msgid "Feature type"
-msgstr ""
+msgstr "Tipus de funcionalitat"
 
 #: src/Form/Fieldset/GroupsFieldset.php:38
 msgid "Polygon"
-msgstr ""
+msgstr "Polígon"
 
 #: src/Form/Fieldset/GroupsFieldset.php:39
 msgid "Point"
-msgstr ""
+msgstr "Punt"
 
 #: src/Form/Fieldset/GroupsFieldset.php:59
 msgid "Filter by resource class"
-msgstr ""
+msgstr "Filtra per la classe del recurs"
 
 #: src/Form/Fieldset/GroupsFieldset.php:64
 msgid "Select resource class"
-msgstr ""
+msgstr "Selecciona la classe del recurs"
 
 #: src/Form/Fieldset/GroupsFieldset.php:90
 msgid "Select resource classes"
-msgstr ""
+msgstr "Selecciona classes de recurs"
 
 #: src/Form/Fieldset/GroupsFieldset.php:123
 msgid ""
@@ -528,6 +558,13 @@ msgid ""
 "                    <li>\"Is resource with ID\": enter the resource ID (item, item set, media).</li>\n"
 "                </ul>"
 msgstr ""
+"\n"
+"                <p>Introduïu un valor per línia. El format de cada valor depèn del tipus de cerca:</p>\n"
+"                <ul>\n"
+"                    <li>\"És exactament\": introduïu un valor que coincideixi exactament amb el valor de la propietat.</li>\n"
+"                    <li>\"Conté\": introduïu un valor que coincideixi parcialment amb el valor de la propietat.</li>\n"
+"                    <li>\"És un recurs amb l'ID\": introduïu l'ID de l'element (recurs, conjunt de recursos o fitxer).</li>\n"
+"                </ul>"
 
 #: src/Form/Element/UpdateFeatures.php:27
 msgid "[Remove label]"
@@ -535,11 +572,11 @@ msgstr "[Elimina l'etiqueta]"
 
 #: src/Form/Element/UpdateFeatures.php:31
 msgid "Select label property"
-msgstr ""
+msgstr "Selecciona la propietat de l'etiqueta"
 
 #: src/Form/Element/UpdateFeatures.php:38
 msgid "Assigned media"
-msgstr ""
+msgstr "Fitxer multimèdia assignat"
 
 #: src/Form/Element/UpdateFeatures.php:44
 msgid "[Unassign media]"
@@ -548,26 +585,34 @@ msgstr "[Fitxer sense assignar]"
 #: src/Form/Element/CopyCoordinates.php:30
 msgid "Copy from one item property containing both latitude and longitude"
 msgstr ""
+"Copia des d'una propietat dels recursos que contingui tant la latitud com la"
+" longitud"
 
 #: src/Form/Element/CopyCoordinates.php:31
 msgid "Copy from two item properties, one latitude and the other longitude"
 msgstr ""
+"Copia des de dues propietats dels recursos, una per a la latitud i l'altra "
+"per a la longitud"
 
 #: src/Form/Element/CopyCoordinates.php:32
 msgid "Copy from one media property containing both latitude and longitude"
 msgstr ""
+"Copia des d'una sola propietat dels fitxers multimèdia que contingui tant la"
+" latitud com la longitud"
 
 #: src/Form/Element/CopyCoordinates.php:33
 msgid "Copy from two media properties, one latitude and the other longitude"
 msgstr ""
+"Copia des de dues propietats dels fitxers multimèdia, una de latitud i una "
+"altra de longitud"
 
 #: src/Form/Element/CopyCoordinates.php:47
 msgid "Select latitude property"
-msgstr ""
+msgstr "Selecciona la propietat latitud"
 
 #: src/Form/Element/CopyCoordinates.php:54
 msgid "Select longitude property"
-msgstr ""
+msgstr "Selecciona la propietat longitud"
 
 #: src/Form/Element/CopyCoordinates.php:59
 msgid "Latitude Longitude"
@@ -593,36 +638,39 @@ msgstr "Barra [/]"
 msgid "Colon [:]"
 msgstr "Dos punts [:]"
 
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:525
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:634
 msgid "[Default provider]"
 msgstr "[Proveïdor per defecte]"
 
-#: Module.php:361
+#: Module.php:362
 msgid "Delete features"
-msgstr ""
+msgstr "Suprimeix les funcionalitats"
 
-#: Module.php:372
+#: Module.php:373
 msgid "Copy coordinates to markers"
-msgstr ""
+msgstr "Copia les coordenades als marcadors"
 
-#: Module.php:380
+#: Module.php:381
 msgid "Update features"
-msgstr ""
+msgstr "Actualitza les funcionalitats"
 
-#: Module.php:490
+#: Module.php:599
 msgid "Add feature presence to advanced search"
-msgstr ""
+msgstr "Afegeix la presència de característiques a la cerca avançada"
 
-#: Module.php:501
+#: Module.php:610
 msgid "Add geographic location to advanced search"
 msgstr "Afegeix la localització geogràfica a la cerca avançada"
 
-#: Module.php:512
+#: Module.php:621
 msgid "Disable clustering of map features"
 msgstr "Desactiva l'agrupament de les característiques del mapa"
 
-#: Module.php:513
+#: Module.php:622
 msgid ""
 "Map features are markers, polygons, polylines, and rectangles. Note that "
 "large features may not cluster."
 msgstr ""
+"Les característiques del mapa són marcadors, polígons, polilínies i "
+"rectangles. Tingueu en compte que les característiques grans poden no "
+"agrupar-se en clústers."

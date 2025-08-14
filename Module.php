@@ -95,9 +95,9 @@ class Module extends AbstractModule
                 Acl::ROLE_SITE_ADMIN,
             ],
             ['Mapping\Api\Adapter\MappingFeatureAdapter',
-             'Mapping\Api\Adapter\MappingAdapter',
-             'Mapping\Entity\MappingFeature',
-             'Mapping\Entity\Mapping',
+                'Mapping\Api\Adapter\MappingAdapter',
+                'Mapping\Entity\MappingFeature',
+                'Mapping\Entity\Mapping',
             ]
         );
 
@@ -109,7 +109,7 @@ class Module extends AbstractModule
                 'Mapping\Entity\Mapping',
             ],
             ['show', 'browse', 'read', 'search']
-            );
+        );
 
         $em = $this->getServiceLocator()->get('Omeka\EntityManager');
         $em->getEventManager()->addEventListener(
@@ -303,7 +303,7 @@ class Module extends AbstractModule
             '*',
             'view.search.filters',
             [$this, 'filterSearchFilters']
-         );
+        );
         // Add the "has_features" filter to item search.
         $sharedEventManager->attach(
             'Omeka\Api\Adapter\ItemAdapter',
@@ -1060,7 +1060,7 @@ class Module extends AbstractModule
             foreach ($values as $value) {
                 $allCoordinates[] = $value->getValue();
             }
-            // By two item properties, one latitude and the other longitude
+        // By two item properties, one latitude and the other longitude
         } elseif ('by_item_properties' === $copyAction) {
             $latValues = $entityManager->createQuery($dqlValues)
                 ->setParameter('resource_id', $item->getId())
@@ -1099,7 +1099,7 @@ class Module extends AbstractModule
                     $allCoordinates[$media->getId()] = $value->getValue();
                 }
             }
-            // By two media properties, one latitude and the other longitude
+        // By two media properties, one latitude and the other longitude
         } elseif ('by_media_properties' === $copyAction) {
             $medias = $entityManager->createQuery($dqlMedia)
                 ->setParameter('item_id', $item->getId())

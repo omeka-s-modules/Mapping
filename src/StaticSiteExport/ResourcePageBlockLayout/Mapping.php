@@ -5,7 +5,6 @@ use ArrayObject;
 use Mapping\Module;
 use Omeka\Api\Representation\AbstractResourceEntityRepresentation;
 use Omeka\Api\Representation\ItemRepresentation;
-use Omeka\Api\Representation\ItemSetRepresentation;
 use Omeka\Job\JobInterface;
 use StaticSiteExport\ResourcePageBlockLayout\ResourcePageBlockLayoutInterface;
 
@@ -25,7 +24,7 @@ class Mapping implements ResourcePageBlockLayoutInterface
         // Get mappings and all features of this item. There can only ever be
         // one "mappings" for one item.
         $mappings = $api->search('mappings', ['item_id' => $resource->id()])->getContent();
-        $mappings = isset($mappings[0]) ? $mappings[0] : null;
+        $mappings = $mappings[0] ?? null;
         $features = $api->search('mapping_features', ['item_id' => $resource->id()])->getContent();
 
         if (!$mappings && !$features) {

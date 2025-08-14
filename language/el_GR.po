@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-27 19:33-0500\n"
+"POT-Creation-Date: 2025-08-14 12:07-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Yannis Kaskamanidis <kiolalis@gmail.com>, 2023\n"
 "Language-Team: Greek (Greece) (https://app.transifex.com/omeka/teams/14184/el_GR/)\n"
@@ -21,27 +21,31 @@ msgstr ""
 "Language: el_GR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:567 view/common/csv-import/mapping.phtml:3
+#: Module.php:496 src/StaticSiteExport/NavigationLink/Mapping.php:19
+msgid "Map browse"
+msgstr ""
+
+#: Module.php:676 view/common/csv-import/mapping.phtml:3
 #: view/common/csv-import/mapping.phtml:6
 #: view/common/mapping-item-form.phtml:28
 msgid "Mapping"
 msgstr "Χαρτογράφηση"
 
-#: Module.php:618
+#: Module.php:727
 msgid "Map feature presence"
 msgstr ""
 
-#: Module.php:619
+#: Module.php:728
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:5
 msgid "Has map features"
 msgstr ""
 
-#: Module.php:619
+#: Module.php:728
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:6
 msgid "Has no map features"
 msgstr ""
 
-#: Module.php:626
+#: Module.php:735
 msgid "Geographic location"
 msgstr "Γεωγραφική θέση"
 
@@ -242,10 +246,6 @@ msgstr "Χάρτης σύμφωνα με τα συνημμένα"
 
 #: src/Site/BlockLayout/MapGroups.php:29
 msgid "Map by groups"
-msgstr ""
-
-#: src/Site/Navigation/Link/MapBrowse.php:13
-msgid "Map browse"
 msgstr ""
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:16
@@ -611,35 +611,35 @@ msgstr ""
 msgid "Colon [:]"
 msgstr ""
 
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:525
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:634
 msgid "[Default provider]"
 msgstr "[Προεπιλεγμένος πάροχος]"
 
-#: Module.php:361
+#: Module.php:362
 msgid "Delete features"
 msgstr ""
 
-#: Module.php:372
+#: Module.php:373
 msgid "Copy coordinates to markers"
 msgstr ""
 
-#: Module.php:380
+#: Module.php:381
 msgid "Update features"
 msgstr ""
 
-#: Module.php:490
+#: Module.php:599
 msgid "Add feature presence to advanced search"
 msgstr ""
 
-#: Module.php:501
+#: Module.php:610
 msgid "Add geographic location to advanced search"
 msgstr ""
 
-#: Module.php:512
+#: Module.php:621
 msgid "Disable clustering of map features"
 msgstr ""
 
-#: Module.php:513
+#: Module.php:622
 msgid ""
 "Map features are markers, polygons, polylines, and rectangles. Note that "
 "large features may not cluster."

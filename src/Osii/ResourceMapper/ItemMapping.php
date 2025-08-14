@@ -6,7 +6,7 @@ use Osii\ResourceMapper\AbstractResourceMapper;
 
 class ItemMapping extends AbstractResourceMapper
 {
-    public function prepareResource(array $remoteResource) : array
+    public function prepareResource(array $remoteResource): array
     {
         $job = $this->getJob();
         $resourceName = $job->getResourceName($remoteResource);
@@ -59,7 +59,7 @@ class ItemMapping extends AbstractResourceMapper
         return $remoteResource;
     }
 
-    public function mapResource(array $localResource, array $remoteResource) : array
+    public function mapResource(array $localResource, array $remoteResource): array
     {
         $job = $this->getJob();
         $resourceName = $job->getResourceName($remoteResource);

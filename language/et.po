@@ -4,16 +4,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Rivo Zängov <eraser@eraser.ee>, 2024
+# Rivo Zängov <eraser@eraser.ee>, 2025
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-27 19:33-0500\n"
+"POT-Creation-Date: 2025-08-14 12:07-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2024\n"
+"Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2025\n"
 "Language-Team: Estonian (https://app.transifex.com/omeka/teams/14184/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,27 +21,31 @@ msgstr ""
 "Language: et\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:567 view/common/csv-import/mapping.phtml:3
+#: Module.php:496 src/StaticSiteExport/NavigationLink/Mapping.php:19
+msgid "Map browse"
+msgstr "Kaardi sirvimine"
+
+#: Module.php:676 view/common/csv-import/mapping.phtml:3
 #: view/common/csv-import/mapping.phtml:6
 #: view/common/mapping-item-form.phtml:28
 msgid "Mapping"
 msgstr "Kaardid"
 
-#: Module.php:618
+#: Module.php:727
 msgid "Map feature presence"
 msgstr ""
 
-#: Module.php:619
+#: Module.php:728
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:5
 msgid "Has map features"
 msgstr ""
 
-#: Module.php:619
+#: Module.php:728
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:6
 msgid "Has no map features"
 msgstr ""
 
-#: Module.php:626
+#: Module.php:735
 msgid "Geographic location"
 msgstr ""
 
@@ -94,7 +98,7 @@ msgstr "Järjekord"
 
 #: view/common/batch-update/mapping-copy-coordinates.phtml:10
 msgid "Delimiter"
-msgstr ""
+msgstr "Eraldaja"
 
 #: view/common/batch-update/mapping-copy-coordinates.phtml:21
 msgid "Assign media to marker?"
@@ -121,11 +125,11 @@ msgstr ""
 
 #: view/common/block-layout/mapping-block-form/groups.phtml:1
 msgid "Groups"
-msgstr ""
+msgstr "Grupid"
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:16
 msgid "Overlays"
-msgstr ""
+msgstr "Kihid"
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:20
 msgid ""
@@ -135,7 +139,7 @@ msgstr ""
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:32
 msgid "Save overlay"
-msgstr ""
+msgstr "Salvesta kiht"
 
 #: view/common/block-layout/mapping-block-form/timeline.phtml:1
 msgid "Timeline"
@@ -171,7 +175,7 @@ msgstr "Sulge"
 
 #: view/common/mapping-item-form.phtml:35
 msgid "Feature image"
-msgstr ""
+msgstr "Esiletõstetud pilt"
 
 #: view/common/mapping-item-form.phtml:36
 msgid " No Image"
@@ -179,11 +183,11 @@ msgstr "Pilti pole"
 
 #: view/common/mapping-item-form.phtml:57
 msgid "Feature label"
-msgstr ""
+msgstr "Esiletõstetud silt"
 
 #: view/common/mapping-item-form.phtml:60
 msgid "Select feature image"
-msgstr ""
+msgstr "Vali esiletõstetud pilt"
 
 #: view/common/mapping-popup/property-ex-group.phtml:6
 #: view/common/mapping-popup/property-ex-group.phtml:19
@@ -222,7 +226,7 @@ msgstr "Sa pead valima kaardilt asukoha."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."
-msgstr ""
+msgstr "Kaardi piirkonnal peab olema marker."
 
 #: src/Api/Adapter/MappingAdapter.php:51
 msgid "Map bounds must contain four numbers separated by commas"
@@ -230,18 +234,14 @@ msgstr ""
 
 #: src/Site/BlockLayout/MapQuery.php:16
 msgid "Map by query"
-msgstr ""
+msgstr "Kaardid päringu järgi"
 
 #: src/Site/BlockLayout/Map.php:16
 msgid "Map by attachments"
-msgstr ""
+msgstr "Kaardid manuste järgi"
 
 #: src/Site/BlockLayout/MapGroups.php:29
 msgid "Map by groups"
-msgstr ""
-
-#: src/Site/Navigation/Link/MapBrowse.php:13
-msgid "Map browse"
 msgstr ""
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:16
@@ -272,7 +272,7 @@ msgstr ""
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:56
 msgid "Scroll wheel zoom"
-msgstr ""
+msgstr "Hiirerulliga suumimine"
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:57
 msgid ""
@@ -386,11 +386,11 @@ msgstr ""
 
 #: src/Form/Fieldset/OverlaysFieldset.php:14
 msgid "Overlay mode"
-msgstr ""
+msgstr "Kihi režiim"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:15
 msgid "Exclusive"
-msgstr ""
+msgstr "Kaasav"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:17
 msgid "Inclusive"
@@ -398,15 +398,15 @@ msgstr ""
 
 #: src/Form/Fieldset/OverlaysFieldset.php:28
 msgid "Overlay"
-msgstr ""
+msgstr "Kiht"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:29
 msgid "Select overlay type"
-msgstr ""
+msgstr "Vali kihi liik"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:31
 msgid "Web Map Service (WMS)"
-msgstr ""
+msgstr "Veebikaardi teenus (WMS)"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:32
 msgid "IIIF Georeference Annotation"
@@ -415,7 +415,7 @@ msgstr ""
 #: src/Form/Fieldset/OverlaysFieldset.php:33
 #: src/Form/Fieldset/OverlaysFieldset.php:124
 msgid "GeoJSON"
-msgstr ""
+msgstr "GeoJSON"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:64
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:24
@@ -435,7 +435,7 @@ msgstr "WMS kihid, kui neid on (komadega eraldatud)"
 #: src/Form/Fieldset/OverlaysFieldset.php:85
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:45
 msgid "Styles"
-msgstr ""
+msgstr "Stiilid"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:86
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:46
@@ -490,19 +490,19 @@ msgstr ""
 
 #: src/Form/Fieldset/GroupsFieldset.php:24
 msgid "Select a type…"
-msgstr ""
+msgstr "Vali liik..."
 
 #: src/Form/Fieldset/GroupsFieldset.php:35
 msgid "Feature type"
-msgstr ""
+msgstr "Esiletõstmise liik"
 
 #: src/Form/Fieldset/GroupsFieldset.php:38
 msgid "Polygon"
-msgstr ""
+msgstr "Polügon"
 
 #: src/Form/Fieldset/GroupsFieldset.php:39
 msgid "Point"
-msgstr ""
+msgstr "Punkt"
 
 #: src/Form/Fieldset/GroupsFieldset.php:59
 msgid "Filter by resource class"
@@ -510,11 +510,11 @@ msgstr ""
 
 #: src/Form/Fieldset/GroupsFieldset.php:64
 msgid "Select resource class"
-msgstr ""
+msgstr "Vali ressursi klass"
 
 #: src/Form/Fieldset/GroupsFieldset.php:90
 msgid "Select resource classes"
-msgstr ""
+msgstr "Vali ressursside klassid"
 
 #: src/Form/Fieldset/GroupsFieldset.php:123
 msgid ""
@@ -537,7 +537,7 @@ msgstr "Vali sildi omadus"
 
 #: src/Form/Element/UpdateFeatures.php:38
 msgid "Assigned media"
-msgstr ""
+msgstr "Määratud meedia"
 
 #: src/Form/Element/UpdateFeatures.php:44
 msgid "[Unassign media]"
@@ -561,19 +561,19 @@ msgstr ""
 
 #: src/Form/Element/CopyCoordinates.php:47
 msgid "Select latitude property"
-msgstr ""
+msgstr "Vali laiuskraadi omadus"
 
 #: src/Form/Element/CopyCoordinates.php:54
 msgid "Select longitude property"
-msgstr ""
+msgstr "Vali pikkuskraadi omadus"
 
 #: src/Form/Element/CopyCoordinates.php:59
 msgid "Latitude Longitude"
-msgstr ""
+msgstr "Lauiskraad Pikkuskraad"
 
 #: src/Form/Element/CopyCoordinates.php:60
 msgid "Longitude Latitude"
-msgstr ""
+msgstr "Pikkuskraad Lauiskraad"
 
 #: src/Form/Element/CopyCoordinates.php:65
 msgid "Comma [,]"
@@ -591,35 +591,35 @@ msgstr "Kaldkriips [/]"
 msgid "Colon [:]"
 msgstr "Koolon [:]"
 
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:525
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:634
 msgid "[Default provider]"
 msgstr "[Vaikimisi teenusepakkuja]"
 
-#: Module.php:361
+#: Module.php:362
 msgid "Delete features"
 msgstr ""
 
-#: Module.php:372
+#: Module.php:373
 msgid "Copy coordinates to markers"
 msgstr ""
 
-#: Module.php:380
+#: Module.php:381
 msgid "Update features"
 msgstr ""
 
-#: Module.php:490
+#: Module.php:599
 msgid "Add feature presence to advanced search"
 msgstr ""
 
-#: Module.php:501
+#: Module.php:610
 msgid "Add geographic location to advanced search"
 msgstr ""
 
-#: Module.php:512
+#: Module.php:621
 msgid "Disable clustering of map features"
 msgstr ""
 
-#: Module.php:513
+#: Module.php:622
 msgid ""
 "Map features are markers, polygons, polylines, and rectangles. Note that "
 "large features may not cluster."

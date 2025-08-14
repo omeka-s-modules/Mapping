@@ -5,16 +5,16 @@
 # 
 # Translators:
 # Latino Imparato <latino.imparato@gmail.com>, 2018
-# Giorgio Comai <g@giorgiocomai.eu>, 2024
+# Giorgio Comai <g@giorgiocomai.eu>, 2025
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-01-27 19:33-0500\n"
+"POT-Creation-Date: 2025-08-14 12:07-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Giorgio Comai <g@giorgiocomai.eu>, 2024\n"
+"Last-Translator: Giorgio Comai <g@giorgiocomai.eu>, 2025\n"
 "Language-Team: Italian (https://app.transifex.com/omeka/teams/14184/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,27 +22,31 @@ msgstr ""
 "Language: it\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
-#: Module.php:567 view/common/csv-import/mapping.phtml:3
+#: Module.php:496 src/StaticSiteExport/NavigationLink/Mapping.php:19
+msgid "Map browse"
+msgstr "Esplora la mappa"
+
+#: Module.php:676 view/common/csv-import/mapping.phtml:3
 #: view/common/csv-import/mapping.phtml:6
 #: view/common/mapping-item-form.phtml:28
 msgid "Mapping"
 msgstr "Mappatura"
 
-#: Module.php:618
+#: Module.php:727
 msgid "Map feature presence"
 msgstr "Presenza di oggetti della mappa"
 
-#: Module.php:619
+#: Module.php:728
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:5
 msgid "Has map features"
 msgstr "Ha oggetti della mappa"
 
-#: Module.php:619
+#: Module.php:728
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:6
 msgid "Has no map features"
 msgstr "Non ha oggetti della mappa"
 
-#: Module.php:626
+#: Module.php:735
 msgid "Geographic location"
 msgstr "Collocazione geografica"
 
@@ -56,6 +60,8 @@ msgid ""
 "This block requires MySQL 8.0.24+ or MariaDB 11.7+. Your database version is"
 " %s."
 msgstr ""
+"Questo blocco necessita di MySQL 8.0.24+ o di MariaDB 11.7+. La versione del"
+" tuo database è %s."
 
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:3
 msgid "Search by map feature presence"
@@ -124,21 +130,24 @@ msgstr ""
 
 #: view/common/block-layout/mapping-block-form/groups.phtml:1
 msgid "Groups"
-msgstr ""
+msgstr "Gruppi"
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:16
 msgid "Overlays"
-msgstr ""
+msgstr "Strati di sovrapposizione"
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:20
 msgid ""
 "Add, edit, and delete overlays below. You may check which overlay you want "
 "open by default."
 msgstr ""
+"Aggiungi, modifica o rimuovi strati di sovrapposizione qui sotto. Puoi "
+"selezionare quali strati vuoi che siano attivi come impostazione "
+"predefinita."
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:32
 msgid "Save overlay"
-msgstr ""
+msgstr "Salva strato di sovrapposizione"
 
 #: view/common/block-layout/mapping-block-form/timeline.phtml:1
 msgid "Timeline"
@@ -146,7 +155,7 @@ msgstr "Linea temporale"
 
 #: view/common/block-layout/mapping-block-groups.phtml:35
 msgid "Return to groups"
-msgstr ""
+msgstr "Ritorna ai gruppi"
 
 #: view/common/csv-import/mapping.phtml:7
 msgid "Select below"
@@ -194,24 +203,24 @@ msgstr "Seleziona immagine dell'oggetto"
 #: view/common/mapping-popup/property-ex-group.phtml:19
 #, php-format
 msgid "%s has any value"
-msgstr ""
+msgstr "%s ha un qualsiasi valore"
 
 #: view/common/mapping-popup/property-value-eq-group.phtml:6
 #: view/common/mapping-popup/property-value-eq-group.phtml:20
 #, php-format
 msgid "%s is exactly"
-msgstr ""
+msgstr "%s è esattamente"
 
 #: view/common/mapping-popup/property-value-in-group.phtml:6
 #: view/common/mapping-popup/property-value-in-group.phtml:20
 #, php-format
 msgid "%s contains"
-msgstr ""
+msgstr "%s contiene"
 
 #: view/common/mapping-popup/property-value-res-group.phtml:7
 #, php-format
 msgid "%s is"
-msgstr ""
+msgstr "%s è"
 
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
@@ -245,11 +254,7 @@ msgstr "Mappa sulla base degli allegati"
 
 #: src/Site/BlockLayout/MapGroups.php:29
 msgid "Map by groups"
-msgstr ""
-
-#: src/Site/Navigation/Link/MapBrowse.php:13
-msgid "Map browse"
-msgstr ""
+msgstr "Mappa per gruppi"
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:16
 msgid ""
@@ -269,6 +274,8 @@ msgid ""
 "Set the minimum zoom level down to which the map will be displayed. The "
 "default is 0."
 msgstr ""
+"Imposta il livello minimo di zoom a cui la mappa può essere mostrata. Il "
+"valore predefinito è 0."
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:42
 msgid "Maximum zoom level"
@@ -410,36 +417,36 @@ msgstr ""
 
 #: src/Form/Fieldset/OverlaysFieldset.php:14
 msgid "Overlay mode"
-msgstr ""
+msgstr "Modalità con strati di sovrapposizione"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:15
 msgid "Exclusive"
-msgstr ""
+msgstr "Esclude"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:17
 msgid "Inclusive"
-msgstr ""
+msgstr "Include"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:28
 msgid "Overlay"
-msgstr ""
+msgstr "Strato di sovrapposizione"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:29
 msgid "Select overlay type"
-msgstr ""
+msgstr "Scegli il tipo di strato di sovrapposizione"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:31
 msgid "Web Map Service (WMS)"
-msgstr ""
+msgstr "Servizi di mappatura web (WMS)"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:32
 msgid "IIIF Georeference Annotation"
-msgstr ""
+msgstr "Annotazione georeferenziata IIIF"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:33
 #: src/Form/Fieldset/OverlaysFieldset.php:124
 msgid "GeoJSON"
-msgstr ""
+msgstr "GeoJSON"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:64
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:24
@@ -459,7 +466,7 @@ msgstr "Gli eventuali livelli WMS (separati da virgole)."
 #: src/Form/Fieldset/OverlaysFieldset.php:85
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:45
 msgid "Styles"
-msgstr ""
+msgstr "Stili"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:86
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:46
@@ -468,77 +475,81 @@ msgstr "Gli eventuali stili WMS (separati da virgole)."
 
 #: src/Form/Fieldset/OverlaysFieldset.php:135
 msgid "Label property key"
-msgstr ""
+msgstr "Etichetta della proprietà"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:136
 msgid "Enter the GeoJSON property key to use for the popup label, if desired."
 msgstr ""
+"Inserisci la proprietà GeoJSON che deve essere utilizzata per l'etichetta "
+"popup, se desiderata."
 
 #: src/Form/Fieldset/OverlaysFieldset.php:146
 msgid "Comment property key"
-msgstr ""
+msgstr "Commento per la proprietà"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:147
 msgid ""
 "Enter the GeoJSON property key to use for the popup comment, if desired."
 msgstr ""
+"Inserisci la proprietà GeoJSON che deve essere usata per il commento nel "
+"popup, se desiderata."
 
 #: src/Form/Fieldset/OverlaysFieldset.php:157
 msgid "Show GeoJSON property list?"
-msgstr ""
+msgstr "Mostra la lista delle proprietà GeoJSON?"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:158
 msgid "Do you want to show all the available GeoJSON properties in the popup?"
-msgstr ""
+msgstr "Vuoi mostrare tutte le proprietà GeoJSON disponibili nel popup?"
 
 #: src/Form/Fieldset/GroupsFieldset.php:10
 #: src/Form/Fieldset/GroupsFieldset.php:84
 msgid "Resource classes"
-msgstr ""
+msgstr "Classi di risorsa"
 
 #: src/Form/Fieldset/GroupsFieldset.php:11
 msgid "Property values (is exactly)"
-msgstr ""
+msgstr "Valori della proprietà (è esattamente)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:12
 msgid "Property values (contains)"
-msgstr ""
+msgstr "Valori della proprietà (contiene)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:13
 msgid "Property values (is resource with ID)"
-msgstr ""
+msgstr "Valori della proprietà (è una risorsa con ID)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:14
 msgid "Properties (has any value)"
-msgstr ""
+msgstr "Proprietà (ha un qualsiasi valore)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:24
 msgid "Select a type…"
-msgstr ""
+msgstr "Seleziona un tipo..."
 
 #: src/Form/Fieldset/GroupsFieldset.php:35
 msgid "Feature type"
-msgstr ""
+msgstr "Tipo di elemento"
 
 #: src/Form/Fieldset/GroupsFieldset.php:38
 msgid "Polygon"
-msgstr ""
+msgstr "Poligono"
 
 #: src/Form/Fieldset/GroupsFieldset.php:39
 msgid "Point"
-msgstr ""
+msgstr "Punto"
 
 #: src/Form/Fieldset/GroupsFieldset.php:59
 msgid "Filter by resource class"
-msgstr ""
+msgstr "Filtra per classe di risorsa"
 
 #: src/Form/Fieldset/GroupsFieldset.php:64
 msgid "Select resource class"
-msgstr ""
+msgstr "Seleziona classe di risorsa"
 
 #: src/Form/Fieldset/GroupsFieldset.php:90
 msgid "Select resource classes"
-msgstr ""
+msgstr "Seleziona classi di risorsa"
 
 #: src/Form/Fieldset/GroupsFieldset.php:123
 msgid ""
@@ -550,6 +561,13 @@ msgid ""
 "                    <li>\"Is resource with ID\": enter the resource ID (item, item set, media).</li>\n"
 "                </ul>"
 msgstr ""
+"\n"
+"                <p>Inserisci i valori, separati da un 'a capo'. Il formato di ogni valore dipende dal tipo di query:</p>\n"
+"                <ul>\n"
+"                    <li>\"È esattamente\": inserisci un valore che corrisponda esattamente ad un valore della proprietà.</li>\n"
+"                    <li>\"Contiene\": inserisci un valore che corrisponda a parte del valore della proprietà.</li>\n"
+"                    <li>\"È una risorsa con ID\": inserisci una risorsa con ID (contenuto, collezione, media).</li>\n"
+"                </ul>"
 
 #: src/Form/Element/UpdateFeatures.php:27
 msgid "[Remove label]"
@@ -622,35 +640,35 @@ msgstr "Barra [/]"
 msgid "Colon [:]"
 msgstr "Due punti [:]"
 
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:525
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:634
 msgid "[Default provider]"
 msgstr "[Fornitore predefinito]"
 
-#: Module.php:361
+#: Module.php:362
 msgid "Delete features"
 msgstr "Elimina gli oggetti"
 
-#: Module.php:372
+#: Module.php:373
 msgid "Copy coordinates to markers"
 msgstr "Copia le coordinate sull'indicatore"
 
-#: Module.php:380
+#: Module.php:381
 msgid "Update features"
 msgstr "Aggiorna gli oggetti"
 
-#: Module.php:490
+#: Module.php:599
 msgid "Add feature presence to advanced search"
 msgstr "Aggiungi la presenza di oggetti alla ricerca avanzata"
 
-#: Module.php:501
+#: Module.php:610
 msgid "Add geographic location to advanced search"
 msgstr "Aggiungi collocazione geografica alla ricerca avanzata"
 
-#: Module.php:512
+#: Module.php:621
 msgid "Disable clustering of map features"
 msgstr "Disabilita il raggruppamento di oggetti della mappa"
 
-#: Module.php:513
+#: Module.php:622
 msgid ""
 "Map features are markers, polygons, polylines, and rectangles. Note that "
 "large features may not cluster."
