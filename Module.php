@@ -6,6 +6,7 @@ use Doctrine\ORM\Events;
 use Mapping\Db\Event\Listener\DetachOrphanMappings;
 use Omeka\Api\Exception as ApiException;
 use Omeka\Api\Request;
+use Mapping\Api\Representation\MappingRepresentation;
 use Mapping\Entity\MappingFeature;
 use Mapping\Form\Element\CopyCoordinates;
 use Mapping\Form\Element\UpdateFeatures;
@@ -470,6 +471,114 @@ class Module extends AbstractModule
                 }
             }
         );
+        // StaticSiteExport: add feature data to browse.
+        $sharedEventManager->attach(
+            'StaticSiteExport\Job\ExportStaticSite',
+            'static_site_export.site_export.post',
+            function (Event $event) {
+                $job = $event->getTarget();
+                $api = $job->get('Omeka\ApiManager');
+
+                // Get the features.
+                $itemsQuery = [
+                    'site_id' => $job->getStaticSite()->site()->id(),
+                    'has_features' => true,
+                    'limit' => 100000,
+                ];
+                $itemIds = $api->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
+                $featuresQuery = [
+                    'item_id' => $itemIds ? $itemIds : 0,
+                ];
+                $features = $api->search('mapping_features', $featuresQuery)->getContent();
+
+                // Set the front matter.
+                $frontMatter = [
+                    'title' => $job->translate('Map browse'),
+                    'css' => [
+                        'vendor/leaflet/leaflet.css',
+                        'vendor/leaflet.markercluster/MarkerCluster.css',
+                        'vendor/leaflet.markercluster/MarkerCluster.Default.css',
+                        'vendor/omeka-mapping/mapping-features.css',
+                    ],
+                    'js' => [
+                        'vendor/leaflet/leaflet.js',
+                        'vendor/leaflet.markercluster/leaflet.markercluster-src.js',
+                        'vendor/omeka-mapping/mapping-features.js',
+                    ],
+                ];
+
+                // Make the mapping directory.
+                $job->makeDirectory('content/mapping');
+                $job->makeFile(
+                    'content/mapping/index.md',
+                    sprintf(
+                        "%s\n%s",
+                        json_encode($frontMatter, JSON_PRETTY_PRINT),
+                        '{{< omeka-mapping-features page="mapping" configResource="mapping-config.json" featuresResource="mapping-features.json">}}'
+                    )
+                );
+                $job->makeFile(
+                    'content/mapping/mapping-features.json',
+                    json_encode(self::prepareMappingFeaturesForStaticSite($features))
+                );
+                $job->makeFile(
+                    'content/mapping/mapping-config.json',
+                    json_encode(self::prepareMappingConfigForStaticSite([]))
+                );
+            }
+        );
+    }
+
+    /**
+     * Prepare an array of Mapping configuration for use by StaticSiteExport.
+     *
+     * @param array $data
+     * @return array
+     */
+    public static function prepareMappingConfigForStaticSite($data)
+    {
+        $mappingConfig = [
+            'bounds' => null,
+        ];
+        if ($data instanceof MappingRepresentation) {
+            $mappingConfig['bounds'] = $data->bounds();
+        } elseif (is_array($data)) {
+            $mappingConfig['bounds'] = $data['bounds'] ?? null;
+        }
+        return $mappingConfig;
+    }
+
+    /**
+     * Prepare an array of Mapping features for use by StaticSiteExport.
+     *
+     * @param array $features An array of feature representations
+     * @return array
+     */
+    public static function prepareMappingFeaturesForStaticSite(array $features)
+    {
+        // Set all features for this resource.
+        $mappingFeatures = [];
+        foreach ($features as $feature) {
+            $item = $feature->item();
+            $media = $feature->media();
+            // Get the feature label.
+            $label = $feature->label() ?? '';
+            if (0 === strlen($label) && $media) {
+                $label = $media->displayTitle();
+            }
+            if (0 === strlen($label)) {
+                $label = $item->displayTitle();
+            }
+            // Set the data for this feature.
+            $mappingFeatures[] = [
+                'label' => $label,
+                'itemId' => $item->id(),
+                'mediaId' => $media ? $media->id() : null,
+                'hasThumbnails' => $media ? $media->hasThumbnails() : null,
+                'geoJSON' => json_decode(json_encode($feature->geography()), true),
+            ];
+        }
+        return $mappingFeatures;
     }
 
     public function addSiteSettings(Event $event)

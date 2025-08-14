@@ -154,4 +154,30 @@ return [
             'main' => ['mapping'],
         ],
     ],
+    'static_site_export' => [
+        'vendor_packages' => [
+            'omeka-mapping' => sprintf('%s/modules/Mapping/src/StaticSiteExport/omeka-mapping', OMEKA_PATH),
+            'leaflet' => sprintf('%s/modules/Mapping/src/StaticSiteExport/leaflet', OMEKA_PATH),
+            'leaflet.markercluster' => sprintf('%s/modules/Mapping/src/StaticSiteExport/leaflet.markercluster', OMEKA_PATH),
+        ],
+        'shortcodes' => [
+            'omeka-mapping-features' => sprintf('%s/modules/Mapping/src/StaticSiteExport/omeka-mapping-features.html', OMEKA_PATH),
+        ],
+        'block_layouts' => [
+            'invokables' => [
+                'mappingMap' => StaticSiteExport\BlockLayout\Map::class,
+                'mappingMapQuery' => StaticSiteExport\BlockLayout\MapQuery::class,
+            ],
+        ],
+        'resource_page_block_layouts' => [
+            'invokables' => [
+                'mapping' => StaticSiteExport\ResourcePageBlockLayout\Mapping::class,
+            ],
+        ],
+        'navigation_links' => [
+            'invokables' => [
+                'mapping' => StaticSiteExport\NavigationLink\Mapping::class,
+            ],
+        ],
+    ],
 ];
