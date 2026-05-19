@@ -59,6 +59,19 @@ class TimelineFieldset extends Fieldset
         ]);
         $this->add([
             'type' => 'select',
+            'name' => 'o:block[__blockIndex__][o:data][timeline][timeline_theme]',
+            'options' => [
+                'label' => 'Timeline theme', // @translate
+                'info' => 'Select the TimelineJS theme.', // @translate
+                'empty_option' => 'Default', // @translate
+                'value_options' => [
+                    'contrast' => 'Contrast', // @translate
+                    'dark' => 'Dark', // @translate
+                ],
+            ],
+        ]);
+        $this->add([
+            'type' => 'select',
             'name' => 'o:block[__blockIndex__][o:data][timeline][timenav_position]',
             'options' => [
                 'label' => 'Timeline navigation position', // @translate
@@ -96,6 +109,7 @@ class TimelineFieldset extends Fieldset
                 'title_text' => null,
                 'fly_to' => null,
                 'show_contemporaneous' => null,
+                'timeline_theme' => null,
                 'timenav_position' => null,
                 'data_type_properties' => null,
             ],
@@ -112,6 +126,9 @@ class TimelineFieldset extends Fieldset
         }
         if (isset($rawData['timeline']['show_contemporaneous']) && $rawData['timeline']['show_contemporaneous']) {
             $data['timeline']['show_contemporaneous'] = true;
+        }
+        if (isset($rawData['timeline']['timeline_theme']) && in_array($rawData['timeline']['timeline_theme'], ['contrast', 'dark'])) {
+            $data['timeline']['timeline_theme'] = $rawData['timeline']['timeline_theme'];
         }
         if (isset($rawData['timeline']['timenav_position']) && in_array($rawData['timeline']['timenav_position'], ['full_width_below', 'full_width_above'])) {
             $data['timeline']['timenav_position'] = $rawData['timeline']['timenav_position'];

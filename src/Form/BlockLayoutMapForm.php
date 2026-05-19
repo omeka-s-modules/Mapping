@@ -43,6 +43,7 @@ class BlockLayoutMapForm extends Form
                 'o:block[__blockIndex__][o:data][timeline][title_text]' => $data['timeline']['title_text'],
                 'o:block[__blockIndex__][o:data][timeline][fly_to]' => $data['timeline']['fly_to'],
                 'o:block[__blockIndex__][o:data][timeline][show_contemporaneous]' => $data['timeline']['show_contemporaneous'],
+                'o:block[__blockIndex__][o:data][timeline][timeline_theme]' => $data['timeline']['timeline_theme'],
                 'o:block[__blockIndex__][o:data][timeline][timenav_position]' => $data['timeline']['timenav_position'],
                 'o:block[__blockIndex__][o:data][timeline][data_type_properties]' => $data['timeline']['data_type_properties'][0] ?? '',
             ],

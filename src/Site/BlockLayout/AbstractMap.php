@@ -85,10 +85,14 @@ abstract class AbstractMap extends AbstractBlockLayout
      */
     public function getTimelineOptions(array $data)
     {
-        return [
+        $options = [
             'debug' => false,
             'timenav_position' => 'bottom',
         ];
+        if (isset($data['timeline']['timeline_theme']) && $data['timeline']['timeline_theme']) {
+            $options['theme'] = $data['timeline']['timeline_theme'];
+        }
+        return $options;
     }
 
     /**
