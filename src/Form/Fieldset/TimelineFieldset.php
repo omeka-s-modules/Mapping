@@ -109,7 +109,7 @@ class TimelineFieldset extends Fieldset
                 'title_text' => null,
                 'fly_to' => null,
                 'show_contemporaneous' => null,
-                'timeline_theme' => null,
+                'timeline_theme' => empty($rawData) ? 'contrast' : null,
                 'timenav_position' => null,
                 'data_type_properties' => null,
             ],
