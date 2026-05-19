@@ -1,7 +1,14 @@
 .tl-timeline,
-.tl-text .tl-headline-date, 
+.tl-text .tl-headline-date,
 .tl-text h3.tl-headline-date {
   font-family: inherit;
+}
+
+/* The dark/contrast themes set all .tl-timeline h2 to white, but the
+   storyslider background is transparent (inherits the page background).
+   This ensures slide headlines stay readable against a light background. */
+.tl-storyslider .tl-text h2 {
+  color: #333;
 }
 
 .mapping-block.timeline {
