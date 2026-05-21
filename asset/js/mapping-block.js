@@ -332,7 +332,6 @@ $(document).on('click', '.mapping-show-group-item-features', function() {
         function() {
             itemsBlock.hide();
             groupBlock.show();
-            groupBlock.find('.mapping-map').data('groupSelectControl').reset();
         }
     ).addTo(itemsBlockMap[0].mapping_map);
 });
