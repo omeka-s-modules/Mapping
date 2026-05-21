@@ -88,6 +88,7 @@ abstract class AbstractMap extends AbstractBlockLayout
         $options = [
             'debug' => false,
             'timenav_position' => 'bottom',
+            'zoom_sequence' => [0.5, 1, 2, 3, 5, 8, 13, 21, 34, 55, 89, 144, 233, 377],
         ];
         if (isset($data['timeline']['timeline_theme']) && $data['timeline']['timeline_theme']) {
             $options['theme'] = $data['timeline']['timeline_theme'];
