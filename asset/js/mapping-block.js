@@ -197,6 +197,7 @@ function MappingBlock(mapDiv, timelineDiv) {
     const getFeaturePopupContentUrl = mapDiv.data('featurePopupContentUrl');
 
     // Load features synchronously.
+    const groupLayers = [];
     mapDiv.closest('.mapping-block').find('.mapping-feature-popup-content').each(function() {
         const popupContent = $(this);
         const featureId = popupContent.data('featureId');
@@ -215,9 +216,15 @@ function MappingBlock(mapDiv, timelineDiv) {
                     popup.setContent(popupContent[0]);
                 }
                 MappingModule.addFeature(map, featuresPoint, featuresPoly, layer, feature.type);
+                groupLayers.push({label: popupContent.find('.group-value').text().trim(), layer: layer});
             }
         });
     });
+    if (groupLayers.length) {
+        const groupSelectControl = L.control.groupSelect(groupLayers);
+        map.addControl(groupSelectControl);
+        mapDiv.data('groupSelectControl', groupSelectControl);
+    }
 
     // Load features asynchronously.
     if (getFeaturesUrl) {
@@ -331,4 +338,5 @@ $(document).on('click', '.mapping-show-group-features', function() {
     const mappingBlock = mappingBlockItems.prev('.mapping-block');
     mappingBlockItems.hide();
     mappingBlock.show();
+    mappingBlock.find('.mapping-map').data('groupSelectControl').reset();
 });
