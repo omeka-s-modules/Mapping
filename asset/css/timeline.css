@@ -11,6 +11,13 @@
   color: #333;
 }
 
+/* When the timeline container is below 650px wide, slidenav icons drop to 33% opacity (~1.9:1 contrast).
+   Raising it to 75% meets the 3:1 minimum for non-text UI components. */
+.tl-timeline.tl-skinny .tl-slidenav-previous .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-next .tl-slidenav-icon {
+  opacity: 0.75;
+}
+
 .mapping-block.timeline {
   width: 100%;
   display: flex;
