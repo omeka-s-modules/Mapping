@@ -136,6 +136,7 @@ return [
     ],
     'js_translate_strings' => [
         'Select a group', // @translate
+        'Return to groups', // @translate
     ],
     'translator' => [
         'translation_file_patterns' => [

@@ -57,6 +57,7 @@ abstract class AbstractMap extends AbstractBlockLayout
         $view->headScript()->appendFile($view->assetUrl('js/control.opacity.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.fit-bounds.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.group-select.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('js/control.group-item-features.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/mapping-block.js', 'Mapping'));
     }
 

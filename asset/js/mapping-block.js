@@ -314,29 +314,25 @@ $(document).ready( function() {
     });
 });
 
-$(document).on('click', '.mapping-show-group-item-features', function(e) {
+$(document).on('click', '.mapping-show-group-item-features', function() {
     const thisButton = $(this);
     const groupPopup = thisButton.closest('.mapping-feature-popup-content');
     const groupBlock = thisButton.closest('.mapping-block');
     const itemsBlock = groupBlock.next('.mapping-block');
     const itemsBlockMap = itemsBlock.find('.mapping-map');
 
-    // Copy filters markup to items block.
-    itemsBlock.find('.search-filters').html(groupPopup.find('.mapping-search-filters-template').html());
-
     groupBlock.hide();
     itemsBlock.show();
 
-    // Prepare and load the items map.
     itemsBlockMap.data('itemsQuery', groupPopup.data('itemsQuery'));
     MappingBlock(itemsBlockMap);
-});
 
-$(document).on('click', '.mapping-show-group-features', function() {
-    const thisButton = $(this);
-    const mappingBlockItems = thisButton.closest('.mapping-block');
-    const mappingBlock = mappingBlockItems.prev('.mapping-block');
-    mappingBlockItems.hide();
-    mappingBlock.show();
-    mappingBlock.find('.mapping-map').data('groupSelectControl').reset();
+    L.control.groupItemFeatures(
+        groupPopup.find('.mapping-search-filters-template').html(),
+        function() {
+            itemsBlock.hide();
+            groupBlock.show();
+            groupBlock.find('.mapping-map').data('groupSelectControl').reset();
+        }
+    ).addTo(itemsBlockMap[0].mapping_map);
 });
