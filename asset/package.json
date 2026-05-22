@@ -8,6 +8,7 @@
     "url": "https://github.com/omeka-s-modules/Mapping.git"
   },
   "dependencies": {
+    "@alcalin/leaflet-tilelayer-wmts": "^2.0.2",
     "Leaflet.Deflate": "^2.1.0",
     "leaflet": "^1.9.3",
     "leaflet-draw": "^1.0.4",

@@ -91,6 +91,15 @@ function MappingBlock(mapDiv, timelineDiv) {
                         maxZoom: 30,
                     });
                     break;
+                case 'wmts':
+                    overlayLayer = LTileLayerWMTS.wmts(overlayData.base_url, {
+                        layer: overlayData.layer,
+                        tileMatrixSet: overlayData.tile_matrix_set,
+                        style: overlayData.style || 'default',
+                        format: 'image/png',
+                        maxZoom: 30,
+                    });
+                    break;
                 case 'iiif':
                     overlayLayer = new Allmaps.WarpedMapLayer()
                     await overlayLayer.addGeoreferenceAnnotationByUrl(overlayData.url)
