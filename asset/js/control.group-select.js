@@ -12,6 +12,7 @@ L.Control.GroupSelect = L.Control.extend({
 
         var container = L.DomUtil.create('div', 'mapping-control-group-select');
         var select = L.DomUtil.create('select', '', container);
+        select.setAttribute('aria-label', Omeka.jsTranslate('Select a group'));
 
         var defaultOption = L.DomUtil.create('option', '', select);
         defaultOption.value = '';
