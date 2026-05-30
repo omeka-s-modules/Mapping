@@ -93,6 +93,10 @@
   margin-right: .5rem;
 }
 
+.mapping-control-group-item-features .filter-label {
+  margin-right: .25rem;
+}
+
 .mapping-control-group-select {
   background: #fff;
   border: 2px solid rgba(0, 0, 0, 0.2);
