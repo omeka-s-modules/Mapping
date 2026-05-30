@@ -170,7 +170,10 @@ const MappingModule = {
             case 'MultiPolygon':
                 layer.on('popupopen', function() {
                     layer.setStyle({color: '#9fc6fc'});
-                    map.fitBounds(layer.getBounds());
+                    const layerBounds = layer.getBounds();
+                    if (!map.getBounds().contains(layerBounds)) {
+                        map.fitBounds(layerBounds);
+                    }
                 });
                 layer.on('popupclose', function() {
                     layer.setStyle({color: '#3388ff'});
