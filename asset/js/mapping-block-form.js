@@ -92,6 +92,7 @@ const resetOverlaysContainer = function(block) {
     overlaysContainer.find('.mapping-overlays-form :input').val('');
     overlaysContainer.find('.mapping-overlay-label').closest('.field').hide();
     overlaysContainer.find('.mapping-overlays-fieldset-wms').hide();
+    overlaysContainer.find('.mapping-overlays-fieldset-wmts').hide();
     overlaysContainer.find('.mapping-overlays-fieldset-iiif').hide();
     overlaysContainer.find('.mapping-overlays-fieldset-geojson').hide();
     overlaysContainer.find('.mapping-overlays-save-button').hide();
@@ -117,6 +118,11 @@ $(document).on('change', '.mapping-overlays-type-select', function(e) {
     switch (overlayType) {
         case 'wms':
             overlaysContainer.find('.mapping-overlays-fieldset-wms').show();
+            overlaysContainer.find('.mapping-overlays-save-button').show();
+            overlaysContainer.find('.mapping-overlays-cancel-button').show();
+            break;
+        case 'wmts':
+            overlaysContainer.find('.mapping-overlays-fieldset-wmts').show();
             overlaysContainer.find('.mapping-overlays-save-button').show();
             overlaysContainer.find('.mapping-overlays-cancel-button').show();
             break;
@@ -174,6 +180,13 @@ $(document).on('click', '.mapping-overlays-save-button', function(e) {
             overlayData.property_key_comment = overlayFieldset.find('.mapping-overlay-geojson-property-key-comment').val();
             overlayData.show_property_list = overlayFieldset.find('.mapping-overlay-geojson-show-property-list').is(':checked');
             break;
+        case 'wmts':
+            overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-wmts');
+            overlayData.base_url = overlayFieldset.find('.mapping-overlay-wmts-base-url').val();
+            overlayData.layer = overlayFieldset.find('.mapping-overlay-wmts-layer').val();
+            overlayData.tile_matrix_set = overlayFieldset.find('.mapping-overlay-wmts-tile-matrix-set').val();
+            overlayData.style = overlayFieldset.find('.mapping-overlay-wmts-style').val();
+            break;
     }
     if (overlayFieldset) {
         populateOverlay(overlay, overlayData);
@@ -228,6 +241,13 @@ $(document).on('click', '.mapping-overlay-edit', function(e) {
             overlayFieldset.find('.mapping-overlay-geojson-property-key-label').val(overlayData.property_key_label);
             overlayFieldset.find('.mapping-overlay-geojson-property-key-comment').val(overlayData.property_key_comment);
             overlayFieldset.find('.mapping-overlay-geojson-show-property-list').prop('checked', overlayData.show_property_list);
+            break;
+        case 'wmts':
+            overlayFieldset = overlaysContainer.find('.mapping-overlays-fieldset-wmts');
+            overlayFieldset.find('.mapping-overlay-wmts-base-url').val(overlayData.base_url);
+            overlayFieldset.find('.mapping-overlay-wmts-layer').val(overlayData.layer);
+            overlayFieldset.find('.mapping-overlay-wmts-tile-matrix-set').val(overlayData.tile_matrix_set);
+            overlayFieldset.find('.mapping-overlay-wmts-style').val(overlayData.style);
             break;
         default:
             resetOverlaysContainer(block);

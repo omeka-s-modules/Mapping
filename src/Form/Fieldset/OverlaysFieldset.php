@@ -29,6 +29,7 @@ class OverlaysFieldset extends Fieldset
                 'empty_option' => 'Select overlay type', // @translate
                 'value_options' => [
                     'wms' => 'Web Map Service (WMS)', // @translate
+                    'wmts' => 'Web Map Tile Service (WMTS)', // @translate
                     'iiif' => 'IIIF Georeference Annotation', // @translate
                     'geojson' => 'GeoJSON', // @translate
                 ],
@@ -161,6 +162,56 @@ class OverlaysFieldset extends Fieldset
                 'class' => 'mapping-overlay-geojson-show-property-list',
             ],
         ]);
+
+        $this->add([
+            'type' => 'fieldset',
+            'name' => 'mapping-overlays-fieldset-wmts',
+            'attributes' => [
+                'class' => 'mapping-overlays-fieldset-wmts',
+            ],
+        ]);
+        $fieldset = $this->get('mapping-overlays-fieldset-wmts');
+        $fieldset->add([
+            'type' => 'url',
+            'name' => 'base_url',
+            'options' => [
+                'label' => 'Base URL', // @translate
+            ],
+            'attributes' => [
+                'class' => 'mapping-overlay-wmts-base-url',
+            ],
+        ]);
+        $fieldset->add([
+            'type' => 'text',
+            'name' => 'layer',
+            'options' => [
+                'label' => 'Layer', // @translate
+            ],
+            'attributes' => [
+                'class' => 'mapping-overlay-wmts-layer',
+            ],
+        ]);
+        $fieldset->add([
+            'type' => 'text',
+            'name' => 'tile_matrix_set',
+            'options' => [
+                'label' => 'Tile matrix set', // @translate
+            ],
+            'attributes' => [
+                'class' => 'mapping-overlay-wmts-tile-matrix-set',
+            ],
+        ]);
+        $fieldset->add([
+            'type' => 'text',
+            'name' => 'style',
+            'options' => [
+                'label' => 'Style', // @translate
+                'info' => 'The WMTS style. Defaults to "default".', // @translate
+            ],
+            'attributes' => [
+                'class' => 'mapping-overlay-wmts-style',
+            ],
+        ]);
     }
 
     public function filterBlockData(array $rawData)
@@ -185,7 +236,7 @@ class OverlaysFieldset extends Fieldset
                 if (!isset($overlayData['type'])) {
                     continue; // Overlay type is required.
                 }
-                if (!in_array($overlayData['type'], ['wms', 'iiif', 'geojson'])) {
+                if (!in_array($overlayData['type'], ['wms', 'wmts', 'iiif', 'geojson'])) {
                     continue; // Overlay type is invalid.
                 }
                 $data['overlays'][] = $overlayData;

@@ -70,6 +70,81 @@ function MappingBlock(mapDiv, timelineDiv) {
     ).addTo(map);
     map.addLayer(noOverlayLayer);
 
+    // Create a layer from overlay data.
+    const createOverlayLayer = async function(overlayData) {
+        switch (overlayData.type) {
+            case 'wms':
+                return L.tileLayer.wms(overlayData.base_url, {
+                    layers: overlayData.layers,
+                    styles: overlayData.styles,
+                    format: 'image/png',
+                    transparent: true,
+                    // Leaflet sets the default maxZoom for TileLayer to 18.
+                    // Here we set a high maxZoom for WMS layers that zoom
+                    // beyond that. This way the only realistic limitation
+                    // is the map's default maxZoom.
+                    maxZoom: 30,
+                });
+            case 'wmts':
+                return LTileLayerWMTS.wmts(overlayData.base_url, {
+                    layer: overlayData.layer,
+                    tileMatrixSet: overlayData.tile_matrix_set,
+                    style: overlayData.style || 'default',
+                    format: 'image/png',
+                    maxZoom: 30,
+                });
+            case 'iiif':
+                const iiifLayer = new Allmaps.WarpedMapLayer();
+                await iiifLayer.addGeoreferenceAnnotationByUrl(overlayData.url);
+                return iiifLayer;
+            case 'geojson':
+                return L.geoJSON(JSON.parse(overlayData.geojson), {
+                    onEachFeature: function(feature, layer) {
+                        if (feature.properties) {
+                            // Filter out non-string properties.
+                            $.each(feature.properties, function(key, value) {
+                                if ('string' !== typeof value) {
+                                    delete feature.properties[key];
+                                }
+                            });
+                            if (!$.isEmptyObject(feature.properties)) {
+                                // Add the popup.
+                                const popup = $('<div>', {
+                                    class: 'mapping-feature-popup-content',
+                                });
+                                // Add the popup label.
+                                const labelKey = overlayData.property_key_label;
+                                if (feature.properties[labelKey] && 'string' === typeof feature.properties[labelKey]) {
+                                    $('<span>', {class: 'group-type'}).text(feature.properties[labelKey]).appendTo(popup);
+                                }
+                                // Add the popup comment.
+                                const commentKey = overlayData.property_key_comment;
+                                if (feature.properties[commentKey] && 'string' === typeof feature.properties[commentKey]) {
+                                    $('<span>', {class: 'group-value'}).text(feature.properties[commentKey]).appendTo(popup);
+                                }
+                                // Add the GeoJSON properties to the popup.
+                                if (overlayData.show_property_list) {
+                                    const dl = $('<dl class="geojson-properties">');
+                                    $.each(feature.properties, function(key, value) {
+                                        if ('string' === typeof value) {
+                                            const dt = $('<dt>').text(key);
+                                            const dd = $('<dd>').text(value);
+                                            dl.append(dt, dd);
+                                        }
+                                    });
+                                    popup.append(dl);
+                                }
+                                // Show popup only when it has contents.
+                                if (popup.contents().length) {
+                                    layer.bindPopup(popup[0]);
+                                }
+                            }
+                        }
+                    }
+                });
+        }
+    };
+
     // Add overlays.
     const addOverlays = async function () {
         if (!mapData.overlays) {
@@ -77,70 +152,11 @@ function MappingBlock(mapDiv, timelineDiv) {
         }
         for (const overlayData of mapData.overlays) {
             let overlayLayer;
-            switch (overlayData.type) {
-                case 'wms':
-                    overlayLayer = L.tileLayer.wms(overlayData.base_url, {
-                        layers: overlayData.layers,
-                        styles: overlayData.styles,
-                        format: 'image/png',
-                        transparent: true,
-                        // Leaflet sets the default maxZoom for TileLayer to 18.
-                        // Here we set a high maxZoom for WMS layers that zoom
-                        // beyond that. This way the only realistic limitation
-                        // is the map's default maxZoom.
-                        maxZoom: 30,
-                    });
-                    break;
-                case 'iiif':
-                    overlayLayer = new Allmaps.WarpedMapLayer()
-                    await overlayLayer.addGeoreferenceAnnotationByUrl(overlayData.url)
-                    break;
-                case 'geojson':
-                    overlayLayer = L.geoJSON(JSON.parse(overlayData.geojson), {
-                        onEachFeature: function(feature, layer) {
-                            if (feature.properties) {
-                                // Filter out non-string properties.
-                                $.each(feature.properties, function(key, value) {
-                                    if ('string' !== typeof value) {
-                                        delete feature.properties[key];
-                                    }
-                                });
-                                if (!$.isEmptyObject(feature.properties)) {
-                                    // Add the popup.
-                                    const popup = $('<div>', {
-                                        class: 'mapping-feature-popup-content',
-                                    });
-                                    // Add the popup label.
-                                    const labelKey = overlayData.property_key_label;
-                                    if (feature.properties[labelKey] && 'string' === typeof feature.properties[labelKey]) {
-                                        $('<span>', {class: 'group-type'}).text(feature.properties[labelKey]).appendTo(popup);
-                                    }
-                                    // Add the popup comment.
-                                    const commentKey = overlayData.property_key_comment;
-                                    if (feature.properties[commentKey] && 'string' === typeof feature.properties[commentKey]) {
-                                        $('<span>', {class: 'group-value'}).text(feature.properties[commentKey]).appendTo(popup);
-                                    }
-                                    // Add the GeoJSON properties to the popup.
-                                    if (overlayData.show_property_list) {
-                                        const dl = $('<dl class="geojson-properties">');
-                                        $.each(feature.properties, function(key, value) {
-                                            if ('string' === typeof value) {
-                                                const dt = $('<dt>').text(key);
-                                                const dd = $('<dd>').text(value);
-                                                dl.append(dt, dd);
-                                            }
-                                        });
-                                        popup.append(dl);
-                                    }
-                                    // Show popup only when it has contents.
-                                    if (popup.contents().length) {
-                                        layer.bindPopup(popup[0]);
-                                    }
-                                }
-                            }
-                        }
-                    });
-                    break;
+            try {
+                overlayLayer = await createOverlayLayer(overlayData);
+            } catch (e) {
+                console.error('Mapping: failed to create overlay', overlayData, e);
+                continue;
             }
             if (overlayLayer) {
                 if (overlayData.open) {

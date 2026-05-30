@@ -25,6 +25,7 @@ $overlaysFieldset = $form->get('overlays');
         echo $this->formRow($overlaysFieldset->get('type'));
         echo $this->formRow($overlaysFieldset->get('label'));
         echo $this->formCollection($overlaysFieldset->get('mapping-overlays-fieldset-wms'));
+        echo $this->formCollection($overlaysFieldset->get('mapping-overlays-fieldset-wmts'));
         echo $this->formCollection($overlaysFieldset->get('mapping-overlays-fieldset-iiif'));
         echo $this->formCollection($overlaysFieldset->get('mapping-overlays-fieldset-geojson'));
         ?>
