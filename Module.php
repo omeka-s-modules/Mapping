@@ -622,6 +622,7 @@ class Module extends AbstractModule
                 'value_options' => self::BASEMAP_PROVIDERS,
             ],
             'attributes' => [
+                'id' => 'mapping-basemap-provider',
                 'value' => $settings->get('mapping_basemap_provider'),
             ],
         ]);
@@ -634,6 +635,7 @@ class Module extends AbstractModule
                 'info' => 'Set the minimum zoom level down to which the map will be displayed. The default is 0.', // @translate
             ],
             'attributes' => [
+                'id' => 'mapping-min-zoom',
                 'value' => $settings->get('mapping_min_zoom'),
                 'min' => '0',
                 'step' => '1',
@@ -649,6 +651,7 @@ class Module extends AbstractModule
                 'info' => 'Set the maximum zoom level up to which the map will be displayed. The default is 19.', // @translate
             ],
             'attributes' => [
+                'id' => 'mapping-max-zoom',
                 'value' => $settings->get('mapping_max_zoom'),
                 'min' => '0',
                 'step' => '1',
@@ -706,6 +709,7 @@ class Module extends AbstractModule
                 'value_options' => self::BASEMAP_PROVIDERS,
             ],
             'attributes' => [
+                'id' => 'mapping-basemap-provider',
                 'value' => $form->getUserSettings()->get('mapping_basemap_provider'),
             ],
         ]);
@@ -721,6 +725,7 @@ class Module extends AbstractModule
                 ),
             ],
             'attributes' => [
+                'id' => 'mapping-min-zoom',
                 'value' => $form->getUserSettings()->get('mapping_min_zoom'),
                 'min' => '0',
                 'step' => '1',
@@ -739,6 +744,7 @@ class Module extends AbstractModule
                 ),
             ],
             'attributes' => [
+                'id' => 'mapping-max-zoom',
                 'value' => $form->getUserSettings()->get('mapping_max_zoom'),
                 'min' => '0',
                 'step' => '1',
@@ -751,10 +757,8 @@ class Module extends AbstractModule
             'options' => [
                 'element_group' => 'mapping',
                 'label' => 'Default bounds', // @translate
-                'info' => sprintf(
-                    'Set the default bounds of the map by navigating to the desired view and clicking "Set the current view as the default view". Leave unconfigured to use the global setting (%s).', // @translate
-                    $globalBounds ? 'currently set' : 'world view'
-                ),
+                'info' => 'Set the default bounds of the map by navigating to the desired view and clicking "Set the current view as the default view". Leave unconfigured to use the global setting.', // @translate
+                'global_bounds' => $globalBounds,
             ],
             'attributes' => [
                 'value' => $form->getUserSettings()->get('mapping_default_bounds'),

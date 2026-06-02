@@ -13,8 +13,10 @@ $('.mapping-default-bounds').each(function() {
         L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map);
 
         const val = hiddenInput.val();
-        if (val) {
-            const b = val.split(',');
+        const globalBounds = container.data('global-bounds');
+        const initBounds = val || globalBounds;
+        if (initBounds) {
+            const b = initBounds.split(',');
             map.fitBounds([[b[1], b[0]], [b[3], b[2]]]);
         } else {
             map.setView([20, 0], 2);
@@ -30,7 +32,12 @@ $('.mapping-default-bounds').each(function() {
             },
             function() {
                 hiddenInput.val('');
-                map.setView([20, 0], 2);
+                if (globalBounds) {
+                    const b = globalBounds.split(',');
+                    map.fitBounds([[b[1], b[0]], [b[3], b[2]]]);
+                } else {
+                    map.setView([20, 0], 2);
+                }
             },
             {noInitialDefaultView: !val}
         ));
