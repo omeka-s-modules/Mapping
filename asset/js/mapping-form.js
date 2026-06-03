@@ -122,8 +122,11 @@ const setView = function() {
         const bounds = drawnFeatures.getBounds();
         if (bounds.isValid()) {
             map.fitBounds(bounds);
+        } else if (settingsDefaultBounds) {
+            const b = settingsDefaultBounds.split(',');
+            map.fitBounds([[b[1], b[0]], [b[3], b[2]]]);
         } else {
-            map.setView([20, 0], 2)
+            map.setView([20, 0], 2);
         }
     }
 }
@@ -138,10 +141,17 @@ const mappingForm = $('#mapping-form');
 const mappingData = mappingMap.data('mapping');
 const featuresData = mappingMap.data('features');
 
+const basemapProvider = mappingMap.data('basemap-provider');
+const minZoom = mappingMap.data('min-zoom');
+const maxZoom = mappingMap.data('max-zoom');
+const settingsDefaultBounds = mappingMap.data('default-bounds') || null;
+
 // Initialize the map and set default view.
 const map = L.map('mapping-map', {
     fullscreenControl: true,
-    worldCopyJump:true
+    worldCopyJump: true,
+    minZoom: minZoom,
+    maxZoom: maxZoom,
 });
 let mapMoved = false;
 let defaultBounds = null;
@@ -153,7 +163,14 @@ if (mappingData && mappingData['o-module-mapping:bounds'] !== null) {
 }
 
 // Add layers and controls to the map.
+let defaultProvider;
+try {
+    defaultProvider = L.tileLayer.provider(basemapProvider);
+} catch (e) {
+    defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
+}
 const baseMaps = {
+    'Default': defaultProvider,
     'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
     'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
     'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
@@ -190,7 +207,7 @@ L.drawLocal.edit.toolbar.buttons = {
     remove: 'Delete feature',
     removeDisabled: 'No features to delete'
 };
-map.addLayer(baseMaps['Streets']);
+map.addLayer(defaultProvider);
 map.addLayer(drawnFeatures);
 map.addControl(baseMapsControl);
 map.addControl(drawControl);

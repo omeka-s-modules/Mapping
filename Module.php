@@ -332,6 +332,26 @@ class Module extends AbstractModule
             [$this, 'handleFeatures']
         );
         $sharedEventManager->attach(
+            'Omeka\Form\SettingForm',
+            'form.add_elements',
+            [$this, 'addGlobalSettings']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Form\SettingForm',
+            'form.add_input_filters',
+            [$this, 'addGlobalSettingsInputFilters']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Form\UserForm',
+            'form.add_elements',
+            [$this, 'addUserSettings']
+        );
+        $sharedEventManager->attach(
+            'Omeka\Form\UserForm',
+            'form.add_input_filters',
+            [$this, 'addUserSettingsInputFilters']
+        );
+        $sharedEventManager->attach(
             'Omeka\Form\SiteSettingsForm',
             'form.add_elements',
             [$this, 'addSiteSettings']
@@ -581,6 +601,180 @@ class Module extends AbstractModule
         return $mappingFeatures;
     }
 
+    public function addGlobalSettings(Event $event)
+    {
+        $services = $this->getServiceLocator();
+        $settings = $services->get('Omeka\Settings');
+        $form = $event->getTarget();
+
+        $groups = $form->getOption('element_groups');
+        $groups['mapping'] = 'Mapping'; // @translate
+        $form->setOption('element_groups', $groups);
+
+        $form->add([
+            'type' => 'select',
+            'name' => 'mapping_basemap_provider',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Basemap provider', // @translate
+                'info' => 'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed.', // @translate
+                'empty_option' => '[Default provider]', // @translate
+                'value_options' => self::BASEMAP_PROVIDERS,
+            ],
+            'attributes' => [
+                'id' => 'mapping-basemap-provider',
+                'value' => $settings->get('mapping_basemap_provider'),
+            ],
+        ]);
+        $form->add([
+            'type' => 'number',
+            'name' => 'mapping_min_zoom',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Minimum zoom level', // @translate
+                'info' => 'Set the minimum zoom level down to which the map will be displayed. The default is 0.', // @translate
+            ],
+            'attributes' => [
+                'id' => 'mapping-min-zoom',
+                'value' => $settings->get('mapping_min_zoom'),
+                'min' => '0',
+                'step' => '1',
+                'placeholder' => '0',
+            ],
+        ]);
+        $form->add([
+            'type' => 'number',
+            'name' => 'mapping_max_zoom',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Maximum zoom level', // @translate
+                'info' => 'Set the maximum zoom level up to which the map will be displayed. The default is 19.', // @translate
+            ],
+            'attributes' => [
+                'id' => 'mapping-max-zoom',
+                'value' => $settings->get('mapping_max_zoom'),
+                'min' => '0',
+                'step' => '1',
+                'placeholder' => '19',
+            ],
+        ]);
+        $form->add([
+            'type' => \Mapping\Form\Element\DefaultBounds::class,
+            'name' => 'mapping_default_bounds',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Default bounds', // @translate
+                'info' => 'Set the default bounds of the map by navigating to the desired view and clicking "Set the current view as the default view".', // @translate
+            ],
+            'attributes' => [
+                'value' => $settings->get('mapping_default_bounds'),
+            ],
+        ]);
+    }
+
+    public function addGlobalSettingsInputFilters(Event $event)
+    {
+        $inputFilter = $event->getParam('inputFilter');
+        $inputFilter->add(['name' => 'mapping_basemap_provider', 'allow_empty' => true]);
+        $inputFilter->add(['name' => 'mapping_min_zoom', 'allow_empty' => true]);
+        $inputFilter->add(['name' => 'mapping_max_zoom', 'allow_empty' => true]);
+        $inputFilter->add(['name' => 'mapping_default_bounds', 'allow_empty' => true]);
+    }
+
+    public function addUserSettings(Event $event)
+    {
+        $form = $event->getTarget();
+        $globalSettings = $this->getServiceLocator()->get('Omeka\Settings');
+
+        $globalBasemap = $globalSettings->get('mapping_basemap_provider');
+        $globalMinZoom = $globalSettings->get('mapping_min_zoom');
+        $globalMaxZoom = $globalSettings->get('mapping_max_zoom');
+        $globalBounds = $globalSettings->get('mapping_default_bounds');
+
+        $elementGroups = $form->get('user-settings')->getOption('element_groups', []);
+        $elementGroups['mapping'] = 'Mapping'; // @translate
+        $form->get('user-settings')->setOption('element_groups', $elementGroups);
+
+        $form->get('user-settings')->add([
+            'type' => 'select',
+            'name' => 'mapping_basemap_provider',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Basemap provider', // @translate
+                'info' => sprintf(
+                    'Select the basemap provider. Leave empty to use the global setting (%s). These providers are offered AS-IS. There is no guarantee of service or speed.', // @translate
+                    $globalBasemap ?: 'OpenStreetMap.Mapnik'
+                ),
+                'empty_option' => '[Global setting]', // @translate
+                'value_options' => self::BASEMAP_PROVIDERS,
+            ],
+            'attributes' => [
+                'id' => 'mapping-basemap-provider',
+                'value' => $form->getUserSettings()->get('mapping_basemap_provider'),
+            ],
+        ]);
+        $form->get('user-settings')->add([
+            'type' => 'number',
+            'name' => 'mapping_min_zoom',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Minimum zoom level', // @translate
+                'info' => sprintf(
+                    'Set the minimum zoom level of the map. Leave empty to use the global setting (%s).', // @translate
+                    $globalMinZoom ?: '0'
+                ),
+            ],
+            'attributes' => [
+                'id' => 'mapping-min-zoom',
+                'value' => $form->getUserSettings()->get('mapping_min_zoom'),
+                'min' => '0',
+                'step' => '1',
+                'placeholder' => '0',
+            ],
+        ]);
+        $form->get('user-settings')->add([
+            'type' => 'number',
+            'name' => 'mapping_max_zoom',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Maximum zoom level', // @translate
+                'info' => sprintf(
+                    'Set the maximum zoom level of the map. Leave empty to use the global setting (%s).', // @translate
+                    $globalMaxZoom ?: '19'
+                ),
+            ],
+            'attributes' => [
+                'id' => 'mapping-max-zoom',
+                'value' => $form->getUserSettings()->get('mapping_max_zoom'),
+                'min' => '0',
+                'step' => '1',
+                'placeholder' => '19',
+            ],
+        ]);
+        $form->get('user-settings')->add([
+            'type' => \Mapping\Form\Element\DefaultBounds::class,
+            'name' => 'mapping_default_bounds',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Default bounds', // @translate
+                'info' => 'Set the default bounds of the map by navigating to the desired view and clicking "Set the current view as the default view". Leave unconfigured to use the global setting.', // @translate
+                'global_bounds' => $globalBounds,
+            ],
+            'attributes' => [
+                'value' => $form->getUserSettings()->get('mapping_default_bounds'),
+            ],
+        ]);
+    }
+
+    public function addUserSettingsInputFilters(Event $event)
+    {
+        $inputFilter = $event->getParam('inputFilter');
+        $inputFilter->get('user-settings')->add(['name' => 'mapping_basemap_provider', 'allow_empty' => true]);
+        $inputFilter->get('user-settings')->add(['name' => 'mapping_min_zoom', 'allow_empty' => true]);
+        $inputFilter->get('user-settings')->add(['name' => 'mapping_max_zoom', 'allow_empty' => true]);
+        $inputFilter->get('user-settings')->add(['name' => 'mapping_default_bounds', 'allow_empty' => true]);
+    }
+
     public function addSiteSettings(Event $event)
     {
         $services = $this->getServiceLocator();
@@ -631,6 +825,7 @@ class Module extends AbstractModule
             'options' => [
                 'element_group' => 'mapping',
                 'label' => 'Basemap provider', // @translate
+                'info' => 'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed.', // @translate
                 'empty_option' => '[Default provider]', // @translate
                 'value_options' => self::BASEMAP_PROVIDERS,
             ],
@@ -643,10 +838,7 @@ class Module extends AbstractModule
     public function addSiteSettingsInputFilters(Event $event)
     {
         $inputFilter = $event->getParam('inputFilter');
-        $inputFilter->add([
-            'name' => 'mapping_basemap_provider',
-            'allow_empty' => true,
-        ]);
+        $inputFilter->add(['name' => 'mapping_basemap_provider', 'allow_empty' => true]);
     }
 
     public function addMapTab(Event $event)

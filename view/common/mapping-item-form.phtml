@@ -29,6 +29,10 @@ if (isset($item)) {
     <div id="mapping-map" style="height:700px;"
         data-mapping="<?php echo $this->escapeHtml(json_encode($mapping)); ?>"
         data-features="<?php echo $this->escapeHtml(json_encode($features)); ?>"
+        data-basemap-provider="<?php echo $this->fallbackSetting('mapping_basemap_provider', ['user', 'global']) ?? ''; ?>"
+        data-min-zoom="<?php echo $this->fallbackSetting('mapping_min_zoom', ['user', 'global'], 0); ?>"
+        data-max-zoom="<?php echo $this->fallbackSetting('mapping_max_zoom', ['user', 'global'], 19); ?>"
+        data-default-bounds="<?php echo $this->fallbackSetting('mapping_default_bounds', ['user', 'global']) ?? ''; ?>"
     ></div>
     <div id="mapping-feature-image-selector" class="sidebar">
         <a href="#" class="sidebar-close o-icon-close"><span class="screen-reader-text"><?php echo $this->translate('Close Me'); ?></span></a>

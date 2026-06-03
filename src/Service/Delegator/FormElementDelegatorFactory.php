@@ -4,6 +4,7 @@ namespace mapping\Service\Delegator;
 use Interop\Container\ContainerInterface;
 use Laminas\ServiceManager\Factory\DelegatorFactoryInterface;
 use Mapping\Form\Element\CopyCoordinates;
+use Mapping\Form\Element\DefaultBounds;
 use Mapping\Form\Element\UpdateFeatures;
 
 class FormElementDelegatorFactory implements DelegatorFactoryInterface
@@ -13,6 +14,7 @@ class FormElementDelegatorFactory implements DelegatorFactoryInterface
         $formElement = $callback();
         $formElement->addClass(CopyCoordinates::class, 'formMappingCopyCoordinates');
         $formElement->addClass(UpdateFeatures::class, 'formMappingUpdateFeatures');
+        $formElement->addClass(DefaultBounds::class, 'formMappingDefaultBounds');
         return $formElement;
     }
 }

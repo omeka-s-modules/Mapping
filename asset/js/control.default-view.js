@@ -29,16 +29,19 @@ L.Control.DefaultView = L.Control.extend({
         setLink.innerHTML = '⊹';
         setLink.href = '#';
         setLink.title = 'Set the current view as the default view';
+        setLink.setAttribute('aria-label', 'Set the current view as the default view');
         setLink.style.fontSize = '18px';
 
         gotoLink.innerHTML = '⊡';
         gotoLink.href = '#';
         gotoLink.title = 'Go to the current default view';
+        gotoLink.setAttribute('aria-label', 'Go to the current default view');
         gotoLink.style.fontSize = '18px';
 
         clearLink.innerHTML = '✕';
         clearLink.href = '#';
         clearLink.title = 'Clear the default view';
+        clearLink.setAttribute('aria-label', 'Clear the default view');
         clearLink.style.fontSize = '18px';
 
         if (this.options.noInitialDefaultView) {

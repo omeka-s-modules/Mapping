@@ -42,6 +42,7 @@ return [
             'formPromptMap' => Collecting\FormPromptMap::class,
             'formMappingCopyCoordinates' => View\Helper\CopyCoordinates::class,
             'formMappingUpdateFeatures' => View\Helper\UpdateFeatures::class,
+            'formMappingDefaultBounds' => View\Helper\FormDefaultBounds::class,
         ],
         'delegators' => [
             'Laminas\Form\View\Helper\FormElement' => [
@@ -50,6 +51,9 @@ return [
         ],
     ],
     'form_elements' => [
+        'invokables' => [
+            'Mapping\Form\Element\DefaultBounds' => Form\Element\DefaultBounds::class,
+        ],
         'factories' => [
             'Mapping\Form\Fieldset\TimelineFieldset' => Service\Form\Fieldset\TimelineFieldsetFactory::class,
             'Mapping\Form\Element\CopyCoordinates' => Service\Form\Element\CopyCoordinatesFactory::class,
