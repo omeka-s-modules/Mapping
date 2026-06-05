@@ -25,6 +25,7 @@ abstract class AbstractMap extends AbstractBlockLayout
         $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/dist/leaflet.css', 'Mapping'));
         $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
 
+        $view->headLink()->appendStylesheet($view->assetUrl('css/mapping-admin.css', 'Mapping'));
         $view->headLink()->appendStylesheet($view->assetUrl('css/mapping-block-form.css', 'Mapping'));
 
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/dist/leaflet.js', 'Mapping'));
