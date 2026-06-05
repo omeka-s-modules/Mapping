@@ -5,12 +5,24 @@ $('.mapping-default-bounds').each(function() {
     const hiddenInput = container.find('input[type="hidden"]');
     const mapEl = container.find('.mapping-default-bounds-map')[0];
 
+    const globalBasemapProvider = container.data('global-basemap-provider');
+    const basemapSelect = $(container.data('basemap-select') || []);
+
+    const resolveProvider = function() {
+        const provider = basemapSelect.val() || globalBasemapProvider || 'OpenStreetMap.Mapnik';
+        try {
+            return L.tileLayer.provider(provider);
+        } catch (e) {
+            return L.tileLayer.provider('OpenStreetMap.Mapnik');
+        }
+    };
+
     const initMap = function() {
         const map = L.map(mapEl, {
             worldCopyJump: true,
         });
 
-        L.tileLayer.provider('OpenStreetMap.Mapnik').addTo(map);
+        let tileLayer = resolveProvider().addTo(map);
 
         const val = hiddenInput.val();
         const globalBounds = container.data('global-bounds');
@@ -41,6 +53,11 @@ $('.mapping-default-bounds').each(function() {
             },
             {noInitialDefaultView: !val}
         ));
+
+        basemapSelect.on('change.defaultBounds', function() {
+            tileLayer.remove();
+            tileLayer = resolveProvider().addTo(map);
+        });
     };
 
     // Defer init until the section is visible so Leaflet gets real dimensions.

@@ -665,6 +665,8 @@ class Module extends AbstractModule
                 'element_group' => 'mapping',
                 'label' => 'Default bounds', // @translate
                 'info' => 'Set the default bounds of the map by navigating to the desired view and clicking "Set the current view as the default view".', // @translate
+                'global_basemap_provider' => $settings->get('mapping_basemap_provider') ?? '',
+                'basemap_select' => '#mapping-basemap-provider',
             ],
             'attributes' => [
                 'value' => $settings->get('mapping_default_bounds'),
@@ -759,6 +761,8 @@ class Module extends AbstractModule
                 'label' => 'Default bounds', // @translate
                 'info' => 'Set the default bounds of the map by navigating to the desired view and clicking "Set the current view as the default view". Leave unconfigured to use the global setting.', // @translate
                 'global_bounds' => $globalBounds,
+                'global_basemap_provider' => $globalBasemap ?? '',
+                'basemap_select' => '#mapping-basemap-provider',
             ],
             'attributes' => [
                 'value' => $form->getUserSettings()->get('mapping_default_bounds'),

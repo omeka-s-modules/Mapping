@@ -23,8 +23,10 @@ class FormDefaultBounds extends AbstractHelper
         $view->headScript()->appendFile($view->assetUrl('js/form-element.default-bounds.js', 'Mapping'));
 
         return sprintf(
-            '<div class="mapping-default-bounds" data-global-bounds="%s"><input type="hidden" name="%s" value="%s"><div class="mapping-default-bounds-map" style="height:300px;"></div></div>',
+            '<div class="mapping-default-bounds" data-global-bounds="%s" data-global-basemap-provider="%s" data-basemap-select="%s"><input type="hidden" name="%s" value="%s"><div class="mapping-default-bounds-map" style="height:300px;"></div></div>',
             $view->escapeHtml($element->getOption('global_bounds') ?? ''),
+            $view->escapeHtml($element->getOption('global_basemap_provider') ?? ''),
+            $view->escapeHtml($element->getOption('basemap_select') ?? ''),
             $view->escapeHtml($element->getName()),
             $view->escapeHtml($element->getValue() ?? '')
         );
