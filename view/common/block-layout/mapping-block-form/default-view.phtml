@@ -5,7 +5,7 @@
         $this->translate('Set the default view using the in-map controls. The current zoom level is %s.'),
         '<span class="current-zoom"></span>'
     ); ?></p>
-    <div class="mapping-map" style="height:300px;">
+    <div class="mapping-map" style="height:300px;" aria-label="<?php echo $this->translate('Set default map view'); ?>">
         <input type="hidden" name="o:block[__blockIndex__][o:data][bounds]" value="<?php echo $this->escapeHtml($data['bounds']); ?>">
     </div>
 </div>
