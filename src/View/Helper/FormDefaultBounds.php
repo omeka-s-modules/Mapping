@@ -15,9 +15,9 @@ class FormDefaultBounds extends AbstractHelper
     {
         $view = $this->getView();
 
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet/dist/leaflet.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet-providers/leaflet-providers.js', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/dist/leaflet.css', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/dist/leaflet.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet-providers/leaflet-providers.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.default-view.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/form-element.default-bounds.js', 'Mapping'));
 

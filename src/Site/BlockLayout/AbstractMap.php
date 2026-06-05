@@ -22,14 +22,14 @@ abstract class AbstractMap extends AbstractBlockLayout
 
     public function prepareForm(PhpRenderer $view)
     {
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/dist/leaflet.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
 
         $view->headLink()->appendStylesheet($view->assetUrl('css/mapping-block-form.css', 'Mapping'));
 
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet/dist/leaflet.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet-providers/leaflet-providers.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/dist/leaflet.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet-providers/leaflet-providers.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
 
         $view->headScript()->appendFile($view->assetUrl('js/mapping-block-form.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.default-view.js', 'Mapping'));
@@ -37,22 +37,22 @@ abstract class AbstractMap extends AbstractBlockLayout
 
     public function prepareRender(PhpRenderer $view)
     {
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet.markercluster/dist/MarkerCluster.css', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/dist/leaflet.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet.markercluster/dist/MarkerCluster.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet.markercluster/dist/MarkerCluster.Default.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
 
         $view->headLink()->appendStylesheet($view->assetUrl('css/mapping.css', 'Mapping'));
 
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet/dist/leaflet.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet-providers/leaflet-providers.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/Leaflet.Deflate/dist/L.Deflate.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/dist/leaflet.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.markercluster/dist/leaflet.markercluster-src.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet-providers/leaflet-providers.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/Leaflet.Deflate/dist/L.Deflate.js', 'Mapping'));
         $view->headScript()->appendFile('https://cdn.jsdelivr.net/npm/@allmaps/leaflet/dist/bundled/allmaps-leaflet-1.9.umd.js');
-        $view->headScript()->appendFile($view->assetUrl('node_modules/@alcalin/leaflet-tilelayer-wmts/dist/leaflet.tilelayer.wmts.min.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/@alcalin/leaflet-tilelayer-wmts/dist/leaflet.tilelayer.wmts.min.js', 'Mapping'));
 
         $view->headScript()->appendFile($view->assetUrl('js/MappingModule.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('js/control.opacity.js', 'Mapping'));

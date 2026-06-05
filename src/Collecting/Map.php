@@ -15,14 +15,14 @@ class Map implements MediaTypeInterface
 
     public function prepareForm(PhpRenderer $view)
     {
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet/dist/leaflet.css', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet-geosearch/dist/geosearch.css', 'Mapping'));
-        $view->headLink()->appendStylesheet($view->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet/dist/leaflet.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet-geosearch/dist/geosearch.css', 'Mapping'));
+        $view->headLink()->appendStylesheet($view->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.css', 'Mapping'));
         $view->headLink()->appendStylesheet($view->assetUrl('css/mapping.css', 'Mapping'));
 
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet/dist/leaflet.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet-geosearch/dist/bundle.min.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('node_modules/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/dist/leaflet.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet-geosearch/dist/bundle.min.js', 'Mapping'));
+        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
 
         $view->headScript()->appendFile($view->assetUrl('js/mapping-collecting-form.js', 'Mapping'));
 
