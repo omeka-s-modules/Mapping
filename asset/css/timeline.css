@@ -11,6 +11,47 @@
   color: #333;
 }
 
+/* TimelineJS doesn't add a class for the active theme, so we write data-tl-theme
+   in mapping-block.js to scope the dark override. Hover color must be explicit —
+   our rest rule's specificity inadvertently overrides the base CSS hover color. */
+.tl-timeline .tl-menubar-button {
+  color: #555;
+}
+.tl-timeline .tl-menubar-button:hover,
+.tl-timeline .tl-menubar-button:focus-visible {
+  color: #f2f2f2;
+}
+.tl-timeline[data-tl-theme="dark"] .tl-menubar-button {
+  color: #FFF;
+}
+.tl-timeline[data-tl-theme="dark"] .tl-menubar-button:hover,
+.tl-timeline[data-tl-theme="dark"] .tl-menubar-button:focus-visible {
+  color: #4d4d4d;
+}
+
+/* Cancel TimelineJS's deliberate ±4px icon nudge on hover — distracting with no functional benefit. */
+.tl-timeline .tl-slidenav-next:hover .tl-slidenav-icon,
+.tl-timeline .tl-slidenav-next:focus-visible .tl-slidenav-icon {
+  margin-left: 76px; /* non-hover default */
+}
+.tl-timeline .tl-slidenav-previous:hover .tl-slidenav-icon,
+.tl-timeline .tl-slidenav-previous:focus-visible .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-previous:hover .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-previous:focus-visible .tl-slidenav-icon {
+  margin-left: 0; /* non-hover default */
+}
+.tl-timeline.tl-skinny .tl-slidenav-next:hover .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-next:focus-visible .tl-slidenav-icon {
+  margin-left: 8px; /* non-hover default in skinny mode */
+}
+
+/* Hide slidenav labels — their visibility is width-dependent and inconsistent
+   across layouts. The arrow icons and buttons are unaffected. */
+.tl-timeline .tl-slidenav-title,
+.tl-timeline .tl-slidenav-description {
+  display: none;
+}
+
 /* When the timeline container is below 650px wide, slidenav icons drop to 33% opacity (~1.9:1 contrast).
    Raising it to 75% meets the 3:1 minimum for non-text UI components. */
 .tl-timeline.tl-skinny .tl-slidenav-previous .tl-slidenav-icon,

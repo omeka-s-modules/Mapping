@@ -273,6 +273,10 @@ function MappingBlock(mapDiv, timelineDiv) {
             timelineDiv.data('data'),
             timelineDiv.data('options')
         )
+        const timelineTheme = timelineDiv.data('options').theme;
+        if (timelineTheme) {
+            timelineDiv.attr('data-tl-theme', timelineTheme);
+        }
         timeline.on('change', function(e) {
             if ($.isNumeric(e.unique_id)) {
                 // Changed to an event slide. Set the timeline event view.
