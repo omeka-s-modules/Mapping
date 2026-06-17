@@ -273,10 +273,21 @@ function MappingBlock(mapDiv, timelineDiv) {
             timelineDiv.data('data'),
             timelineDiv.data('options')
         )
+        // TimelineJS sets container.className on every resize, wiping any class we add.
+        // A data attribute survives this and lets us scope theme-specific CSS overrides.
         const timelineTheme = timelineDiv.data('options').theme;
         if (timelineTheme) {
             timelineDiv.attr('data-tl-theme', timelineTheme);
         }
+        // TimelineJS sets aria-label on each button but not title, so there's no hover tooltip.
+        timeline.on('ready', function() {
+            timelineDiv.find('.tl-menubar-button').each(function() {
+                const label = this.getAttribute('aria-label');
+                if (label) {
+                    this.setAttribute('title', label);
+                }
+            });
+        });
         timeline.on('change', function(e) {
             if ($.isNumeric(e.unique_id)) {
                 // Changed to an event slide. Set the timeline event view.
