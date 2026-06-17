@@ -29,6 +29,12 @@
   color: #4d4d4d;
 }
 
+/* Explicit focus ring replaces the nudge animation as the keyboard focus indicator. */
+.tl-timeline .tl-slidenav-next:focus-visible,
+.tl-timeline .tl-slidenav-previous:focus-visible {
+  outline: 2px solid currentColor;
+}
+
 /* Cancel TimelineJS's deliberate ±4px icon nudge on hover — distracting with no functional benefit. */
 .tl-timeline .tl-slidenav-next:hover .tl-slidenav-icon,
 .tl-timeline .tl-slidenav-next:focus-visible .tl-slidenav-icon {
