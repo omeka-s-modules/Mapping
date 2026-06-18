@@ -13,26 +13,40 @@
 
 /* TimelineJS doesn't add a class for the active theme, so we write data-tl-theme
    in mapping-block.js to scope the dark override. Hover color must be explicit —
-   our rest rule's specificity inadvertently overrides the base CSS hover color. */
+   our rest rule ties with the base hover rule and wins by load order, overriding it.
+   !important on hover/focus overrides Omeka theme button resets that would otherwise
+   replace the intended hover color and background (e.g. Papers, Lively). */
 .tl-timeline .tl-menubar-button {
   color: #555;
 }
 .tl-timeline .tl-menubar-button:hover,
 .tl-timeline .tl-menubar-button:focus-visible {
-  color: #f2f2f2;
+  color: #f2f2f2 !important;
+  background-color: #555 !important;
 }
 .tl-timeline[data-tl-theme="dark"] .tl-menubar-button {
   color: #FFF;
 }
 .tl-timeline[data-tl-theme="dark"] .tl-menubar-button:hover,
 .tl-timeline[data-tl-theme="dark"] .tl-menubar-button:focus-visible {
-  color: #4d4d4d;
+  color: #4d4d4d !important;
+  background-color: #CCC !important;
 }
 
-/* Explicit focus ring replaces the nudge animation as the keyboard focus indicator. */
+/* Explicit focus ring replaces the nudge animation as the keyboard focus indicator.
+   Fixed color avoids inheriting a low-contrast icon color from the Omeka theme. */
 .tl-timeline .tl-slidenav-next:focus-visible,
 .tl-timeline .tl-slidenav-previous:focus-visible {
-  outline: 2px solid currentColor;
+  outline: 2px solid #333;
+}
+
+/* Remove hover background — Omeka themes apply button hover backgrounds globally, producing
+   misaligned and low-contrast results on the slidenav arrows. */
+.tl-timeline .tl-slidenav-next:hover,
+.tl-timeline .tl-slidenav-next:focus-visible,
+.tl-timeline .tl-slidenav-previous:hover,
+.tl-timeline .tl-slidenav-previous:focus-visible {
+  background-color: transparent;
 }
 
 /* Cancel TimelineJS's deliberate ±4px icon nudge on hover — distracting with no functional benefit. */
