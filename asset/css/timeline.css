@@ -15,8 +15,11 @@
 
 /* Dark theme: give the storyslider its intended dark background. Omeka themes
    apply white to page containers, which bleeds into the transparent storyslider
-   and makes Dark theme text colors unreadable. */
-.tl-timeline[data-tl-theme="dark"] .tl-storyslider {
+   and makes Dark theme text colors unreadable. TimelineJS also sets
+   background-color: #fff inline on .tl-slider-background, which covers the
+   storyslider — both elements need the override. */
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider,
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider .tl-slider-background {
   background-color: #333 !important;
 }
 
@@ -60,6 +63,15 @@
 .tl-timeline[data-tl-theme="dark"] .tl-menubar-button:focus-visible {
   color: #4d4d4d !important;
   background-color: #CCC !important;
+}
+
+/* The slide scrollbar overlaps the next arrow when content is tall (e.g. portrait
+   image with a long description). A thin scrollbar reduces the overlap significantly.
+   scrollbar-width: thin defers the actual size to the browser rather than imposing
+   a fixed width, which preserves accessibility — the scrollbar remains interactive
+   and the browser can respect user accessibility settings. */
+.tl-timeline .tl-slide {
+  scrollbar-width: thin;
 }
 
 /* Explicit focus ring replaces the nudge animation as the keyboard focus indicator.
