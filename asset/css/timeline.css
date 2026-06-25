@@ -90,20 +90,23 @@
   background-color: transparent;
 }
 
-/* Cancel TimelineJS's deliberate ±4px icon nudge on hover — distracting with no functional benefit. */
+/* Cancel TimelineJS's deliberate ±4px icon nudge on hover — distracting with no functional benefit.
+   Also reset the next-arrow margin to 0: the 76px/8px defaults push the icon past the (now-hidden)
+   labels, leaving it at the far right of its container. */
+.tl-timeline .tl-slidenav-next .tl-slidenav-icon,
 .tl-timeline .tl-slidenav-next:hover .tl-slidenav-icon,
-.tl-timeline .tl-slidenav-next:focus-visible .tl-slidenav-icon {
-  margin-left: 76px; /* non-hover default */
+.tl-timeline .tl-slidenav-next:focus-visible .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-next .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-next:hover .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-next:focus-visible .tl-slidenav-icon {
+  margin-left: 0;
 }
+/* Cancel nudge — same as above. */
 .tl-timeline .tl-slidenav-previous:hover .tl-slidenav-icon,
 .tl-timeline .tl-slidenav-previous:focus-visible .tl-slidenav-icon,
 .tl-timeline.tl-skinny .tl-slidenav-previous:hover .tl-slidenav-icon,
 .tl-timeline.tl-skinny .tl-slidenav-previous:focus-visible .tl-slidenav-icon {
-  margin-left: 0; /* non-hover default */
-}
-.tl-timeline.tl-skinny .tl-slidenav-next:hover .tl-slidenav-icon,
-.tl-timeline.tl-skinny .tl-slidenav-next:focus-visible .tl-slidenav-icon {
-  margin-left: 8px; /* non-hover default in skinny mode */
+  margin-left: 0;
 }
 
 /* Hide slidenav labels — their visibility is width-dependent and inconsistent
