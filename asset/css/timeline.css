@@ -35,10 +35,10 @@
   color: #AAA !important;
 }
 
-/* Headline-date color fails WCAG 4.5:1 in the Default theme. Unscoped because Dark
-   theme CSS overrides it back to #bfbfbf, which passes on the dark storyslider. */
-.tl-timeline .tl-headline-date {
-  color: #555;
+/* Headline-date color fails WCAG 4.5:1 in the Default theme. Scoped to :not([data-tl-theme])
+   to avoid overriding the Dark theme, where #bfbfbf already passes on the dark storyslider. */
+.tl-timeline:not([data-tl-theme]) .tl-headline-date {
+  color: #555 !important;
 }
 
 /* TimelineJS doesn't add a class for the active theme, so we write data-tl-theme
@@ -79,6 +79,11 @@
 .tl-timeline .tl-slidenav-next:focus-visible,
 .tl-timeline .tl-slidenav-previous:focus-visible {
   outline: 2px solid #333;
+}
+/* #333 outline is imperceivable against the dark storyslider background. */
+.tl-timeline[data-tl-theme="dark"] .tl-slidenav-next:focus-visible,
+.tl-timeline[data-tl-theme="dark"] .tl-slidenav-previous:focus-visible {
+  outline-color: #CCC;
 }
 
 /* Remove hover background — Omeka themes apply button hover backgrounds globally, producing
@@ -125,14 +130,14 @@
 
 /* Timenav tick labels and lines fail WCAG contrast in the Dark theme. */
 .tl-timeline[data-tl-theme="dark"] .tl-timeaxis .tl-timeaxis-tick {
-  color: #9A9A9A !important;
+  color: #C0C0C0 !important;
 }
 .tl-timeline[data-tl-theme="dark"] .tl-timeaxis .tl-timeaxis-tick-text span {
-  color: #9A9A9A !important;
+  color: #C0C0C0 !important;
 }
 /* Tick lines are border-left on a ::before pseudo-element, not text — border-color fixes them separately. */
 .tl-timeline[data-tl-theme="dark"] .tl-timeaxis .tl-timeaxis-tick:before {
-  border-color: #9A9A9A !important;
+  border-color: #C0C0C0 !important;
 }
 
 /* Minor tick labels and lines fail WCAG contrast in the Default theme. Major tick text
@@ -149,7 +154,7 @@
 
 /* Attribution link colors fail WCAG contrast in both themes. */
 .tl-timeline[data-tl-theme="dark"] .tl-attribution a {
-  color: #AAA !important;
+  color: #CCC !important;
 }
 .tl-timeline:not([data-tl-theme]) .tl-attribution a {
   color: #555 !important;
