@@ -152,9 +152,24 @@
   border-color: #767676 !important;
 }
 
+/* Storyslider link color fails WCAG contrast in the Dark theme — #c34528 on #333 = 2.5:1. */
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider a {
+  color: #FF8066 !important;
+}
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider a:hover,
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider a:focus-visible {
+  color: #FFF !important;
+  background-color: transparent !important;
+}
+
 /* Attribution link colors fail WCAG contrast in both themes. */
 .tl-timeline[data-tl-theme="dark"] .tl-attribution a {
   color: #CCC !important;
+}
+/* Some themes apply a background-color to a:hover/a:focus globally, making #CCC illegible. */
+.tl-timeline[data-tl-theme="dark"] .tl-attribution a:hover,
+.tl-timeline[data-tl-theme="dark"] .tl-attribution a:focus-visible {
+  background-color: transparent !important;
 }
 .tl-timeline:not([data-tl-theme]) .tl-attribution a {
   color: #555 !important;
