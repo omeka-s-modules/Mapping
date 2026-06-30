@@ -1,3 +1,5 @@
+/* TimelineJS loads its own font stack that doesn't match Omeka theme fonts;
+   inherit forces the timeline to use the page font. */
 .tl-timeline,
 .tl-text .tl-headline-date,
 .tl-text h3.tl-headline-date {
@@ -11,6 +13,114 @@
   color: #333;
 }
 
+/* Dark theme: give the storyslider its intended dark background. Omeka themes
+   apply white to page containers, which bleeds into the transparent storyslider
+   and makes Dark theme text colors unreadable. TimelineJS also sets
+   background-color: #fff inline on .tl-slider-background, which covers the
+   storyslider — both elements need the override. */
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider,
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider .tl-slider-background {
+  background-color: #333 !important;
+}
+
+/* With a dark storyslider, our h2 fix above renders black on black in Dark.
+   Restore the Dark theme's intended white h2. */
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider .tl-text h2 {
+  color: #FFF;
+}
+
+/* Body text color fails WCAG 4.5:1 in Dark theme even after the storyslider background
+   fix above (#808080 on #333 = 3.2:1). */
+.tl-timeline[data-tl-theme="dark"] .tl-text p {
+  color: #AAA !important;
+}
+
+/* Headline-date color fails WCAG 4.5:1 in the Default theme. Scoped to :not([data-tl-theme])
+   to avoid overriding the Dark theme, where #bfbfbf already passes on the dark storyslider. */
+.tl-timeline:not([data-tl-theme]) .tl-headline-date {
+  color: #555 !important;
+}
+
+/* TimelineJS doesn't add a class for the active theme, so we write data-tl-theme
+   in mapping-block.js to scope the dark override. Hover colors must be set explicitly —
+   without them, the rest-state icon color persists on hover and cancels the intended hover style.
+   !important on hover/focus overrides Omeka theme button resets that would otherwise
+   replace the intended hover color and background (e.g. Papers, Lively).
+   display: block overrides Foundation's inline-block, which stacks buttons horizontally. */
+.tl-timeline .tl-menubar-button {
+  display: block !important;
+  color: #555;
+}
+.tl-timeline .tl-menubar-button:hover,
+.tl-timeline .tl-menubar-button:focus-visible {
+  color: #f2f2f2 !important;
+  background-color: #555 !important;
+}
+.tl-timeline[data-tl-theme="dark"] .tl-menubar-button {
+  color: #FFF;
+}
+.tl-timeline[data-tl-theme="dark"] .tl-menubar-button:hover,
+.tl-timeline[data-tl-theme="dark"] .tl-menubar-button:focus-visible {
+  color: #4d4d4d !important;
+  background-color: #CCC !important;
+}
+
+/* The slide scrollbar overlaps the next arrow when content is tall (e.g. portrait
+   image with a long description). A thin scrollbar reduces the overlap significantly.
+   scrollbar-width: thin defers the actual size to the browser rather than imposing
+   a fixed width, which preserves accessibility — the scrollbar remains interactive
+   and the browser can respect user accessibility settings. */
+.tl-timeline .tl-slide {
+  scrollbar-width: thin;
+}
+
+/* Explicit focus ring replaces the nudge animation as the keyboard focus indicator.
+   Fixed color avoids inheriting a low-contrast icon color from the Omeka theme. */
+.tl-timeline .tl-slidenav-next:focus-visible,
+.tl-timeline .tl-slidenav-previous:focus-visible {
+  outline: 2px solid #333;
+}
+/* #333 outline is imperceivable against the dark storyslider background. */
+.tl-timeline[data-tl-theme="dark"] .tl-slidenav-next:focus-visible,
+.tl-timeline[data-tl-theme="dark"] .tl-slidenav-previous:focus-visible {
+  outline-color: #CCC;
+}
+
+/* Remove hover background — Omeka themes apply button hover backgrounds globally, producing
+   misaligned and low-contrast results on the slidenav arrows. */
+.tl-timeline .tl-slidenav-next:hover,
+.tl-timeline .tl-slidenav-next:focus-visible,
+.tl-timeline .tl-slidenav-previous:hover,
+.tl-timeline .tl-slidenav-previous:focus-visible {
+  background-color: transparent;
+}
+
+/* Cancel TimelineJS's deliberate ±4px icon nudge on hover — distracting with no functional benefit.
+   Also reset the next-arrow margin to 0: the 76px/8px defaults push the icon past the (now-hidden)
+   labels, leaving it at the far right of its container. */
+.tl-timeline .tl-slidenav-next .tl-slidenav-icon,
+.tl-timeline .tl-slidenav-next:hover .tl-slidenav-icon,
+.tl-timeline .tl-slidenav-next:focus-visible .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-next .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-next:hover .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-next:focus-visible .tl-slidenav-icon {
+  margin-left: 0;
+}
+/* Cancel nudge — same as above. */
+.tl-timeline .tl-slidenav-previous:hover .tl-slidenav-icon,
+.tl-timeline .tl-slidenav-previous:focus-visible .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-previous:hover .tl-slidenav-icon,
+.tl-timeline.tl-skinny .tl-slidenav-previous:focus-visible .tl-slidenav-icon {
+  margin-left: 0;
+}
+
+/* Hide slidenav labels — their visibility is width-dependent and inconsistent
+   across layouts. The arrow icons and buttons are unaffected. */
+.tl-timeline .tl-slidenav-title,
+.tl-timeline .tl-slidenav-description {
+  display: none;
+}
+
 /* When the timeline container is below 650px wide, slidenav icons drop to 33% opacity (~1.9:1 contrast).
    Raising it to 75% meets the 3:1 minimum for non-text UI components. */
 .tl-timeline.tl-skinny .tl-slidenav-previous .tl-slidenav-icon,
@@ -18,32 +128,110 @@
   opacity: 0.75;
 }
 
+/* Timenav tick labels and lines fail WCAG contrast in the Dark theme. */
+.tl-timeline[data-tl-theme="dark"] .tl-timeaxis .tl-timeaxis-tick {
+  color: #C0C0C0 !important;
+}
+.tl-timeline[data-tl-theme="dark"] .tl-timeaxis .tl-timeaxis-tick-text span {
+  color: #C0C0C0 !important;
+}
+/* Tick lines are border-left on a ::before pseudo-element, not text — border-color fixes them separately. */
+.tl-timeline[data-tl-theme="dark"] .tl-timeaxis .tl-timeaxis-tick:before {
+  border-color: #C0C0C0 !important;
+}
+
+/* Minor tick labels and lines fail WCAG contrast in the Default theme. Major tick text
+   already passes; major tick lines do not and are fixed by the ::before rule. */
+.tl-timeline:not([data-tl-theme]) .tl-timeaxis-minor .tl-timeaxis-tick {
+  color: #767676 !important;
+}
+.tl-timeline:not([data-tl-theme]) .tl-timeaxis-minor .tl-timeaxis-tick-text span {
+  color: #767676 !important;
+}
+.tl-timeline:not([data-tl-theme]) .tl-timeaxis .tl-timeaxis-tick:before {
+  border-color: #767676 !important;
+}
+
+/* Storyslider link color fails WCAG contrast in the Dark theme — #c34528 on #333 = 2.5:1. */
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider a {
+  color: #FF8066 !important;
+}
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider a:hover,
+.tl-timeline[data-tl-theme="dark"] .tl-storyslider a:focus-visible {
+  color: #FFF !important;
+  background-color: transparent !important;
+}
+
+/* Attribution link colors fail WCAG contrast in both themes. */
+.tl-timeline[data-tl-theme="dark"] .tl-attribution a {
+  color: #CCC !important;
+}
+/* Some themes apply a background-color to a:hover/a:focus globally, making #CCC illegible. */
+.tl-timeline[data-tl-theme="dark"] .tl-attribution a:hover,
+.tl-timeline[data-tl-theme="dark"] .tl-attribution a:focus-visible {
+  background-color: transparent !important;
+}
+.tl-timeline:not([data-tl-theme]) .tl-attribution a {
+  color: #555 !important;
+}
+
+/* Omeka themes (e.g. Foundation, Inkwell) override link focus styles inside the timeline,
+   removing the keyboard focus ring. Scoping to .tl-timeline overrides them without needing !important. */
+.tl-timeline a:focus-visible {
+  outline: 2px solid #333;
+  outline-offset: 2px;
+}
+.tl-timeline[data-tl-theme="dark"] a:focus-visible {
+  outline-color: #CCC;
+}
+
+/* Timemarker title text fails WCAG contrast at rest in both themes (1.5:1 Default,
+   1.8:1 Dark). :not() limits the fix to the resting state — hover and active
+   states already pass and must not be disturbed. */
+.tl-timeline .tl-timemarker:not(:hover):not(:focus):not(.tl-timemarker-active)
+  .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {
+  color: #555 !important;
+}
+.tl-timeline[data-tl-theme="dark"] .tl-timemarker:not(:hover):not(:focus):not(.tl-timemarker-active)
+  .tl-timemarker-content-container .tl-timemarker-content .tl-timemarker-text h2.tl-headline {
+  color: #AAA !important;
+}
+
+/* Default layout: map and timeline sit side by side. */
 .mapping-block.timeline {
   width: 100%;
   display: flex;
 }
 
+/* Full-width timenav modes: the timenav is absolutely positioned across both panels.
+   Padding reserves the 165px it occupies so it doesn't overlap the content area. */
 .mapping-block.timenav-full-width-below.timeline {
   padding-bottom: 165px;
-  position: relative;  
+  position: relative;
 }
 
 .mapping-block.timenav-full-width-above.timeline {
   padding-top: 165px;
-  position: relative;    
+  position: relative;
 }
 
+/* Equal split between map and timeline in the default side-by-side layout. */
 .mapping-block.timeline .tl-timeline,
 .mapping-block.timeline  .mapping-map {
   width: 50%;
 }
 
 @media screen and (min-width:640px) {
+  /* TimelineJS sets position: relative on the timeline element, which would trap
+     the absolutely-positioned timenav inside the timeline column. static lets
+     it position relative to the full block container instead. */
   .timenav-full-width-below.timeline .tl-timeline,
   .timenav-full-width-above.timeline .tl-timeline {
     position: static !important;
   }
-  
+
+  /* With the timenav absolutely positioned outside the normal flow, the panels would
+     collapse without an explicit height. */
   .timenav-full-width-below.timeline .tl-timeline,
   .timenav-full-width-below.timeline .mapping-map,
   .timenav-full-width-below.timeline .tl-storyslider,
@@ -52,7 +240,8 @@
   .timenav-full-width-above.timeline .tl-storyslider {
     min-height: 60vh !important;
   }
-  
+
+  /* Position the full-width timenav at the bottom or top of the block. */
   .timenav-full-width-below.timeline .tl-timenav {
     position: absolute;
     bottom: 0;
@@ -62,13 +251,15 @@
     position: absolute;
     top: 0;
   }
-  
+
+  /* TimelineJS positions the menubar relative to the timeline column. When the timenav
+     is absolute-positioned outside that column, the menubar needs explicit coordinates
+     to stay vertically centered against the storyslider. */
   .timenav-full-width-below.timeline .tl-menubar {
     top: auto !important;
     bottom: 82.5px;
     transform: translateY(25%);
   }
-}
 
   .timenav-full-width-above.timeline .tl-menubar {
     bottom: auto !important;
@@ -78,11 +269,12 @@
 }
 
 
+/* At narrow widths, 50% columns are too small for usable map and timeline panels. */
 @media screen and (max-width:639px) {
   .mapping-block.timeline {
     display: block;
   }
-  
+
   .mapping-block.timeline .tl-timeline,
   .mapping-block.timeline  .mapping-map {
     width: 100%;

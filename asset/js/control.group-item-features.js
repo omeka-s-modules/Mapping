@@ -15,7 +15,7 @@ L.Control.GroupItemFeatures = L.Control.extend({
         button.textContent = Omeka.jsTranslate('Return to groups');
         button.type = 'button';
 
-        var filters = L.DomUtil.create('div', '', container);
+        var filters = L.DomUtil.create('div', 'mapping-control-group-item-filters', container);
         filters.innerHTML = this._filtersHtml;
 
         L.DomEvent

@@ -77,33 +77,91 @@
   max-height: 200px;
 }
 
+.mapping-control-group-select {
+  padding: 0;
+}
+
+/* appearance: none gives CSS control over height and padding — native select
+   rendering ignores these properties. !important is required throughout because
+   Omeka themes override select and button styles globally using !important. */
+.mapping-control-group-select select {
+  appearance: none !important;
+  -webkit-appearance: none !important;
+  background-color: #fff !important;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='10' height='6' viewBox='0 0 10 6'%3E%3Cpath fill='%23555555' d='M0 0l5 6 5-6z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat !important;
+  background-position: right 8px center !important;
+  background-size: 10px 6px !important;
+  border: 2px solid rgba(0,0,0,0.2) !important;
+  border-radius: 4px !important;
+  color: #333 !important;
+  cursor: pointer;
+  font-size: 14px !important;
+  height: auto !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  padding: 4px 24px 4px 8px !important;
+  width: auto !important;
+}
+
 .mapping-control-group-item-features {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.mapping-control-group-item-features button {
+  background-color: #fff !important;
+  border: 2px solid rgba(0,0,0,0.2) !important;
+  border-radius: 4px !important;
+  color: #333 !important;
+  cursor: pointer;
+  font-size: 14px !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  padding: 4px 8px !important;
+}
+
+.mapping-control-group-item-features button:hover,
+.mapping-control-group-item-features button:focus-visible {
+  background-color: #e0e0e0 !important;
+}
+
+.mapping-control-group-item-filters {
   background: #fff;
   border: 2px solid rgba(0, 0, 0, 0.2);
   border-radius: 4px;
   padding: 4px 8px;
   display: flex;
-  flex-wrap: wrap;
   align-items: center;
-  gap: 10px;
 }
 
-.mapping-control-group-item-features .filter {
+.mapping-control-group-item-filters .filter {
   display: inline-flex;
-  margin-right: .5rem;
+  align-items: center;
+  border: 1px solid rgba(0, 0, 0, 0.15) !important;
+  margin: 0 !important;
+  overflow: hidden;
 }
 
-.mapping-control-group-item-features .filter-label {
-  margin-right: .25rem;
+.mapping-control-group-item-filters .filter-label {
+  background: rgba(0, 0, 0, 0.07) !important;
+  border: none !important;
+  border-right: 1px solid rgba(0, 0, 0, 0.15) !important;
+  color: #555 !important;
+  font-size: 12px !important;
+  font-weight: 600 !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  padding: 2px 6px !important;
 }
 
-.mapping-control-group-select {
-  background: #fff;
-  border: 2px solid rgba(0, 0, 0, 0.2);
-  border-radius: 4px;
-  padding: 4px 8px;
-}
-
-.mapping-control-group-select select {
-  display: block;
+.mapping-control-group-item-filters .filter-value {
+  background: none !important;
+  border: none !important;
+  color: #333 !important;
+  font-size: 12px !important;
+  line-height: 1.5 !important;
+  margin: 0 !important;
+  padding: 2px 6px !important;
 }
