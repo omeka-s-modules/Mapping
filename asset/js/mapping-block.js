@@ -314,12 +314,12 @@ function MappingBlock(mapDiv, timelineDiv) {
                                 // For a timeline using intervals, a portion of this event
                                 // must fall within the interval of the current event.
                                 if (currentEventEnd && eventStart <= currentEventEnd && eventEnd >= currentEventStart) {
-                                    features.addLayer(featuresByResource[event.unique_id])
+                                    map.addLayer(featuresByResource[event.unique_id])
                                 }
                                 // For a timeline using timestamps, this event must have
                                 // the same timestamp as the current event.
                                 if (!currentEventEnd && currentEventStart.getTime() == eventStart.getTime()) {
-                                    features.addLayer(featuresByResource[event.unique_id])
+                                    map.addLayer(featuresByResource[event.unique_id])
                                 }
                             }
                         });
