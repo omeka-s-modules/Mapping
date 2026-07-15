@@ -1088,6 +1088,9 @@ class Module extends AbstractModule
 
         // Create/update features passed in the request.
         foreach ($request->getValue('o-module-mapping:feature', []) as $featureData) {
+            if (!is_array($featureData)) {
+                continue;
+            }
             if (isset($featureData['o:id'])) {
                 if (!isset($existingFeatures[$featureData['o:id']])) {
                     // This feature belongs to another item. Ignore it.
