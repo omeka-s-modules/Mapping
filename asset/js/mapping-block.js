@@ -237,7 +237,7 @@ function MappingBlock(mapDiv, timelineDiv) {
         });
     });
     if (groupLayers.length) {
-        const groupSelectControl = L.control.groupSelect(groupLayers);
+        const groupSelectControl = L.control.groupSelect(groupLayers, featuresPoint);
         map.addControl(groupSelectControl);
         mapDiv.data('groupSelectControl', groupSelectControl);
     }

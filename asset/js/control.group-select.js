@@ -3,8 +3,9 @@ L.Control.GroupSelect = L.Control.extend({
         position: 'bottomleft'
     },
 
-    initialize: function(groups) {
+    initialize: function(groups, featuresPoint) {
         this._groups = groups;
+        this._featuresPoint = featuresPoint;
     },
 
     onAdd: function(map) {
@@ -46,6 +47,10 @@ L.Control.GroupSelect = L.Control.extend({
                 setTimeout(function() { layer.openPopup(); }, 0);
             });
             map.fitBounds(layer.getBounds());
+        } else if (this._featuresPoint instanceof L.MarkerClusterGroup) {
+            this._featuresPoint.zoomToShowLayer(layer, function() {
+                layer.openPopup();
+            });
         } else {
             layer.openPopup();
         }
@@ -56,6 +61,6 @@ L.Control.GroupSelect = L.Control.extend({
     }
 });
 
-L.control.groupSelect = function(groups) {
-    return new L.Control.GroupSelect(groups);
+L.control.groupSelect = function(groups, featuresPoint) {
+    return new L.Control.GroupSelect(groups, featuresPoint);
 };
