@@ -2,12 +2,14 @@
 namespace Mapping\Site\BlockLayout;
 
 use Doctrine\DBAL\Connection;
+use Laminas\Authentication\AuthenticationService;
 use Laminas\View\Renderer\PhpRenderer;
 use Mapping\Form\BlockLayoutMapGroupsForm;
 use Omeka\Api\Representation\SiteRepresentation;
 use Omeka\Api\Representation\SitePageRepresentation;
 use Omeka\Api\Representation\SitePageBlockRepresentation;
 use Omeka\Entity\SitePageBlock;
+use Omeka\Permissions\Acl;
 use Omeka\Stdlib\ErrorStore;
 
 /**
@@ -15,6 +17,12 @@ use Omeka\Stdlib\ErrorStore;
  */
 class MapGroups extends AbstractMap
 {
+    protected $acl;
+
+    protected $authenticationService;
+
+    protected $isSupported;
+
     protected $popupPartials = [
         'item_sets' => 'common/mapping-popup/item-set-group',
         'resource_classes' => 'common/mapping-popup/resource-class-group',
@@ -23,6 +31,31 @@ class MapGroups extends AbstractMap
         'property_values_res' => 'common/mapping-popup/property-value-res-group',
         'properties_ex' => 'common/mapping-popup/property-ex-group',
     ];
+
+    public function setAcl(Acl $acl)
+    {
+        $this->acl = $acl;
+    }
+
+    public function setAuthenticationService(AuthenticationService $authenticationService)
+    {
+        $this->authenticationService = $authenticationService;
+    }
+
+    protected function getVisibilityConstraint(): string
+    {
+        if ($this->acl->userIsAllowed('Omeka\Entity\Resource', 'view-all')) {
+            return '';
+        }
+        $identity = $this->authenticationService->getIdentity();
+        if ($identity) {
+            return sprintf(
+                'AND (resource.is_public = 1 OR resource.owner_id = %d)',
+                (int) $identity->getId()
+            );
+        }
+        return 'AND resource.is_public = 1';
+    }
 
     public function getLabel()
     {
@@ -82,22 +115,22 @@ class MapGroups extends AbstractMap
         // while the "ideal" approach would need at least 20 queries.
         switch ($data['groups']['type']) {
             case 'item_sets':
-                $groupsData = $this->getGroupsItemSets($data, $siteId, $view);
+                $groupsData = $this->getGroupsItemSets($data, $siteId);
                 break;
             case 'resource_classes':
-                $groupsData = $this->getGroupsResourceClasses($data, $siteId, $view);
+                $groupsData = $this->getGroupsResourceClasses($data, $siteId);
                 break;
             case 'property_values_eq':
-                $groupsData = $this->getGroupsPropertyValuesEq($data, $siteId, $view);
+                $groupsData = $this->getGroupsPropertyValuesEq($data, $siteId);
                 break;
             case 'property_values_in':
-                $groupsData = $this->getGroupsPropertyValuesIn($data, $siteId, $view);
+                $groupsData = $this->getGroupsPropertyValuesIn($data, $siteId);
                 break;
             case 'property_values_res':
-                $groupsData = $this->getGroupsPropertyValuesRes($data, $siteId, $view);
+                $groupsData = $this->getGroupsPropertyValuesRes($data, $siteId);
                 break;
             case 'properties_ex':
-                $groupsData = $this->getGroupsPropertyEx($data, $siteId, $view);
+                $groupsData = $this->getGroupsPropertyEx($data, $siteId);
                 break;
             default:
                 $groupsData = [];
@@ -113,16 +146,19 @@ class MapGroups extends AbstractMap
 
     protected function isSupported()
     {
-        try {
-            // The ST_COLLECT function must exist.
-            $this->connection->executeQuery('SELECT ST_COLLECT(null)');
-            return true;
-        } catch (\Exception $e) {
-            return false;
+        if (null === $this->isSupported) {
+            try {
+                // The ST_COLLECT function must exist.
+                $this->connection->executeQuery('SELECT ST_COLLECT(null)');
+                $this->isSupported = true;
+            } catch (\Exception $e) {
+                $this->isSupported = false;
+            }
         }
+        return $this->isSupported;
     }
 
-    protected function getGroupsItemSets($data, $siteId, PhpRenderer $view)
+    protected function getGroupsItemSets($data, $siteId)
     {
         $itemSetIds = array_map('intval', $data['groups']['type_data']['item_set_ids']);
         $resourceClassId = $data['groups']['filter_data']['resource_class_id'];
@@ -139,13 +175,14 @@ class MapGroups extends AbstractMap
             INNER JOIN item ON mapping_feature.item_id = item.id
             INNER JOIN item_item_set ON item.id = item_item_set.item_id
             INNER JOIN item_site ON item.id = item_site.item_id
-            %s
+            INNER JOIN resource ON item.id = resource.id
             WHERE item_item_set.item_set_id IN (?)
             AND item_site.site_id = ?
             %s
+            %s
             GROUP BY item_item_set.item_set_id',
             $this->getGeographySelect($data),
-            $resourceClassId ? 'INNER JOIN resource ON item.id = resource.id' : '',
+            $this->getVisibilityConstraint(),
             $resourceClassId ? 'AND resource.resource_class_id = ?' : ''
         );
 
@@ -168,7 +205,7 @@ class MapGroups extends AbstractMap
         return $groupsData;
     }
 
-    protected function getGroupsResourceClasses($data, $siteId, PhpRenderer $view)
+    protected function getGroupsResourceClasses($data, $siteId)
     {
         $resourceClassIds = array_map('intval', $data['groups']['type_data']['resource_class_ids']);
         $itemSetId = $data['groups']['filter_data']['item_set_id'];
@@ -189,9 +226,11 @@ class MapGroups extends AbstractMap
             WHERE resource.resource_class_id IN (?)
             AND item_site.site_id = ?
             %s
+            %s
             GROUP BY resource.resource_class_id',
             $this->getGeographySelect($data),
             $itemSetId ? 'INNER JOIN item_item_set ON item.id = item_item_set.item_id' : '',
+            $this->getVisibilityConstraint(),
             $itemSetId ? 'AND item_item_set.item_set_id = ?' : '',
         );
 
@@ -214,7 +253,7 @@ class MapGroups extends AbstractMap
         return $groupsData;
     }
 
-    protected function getGroupsPropertyValuesEq($data, $siteId, PhpRenderer $view)
+    protected function getGroupsPropertyValuesEq($data, $siteId)
     {
         $propertyId = (int) $data['groups']['type_data']['property_id'];
         $values = array_filter(array_map('trim', explode("\n", $data['groups']['type_data']['values'])));
@@ -237,18 +276,19 @@ class MapGroups extends AbstractMap
             INNER JOIN item ON mapping_feature.item_id = item.id
             INNER JOIN value ON item.id = value.resource_id
             INNER JOIN item_site ON item.id = item_site.item_id
-            %s
+            INNER JOIN resource ON item.id = resource.id
             %s
             WHERE value.value IN (?)
             AND value.property_id %s ?
             AND item_site.site_id = ?
             %s
             %s
+            %s
             GROUP BY value.value',
             $this->getGeographySelect($data),
             $itemSetId ? 'INNER JOIN item_item_set ON item.id = item_item_set.item_id' : '',
-            $resourceClassId ? 'INNER JOIN resource ON item.id = resource.id' : '',
             $propertyId ? '=' : '!=',
+            $this->getVisibilityConstraint(),
             $itemSetId ? 'AND item_item_set.item_set_id = ?' : '',
             $resourceClassId ? 'AND resource.resource_class_id = ?' : ''
         );
@@ -282,7 +322,7 @@ class MapGroups extends AbstractMap
         return $groupsData;
     }
 
-    protected function getGroupsPropertyValuesIn($data, $siteId, PhpRenderer $view)
+    protected function getGroupsPropertyValuesIn($data, $siteId)
     {
         $propertyId = (int) $data['groups']['type_data']['property_id'];
         $values = array_filter(array_map('trim', explode("\n", $data['groups']['type_data']['values'])));
@@ -292,7 +332,7 @@ class MapGroups extends AbstractMap
         // Must use UNION instead of IN() because of wildcard LIKE query.
         $unions = $queryParams = $queryTypes = [];
         foreach ($values as $value) {
-            $thisQueryParams = [$value,  '%' . $value . '%', $propertyId, $siteId];
+            $thisQueryParams = [$value, '%' . $value . '%', $propertyId, $siteId];
             $thisQueryTypes = [\PDO::PARAM_STR, \PDO::PARAM_STR, \PDO::PARAM_INT, \PDO::PARAM_INT];
             if ($itemSetId) {
                 $thisQueryParams[] = $itemSetId;
@@ -307,18 +347,19 @@ class MapGroups extends AbstractMap
                 INNER JOIN item ON mapping_feature.item_id = item.id
                 INNER JOIN value ON item.id = value.resource_id
                 INNER JOIN item_site ON item.id = item_site.item_id
-                %s
+                INNER JOIN resource ON item.id = resource.id
                 %s
                 WHERE value.value LIKE ?
                 AND value.property_id %s ?
                 AND item_site.site_id = ?
                 %s
                 %s
+                %s
                 GROUP BY contains_value',
                 $this->getGeographySelect($data),
                 $itemSetId ? 'INNER JOIN item_item_set ON item.id = item_item_set.item_id' : '',
-                $resourceClassId ? 'INNER JOIN resource ON item.id = resource.id' : '',
                 $propertyId ? '=' : '!=',
+                $this->getVisibilityConstraint(),
                 $itemSetId ? 'AND item_item_set.item_set_id = ?' : '',
                 $resourceClassId ? 'AND resource.resource_class_id = ?' : ''
             );
@@ -356,7 +397,7 @@ class MapGroups extends AbstractMap
         return $groupsData;
     }
 
-    protected function getGroupsPropertyValuesRes($data, $siteId, PhpRenderer $view)
+    protected function getGroupsPropertyValuesRes($data, $siteId)
     {
         $propertyId = (int) $data['groups']['type_data']['property_id'];
         $values = array_filter(array_map('trim', explode("\n", $data['groups']['type_data']['values'])));
@@ -378,18 +419,19 @@ class MapGroups extends AbstractMap
             INNER JOIN item ON mapping_feature.item_id = item.id
             INNER JOIN value ON item.id = value.resource_id
             INNER JOIN item_site ON item.id = item_site.item_id
-            %s
+            INNER JOIN resource ON item.id = resource.id
             %s
             WHERE value.value_resource_id IN (?)
             AND value.property_id %s ?
             AND item_site.site_id = ?
             %s
             %s
+            %s
             GROUP BY value.value_resource_id',
             $this->getGeographySelect($data),
             $itemSetId ? 'INNER JOIN item_item_set ON item.id = item_item_set.item_id' : '',
-            $resourceClassId ? 'INNER JOIN resource ON item.id = resource.id' : '',
             $propertyId ? '=' : '!=',
+            $this->getVisibilityConstraint(),
             $itemSetId ? 'AND item_item_set.item_set_id = ?' : '',
             $resourceClassId ? 'AND resource.resource_class_id = ?' : ''
         );
@@ -423,7 +465,7 @@ class MapGroups extends AbstractMap
         return $groupsData;
     }
 
-    protected function getGroupsPropertyEx($data, $siteId, PhpRenderer $view)
+    protected function getGroupsPropertyEx($data, $siteId)
     {
         $propertyIds = array_map('intval', $data['groups']['type_data']['property_ids']);
         $itemSetId = $data['groups']['filter_data']['item_set_id'];
@@ -444,16 +486,17 @@ class MapGroups extends AbstractMap
             INNER JOIN item ON mapping_feature.item_id = item.id
             INNER JOIN value ON item.id = value.resource_id
             INNER JOIN item_site ON item.id = item_site.item_id
-            %s
+            INNER JOIN resource ON item.id = resource.id
             %s
             WHERE value.property_id IN (?)
             AND item_site.site_id = ?
             %s
             %s
+            %s
             GROUP BY value.property_id',
             $this->getGeographySelect($data),
             $itemSetId ? 'INNER JOIN item_item_set ON item.id = item_item_set.item_id' : '',
-            $resourceClassId ? 'INNER JOIN resource ON item.id = resource.id' : '',
+            $this->getVisibilityConstraint(),
             $itemSetId ? 'AND item_item_set.item_set_id = ?' : '',
             $resourceClassId ? 'AND resource.resource_class_id = ?' : ''
         );
@@ -487,7 +530,7 @@ class MapGroups extends AbstractMap
 
     protected function getGeographySelect($data)
     {
-        // Get the GROUP BY clause depending on feature type.
+        // Get the geography SELECT expression depending on feature type.
         switch ($data['groups']['feature_type']) {
             case 'point':
                 return 'ST_AsGeoJSON(ST_Centroid(ST_ConvexHull(ST_Collect(geography)))) AS geography';
