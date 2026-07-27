@@ -3,6 +3,11 @@
   z-index: 0;
 }
 
+#mapping-map {
+  min-height: 700px;
+  margin: 1rem 0;
+}
+
 #mapping-map + .pagination  {
   margin: 1rem auto;
   width: 100%;
