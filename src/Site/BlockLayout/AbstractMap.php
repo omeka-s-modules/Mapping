@@ -222,10 +222,13 @@ abstract class AbstractMap extends AbstractBlockLayout
                 'minute' => $dateTimeEnd['minute_normalized'],
                 'second' => $dateTimeEnd['second_normalized'],
             ];
+            // Format as NumericDataTypes renders intervals, so the timeline
+            // agrees with item pages. Formatting the DateTime directly prints
+            // the raw signed year, e.g. "-0001" rather than "1 BC".
             $event['display_date'] = sprintf(
                 '%s — %s',
-                $dateTimeStart['date']->format($dateTimeStart['format_render']),
-                $dateTimeEnd['date']->format($dateTimeEnd['format_render'])
+                Timestamp::getFormattedDateTimeFromValue($intervalStart, true, ['lang' => $view->lang()]),
+                Timestamp::getFormattedDateTimeFromValue($intervalEnd, false, ['lang' => $view->lang()])
             );
         }
         return $event;
