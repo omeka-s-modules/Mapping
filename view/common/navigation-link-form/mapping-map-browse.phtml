@@ -7,7 +7,7 @@ $escape = $this->plugin('escapeHtml');
 $label = isset($data['label']) && '' !== trim($data['label']) ? $data['label'] : null;
 $basemapProviderSelect = (new Element\Select('basemap_provider'))
     ->setValue(MapBrowse::getBasemapProvider($data ?? []))
-    ->setValueOptions(Module::BASEMAP_PROVIDERS)
+    ->setValueOptions(Module::getBasemapProviderGroups())
     ->setEmptyOption('[Default provider]') // @translate
     ->setAttribute('data-name', 'basemap_provider');
 ?>

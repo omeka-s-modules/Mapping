@@ -29,7 +29,7 @@ abstract class AbstractMap extends AbstractBlockLayout
         $view->headLink()->appendStylesheet($view->assetUrl('css/mapping-block-form.css', 'Mapping'));
 
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/dist/leaflet.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet-providers/leaflet-providers.js', 'Mapping'));
+        $view->mappingBasemapAssets();
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
 
         $view->headScript()->appendFile($view->assetUrl('js/mapping-block-form.js', 'Mapping'));
@@ -48,7 +48,7 @@ abstract class AbstractMap extends AbstractBlockLayout
 
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet/dist/leaflet.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.markercluster/dist/leaflet.markercluster-src.js', 'Mapping'));
-        $view->headScript()->appendFile($view->assetUrl('vendor/leaflet-providers/leaflet-providers.js', 'Mapping'));
+        $view->mappingBasemapAssets();
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('vendor/Leaflet.Deflate/dist/L.Deflate.js', 'Mapping'));

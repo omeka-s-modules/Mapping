@@ -33,23 +33,15 @@ const MappingModule = {
 
         // Set base maps and grouped overlays.
         const urlParams = new URLSearchParams(window.location.search);
-        let defaultProvider;
-        try {
-            defaultProvider = L.tileLayer.provider(urlParams.get('mapping_basemap_provider'));
-        } catch (error) {
-            try {
-                defaultProvider = L.tileLayer.provider(options.basemapProvider);
-            } catch (error) {
-                defaultProvider = L.tileLayer.provider('OpenStreetMap.Mapnik');
-            }
-        }
-        const baseMaps = {
-            'Default': defaultProvider,
-            'Streets': L.tileLayer.provider('OpenStreetMap.Mapnik'),
-            'Grayscale': L.tileLayer.provider('CartoDB.Positron'),
-            'Satellite': L.tileLayer.provider('Esri.WorldImagery'),
-            'Terrain': L.tileLayer.provider('Esri.WorldShadedRelief')
-        };
+        // A basemap passed in the URL takes precedence over the configured
+        // one, and a name no provider matches falls through to the next. Note
+        // that a provider missing a required credential does not fall
+        // through: it resolves to the default provider.
+        const defaultProvider = MappingBasemap.tileLayer(
+            urlParams.get('mapping_basemap_provider'),
+            options.basemapProvider
+        );
+        const baseMaps = MappingBasemap.baseMaps(defaultProvider);
 
         // Add features and controls to the map.
         features.addLayer(featuresPoint).addLayer(featuresPoly);

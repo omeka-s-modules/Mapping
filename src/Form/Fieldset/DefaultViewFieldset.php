@@ -13,9 +13,9 @@ class DefaultViewFieldset extends Fieldset
             'name' => 'o:block[__blockIndex__][o:data][basemap_provider]',
             'options' => [
                 'label' => 'Basemap provider', // @translate
-                'info' => 'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed.', // @translate
+                'info' => 'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed. Basemaps needing a key or token use credentials set in global settings, and show OpenStreetMap until those are set.', // @translate
                 'empty_option' => '[Default provider]',
-                'value_options' => Module::BASEMAP_PROVIDERS,
+                'value_options' => Module::getBasemapProviderGroups(),
             ],
             'attributes' => [
                 'class' => 'basemap-provider',

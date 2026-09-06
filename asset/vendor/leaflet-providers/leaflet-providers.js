@@ -186,13 +186,6 @@
 				attribution: 'Map data: {attribution.OpenStreetMap} | Map style: &copy; <a href="https://www.OpenRailwayMap.org">OpenRailwayMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
 			}
 		},
-		OpenFireMap: {
-			url: 'http://openfiremap.org/hytiles/{z}/{x}/{y}.png',
-			options: {
-				maxZoom: 19,
-				attribution: 'Map data: {attribution.OpenStreetMap} | Map style: &copy; <a href="http://www.openfiremap.org">OpenFireMap</a> (<a href="https://creativecommons.org/licenses/by-sa/3.0/">CC-BY-SA</a>)'
-			}
-		},
 		SafeCast: {
 			url: 'https://s3.amazonaws.com/te512.safecast.org/{z}/{x}/{y}.png',
 			options: {
@@ -278,6 +271,26 @@
 						variant: 'stamen_toner_lite'
 					}
 				},
+				StamenTonerDark: {
+					options: {
+						attribution:
+							'&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> ' +
+							'&copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> ' +
+							'&copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> ' +
+							'{attribution.OpenStreetMap}',
+						variant: 'stamen_toner_dark'
+					}
+				},
+				StamenTonerBlacklite: {
+					options: {
+						attribution:
+							'&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> ' +
+							'&copy; <a href="https://www.stamen.com/" target="_blank">Stamen Design</a> ' +
+							'&copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> ' +
+							'{attribution.OpenStreetMap}',
+						variant: 'stamen_toner_blacklite'
+					}
+				},
 				StamenWatercolor: {
 					url: 'https://tiles.stadiamaps.com/tiles/{variant}/{z}/{x}/{y}.{ext}',
 					options: {
@@ -343,7 +356,7 @@
 			}
 		},
 		Thunderforest: {
-			url: 'https://{s}.tile.thunderforest.com/{variant}/{z}/{x}/{y}{r}.png?apikey={apikey}',
+			url: 'https://api.thunderforest.com/{variant}/{z}/{x}/{y}{r}.png?apikey={apikey}',
 			options: {
 				attribution:
 					'&copy; <a href="http://www.thunderforest.com/">Thunderforest</a>, {attribution.OpenStreetMap}',
@@ -372,7 +385,8 @@
 				Outdoors: 'outdoors',
 				Pioneer: 'pioneer',
 				MobileAtlas: 'mobile-atlas',
-				Neighbourhood: 'neighbourhood'
+				Neighbourhood: 'neighbourhood',
+				Atlas: 'atlas'
 			}
 		},
 		BaseMapDE: {
@@ -616,7 +630,7 @@
 			url:
 				'https://maps.hereapi.com/v3/base/mc/' + // new base url for HERE maptile v3 api
 				'{z}/{x}/{y}/{format}?style={variant}&size={size}' + // slightly modified parameters
-				'&apiKey={app_id}&lg={language}', // replacing app-id with apikey
+				'&apiKey={apiKey}&lg={language}', // replacing app-id with apikey
 			options: {
 				attribution:
 					'Map &copy; 1987-' + new Date().getFullYear() + ' <a href="http://platform.here.com">HERE</a>',
@@ -726,12 +740,13 @@
 			}
 		},
 		CartoDB: {
-			url: 'https://{s}.basemaps.cartocdn.com/{variant}/{z}/{x}/{y}{r}.png',
+			url: 'https://{s}.basemaps.cartocdn.com/{variant}/{z}/{x}/{y}{r}.png?key={apikey}',
 			options: {
 				attribution: '{attribution.OpenStreetMap} &copy; <a href="https://carto.com/attributions">CARTO</a>',
 				subdomains: 'abcd',
 				maxZoom: 20,
-				variant: 'light_all'
+				variant: 'light_all',
+				apikey: '<insert your API key here>',
 			},
 			variants: {
 				Positron: 'light_all',
@@ -914,9 +929,10 @@
 		},
 		JusticeMap: {
 			// Justice Map (http://www.justicemap.org/)
+			// Raster map tiles migrated to (https://maptile3.org/) in 2023
 			// Visualize race and income data for your community, county and country.
 			// Includes tools for data journalists, bloggers and community activists.
-			url: 'https://www.justicemap.org/tile/{size}/{variant}/{z}/{x}/{y}.png',
+			url: 'https://maptile3.org/2020/{size}/{variant}/{z}/{x}/{y}.png',
 			options: {
 				attribution: '<a href="http://www.justicemap.org/terms.php">Justice Map</a>',
 				// one of 'county', 'tract', 'block'

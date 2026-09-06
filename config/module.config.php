@@ -43,6 +43,7 @@ return [
             'formMappingCopyCoordinates' => View\Helper\CopyCoordinates::class,
             'formMappingUpdateFeatures' => View\Helper\UpdateFeatures::class,
             'formMappingDefaultBounds' => View\Helper\FormDefaultBounds::class,
+            'mappingBasemapAssets' => View\Helper\MappingBasemapAssets::class,
         ],
         'delegators' => [
             'Laminas\Form\View\Helper\FormElement' => [

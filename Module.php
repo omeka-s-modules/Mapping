@@ -22,8 +22,14 @@ use LongitudeOne\Spatial\PHP\Types\Geography;
 class Module extends AbstractModule
 {
     /**
-     * Excludes providers that require API keys, access tokens, etc. Excludes
-     * providers with limited bounds.
+     * The basemap providers offered to administrators.
+     *
+     * Keys are provider names as understood by leaflet-providers; values are
+     * their labels. Validate stored values against the keys (array_key_exists),
+     * never the labels. Excludes providers with limited bounds.
+     *
+     * Providers needing a credential are not marked here: getBasemapProviderGroups()
+     * carries that on the group label instead.
      */
     const BASEMAP_PROVIDERS = [
         'CartoDB.DarkMatter' => 'CartoDB.DarkMatter',
@@ -37,6 +43,7 @@ class Module extends AbstractModule
         'CartoDB.VoyagerNoLabels' => 'CartoDB.VoyagerNoLabels',
         'CartoDB.VoyagerOnlyLabels' => 'CartoDB.VoyagerOnlyLabels',
         'CyclOSM' => 'CyclOSM',
+        'Esri.NatGeoWorldMap' => 'Esri.NatGeoWorldMap',
         'Esri.OceanBasemap' => 'Esri.OceanBasemap',
         'Esri.WorldGrayCanvas' => 'Esri.WorldGrayCanvas',
         'Esri.WorldImagery' => 'Esri.WorldImagery',
@@ -45,6 +52,7 @@ class Module extends AbstractModule
         'Esri.WorldStreetMap' => 'Esri.WorldStreetMap',
         'Esri.WorldTerrain' => 'Esri.WorldTerrain',
         'Esri.WorldTopoMap' => 'Esri.WorldTopoMap',
+        'MapBox' => 'MapBox',
         'MtbMap' => 'MtbMap',
         'OPNVKarte' => 'OPNVKarte',
         'OpenStreetMap.DE' => 'OpenStreetMap.DE',
@@ -52,9 +60,31 @@ class Module extends AbstractModule
         'OpenStreetMap.HOT' => 'OpenStreetMap.HOT',
         'OpenStreetMap.Mapnik' => 'OpenStreetMap.Mapnik',
         'OpenTopoMap' => 'OpenTopoMap',
+        'Stadia.StamenTerrain' => 'Stadia.StamenTerrain',
+        'Stadia.StamenTerrainBackground' => 'Stadia.StamenTerrainBackground',
+        'Stadia.StamenTerrainLabels' => 'Stadia.StamenTerrainLabels',
+        'Stadia.StamenToner' => 'Stadia.StamenToner',
+        'Stadia.StamenTonerBackground' => 'Stadia.StamenTonerBackground',
+        'Stadia.StamenTonerLabels' => 'Stadia.StamenTonerLabels',
+        'Stadia.StamenTonerLines' => 'Stadia.StamenTonerLines',
+        'Stadia.StamenTonerLite' => 'Stadia.StamenTonerLite',
+        'Stadia.StamenWatercolor' => 'Stadia.StamenWatercolor',
         'USGS.USImagery' => 'USGS.USImagery',
         'USGS.USImageryTopo' => 'USGS.USImageryTopo',
         'USGS.USTopo' => 'USGS.USTopo',
+    ];
+
+    /**
+     * Labels for provider groups needing more than the provider name, keyed by
+     * the part of the name before the dot. Groups absent here use that name.
+     *
+     * Whole strings rather than a composed prefix and suffix, so translators
+     * receive a complete label.
+     */
+    const BASEMAP_PROVIDER_GROUP_LABELS = [
+        'CartoDB' => 'CARTO (requires an API key)', // @translate
+        'MapBox' => 'Mapbox (requires an access token)', // @translate
+        'Stadia' => 'Stamen (requires a Stadia account)', // @translate
     ];
 
     public function init(ModuleManager $moduleManager)
@@ -596,6 +626,31 @@ class Module extends AbstractModule
         return $mappingFeatures;
     }
 
+    /**
+     * Get the basemap providers arranged into optgroups for a select element.
+     *
+     * Derived from BASEMAP_PROVIDERS so there is one place to add a provider.
+     * Note that stored values must still be validated against
+     * BASEMAP_PROVIDERS: the keys here are group names, not provider names.
+     *
+     * @return array
+     */
+    public static function getBasemapProviderGroups()
+    {
+        $groups = [];
+        foreach (self::BASEMAP_PROVIDERS as $name => $label) {
+            $group = strtok($name, '.');
+            if (!isset($groups[$group])) {
+                $groups[$group] = [
+                    'label' => self::BASEMAP_PROVIDER_GROUP_LABELS[$group] ?? $group,
+                    'options' => [],
+                ];
+            }
+            $groups[$group]['options'][$name] = $label;
+        }
+        return $groups;
+    }
+
     public function addGlobalSettings(Event $event)
     {
         $services = $this->getServiceLocator();
@@ -612,13 +667,54 @@ class Module extends AbstractModule
             'options' => [
                 'element_group' => 'mapping',
                 'label' => 'Basemap provider', // @translate
-                'info' => 'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed.', // @translate
+                'info' => sprintf(
+                    'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed. Stamen needs this installation\'s domain registered with a Stadia account at %s; one registration covers every site.', // @translate
+                    '<a href="https://client.stadiamaps.com/signup/" target="_blank">https://client.stadiamaps.com/signup/</a>'
+                ),
+                // The info text carries a link, and holds no user-supplied content.
+                'escape_info' => false,
                 'empty_option' => '[Default provider]', // @translate
-                'value_options' => self::BASEMAP_PROVIDERS,
+                'value_options' => self::getBasemapProviderGroups(),
             ],
             'attributes' => [
                 'id' => 'mapping-basemap-provider',
                 'value' => $settings->get('mapping_basemap_provider'),
+            ],
+        ]);
+        $form->add([
+            'type' => 'text',
+            'name' => 'mapping_carto_api_key',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Carto API key', // @translate
+                'info' => sprintf(
+                    'Without a key, Carto watermarks every tile, so Carto basemaps show OpenStreetMap instead. Applies to every site in this installation, and is visible to anyone who views a map. Get a key at %s.', // @translate
+                    '<a href="https://carto.com/basemaps/apikey/" target="_blank">https://carto.com/basemaps/apikey/</a>'
+                ),
+                // The info text carries a link, and holds no user-supplied content.
+                'escape_info' => false,
+            ],
+            'attributes' => [
+                'id' => 'mapping-carto-api-key',
+                'value' => $settings->get('mapping_carto_api_key'),
+            ],
+        ]);
+        $form->add([
+            'type' => 'text',
+            'name' => 'mapping_mapbox_access_token',
+            'options' => [
+                'element_group' => 'mapping',
+                'label' => 'Mapbox access token', // @translate
+                'info' => sprintf(
+                    'Without a token, Mapbox serves no tiles, so the Mapbox basemap shows OpenStreetMap instead. Usage is billed to the token\'s account. Applies to every site in this installation, and is visible to anyone who views a map. Get a token at %s.', // @translate
+                    '<a href="https://www.mapbox.com/account/access-tokens/" target="_blank">https://www.mapbox.com/account/access-tokens/</a>'
+                ),
+                // The info text carries a link, and holds no user-supplied content.
+                'escape_info' => false,
+            ],
+            'attributes' => [
+                'id' => 'mapping-mapbox-access-token',
+                'value' => $settings->get('mapping_mapbox_access_token'),
             ],
         ]);
         $form->add([
@@ -673,6 +769,18 @@ class Module extends AbstractModule
     {
         $inputFilter = $event->getParam('inputFilter');
         $inputFilter->add(['name' => 'mapping_basemap_provider', 'allow_empty' => true]);
+        $inputFilter->add([
+            'name' => 'mapping_carto_api_key',
+            'required' => false,
+            'allow_empty' => true,
+            'filters' => [['name' => 'StringTrim']],
+        ]);
+        $inputFilter->add([
+            'name' => 'mapping_mapbox_access_token',
+            'required' => false,
+            'allow_empty' => true,
+            'filters' => [['name' => 'StringTrim']],
+        ]);
         $inputFilter->add(['name' => 'mapping_min_zoom', 'allow_empty' => true]);
         $inputFilter->add(['name' => 'mapping_max_zoom', 'allow_empty' => true]);
         $inputFilter->add(['name' => 'mapping_default_bounds', 'allow_empty' => true]);
@@ -699,11 +807,11 @@ class Module extends AbstractModule
                 'element_group' => 'mapping',
                 'label' => 'Basemap provider', // @translate
                 'info' => sprintf(
-                    'Select the basemap provider. Leave empty to use the global setting (%s). These providers are offered AS-IS. There is no guarantee of service or speed.', // @translate
+                    'Select the basemap provider. Leave empty to use the global setting (%s). These providers are offered AS-IS. There is no guarantee of service or speed. Basemaps needing a key or token use credentials set in global settings, and show OpenStreetMap until those are set.', // @translate
                     $globalBasemap ?: 'OpenStreetMap.Mapnik'
                 ),
                 'empty_option' => '[Global setting]', // @translate
-                'value_options' => self::BASEMAP_PROVIDERS,
+                'value_options' => self::getBasemapProviderGroups(),
             ],
             'attributes' => [
                 'id' => 'mapping-basemap-provider',
@@ -824,11 +932,12 @@ class Module extends AbstractModule
             'options' => [
                 'element_group' => 'mapping',
                 'label' => 'Basemap provider', // @translate
-                'info' => 'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed.', // @translate
+                'info' => 'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed. Basemaps needing a key or token use credentials set in global settings, and show OpenStreetMap until those are set.', // @translate
                 'empty_option' => '[Default provider]', // @translate
-                'value_options' => self::BASEMAP_PROVIDERS,
+                'value_options' => self::getBasemapProviderGroups(),
             ],
             'attributes' => [
+                'id' => 'mapping-basemap-provider',
                 'value' => $siteSettings->get('mapping_basemap_provider'),
             ],
         ]);
