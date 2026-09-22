@@ -33,6 +33,7 @@ if ($this->status()->isSiteRequest()) {
 } else {
     $featuresUrl = $this->url('admin/mapping', ['controller' => 'index', 'action' => 'get-features']);
     $featurePopupContentUrl = $this->url('admin/mapping', ['controller' => 'index', 'action' => 'get-feature-popup-content']);
+    $basemapProvider = $this->fallbackSetting('mapping_basemap_provider', ['user', 'global']);
 }
 
 $this->headLink()->appendStylesheet($this->assetUrl('vendor/leaflet/dist/leaflet.css', 'Mapping'));
