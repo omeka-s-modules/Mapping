@@ -7,7 +7,7 @@ $this->headLink()->appendStylesheet($this->assetUrl('css/mapping-admin.css', 'Ma
 
 $this->headScript()->appendFile($this->assetUrl('vendor/leaflet/dist/leaflet.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('vendor/leaflet-draw/dist/leaflet.draw.js', 'Mapping'));
-$this->headScript()->appendFile($this->assetUrl('vendor/leaflet-providers/leaflet-providers.js', 'Mapping'));
+$this->mappingBasemapAssets();
 $this->headScript()->appendFile($this->assetUrl('vendor/leaflet-geosearch/dist/bundle.min.js', 'Mapping'));
 $this->headScript()->appendFile($this->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
 

@@ -57,7 +57,7 @@ class MapBrowse implements LinkInterface
     public static function getBasemapProvider(array $data)
     {
         $basemapProvider = null;
-        if (isset($data['basemap_provider']) && in_array($data['basemap_provider'], Module::BASEMAP_PROVIDERS)) {
+        if (isset($data['basemap_provider']) && array_key_exists($data['basemap_provider'], Module::BASEMAP_PROVIDERS)) {
             $basemapProvider = $data['basemap_provider'];
         }
         return $basemapProvider;

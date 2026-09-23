@@ -9,12 +9,7 @@ $('.mapping-default-bounds').each(function() {
     const basemapSelect = $(container.data('basemap-select') || []);
 
     const resolveProvider = function() {
-        const provider = basemapSelect.val() || globalBasemapProvider || 'OpenStreetMap.Mapnik';
-        try {
-            return L.tileLayer.provider(provider);
-        } catch (e) {
-            return L.tileLayer.provider('OpenStreetMap.Mapnik');
-        }
+        return MappingBasemap.tileLayer(basemapSelect.val(), globalBasemapProvider);
     };
 
     const initMap = function() {
