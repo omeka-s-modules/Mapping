@@ -668,7 +668,7 @@ class Module extends AbstractModule
                 'element_group' => 'mapping',
                 'label' => 'Basemap provider', // @translate
                 'info' => sprintf(
-                    'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed. Stamen needs this installation\'s domain registered with a Stadia account at %s; one registration covers every site.', // @translate
+                    'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed. Stamen needs this installation\'s domain registered with a Stadia account at %s; one registration covers every site. To help visitors with low vision, consider Esri.NatGeoWorldMap or OpenTopoMap, which have higher contrast between map features.', // @translate
                     '<a href="https://client.stadiamaps.com/signup/" target="_blank">https://client.stadiamaps.com/signup/</a>'
                 ),
                 // The info text carries a link, and holds no user-supplied content.
@@ -807,7 +807,7 @@ class Module extends AbstractModule
                 'element_group' => 'mapping',
                 'label' => 'Basemap provider', // @translate
                 'info' => sprintf(
-                    'Select the basemap provider. Leave empty to use the global setting (%s). These providers are offered AS-IS. There is no guarantee of service or speed. Basemaps needing a key or token use credentials set in global settings, and show OpenStreetMap until those are set.', // @translate
+                    'Select the basemap provider. Leave empty to use the global setting (%s). These providers are offered AS-IS. There is no guarantee of service or speed. Basemaps needing a key or token use credentials set in global settings, and show OpenStreetMap until those are set. To help visitors with low vision, consider Esri.NatGeoWorldMap or OpenTopoMap, which have higher contrast between map features.', // @translate
                     $globalBasemap ?: 'OpenStreetMap.Mapnik'
                 ),
                 'empty_option' => '[Global setting]', // @translate
@@ -932,7 +932,7 @@ class Module extends AbstractModule
             'options' => [
                 'element_group' => 'mapping',
                 'label' => 'Basemap provider', // @translate
-                'info' => 'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed. Basemaps needing a key or token use credentials set in global settings, and show OpenStreetMap until those are set.', // @translate
+                'info' => 'Select the basemap provider. The default is OpenStreetMap.Mapnik. These providers are offered AS-IS. There is no guarantee of service or speed. Basemaps needing a key or token use credentials set in global settings, and show OpenStreetMap until those are set. To help visitors with low vision, consider Esri.NatGeoWorldMap or OpenTopoMap, which have higher contrast between map features.', // @translate
                 'empty_option' => '[Default provider]', // @translate
                 'value_options' => self::getBasemapProviderGroups(),
             ],
