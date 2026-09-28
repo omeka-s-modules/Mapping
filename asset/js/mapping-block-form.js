@@ -8,6 +8,7 @@ $(document).ready( function() {
 var setMap = function(block) {
     var mapDiv = block.find('.mapping-map');
     var basemapProviderSelect = block.find('select.basemap-provider');
+    var siteBasemapProvider = mapDiv.data('site-basemap-provider');
     var currentZoomLevelSpan = block.find('span.current-zoom');
 
     var map = L.map(mapDiv[0], {
@@ -23,7 +24,7 @@ var setMap = function(block) {
         defaultBounds = [southWest, northEast];
     }
 
-    var layer = MappingBasemap.tileLayer(basemapProviderSelect.val());
+    var layer = MappingBasemap.tileLayer(basemapProviderSelect.val(), siteBasemapProvider);
     map.addLayer(layer);
 
     map.addControl(new L.Control.DefaultView(
@@ -51,7 +52,7 @@ var setMap = function(block) {
 
     basemapProviderSelect.on('change', function(e) {
         map.removeLayer(layer);
-        layer = MappingBasemap.tileLayer(basemapProviderSelect.val());
+        layer = MappingBasemap.tileLayer(basemapProviderSelect.val(), siteBasemapProvider);
         map.addLayer(layer);
     });
 
