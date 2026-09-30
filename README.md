@@ -8,7 +8,7 @@ For sites, it adds page blocks that can display maps and timelines for browsing 
 
 Maps can display a variety of visual base maps, and can show overlays using IIIF, WMTS, WMS, and GeoJSON.
 
-See the [Omeka S user manual](https://omeka.org/s/docs/user-manual/modules/copyresources/) for how to use this module.
+See the [Omeka S user manual](https://omeka.org/s/docs/user-manual/modules/mapping/) for how to use this module.
 
 See the [Omeka S developer documentation](https://omeka.org/s/docs/developer/module_docs/Mapping/) for advanced information.
 
