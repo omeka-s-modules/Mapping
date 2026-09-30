@@ -8,14 +8,13 @@ For sites, it adds page blocks that can display maps and timelines for browsing 
 
 Maps can display a variety of visual base maps, and can show overlays using IIIF, WMTS, WMS, and GeoJSON.
 
+See the [Omeka S user manual](https://omeka.org/s/docs/user-manual/modules/copyresources/) for how to use this module.
+
+See the [Omeka S developer documentation](https://omeka.org/s/docs/developer/module_docs/Mapping/) for advanced information.
+
 ## Requirements
  
 Most of the module works on any database Omeka S supports. The "Map by Groups" page block additionally requires MySQL 8.0.24+ or MariaDB 11.7+, for the `ST_COLLECT` spatial function. On earlier versions the block reports the requirement when you configure it, and displays nothing on the page.
-
-## Resources
-
-- [Omeka S user manual](http://omeka.org/s/docs/user-manual/modules/mapping/)
-- [Omeka S developer documentation](https://omeka.org/s/docs/developer/module_docs/Mapping/)
 
 ## Copyright
 
