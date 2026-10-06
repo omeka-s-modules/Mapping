@@ -24,7 +24,7 @@ class MapQuery extends AbstractMap
     }
 
     public function form(PhpRenderer $view, SiteRepresentation $site,
-        SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
+        ?SitePageRepresentation $page = null, ?SitePageBlockRepresentation $block = null
     ) {
         $form = $this->formElementManager->get(BlockLayoutMapQueryForm::class);
         $data = $form->prepareBlockData($block ? $block->data() : []);

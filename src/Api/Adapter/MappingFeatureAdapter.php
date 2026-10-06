@@ -153,7 +153,7 @@ class MappingFeatureAdapter extends AbstractEntityAdapter
      * @param ItemAdapter|null $itemAdapter The item adapter, if searching items
      * @return bool Whether an address was found
      */
-    public function buildGeographicLocationQuery($qb, $address, $radius, $radiusUnit, ItemAdapter $itemAdapter = null)
+    public function buildGeographicLocationQuery($qb, $address, $radius, $radiusUnit, ?ItemAdapter $itemAdapter = null)
     {
         // Get the address' latitude and longitude from OpenStreetMap.
         $client = $this->getServiceLocator()->get('Omeka\HttpClient')

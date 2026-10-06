@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-14 12:07-0400\n"
+"POT-Creation-Date: 2026-10-06 11:11-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Yannis Kaskamanidis <kiolalis@gmail.com>, 2023\n"
 "Language-Team: Greek (Greece) (https://app.transifex.com/omeka/teams/14184/el_GR/)\n"
@@ -21,31 +21,31 @@ msgstr ""
 "Language: el_GR\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:496 src/StaticSiteExport/NavigationLink/Mapping.php:19
+#: Module.php:541 src/StaticSiteExport/NavigationLink/Mapping.php:19
 msgid "Map browse"
 msgstr ""
 
-#: Module.php:676 view/common/csv-import/mapping.phtml:3
+#: Module.php:976 view/common/csv-import/mapping.phtml:3
 #: view/common/csv-import/mapping.phtml:6
-#: view/common/mapping-item-form.phtml:28
+#: view/common/mapping-item-form.phtml:29
 msgid "Mapping"
 msgstr "Χαρτογράφηση"
 
-#: Module.php:727
+#: Module.php:1027
 msgid "Map feature presence"
 msgstr ""
 
-#: Module.php:728
+#: Module.php:1028
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:5
 msgid "Has map features"
 msgstr ""
 
-#: Module.php:728
+#: Module.php:1028
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:6
 msgid "Has no map features"
 msgstr ""
 
-#: Module.php:735
+#: Module.php:1035
 msgid "Geographic location"
 msgstr "Γεωγραφική θέση"
 
@@ -53,11 +53,15 @@ msgstr "Γεωγραφική θέση"
 msgid "Enter a marker label"
 msgstr "Εισαγωγή μιας ετικέτας δείκτη"
 
-#: src/Site/BlockLayout/MapGroups.php:45
+#: src/Site/BlockLayout/MapGroups.php:78
 #, php-format
 msgid ""
 "This block requires MySQL 8.0.24+ or MariaDB 11.7+. Your database version is"
 " %s."
+msgstr ""
+
+#: src/View/Helper/FormDefaultBounds.php:32
+msgid "Default bounds"
 msgstr ""
 
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:3
@@ -125,6 +129,10 @@ msgstr ""
 "Καθορίστε την προεπιλεγμένη προβολή χρησιμοποιώντας τα στοιχεία ελέγχου του "
 "χάρτη. Το τρέχον επίπεδο εστίασης είναι %s."
 
+#: view/common/block-layout/mapping-block-form/default-view.phtml:8
+msgid "Set default map view"
+msgstr ""
+
 #: view/common/block-layout/mapping-block-form/groups.phtml:1
 msgid "Groups"
 msgstr ""
@@ -139,17 +147,13 @@ msgid ""
 "open by default."
 msgstr ""
 
-#: view/common/block-layout/mapping-block-form/overlays.phtml:32
+#: view/common/block-layout/mapping-block-form/overlays.phtml:33
 msgid "Save overlay"
 msgstr ""
 
 #: view/common/block-layout/mapping-block-form/timeline.phtml:1
 msgid "Timeline"
 msgstr "Χρονογραμμή"
-
-#: view/common/block-layout/mapping-block-groups.phtml:35
-msgid "Return to groups"
-msgstr ""
 
 #: view/common/csv-import/mapping.phtml:7
 msgid "Select below"
@@ -171,23 +175,27 @@ msgstr "Γεωγραφικό πλάτος/Γεωγραφικό μήκος"
 msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
 msgstr "Προεπιλεγμένα όρια (sw_lng,sw_lat,ne_lng,ne_lat)"
 
-#: view/common/mapping-item-form.phtml:34
+#: view/common/mapping-item-form.phtml:30
+msgid "Edit item map features"
+msgstr ""
+
+#: view/common/mapping-item-form.phtml:39
 msgid "Close Me"
 msgstr "Κλείσε με"
 
-#: view/common/mapping-item-form.phtml:35
+#: view/common/mapping-item-form.phtml:40
 msgid "Feature image"
 msgstr ""
 
-#: view/common/mapping-item-form.phtml:36
+#: view/common/mapping-item-form.phtml:41
 msgid " No Image"
 msgstr "Χωρίς εικόνα"
 
-#: view/common/mapping-item-form.phtml:57
+#: view/common/mapping-item-form.phtml:62
 msgid "Feature label"
 msgstr ""
 
-#: view/common/mapping-item-form.phtml:60
+#: view/common/mapping-item-form.phtml:65
 msgid "Select feature image"
 msgstr ""
 
@@ -244,34 +252,35 @@ msgstr "Χάρτης σύμφωνα με το ερώτημα"
 msgid "Map by attachments"
 msgstr "Χάρτης σύμφωνα με τα συνημμένα"
 
-#: src/Site/BlockLayout/MapGroups.php:29
+#: src/Site/BlockLayout/MapGroups.php:62
 msgid "Map by groups"
 msgstr ""
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:16
+#: src/Form/Fieldset/DefaultViewFieldset.php:16 Module.php:935
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
-"providers are offered AS-IS. There is no guarantee of service or speed."
+"providers are offered AS-IS. There is no guarantee of service or speed. "
+"Basemaps needing a key or token use credentials set in global settings, and "
+"show OpenStreetMap until those are set. To help visitors with low vision, "
+"consider Esri.NatGeoWorldMap or OpenTopoMap, which have higher contrast "
+"between map features."
 msgstr ""
-"Επιλέξτε τον πάροχο του χάρτη υπόβαθρου. Η προεπιλογή είναι "
-"OpenStreetMap.Mapnik. Αυτοί οι πάροχοι προσφέρονται ως έχουν. Δεν υπάρχει "
-"εγγύηση για υποστήριξη ή ταχύτητα."
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:28
+#: src/Form/Fieldset/DefaultViewFieldset.php:28 Module.php:725 Module.php:826
 msgid "Minimum zoom level"
 msgstr "Ελάχιστο επίπεδο εστίασης"
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:29
+#: src/Form/Fieldset/DefaultViewFieldset.php:29 Module.php:726
 msgid ""
 "Set the minimum zoom level down to which the map will be displayed. The "
 "default is 0."
 msgstr ""
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:42
+#: src/Form/Fieldset/DefaultViewFieldset.php:42 Module.php:741 Module.php:845
 msgid "Maximum zoom level"
 msgstr "Μέγιστο επίπεδο εστίασης"
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:43
+#: src/Form/Fieldset/DefaultViewFieldset.php:43 Module.php:742
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
@@ -375,22 +384,34 @@ msgstr ""
 "συμβαίνουν ταυτόχρονα με το τρέχον συμβάν (μόνο στην προεπιλεγμένη προβολή)."
 
 #: src/Form/Fieldset/TimelineFieldset.php:64
+msgid "Timeline theme"
+msgstr ""
+
+#: src/Form/Fieldset/TimelineFieldset.php:65
+msgid "Select the TimelineJS theme."
+msgstr ""
+
+#: src/Form/Fieldset/TimelineFieldset.php:68
+msgid "Contrast"
+msgstr ""
+
+#: src/Form/Fieldset/TimelineFieldset.php:77
 msgid "Timeline navigation position"
 msgstr "Θέση πλοήγησης στη χρονογραμμή"
 
-#: src/Form/Fieldset/TimelineFieldset.php:65
+#: src/Form/Fieldset/TimelineFieldset.php:78
 msgid "Select the position of the timeline navigation."
 msgstr "Επιλέξτε τη θέση της πλοήγησης στη χρονογραμμή."
 
-#: src/Form/Fieldset/TimelineFieldset.php:67
+#: src/Form/Fieldset/TimelineFieldset.php:80
 msgid "Full width, below story slider and map"
 msgstr "Πλήρες πλάτος, κάτω από το ρυθμιστικό αφήγησης και τον χάρτη"
 
-#: src/Form/Fieldset/TimelineFieldset.php:68
+#: src/Form/Fieldset/TimelineFieldset.php:81
 msgid "Full width, above story slider and map"
 msgstr "Πλήρες πλάτος, πάνω από το ρυθμιστικό αφήγησης και τον χάρτη"
 
-#: src/Form/Fieldset/TimelineFieldset.php:78
+#: src/Form/Fieldset/TimelineFieldset.php:91
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
@@ -429,62 +450,83 @@ msgid "Web Map Service (WMS)"
 msgstr ""
 
 #: src/Form/Fieldset/OverlaysFieldset.php:32
-msgid "IIIF Georeference Annotation"
+msgid "Web Map Tile Service (WMTS)"
 msgstr ""
 
 #: src/Form/Fieldset/OverlaysFieldset.php:33
-#: src/Form/Fieldset/OverlaysFieldset.php:124
+msgid "IIIF Georeference Annotation"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:34
+#: src/Form/Fieldset/OverlaysFieldset.php:125
 msgid "GeoJSON"
 msgstr ""
 
-#: src/Form/Fieldset/OverlaysFieldset.php:64
+#: src/Form/Fieldset/OverlaysFieldset.php:65
+#: src/Form/Fieldset/OverlaysFieldset.php:178
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:24
 msgid "Base URL"
 msgstr "Βασική διεύθυνση URL"
 
-#: src/Form/Fieldset/OverlaysFieldset.php:74
+#: src/Form/Fieldset/OverlaysFieldset.php:75
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:34
 msgid "Layers"
 msgstr "Στρώσεις"
 
-#: src/Form/Fieldset/OverlaysFieldset.php:75
+#: src/Form/Fieldset/OverlaysFieldset.php:76
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:35
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "Οι WMS στρώσεις, εάν υπάρχει κάποια (χωρισμένες με κόμμα)."
 
-#: src/Form/Fieldset/OverlaysFieldset.php:85
+#: src/Form/Fieldset/OverlaysFieldset.php:86
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:45
 msgid "Styles"
 msgstr ""
 
-#: src/Form/Fieldset/OverlaysFieldset.php:86
+#: src/Form/Fieldset/OverlaysFieldset.php:87
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:46
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "Τα WMS στυλ, εάν υπάρχει κάποιο (χωρισμένα με κόμμα)."
 
-#: src/Form/Fieldset/OverlaysFieldset.php:135
+#: src/Form/Fieldset/OverlaysFieldset.php:136
 msgid "Label property key"
 msgstr ""
 
-#: src/Form/Fieldset/OverlaysFieldset.php:136
+#: src/Form/Fieldset/OverlaysFieldset.php:137
 msgid "Enter the GeoJSON property key to use for the popup label, if desired."
 msgstr ""
 
-#: src/Form/Fieldset/OverlaysFieldset.php:146
+#: src/Form/Fieldset/OverlaysFieldset.php:147
 msgid "Comment property key"
 msgstr ""
 
-#: src/Form/Fieldset/OverlaysFieldset.php:147
+#: src/Form/Fieldset/OverlaysFieldset.php:148
 msgid ""
 "Enter the GeoJSON property key to use for the popup comment, if desired."
 msgstr ""
 
-#: src/Form/Fieldset/OverlaysFieldset.php:157
+#: src/Form/Fieldset/OverlaysFieldset.php:158
 msgid "Show GeoJSON property list?"
 msgstr ""
 
-#: src/Form/Fieldset/OverlaysFieldset.php:158
+#: src/Form/Fieldset/OverlaysFieldset.php:159
 msgid "Do you want to show all the available GeoJSON properties in the popup?"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:188
+msgid "Layer"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:198
+msgid "Tile matrix set"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:208
+msgid "Style"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:209
+msgid "The WMTS style. Defaults to \"default\"."
 msgstr ""
 
 #: src/Form/Fieldset/GroupsFieldset.php:10
@@ -611,35 +653,134 @@ msgstr ""
 msgid "Colon [:]"
 msgstr ""
 
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:634
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:676
+#: Module.php:936
 msgid "[Default provider]"
 msgstr "[Προεπιλεγμένος πάροχος]"
 
-#: Module.php:362
+#: config/module.config.php:143
+msgid "Select a group"
+msgstr ""
+
+#: config/module.config.php:144
+msgid "Return to groups"
+msgstr ""
+
+#: Module.php:85
+msgid "CARTO (requires an API key)"
+msgstr ""
+
+#: Module.php:86
+msgid "Mapbox (requires an access token)"
+msgstr ""
+
+#: Module.php:87
+msgid "Stamen (requires a Stadia account)"
+msgstr ""
+
+#: Module.php:407
 msgid "Delete features"
 msgstr ""
 
-#: Module.php:373
+#: Module.php:418
 msgid "Copy coordinates to markers"
 msgstr ""
 
-#: Module.php:381
+#: Module.php:426
 msgid "Update features"
 msgstr ""
 
-#: Module.php:599
+#: Module.php:671
+#, php-format
+msgid ""
+"Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
+"providers are offered AS-IS. There is no guarantee of service or speed. "
+"Stamen needs this installation's domain registered with a Stadia account at "
+"%s; one registration covers every site. To help visitors with low vision, "
+"consider Esri.NatGeoWorldMap or OpenTopoMap, which have higher contrast "
+"between map features."
+msgstr ""
+
+#: Module.php:689
+msgid "Carto API key"
+msgstr ""
+
+#: Module.php:691
+#, php-format
+msgid ""
+"Without a key, Carto watermarks every tile, so Carto basemaps show "
+"OpenStreetMap instead. Applies to every site in this installation, and is "
+"visible to anyone who views a map. Get a key at %s."
+msgstr ""
+
+#: Module.php:707
+msgid "Mapbox access token"
+msgstr ""
+
+#: Module.php:709
+#, php-format
+msgid ""
+"Without a token, Mapbox serves no tiles, so the Mapbox basemap shows "
+"OpenStreetMap instead. Usage is billed to the token's account. Applies to "
+"every site in this installation, and is visible to anyone who views a map. "
+"Get a token at %s."
+msgstr ""
+
+#: Module.php:758
+msgid ""
+"Set the default bounds of the map by navigating to the desired view and "
+"clicking \"Set the current view as the default view\"."
+msgstr ""
+
+#: Module.php:810
+#, php-format
+msgid ""
+"Select the basemap provider. Leave empty to use the global setting (%s). "
+"These providers are offered AS-IS. There is no guarantee of service or "
+"speed. Basemaps needing a key or token use credentials set in global "
+"settings, and show OpenStreetMap until those are set. To help visitors with "
+"low vision, consider Esri.NatGeoWorldMap or OpenTopoMap, which have higher "
+"contrast between map features."
+msgstr ""
+
+#: Module.php:813
+msgid "[Global setting]"
+msgstr ""
+
+#: Module.php:828
+#, php-format
+msgid ""
+"Set the minimum zoom level of the map. Leave empty to use the global setting"
+" (%s)."
+msgstr ""
+
+#: Module.php:847
+#, php-format
+msgid ""
+"Set the maximum zoom level of the map. Leave empty to use the global setting"
+" (%s)."
+msgstr ""
+
+#: Module.php:865
+msgid ""
+"Set the default bounds of the map by navigating to the desired view and "
+"clicking \"Set the current view as the default view\". Leave unconfigured to"
+" use the global setting."
+msgstr ""
+
+#: Module.php:900
 msgid "Add feature presence to advanced search"
 msgstr ""
 
-#: Module.php:610
+#: Module.php:911
 msgid "Add geographic location to advanced search"
 msgstr ""
 
-#: Module.php:621
+#: Module.php:922
 msgid "Disable clustering of map features"
 msgstr ""
 
-#: Module.php:622
+#: Module.php:923
 msgid ""
 "Map features are markers, polygons, polylines, and rectangles. Note that "
 "large features may not cluster."

@@ -45,7 +45,7 @@ class Map extends AbstractMap
     }
 
     public function form(PhpRenderer $view, SiteRepresentation $site,
-        SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
+        ?SitePageRepresentation $page = null, ?SitePageBlockRepresentation $block = null
     ) {
         $form = $this->formElementManager->get(BlockLayoutMapForm::class);
         $data = $form->prepareBlockData($block ? $block->data() : []);

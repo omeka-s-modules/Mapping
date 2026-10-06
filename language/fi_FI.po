@@ -4,16 +4,16 @@
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
 # 
 # Translators:
-# Matti Lassila <matti.lassila@gmail.com>, 2018
+# Matti Lassila <matti.lassila@gmail.com>, 2026
 # 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2025-08-14 12:07-0400\n"
+"POT-Creation-Date: 2026-10-06 11:11-0400\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
-"Last-Translator: Matti Lassila <matti.lassila@gmail.com>, 2018\n"
+"Last-Translator: Matti Lassila <matti.lassila@gmail.com>, 2026\n"
 "Language-Team: Finnish (Finland) (https://app.transifex.com/omeka/teams/14184/fi_FI/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,64 +21,70 @@ msgstr ""
 "Language: fi_FI\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: Module.php:496 src/StaticSiteExport/NavigationLink/Mapping.php:19
+#: Module.php:541 src/StaticSiteExport/NavigationLink/Mapping.php:19
 msgid "Map browse"
-msgstr ""
+msgstr "Selaa karttaa"
 
-#: Module.php:676 view/common/csv-import/mapping.phtml:3
+#: Module.php:976 view/common/csv-import/mapping.phtml:3
 #: view/common/csv-import/mapping.phtml:6
-#: view/common/mapping-item-form.phtml:28
+#: view/common/mapping-item-form.phtml:29
 msgid "Mapping"
 msgstr "Kartta"
 
-#: Module.php:727
+#: Module.php:1027
 msgid "Map feature presence"
-msgstr ""
+msgstr "Karttakohteiden esiintyminen"
 
-#: Module.php:728
+#: Module.php:1028
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:5
 msgid "Has map features"
-msgstr ""
+msgstr "Sisältää karttakohteita"
 
-#: Module.php:728
+#: Module.php:1028
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:6
 msgid "Has no map features"
-msgstr ""
+msgstr "Ei sisällä karttakohteita"
 
-#: Module.php:735
+#: Module.php:1035
 msgid "Geographic location"
-msgstr ""
+msgstr "Maantieteellinen sijainti"
 
 #: src/Collecting/FormPromptMap.php:30
 msgid "Enter a marker label"
-msgstr ""
+msgstr "Anna karttamerkinnän selite"
 
-#: src/Site/BlockLayout/MapGroups.php:45
+#: src/Site/BlockLayout/MapGroups.php:78
 #, php-format
 msgid ""
 "This block requires MySQL 8.0.24+ or MariaDB 11.7+. Your database version is"
 " %s."
 msgstr ""
+"Tämä lohko edellyttää MySQL 8.0.24+ tai MariaDB 11.7+. Tietokantasi versio "
+"on %s."
+
+#: src/View/Helper/FormDefaultBounds.php:32
+msgid "Default bounds"
+msgstr ""
 
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:3
 msgid "Search by map feature presence"
-msgstr ""
+msgstr "Hae karttakohteiden esiintymisen perusteella"
 
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:8
 msgid "Select map feature presence…"
-msgstr ""
+msgstr "Valitse karttakohteiden esiintyminen…"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:5
 msgid "Address"
-msgstr ""
+msgstr "Osoite"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:9
 msgid "Radius"
-msgstr ""
+msgstr "Säde"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:14
 msgid "Unit"
-msgstr ""
+msgstr "Yksikkö"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:16
 msgid "Kilometers"
@@ -90,27 +96,27 @@ msgstr "Maili"
 
 #: view/common/advanced-search/mapping-item-geographic-location.phtml:27
 msgid "Search by geographic location"
-msgstr ""
+msgstr "Hae maantieteellisen sijainnin perusteella"
 
 #: view/common/batch-update/mapping-copy-coordinates.phtml:6
 msgid "Order"
-msgstr ""
+msgstr "Järjestys"
 
 #: view/common/batch-update/mapping-copy-coordinates.phtml:10
 msgid "Delimiter"
-msgstr ""
+msgstr "Erotin"
 
 #: view/common/batch-update/mapping-copy-coordinates.phtml:21
 msgid "Assign media to marker?"
-msgstr ""
+msgstr "Liitetäänkö media karttamerkintään?"
 
 #: view/common/batch-update/mapping-update-features.phtml:2
 msgid "Media image"
-msgstr ""
+msgstr "Median kuva"
 
 #: view/common/batch-update/mapping-update-features.phtml:7
 msgid "Label source"
-msgstr ""
+msgstr "Selitteen lähde"
 
 #: view/common/block-layout/mapping-block-form/default-view.phtml:1
 msgid "Default View"
@@ -122,36 +128,39 @@ msgid ""
 "Set the default view using the in-map controls. The current zoom level is "
 "%s."
 msgstr ""
+"Aseta oletusnäkymä kartan sisäisillä säätimillä. Nykyinen zoomaustaso on %s."
+
+#: view/common/block-layout/mapping-block-form/default-view.phtml:8
+msgid "Set default map view"
+msgstr ""
 
 #: view/common/block-layout/mapping-block-form/groups.phtml:1
 msgid "Groups"
-msgstr ""
+msgstr "Ryhmät"
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:16
 msgid "Overlays"
-msgstr ""
+msgstr "Peittotasot"
 
 #: view/common/block-layout/mapping-block-form/overlays.phtml:20
 msgid ""
 "Add, edit, and delete overlays below. You may check which overlay you want "
 "open by default."
 msgstr ""
+"Lisää, muokkaa ja poista peittotasoja alla. Voit valita, minkä peittotason "
+"haluat avata oletusarvoisesti."
 
-#: view/common/block-layout/mapping-block-form/overlays.phtml:32
+#: view/common/block-layout/mapping-block-form/overlays.phtml:33
 msgid "Save overlay"
-msgstr ""
+msgstr "Tallenna peittotaso"
 
 #: view/common/block-layout/mapping-block-form/timeline.phtml:1
 msgid "Timeline"
-msgstr ""
-
-#: view/common/block-layout/mapping-block-groups.phtml:35
-msgid "Return to groups"
-msgstr ""
+msgstr "Aikajana"
 
 #: view/common/csv-import/mapping.phtml:7
 msgid "Select below"
-msgstr ""
+msgstr "Valitse alta"
 
 #: view/common/csv-import/mapping.phtml:8
 msgid "Latitude"
@@ -163,58 +172,62 @@ msgstr "Pituuskoordinaatti (lon)"
 
 #: view/common/csv-import/mapping.phtml:10
 msgid "Latitude/Longitude"
-msgstr "lat/lon"
+msgstr "Leveys- ja pituusaste"
 
 #: view/common/csv-import/mapping.phtml:11
 msgid "Default Bounds (sw_lng,sw_lat,ne_lng,ne_lat)"
+msgstr "Oletusrajat (sw_lng,sw_lat,ne_lng,ne_lat)"
+
+#: view/common/mapping-item-form.phtml:30
+msgid "Edit item map features"
 msgstr ""
 
-#: view/common/mapping-item-form.phtml:34
+#: view/common/mapping-item-form.phtml:39
 msgid "Close Me"
 msgstr "Sulje"
 
-#: view/common/mapping-item-form.phtml:35
+#: view/common/mapping-item-form.phtml:40
 msgid "Feature image"
-msgstr ""
+msgstr "Kohteen kuva"
 
-#: view/common/mapping-item-form.phtml:36
+#: view/common/mapping-item-form.phtml:41
 msgid " No Image"
-msgstr "Ei kuvaa"
+msgstr " Ei kuvaa"
 
-#: view/common/mapping-item-form.phtml:57
+#: view/common/mapping-item-form.phtml:62
 msgid "Feature label"
-msgstr ""
+msgstr "Kohteen selite"
 
-#: view/common/mapping-item-form.phtml:60
+#: view/common/mapping-item-form.phtml:65
 msgid "Select feature image"
-msgstr ""
+msgstr "Valitse kohteen kuva"
 
 #: view/common/mapping-popup/property-ex-group.phtml:6
 #: view/common/mapping-popup/property-ex-group.phtml:19
 #, php-format
 msgid "%s has any value"
-msgstr ""
+msgstr "%s sisältää minkä tahansa arvon"
 
 #: view/common/mapping-popup/property-value-eq-group.phtml:6
 #: view/common/mapping-popup/property-value-eq-group.phtml:20
 #, php-format
 msgid "%s is exactly"
-msgstr ""
+msgstr "%s on täsmälleen"
 
 #: view/common/mapping-popup/property-value-in-group.phtml:6
 #: view/common/mapping-popup/property-value-in-group.phtml:20
 #, php-format
 msgid "%s contains"
-msgstr ""
+msgstr "%s sisältää"
 
 #: view/common/mapping-popup/property-value-res-group.phtml:7
 #, php-format
 msgid "%s is"
-msgstr ""
+msgstr "%s on"
 
 #: view/common/navigation-link-form/mapping-map-browse.phtml:16
 msgid "Basemap provider"
-msgstr ""
+msgstr "Pohjakartan tarjoaja"
 
 #: view/mapping/site/index/browse.phtml:34
 msgid "Search Map"
@@ -226,295 +239,347 @@ msgstr "Valitse sijainti kartalta."
 
 #: src/Api/Adapter/MappingAdapter.php:45
 msgid "A mapping zone must have an item."
-msgstr ""
+msgstr "Kartta-alueella on oltava aineisto."
 
 #: src/Api/Adapter/MappingAdapter.php:51
 msgid "Map bounds must contain four numbers separated by commas"
-msgstr ""
+msgstr "Kartan rajojen on sisällettävä neljä lukua pilkuilla erotettuina"
 
 #: src/Site/BlockLayout/MapQuery.php:16
 msgid "Map by query"
-msgstr ""
+msgstr "Kartta kyselyn perusteella"
 
 #: src/Site/BlockLayout/Map.php:16
 msgid "Map by attachments"
-msgstr ""
+msgstr "Kartta liitteiden perusteella"
 
-#: src/Site/BlockLayout/MapGroups.php:29
+#: src/Site/BlockLayout/MapGroups.php:62
 msgid "Map by groups"
-msgstr ""
+msgstr "Kartta ryhmien perusteella"
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:16
+#: src/Form/Fieldset/DefaultViewFieldset.php:16 Module.php:935
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
-"providers are offered AS-IS. There is no guarantee of service or speed."
+"providers are offered AS-IS. There is no guarantee of service or speed. "
+"Basemaps needing a key or token use credentials set in global settings, and "
+"show OpenStreetMap until those are set. To help visitors with low vision, "
+"consider Esri.NatGeoWorldMap or OpenTopoMap, which have higher contrast "
+"between map features."
 msgstr ""
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:28
+#: src/Form/Fieldset/DefaultViewFieldset.php:28 Module.php:725 Module.php:826
 msgid "Minimum zoom level"
-msgstr ""
+msgstr "Vähimmäiszoomaustaso"
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:29
+#: src/Form/Fieldset/DefaultViewFieldset.php:29 Module.php:726
 msgid ""
 "Set the minimum zoom level down to which the map will be displayed. The "
 "default is 0."
-msgstr ""
+msgstr "Aseta vähimmäiszoomaustaso, johon asti kartta näytetään. Oletus on 0."
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:42
+#: src/Form/Fieldset/DefaultViewFieldset.php:42 Module.php:741 Module.php:845
 msgid "Maximum zoom level"
-msgstr ""
+msgstr "Enimmäiszoomaustaso"
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:43
+#: src/Form/Fieldset/DefaultViewFieldset.php:43 Module.php:742
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
-msgstr ""
+msgstr "Aseta enimmäiszoomaustaso, johon asti kartta näytetään. Oletus on 19."
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:56
 msgid "Scroll wheel zoom"
-msgstr ""
+msgstr "Hiiren rullan zoomaus"
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:57
 msgid ""
 "Set whether users can zoom with their mouse wheel when hovering over the "
 "map, either automatically upon page load or after clicking inside the map."
 msgstr ""
+"Määritä, voivatko käyttäjät zoomata hiiren rullalla, kun osoitin on kartan "
+"päällä, joko automaattisesti sivun latautuessa tai karttaa napsautettuaan."
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:60
 msgid "Disabled"
-msgstr ""
+msgstr "Ei käytössä"
 
 #: src/Form/Fieldset/DefaultViewFieldset.php:61
 msgid "Disabled until map click"
-msgstr ""
+msgstr "Ei käytössä ennen kartan napsautusta"
 
 #: src/Form/Fieldset/TimelineFieldset.php:18
 msgid "Title headline"
-msgstr ""
+msgstr "Otsikon pääotsikko"
 
 #: src/Form/Fieldset/TimelineFieldset.php:25
 msgid "Title text"
-msgstr ""
+msgstr "Otsikon teksti"
 
 #: src/Form/Fieldset/TimelineFieldset.php:35
 msgid "Fly to"
-msgstr ""
+msgstr "Lennä kohteeseen"
 
 #: src/Form/Fieldset/TimelineFieldset.php:36
 msgid "Select the map view to fly to when navigating between events."
 msgstr ""
+"Valitse karttanäkymä, johon siirrytään tapahtumien välillä navigoitaessa."
 
 #: src/Form/Fieldset/TimelineFieldset.php:37
 msgid "Default view"
-msgstr ""
+msgstr "Oletusnäkymä"
 
 #: src/Form/Fieldset/TimelineFieldset.php:39
 msgid "Event marker, zoom 0"
-msgstr ""
+msgstr "Tapahtumamerkintä, zoom 0"
 
 #: src/Form/Fieldset/TimelineFieldset.php:40
 msgid "Event marker, zoom 2"
-msgstr ""
+msgstr "Tapahtumamerkintä, zoom 2"
 
 #: src/Form/Fieldset/TimelineFieldset.php:41
 msgid "Event marker, zoom 4"
-msgstr ""
+msgstr "Tapahtumamerkintä, zoom 4"
 
 #: src/Form/Fieldset/TimelineFieldset.php:42
 msgid "Event marker, zoom 6"
-msgstr ""
+msgstr "Tapahtumamerkintä, zoom 6"
 
 #: src/Form/Fieldset/TimelineFieldset.php:43
 msgid "Event marker, zoom 8"
-msgstr ""
+msgstr "Tapahtumamerkintä, zoom 8"
 
 #: src/Form/Fieldset/TimelineFieldset.php:44
 msgid "Event marker, zoom 10"
-msgstr ""
+msgstr "Tapahtumamerkintä, zoom 10"
 
 #: src/Form/Fieldset/TimelineFieldset.php:45
 msgid "Event marker, zoom 12"
-msgstr ""
+msgstr "Tapahtumamerkintä, zoom 12"
 
 #: src/Form/Fieldset/TimelineFieldset.php:46
 msgid "Event marker, zoom 14"
-msgstr ""
+msgstr "Tapahtumamerkintä, zoom 14"
 
 #: src/Form/Fieldset/TimelineFieldset.php:47
 msgid "Event marker, zoom 16"
-msgstr ""
+msgstr "Tapahtumamerkintä, zoom 16"
 
 #: src/Form/Fieldset/TimelineFieldset.php:48
 msgid "Event marker, zoom 18"
-msgstr ""
+msgstr "Tapahtumamerkintä, zoom 18"
 
 #: src/Form/Fieldset/TimelineFieldset.php:56
 msgid "Show contemporaneous events?"
-msgstr ""
+msgstr "Näytä samanaikaiset tapahtumat?"
 
 #: src/Form/Fieldset/TimelineFieldset.php:57
 msgid ""
 "Check this if you want to show all events on the map that exist in the same "
 "time period as the current event (default view only)."
 msgstr ""
+"Valitse tämä, jos haluat näyttää kartalla kaikki tapahtumat, jotka ovat "
+"olemassa samalla ajanjaksolla kuin nykyinen tapahtuma (vain oletusnäkymä)."
 
 #: src/Form/Fieldset/TimelineFieldset.php:64
-msgid "Timeline navigation position"
+msgid "Timeline theme"
 msgstr ""
 
 #: src/Form/Fieldset/TimelineFieldset.php:65
-msgid "Select the position of the timeline navigation."
-msgstr ""
-
-#: src/Form/Fieldset/TimelineFieldset.php:67
-msgid "Full width, below story slider and map"
+msgid "Select the TimelineJS theme."
 msgstr ""
 
 #: src/Form/Fieldset/TimelineFieldset.php:68
-msgid "Full width, above story slider and map"
+msgid "Contrast"
 msgstr ""
 
+#: src/Form/Fieldset/TimelineFieldset.php:77
+msgid "Timeline navigation position"
+msgstr "Aikajanan navigoinnin sijainti"
+
 #: src/Form/Fieldset/TimelineFieldset.php:78
+msgid "Select the position of the timeline navigation."
+msgstr "Valitse aikajanan navigoinnin sijainti."
+
+#: src/Form/Fieldset/TimelineFieldset.php:80
+msgid "Full width, below story slider and map"
+msgstr "Täysi leveys, tarinaliukusäätimen ja kartan alla"
+
+#: src/Form/Fieldset/TimelineFieldset.php:81
+msgid "Full width, above story slider and map"
+msgstr "Täysi leveys, tarinaliukusäätimen ja kartan yläpuolella"
+
+#: src/Form/Fieldset/TimelineFieldset.php:91
 msgid ""
 "Select the timestamp or interval property to use when populating the "
 "timeline."
 msgstr ""
+"Valitse aikaleima- tai aikaväliominaisuus, jota käytetään aikajanan "
+"täyttämiseen."
 
 #: src/Form/Fieldset/QueryFieldset.php:16
 msgid "Attach items using this query. No query means all items."
 msgstr ""
+"Liitä aineistot tällä kyselyllä. Jos kyselyä ei anneta, käytetään kaikkia "
+"aineistoja."
 
 #: src/Form/Fieldset/OverlaysFieldset.php:14
 msgid "Overlay mode"
-msgstr ""
+msgstr "Peittotasotila"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:15
 msgid "Exclusive"
-msgstr ""
+msgstr "Poissulkeva"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:17
 msgid "Inclusive"
-msgstr ""
+msgstr "Sisällyttävä"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:28
 msgid "Overlay"
-msgstr ""
+msgstr "Peittotaso"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:29
 msgid "Select overlay type"
-msgstr ""
+msgstr "Valitse peittotason tyyppi"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:31
 msgid "Web Map Service (WMS)"
-msgstr ""
+msgstr "Web Map Service (WMS)"
 
 #: src/Form/Fieldset/OverlaysFieldset.php:32
-msgid "IIIF Georeference Annotation"
+msgid "Web Map Tile Service (WMTS)"
 msgstr ""
 
 #: src/Form/Fieldset/OverlaysFieldset.php:33
-#: src/Form/Fieldset/OverlaysFieldset.php:124
-msgid "GeoJSON"
-msgstr ""
+msgid "IIIF Georeference Annotation"
+msgstr "IIIF-georeferenssiannotaatio"
 
-#: src/Form/Fieldset/OverlaysFieldset.php:64
+#: src/Form/Fieldset/OverlaysFieldset.php:34
+#: src/Form/Fieldset/OverlaysFieldset.php:125
+msgid "GeoJSON"
+msgstr "GeoJSON"
+
+#: src/Form/Fieldset/OverlaysFieldset.php:65
+#: src/Form/Fieldset/OverlaysFieldset.php:178
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:24
 msgid "Base URL"
 msgstr "WMS-palvelun URL"
 
-#: src/Form/Fieldset/OverlaysFieldset.php:74
+#: src/Form/Fieldset/OverlaysFieldset.php:75
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:34
 msgid "Layers"
 msgstr "Tasot"
 
-#: src/Form/Fieldset/OverlaysFieldset.php:75
+#: src/Form/Fieldset/OverlaysFieldset.php:76
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:35
 msgid "The WMS layers, if any (comma-separated)."
 msgstr "WMS-tasot pilkulla erotettuna"
 
-#: src/Form/Fieldset/OverlaysFieldset.php:85
+#: src/Form/Fieldset/OverlaysFieldset.php:86
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:45
 msgid "Styles"
-msgstr ""
+msgstr "Tyylit"
 
-#: src/Form/Fieldset/OverlaysFieldset.php:86
+#: src/Form/Fieldset/OverlaysFieldset.php:87
 #: src/Form/Fieldset/WmsOverlaysFieldset.php:46
 msgid "The WMS styles, if any (comma-separated)."
 msgstr "WMS-tyylit pilkulla erotettuna"
 
-#: src/Form/Fieldset/OverlaysFieldset.php:135
-msgid "Label property key"
-msgstr ""
-
 #: src/Form/Fieldset/OverlaysFieldset.php:136
+msgid "Label property key"
+msgstr "Seliteominaisuuden avain"
+
+#: src/Form/Fieldset/OverlaysFieldset.php:137
 msgid "Enter the GeoJSON property key to use for the popup label, if desired."
 msgstr ""
-
-#: src/Form/Fieldset/OverlaysFieldset.php:146
-msgid "Comment property key"
-msgstr ""
+"Anna GeoJSON-ominaisuuden avain, jota käytetään ponnahdusikkunan selitteenä,"
+" jos haluat."
 
 #: src/Form/Fieldset/OverlaysFieldset.php:147
+msgid "Comment property key"
+msgstr "Kommenttiominaisuuden avain"
+
+#: src/Form/Fieldset/OverlaysFieldset.php:148
 msgid ""
 "Enter the GeoJSON property key to use for the popup comment, if desired."
 msgstr ""
-
-#: src/Form/Fieldset/OverlaysFieldset.php:157
-msgid "Show GeoJSON property list?"
-msgstr ""
+"Anna GeoJSON-ominaisuuden avain, jota käytetään ponnahdusikkunan "
+"kommenttina, jos haluat."
 
 #: src/Form/Fieldset/OverlaysFieldset.php:158
+msgid "Show GeoJSON property list?"
+msgstr "Näytä GeoJSON-ominaisuusluettelo?"
+
+#: src/Form/Fieldset/OverlaysFieldset.php:159
 msgid "Do you want to show all the available GeoJSON properties in the popup?"
+msgstr ""
+"Haluatko näyttää kaikki käytettävissä olevat GeoJSON-ominaisuudet "
+"ponnahdusikkunassa?"
+
+#: src/Form/Fieldset/OverlaysFieldset.php:188
+msgid "Layer"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:198
+msgid "Tile matrix set"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:208
+msgid "Style"
+msgstr ""
+
+#: src/Form/Fieldset/OverlaysFieldset.php:209
+msgid "The WMTS style. Defaults to \"default\"."
 msgstr ""
 
 #: src/Form/Fieldset/GroupsFieldset.php:10
 #: src/Form/Fieldset/GroupsFieldset.php:84
 msgid "Resource classes"
-msgstr ""
+msgstr "Resurssiluokat"
 
 #: src/Form/Fieldset/GroupsFieldset.php:11
 msgid "Property values (is exactly)"
-msgstr ""
+msgstr "Ominaisuuden arvot (on täsmälleen)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:12
 msgid "Property values (contains)"
-msgstr ""
+msgstr "Ominaisuuden arvot (sisältää)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:13
 msgid "Property values (is resource with ID)"
-msgstr ""
+msgstr "Ominaisuuden arvot (on resurssi, jolla on ID)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:14
 msgid "Properties (has any value)"
-msgstr ""
+msgstr "Ominaisuudet (sisältää minkä tahansa arvon)"
 
 #: src/Form/Fieldset/GroupsFieldset.php:24
 msgid "Select a type…"
-msgstr ""
+msgstr "Valitse tyyppi…"
 
 #: src/Form/Fieldset/GroupsFieldset.php:35
 msgid "Feature type"
-msgstr ""
+msgstr "Kohteen tyyppi"
 
 #: src/Form/Fieldset/GroupsFieldset.php:38
 msgid "Polygon"
-msgstr ""
+msgstr "Monikulmio"
 
 #: src/Form/Fieldset/GroupsFieldset.php:39
 msgid "Point"
-msgstr ""
+msgstr "Piste"
 
 #: src/Form/Fieldset/GroupsFieldset.php:59
 msgid "Filter by resource class"
-msgstr ""
+msgstr "Suodata resurssiluokan mukaan"
 
 #: src/Form/Fieldset/GroupsFieldset.php:64
 msgid "Select resource class"
-msgstr ""
+msgstr "Valitse resurssiluokka"
 
 #: src/Form/Fieldset/GroupsFieldset.php:90
 msgid "Select resource classes"
-msgstr ""
+msgstr "Valitse resurssiluokat"
 
 #: src/Form/Fieldset/GroupsFieldset.php:123
 msgid ""
@@ -526,101 +591,217 @@ msgid ""
 "                    <li>\"Is resource with ID\": enter the resource ID (item, item set, media).</li>\n"
 "                </ul>"
 msgstr ""
+"\n"
+"                <p>Anna arvot, kukin omalle rivilleen. Kunkin arvon muoto riippuu kyselytyypistä:</p>\n"
+"                <ul>\n"
+"                    <li>\"On täsmälleen\": anna arvo, joka vastaa ominaisuuden arvoa täsmälleen.</li>\n"
+"                    <li>\"Sisältää\": anna arvo, joka vastaa mitä tahansa ominaisuuden arvon osaa.</li>\n"
+"                    <li>\"On resurssi, jolla on ID\": anna resurssin ID (aineisto, aineistojoukko, media).</li>\n"
+"                </ul>"
 
 #: src/Form/Element/UpdateFeatures.php:27
 msgid "[Remove label]"
-msgstr ""
+msgstr "[Poista selite]"
 
 #: src/Form/Element/UpdateFeatures.php:31
 msgid "Select label property"
-msgstr ""
+msgstr "Valitse seliteominaisuus"
 
 #: src/Form/Element/UpdateFeatures.php:38
 msgid "Assigned media"
-msgstr ""
+msgstr "Liitetty media"
 
 #: src/Form/Element/UpdateFeatures.php:44
 msgid "[Unassign media]"
-msgstr ""
+msgstr "[Poista median liitos]"
 
 #: src/Form/Element/CopyCoordinates.php:30
 msgid "Copy from one item property containing both latitude and longitude"
 msgstr ""
+"Kopioi yhdestä aineiston ominaisuudesta, joka sisältää sekä leveys- että "
+"pituuskoordinaatin"
 
 #: src/Form/Element/CopyCoordinates.php:31
 msgid "Copy from two item properties, one latitude and the other longitude"
 msgstr ""
+"Kopioi kahdesta aineiston ominaisuudesta, joista toinen on "
+"leveyskoordinaatti ja toinen pituuskoordinaatti"
 
 #: src/Form/Element/CopyCoordinates.php:32
 msgid "Copy from one media property containing both latitude and longitude"
 msgstr ""
+"Kopioi yhdestä median ominaisuudesta, joka sisältää sekä leveys- että "
+"pituuskoordinaatin"
 
 #: src/Form/Element/CopyCoordinates.php:33
 msgid "Copy from two media properties, one latitude and the other longitude"
 msgstr ""
+"Kopioi kahdesta median ominaisuudesta, joista toinen on leveyskoordinaatti "
+"ja toinen pituuskoordinaatti"
 
 #: src/Form/Element/CopyCoordinates.php:47
 msgid "Select latitude property"
-msgstr ""
+msgstr "Valitse leveyskoordinaatin ominaisuus"
 
 #: src/Form/Element/CopyCoordinates.php:54
 msgid "Select longitude property"
-msgstr ""
+msgstr "Valitse pituuskoordinaatin ominaisuus"
 
 #: src/Form/Element/CopyCoordinates.php:59
 msgid "Latitude Longitude"
-msgstr ""
+msgstr "Leveyskoordinaatti Pituuskoordinaatti"
 
 #: src/Form/Element/CopyCoordinates.php:60
 msgid "Longitude Latitude"
-msgstr ""
+msgstr "Pituuskoordinaatti Leveyskoordinaatti"
 
 #: src/Form/Element/CopyCoordinates.php:65
 msgid "Comma [,]"
-msgstr ""
+msgstr "Pilkku [,]"
 
 #: src/Form/Element/CopyCoordinates.php:66
 msgid "Space [ ]"
-msgstr ""
+msgstr "Välilyönti [ ]"
 
 #: src/Form/Element/CopyCoordinates.php:67
 msgid "Slash [/]"
-msgstr ""
+msgstr "Vinoviiva [/]"
 
 #: src/Form/Element/CopyCoordinates.php:68
 msgid "Colon [:]"
-msgstr ""
+msgstr "Kaksoispiste [:]"
 
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:634
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:676
+#: Module.php:936
 msgid "[Default provider]"
+msgstr "[Oletustarjoaja]"
+
+#: config/module.config.php:143
+msgid "Select a group"
 msgstr ""
 
-#: Module.php:362
+#: config/module.config.php:144
+msgid "Return to groups"
+msgstr "Palaa ryhmiin"
+
+#: Module.php:85
+msgid "CARTO (requires an API key)"
+msgstr ""
+
+#: Module.php:86
+msgid "Mapbox (requires an access token)"
+msgstr ""
+
+#: Module.php:87
+msgid "Stamen (requires a Stadia account)"
+msgstr ""
+
+#: Module.php:407
 msgid "Delete features"
-msgstr ""
+msgstr "Poista kohteet"
 
-#: Module.php:373
+#: Module.php:418
 msgid "Copy coordinates to markers"
-msgstr ""
+msgstr "Kopioi koordinaatit karttamerkintöihin"
 
-#: Module.php:381
+#: Module.php:426
 msgid "Update features"
+msgstr "Päivitä kohteet"
+
+#: Module.php:671
+#, php-format
+msgid ""
+"Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
+"providers are offered AS-IS. There is no guarantee of service or speed. "
+"Stamen needs this installation's domain registered with a Stadia account at "
+"%s; one registration covers every site. To help visitors with low vision, "
+"consider Esri.NatGeoWorldMap or OpenTopoMap, which have higher contrast "
+"between map features."
 msgstr ""
 
-#: Module.php:599
+#: Module.php:689
+msgid "Carto API key"
+msgstr ""
+
+#: Module.php:691
+#, php-format
+msgid ""
+"Without a key, Carto watermarks every tile, so Carto basemaps show "
+"OpenStreetMap instead. Applies to every site in this installation, and is "
+"visible to anyone who views a map. Get a key at %s."
+msgstr ""
+
+#: Module.php:707
+msgid "Mapbox access token"
+msgstr ""
+
+#: Module.php:709
+#, php-format
+msgid ""
+"Without a token, Mapbox serves no tiles, so the Mapbox basemap shows "
+"OpenStreetMap instead. Usage is billed to the token's account. Applies to "
+"every site in this installation, and is visible to anyone who views a map. "
+"Get a token at %s."
+msgstr ""
+
+#: Module.php:758
+msgid ""
+"Set the default bounds of the map by navigating to the desired view and "
+"clicking \"Set the current view as the default view\"."
+msgstr ""
+
+#: Module.php:810
+#, php-format
+msgid ""
+"Select the basemap provider. Leave empty to use the global setting (%s). "
+"These providers are offered AS-IS. There is no guarantee of service or "
+"speed. Basemaps needing a key or token use credentials set in global "
+"settings, and show OpenStreetMap until those are set. To help visitors with "
+"low vision, consider Esri.NatGeoWorldMap or OpenTopoMap, which have higher "
+"contrast between map features."
+msgstr ""
+
+#: Module.php:813
+msgid "[Global setting]"
+msgstr ""
+
+#: Module.php:828
+#, php-format
+msgid ""
+"Set the minimum zoom level of the map. Leave empty to use the global setting"
+" (%s)."
+msgstr ""
+
+#: Module.php:847
+#, php-format
+msgid ""
+"Set the maximum zoom level of the map. Leave empty to use the global setting"
+" (%s)."
+msgstr ""
+
+#: Module.php:865
+msgid ""
+"Set the default bounds of the map by navigating to the desired view and "
+"clicking \"Set the current view as the default view\". Leave unconfigured to"
+" use the global setting."
+msgstr ""
+
+#: Module.php:900
 msgid "Add feature presence to advanced search"
-msgstr ""
+msgstr "Lisää karttakohteiden esiintyminen tarkennettuun hakuun"
 
-#: Module.php:610
+#: Module.php:911
 msgid "Add geographic location to advanced search"
-msgstr ""
+msgstr "Lisää maantieteellinen sijainti tarkennettuun hakuun"
 
-#: Module.php:621
+#: Module.php:922
 msgid "Disable clustering of map features"
-msgstr ""
+msgstr "Poista karttakohteiden ryhmittely käytöstä"
 
-#: Module.php:622
+#: Module.php:923
 msgid ""
 "Map features are markers, polygons, polylines, and rectangles. Note that "
 "large features may not cluster."
 msgstr ""
+"Karttakohteita ovat merkinnät, monikulmiot, murtoviivat ja suorakulmiot. "
+"Huomaa, että suuria kohteita ei välttämättä ryhmitellä."

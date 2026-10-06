@@ -70,7 +70,7 @@ class MapGroups extends AbstractMap
     }
 
     public function form(PhpRenderer $view, SiteRepresentation $site,
-        SitePageRepresentation $page = null, SitePageBlockRepresentation $block = null
+        ?SitePageRepresentation $page = null, ?SitePageBlockRepresentation $block = null
     ) {
         if (!$this->isSupported()) {
             $serverVersion = $this->connection->getWrappedConnection()->getServerVersion();
