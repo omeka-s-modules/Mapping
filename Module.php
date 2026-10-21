@@ -52,6 +52,8 @@ class Module extends AbstractModule
         'Esri.WorldStreetMap' => 'Esri.WorldStreetMap',
         'Esri.WorldTerrain' => 'Esri.WorldTerrain',
         'Esri.WorldTopoMap' => 'Esri.WorldTopoMap',
+        'GeoportailFrance.plan' => 'GeoportailFrance.plan',
+        'GeoportailFrance.orthos' => 'GeoportailFrance.orthos',
         'MapBox' => 'MapBox',
         'MtbMap' => 'MtbMap',
         'OPNVKarte' => 'OPNVKarte',
