@@ -52,3 +52,9 @@ cp "$SRC/Leaflet.Deflate/dist/L.Deflate.js" "$DEST/Leaflet.Deflate/dist/"
 # @alcalin/leaflet-tilelayer-wmts — single file
 mkdir -p "$DEST/@alcalin/leaflet-tilelayer-wmts/dist"
 cp "$SRC/@alcalin/leaflet-tilelayer-wmts/dist/leaflet.tilelayer.wmts.min.js" "$DEST/@alcalin/leaflet-tilelayer-wmts/dist/"
+
+# @allmaps/leaflet — single file, pinned to 1.0.0-beta.40. The UMD file in
+# beta.42-44 requests tiles with Origin: null, which some IIIF servers reject.
+# Later versions have no UMD file.
+mkdir -p "$DEST/@allmaps/leaflet/dist/bundled"
+cp "$SRC/@allmaps/leaflet/dist/bundled/allmaps-leaflet-1.9.umd.js" "$DEST/@allmaps/leaflet/dist/bundled/"

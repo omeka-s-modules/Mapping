@@ -13,6 +13,7 @@
   },
   "dependencies": {
     "@alcalin/leaflet-tilelayer-wmts": "^2.0.2",
+    "@allmaps/leaflet": "1.0.0-beta.40",
     "leaflet": "^1.9.3",
     "leaflet-draw": "^1.0.4",
     "leaflet-geosearch": "^3.7.0",

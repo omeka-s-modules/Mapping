@@ -52,7 +52,7 @@ abstract class AbstractMap extends AbstractBlockLayout
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet-groupedlayercontrol/dist/leaflet.groupedlayercontrol.min.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('vendor/leaflet.fullscreen/Control.FullScreen.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('vendor/Leaflet.Deflate/dist/L.Deflate.js', 'Mapping'));
-        $view->headScript()->appendFile('https://cdn.jsdelivr.net/npm/@allmaps/leaflet/dist/bundled/allmaps-leaflet-1.9.umd.js');
+        $view->headScript()->appendFile($view->assetUrl('vendor/@allmaps/leaflet/dist/bundled/allmaps-leaflet-1.9.umd.js', 'Mapping'));
         $view->headScript()->appendFile($view->assetUrl('vendor/@alcalin/leaflet-tilelayer-wmts/dist/leaflet.tilelayer.wmts.min.js', 'Mapping'));
 
         $view->headScript()->appendFile($view->assetUrl('js/MappingModule.js', 'Mapping'));
