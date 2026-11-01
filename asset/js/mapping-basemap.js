@@ -146,3 +146,25 @@ const MappingBasemap = {
         };
     }
 };
+
+// Corrections to leaflet-providers' own definitions, for problems that layer
+// options can't fix. Remove each once leaflet-providers fixes it. Each is
+// guarded so that a provider renamed upstream doesn't stop every map loading.
+if (L.TileLayer.Provider.providers.GeoportailFrance) {
+    // The attribution names the portal but not IGN, the producer. The
+    // Licence Ouverte asks for at least the producer's name.
+    L.TileLayer.Provider.providers.GeoportailFrance.options.attribution = '&copy; <a href="https://www.ign.fr">IGN</a>, '
+        + '<a href="https://www.geoportail.gouv.fr/">Géoportail</a>';
+}
+if (L.TileLayer.Provider.providers.TopPlusOpen) {
+    // The tile server supports https, but leaflet-providers gives an http URL,
+    // which is mixed content on https pages. The attribution lacks the source
+    // reference the BKG terms of use require, including the year the data was
+    // retrieved, which for live tiles is the current year.
+    const topPlusOpen = L.TileLayer.Provider.providers.TopPlusOpen;
+    topPlusOpen.url = topPlusOpen.url.replace(/^http:/, 'https:');
+    topPlusOpen.options.attribution = '&copy; <a href="https://www.bkg.bund.de">BKG</a> ('
+        + new Date().getFullYear()
+        + ') <a href="https://www.govdata.de/dl-de/by-2-0">dl-de/by-2-0</a>, '
+        + '<a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_topplusopen.html">Datenquellen</a>';
+}

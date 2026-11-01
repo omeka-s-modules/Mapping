@@ -26,10 +26,12 @@ class Module extends AbstractModule
      *
      * Keys are provider names as understood by leaflet-providers; values are
      * their labels. Validate stored values against the keys (array_key_exists),
-     * never the labels. Excludes providers with limited bounds.
+     * never the labels. Every provider must show the whole world when zoomed
+     * out, so switching to one never leaves the map blank.
      *
-     * Providers needing a credential are not marked here: getBasemapProviderGroups()
-     * carries that on the group label instead.
+     * Providers needing a credential or detailed for only one country are not
+     * marked here: getBasemapProviderGroups() carries that on the group label
+     * instead.
      */
     const BASEMAP_PROVIDERS = [
         'CartoDB.DarkMatter' => 'CartoDB.DarkMatter',
@@ -52,8 +54,8 @@ class Module extends AbstractModule
         'Esri.WorldStreetMap' => 'Esri.WorldStreetMap',
         'Esri.WorldTerrain' => 'Esri.WorldTerrain',
         'Esri.WorldTopoMap' => 'Esri.WorldTopoMap',
-        'GeoportailFrance.plan' => 'GeoportailFrance.plan',
         'GeoportailFrance.orthos' => 'GeoportailFrance.orthos',
+        'GeoportailFrance.plan' => 'GeoportailFrance.plan',
         'MapBox' => 'MapBox',
         'MtbMap' => 'MtbMap',
         'OPNVKarte' => 'OPNVKarte',
@@ -71,6 +73,8 @@ class Module extends AbstractModule
         'Stadia.StamenTonerLines' => 'Stadia.StamenTonerLines',
         'Stadia.StamenTonerLite' => 'Stadia.StamenTonerLite',
         'Stadia.StamenWatercolor' => 'Stadia.StamenWatercolor',
+        'TopPlusOpen.Color' => 'TopPlusOpen.Color',
+        'TopPlusOpen.Grey' => 'TopPlusOpen.Grey',
         'USGS.USImagery' => 'USGS.USImagery',
         'USGS.USImageryTopo' => 'USGS.USImageryTopo',
         'USGS.USTopo' => 'USGS.USTopo',
@@ -85,8 +89,11 @@ class Module extends AbstractModule
      */
     const BASEMAP_PROVIDER_GROUP_LABELS = [
         'CartoDB' => 'CARTO (requires an API key)', // @translate
+        'GeoportailFrance' => 'Géoportail (detailed for France only)', // @translate
         'MapBox' => 'Mapbox (requires an access token)', // @translate
         'Stadia' => 'Stamen (requires a Stadia account)', // @translate
+        'TopPlusOpen' => 'TopPlusOpen (detailed for Europe only)', // @translate
+        'USGS' => 'USGS (detailed for the United States only)', // @translate
     ];
 
     public function init(ModuleManager $moduleManager)
