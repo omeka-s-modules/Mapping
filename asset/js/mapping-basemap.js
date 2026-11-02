@@ -5,8 +5,9 @@
  * helper, which also populates the credentials below from global settings.
  *
  * Every map in this module resolves its basemap through this object so that
- * the fallback policy, the credential handling and the layers control are
- * defined once rather than repeated per map.
+ * the fallback policy, the credential handling, the zoom range, the
+ * corrections to leaflet-providers and the layers control are defined once
+ * rather than repeated per map.
  */
 const MappingBasemap = {
     /**
@@ -32,14 +33,42 @@ const MappingBasemap = {
     },
 
     /**
-     * Leaflet option overrides applied on top of a provider's own options.
+     * The zoom levels each basemap is stretched to cover. Leaflet hides a
+     * layer entirely outside its own minZoom and maxZoom rather than scaling
+     * its tiles, so a provider with a narrower range would leave the map blank
+     * there. 19 matches the module's default maximum zoom.
      */
-    providerOverrides: {
-        // Esri's gray canvas has no tiles above zoom 16, and Leaflet hides a
-        // layer entirely above its maxZoom rather than upscaling. Serve the
-        // zoom 16 tiles scaled up instead of showing nothing; 19 matches the
-        // module's default maximum zoom.
-        'Esri.WorldGrayCanvas': {maxNativeZoom: 16, maxZoom: 19}
+    minZoom: 0,
+    maxZoom: 19,
+
+    /**
+     * Corrections to leaflet-providers' own definitions, keyed by provider
+     * name or by the part of the name before the dot. A url replaces the
+     * layer's tile URL, and anything else is passed as a layer option. Remove
+     * each once leaflet-providers fixes it.
+     */
+    providerCorrections: {
+        // The Licence Ouverte asks for the producer's name, which is IGN. The
+        // service also has tiles at zooms 0 and 1.
+        'GeoportailFrance': {
+            attribution: '&copy; <a href="https://www.ign.fr">IGN</a>, <a href="https://www.geoportail.gouv.fr/">Géoportail</a>',
+            minZoom: 0
+        },
+        // Tiles are 512 pixels with a zoom offset of -1, so map zoom 0 would
+        // ask for tile zoom -1, which doesn't exist. With a minimum of 1, map
+        // zoom 0 is drawn from tile zoom 0, scaled down.
+        'MapBox': {minZoom: 1},
+        // The tile server supports https. The BKG terms of use require a
+        // source reference with the year the data was retrieved, which for
+        // live tiles is the current year.
+        'TopPlusOpen': {
+            url: 'https://sgx.geodatenzentrum.de/wmts_topplus_open/tile/1.0.0/{variant}/default/WEBMERCATOR/{z}/{y}/{x}.png',
+            attribution: `&copy; <a href="https://www.bkg.bund.de">BKG</a> (${new Date().getFullYear()}) <a href="https://www.govdata.de/dl-de/by-2-0">dl-de/by-2-0</a>, <a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_topplusopen.html">Datenquellen</a>`
+        },
+        // The USGS services have nothing above zoom 16, and the imagery with
+        // topo labels has nothing at zoom 0.
+        'USGS': {maxZoom: 16},
+        'USGS.USImageryTopo': {minZoom: 1}
     },
 
     /**
@@ -54,6 +83,21 @@ const MappingBasemap = {
         }
         // Providers are named "Provider" or "Provider.Variant".
         return this.credentials[providerName.split('.')[0]] || null;
+    },
+
+    /**
+     * Get the corrections for a provider. Those for the exact name win over
+     * those for the part of the name before the dot.
+     *
+     * @param {string} providerName
+     * @returns {object}
+     */
+    correctionsFor: function(providerName) {
+        return Object.assign(
+            {},
+            this.providerCorrections[providerName.split('.')[0]],
+            this.providerCorrections[providerName]
+        );
     },
 
     /**
@@ -86,7 +130,9 @@ const MappingBasemap = {
      * @returns {object}
      */
     providerOptions: function(providerName) {
-        const options = Object.assign({}, this.providerOverrides[providerName]);
+        const options = this.correctionsFor(providerName);
+        // A corrected url isn't a layer option. providerLayer() applies it.
+        delete options.url;
         const credentials = this.credentialsFor(providerName);
         if (credentials) {
             // Only non-empty credentials are passed. An empty one would reach
@@ -99,6 +145,44 @@ const MappingBasemap = {
             });
         }
         return options;
+    },
+
+    /**
+     * Stretch a layer over this.minZoom to this.maxZoom. Beyond the provider's
+     * own range, Leaflet then scales the nearest tiles it has instead of
+     * showing nothing.
+     *
+     * A provider starting above zoom 2 isn't stretched down, since scaling
+     * down that far would request a huge number of tiles. None that Mapping
+     * lists does, but the map browse URL accepts any leaflet-providers name.
+     *
+     * @param {L.TileLayer} layer
+     * @returns {L.TileLayer}
+     */
+    coverZoomRange: function(layer) {
+        const options = layer.options;
+        if (options.minZoom > this.minZoom && options.minZoom <= 2) {
+            L.setOptions(layer, {minNativeZoom: options.minZoom, minZoom: this.minZoom});
+        }
+        if (options.maxZoom < this.maxZoom) {
+            L.setOptions(layer, {maxNativeZoom: options.maxZoom, maxZoom: this.maxZoom});
+        }
+        return layer;
+    },
+
+    /**
+     * Build the tile layer for an already resolved provider name.
+     *
+     * @param {string} providerName
+     * @returns {L.TileLayer}
+     */
+    providerLayer: function(providerName) {
+        const layer = L.tileLayer.provider(providerName, this.providerOptions(providerName));
+        const url = this.correctionsFor(providerName).url;
+        if (url) {
+            layer.setUrl(url, true);
+        }
+        return this.coverZoomRange(layer);
     },
 
     /**
@@ -119,15 +203,12 @@ const MappingBasemap = {
                 continue;
             }
             try {
-                return L.tileLayer.provider(name, this.providerOptions(name));
+                return this.providerLayer(name);
             } catch (error) {
                 // No such provider or variant. Try the next name.
             }
         }
-        return L.tileLayer.provider(
-            this.defaultProviderName,
-            this.providerOptions(this.defaultProviderName)
-        );
+        return this.providerLayer(this.defaultProviderName);
     },
 
     /**
@@ -146,25 +227,3 @@ const MappingBasemap = {
         };
     }
 };
-
-// Corrections to leaflet-providers' own definitions, for problems that layer
-// options can't fix. Remove each once leaflet-providers fixes it. Each is
-// guarded so that a provider renamed upstream doesn't stop every map loading.
-if (L.TileLayer.Provider.providers.GeoportailFrance) {
-    // The attribution names the portal but not IGN, the producer. The
-    // Licence Ouverte asks for at least the producer's name.
-    L.TileLayer.Provider.providers.GeoportailFrance.options.attribution = '&copy; <a href="https://www.ign.fr">IGN</a>, '
-        + '<a href="https://www.geoportail.gouv.fr/">Géoportail</a>';
-}
-if (L.TileLayer.Provider.providers.TopPlusOpen) {
-    // The tile server supports https, but leaflet-providers gives an http URL,
-    // which is mixed content on https pages. The attribution lacks the source
-    // reference the BKG terms of use require, including the year the data was
-    // retrieved, which for live tiles is the current year.
-    const topPlusOpen = L.TileLayer.Provider.providers.TopPlusOpen;
-    topPlusOpen.url = topPlusOpen.url.replace(/^http:/, 'https:');
-    topPlusOpen.options.attribution = '&copy; <a href="https://www.bkg.bund.de">BKG</a> ('
-        + new Date().getFullYear()
-        + ') <a href="https://www.govdata.de/dl-de/by-2-0">dl-de/by-2-0</a>, '
-        + '<a href="https://sgx.geodatenzentrum.de/web_public/gdz/datenquellen/datenquellen_topplusopen.html">Datenquellen</a>';
-}
