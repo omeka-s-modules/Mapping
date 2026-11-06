@@ -40,7 +40,7 @@ class IndexController extends AbstractActionController
         $itemsQuery['limit'] = 100000;
         $itemIds = $this->api()->search('items', $itemsQuery, ['returnScalar' => 'id'])->getContent();
 
-        $featuresQuery = json_decode($this->params()->fromQuery('features_query'), true);
+        $featuresQuery = json_decode($this->params()->fromQuery('features_query', '{}'), true);
         $featuresQuery['page'] = $this->params()->fromQuery('features_page');
         $featuresQuery['per_page'] = 10000;
         // An empty string would get all features, so set 0 if there are no items.
