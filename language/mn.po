@@ -146,7 +146,7 @@ msgid "Marker Image"
 msgstr ""
 
 #: view/mapping/index/form.phtml:34
-msgid " No Image"
+msgid "No Image"
 msgstr "Зураггүй"
 
 #: view/mapping/index/form.phtml:55

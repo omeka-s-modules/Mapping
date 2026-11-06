@@ -186,7 +186,7 @@ msgid "Feature image"
 msgstr ""
 
 #: view/common/mapping-item-form.phtml:41
-msgid " No Image"
+msgid "No Image"
 msgstr "Kein Bild"
 
 #: view/common/mapping-item-form.phtml:62
@@ -562,14 +562,7 @@ msgid "Select resource classes"
 msgstr ""
 
 #: src/Form/Fieldset/GroupsFieldset.php:123
-msgid ""
-"\n"
-"                <p>Enter the values, separated by new lines. The format of each value depends on the query type:</p>\n"
-"                <ul>\n"
-"                    <li>\"Is exactly\": enter a value that is an exact match to the property value.</li>\n"
-"                    <li>\"Contains\": enter a value that matches any part of the property value.</li>\n"
-"                    <li>\"Is resource with ID\": enter the resource ID (item, item set, media).</li>\n"
-"                </ul>"
+msgid "<p>Enter the values, separated by new lines. The format of each value depends on the query type:</p><ul><li>\"Is exactly\": enter a value that is an exact match to the property value.</li><li>\"Contains\": enter a value that matches any part of the property value.</li><li>\"Is resource with ID\": enter the resource ID (item, item set, media).</li></ul>"
 msgstr ""
 
 #: src/Form/Element/UpdateFeatures.php:27

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2026-10-06 11:11-0400\n"
+"POT-Creation-Date: 2026-11-06 10:45-0500\n"
 "PO-Revision-Date: 2017-09-14 20:15+0000\n"
 "Last-Translator: Hong Zhang <zhangh@unlv.nevada.edu>, 2021\n"
 "Language-Team: Chinese (China) (https://app.transifex.com/omeka/teams/14184/zh_CN/)\n"
@@ -21,31 +21,31 @@ msgstr ""
 "Language: zh_CN\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
 
-#: Module.php:541 src/StaticSiteExport/NavigationLink/Mapping.php:19
+#: Module.php:550 src/StaticSiteExport/NavigationLink/Mapping.php:19
 msgid "Map browse"
 msgstr ""
 
-#: Module.php:976 view/common/csv-import/mapping.phtml:3
+#: Module.php:985 view/common/csv-import/mapping.phtml:3
 #: view/common/csv-import/mapping.phtml:6
 #: view/common/mapping-item-form.phtml:29
 msgid "Mapping"
 msgstr "制图"
 
-#: Module.php:1027
+#: Module.php:1036
 msgid "Map feature presence"
 msgstr ""
 
-#: Module.php:1028
+#: Module.php:1037
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:5
 msgid "Has map features"
 msgstr ""
 
-#: Module.php:1028
+#: Module.php:1037
 #: view/common/advanced-search/mapping-item-feature-presence.phtml:6
 msgid "Has no map features"
 msgstr ""
 
-#: Module.php:1035
+#: Module.php:1044
 msgid "Geographic location"
 msgstr ""
 
@@ -186,8 +186,8 @@ msgid "Feature image"
 msgstr ""
 
 #: view/common/mapping-item-form.phtml:41
-msgid " No Image"
-msgstr "无图像"
+msgid "No Image"
+msgstr ""
 
 #: view/common/mapping-item-form.phtml:62
 msgid "Feature label"
@@ -252,7 +252,7 @@ msgstr ""
 msgid "Map by groups"
 msgstr ""
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:16 Module.php:935
+#: src/Form/Fieldset/DefaultViewFieldset.php:16 Module.php:944
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
 "providers are offered AS-IS. There is no guarantee of service or speed. "
@@ -262,21 +262,21 @@ msgid ""
 "between map features."
 msgstr ""
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:28 Module.php:725 Module.php:826
+#: src/Form/Fieldset/DefaultViewFieldset.php:28 Module.php:734 Module.php:835
 msgid "Minimum zoom level"
 msgstr "最小缩放级数"
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:29 Module.php:726
+#: src/Form/Fieldset/DefaultViewFieldset.php:29 Module.php:735
 msgid ""
 "Set the minimum zoom level down to which the map will be displayed. The "
 "default is 0."
 msgstr ""
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:42 Module.php:741 Module.php:845
+#: src/Form/Fieldset/DefaultViewFieldset.php:42 Module.php:750 Module.php:854
 msgid "Maximum zoom level"
 msgstr "最大缩放级数"
 
-#: src/Form/Fieldset/DefaultViewFieldset.php:43 Module.php:742
+#: src/Form/Fieldset/DefaultViewFieldset.php:43 Module.php:751
 msgid ""
 "Set the maximum zoom level up to which the map will be displayed. The "
 "default is 19."
@@ -563,13 +563,11 @@ msgstr ""
 
 #: src/Form/Fieldset/GroupsFieldset.php:123
 msgid ""
-"\n"
-"                <p>Enter the values, separated by new lines. The format of each value depends on the query type:</p>\n"
-"                <ul>\n"
-"                    <li>\"Is exactly\": enter a value that is an exact match to the property value.</li>\n"
-"                    <li>\"Contains\": enter a value that matches any part of the property value.</li>\n"
-"                    <li>\"Is resource with ID\": enter the resource ID (item, item set, media).</li>\n"
-"                </ul>"
+"<p>Enter the values, separated by new lines. The format of each value "
+"depends on the query type:</p><ul><li>\"Is exactly\": enter a value that is "
+"an exact match to the property value.</li><li>\"Contains\": enter a value "
+"that matches any part of the property value.</li><li>\"Is resource with "
+"ID\": enter the resource ID (item, item set, media).</li></ul>"
 msgstr ""
 
 #: src/Form/Element/UpdateFeatures.php:27
@@ -636,8 +634,8 @@ msgstr ""
 msgid "Colon [:]"
 msgstr ""
 
-#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:676
-#: Module.php:936
+#: view/common/navigation-link-form/mapping-map-browse.phtml:11 Module.php:685
+#: Module.php:945
 msgid "[Default provider]"
 msgstr "【默认提供者】"
 
@@ -649,31 +647,43 @@ msgstr ""
 msgid "Return to groups"
 msgstr ""
 
-#: Module.php:85
+#: Module.php:91
 msgid "CARTO (requires an API key)"
 msgstr ""
 
-#: Module.php:86
+#: Module.php:92
+msgid "Géoportail (detailed for France only)"
+msgstr ""
+
+#: Module.php:93
 msgid "Mapbox (requires an access token)"
 msgstr ""
 
-#: Module.php:87
+#: Module.php:94
 msgid "Stamen (requires a Stadia account)"
 msgstr ""
 
-#: Module.php:407
+#: Module.php:95
+msgid "TopPlusOpen (detailed for Europe only)"
+msgstr ""
+
+#: Module.php:96
+msgid "USGS (detailed for the United States only)"
+msgstr ""
+
+#: Module.php:416
 msgid "Delete features"
 msgstr ""
 
-#: Module.php:418
+#: Module.php:427
 msgid "Copy coordinates to markers"
 msgstr ""
 
-#: Module.php:426
+#: Module.php:435
 msgid "Update features"
 msgstr ""
 
-#: Module.php:671
+#: Module.php:680
 #, php-format
 msgid ""
 "Select the basemap provider. The default is OpenStreetMap.Mapnik. These "
@@ -684,11 +694,11 @@ msgid ""
 "between map features."
 msgstr ""
 
-#: Module.php:689
+#: Module.php:698
 msgid "Carto API key"
 msgstr ""
 
-#: Module.php:691
+#: Module.php:700
 #, php-format
 msgid ""
 "Without a key, Carto watermarks every tile, so Carto basemaps show "
@@ -696,11 +706,11 @@ msgid ""
 "visible to anyone who views a map. Get a key at %s."
 msgstr ""
 
-#: Module.php:707
+#: Module.php:716
 msgid "Mapbox access token"
 msgstr ""
 
-#: Module.php:709
+#: Module.php:718
 #, php-format
 msgid ""
 "Without a token, Mapbox serves no tiles, so the Mapbox basemap shows "
@@ -709,13 +719,13 @@ msgid ""
 "Get a token at %s."
 msgstr ""
 
-#: Module.php:758
+#: Module.php:767
 msgid ""
 "Set the default bounds of the map by navigating to the desired view and "
 "clicking \"Set the current view as the default view\"."
 msgstr ""
 
-#: Module.php:810
+#: Module.php:819
 #, php-format
 msgid ""
 "Select the basemap provider. Leave empty to use the global setting (%s). "
@@ -726,44 +736,44 @@ msgid ""
 "contrast between map features."
 msgstr ""
 
-#: Module.php:813
+#: Module.php:822
 msgid "[Global setting]"
 msgstr ""
 
-#: Module.php:828
+#: Module.php:837
 #, php-format
 msgid ""
 "Set the minimum zoom level of the map. Leave empty to use the global setting"
 " (%s)."
 msgstr ""
 
-#: Module.php:847
+#: Module.php:856
 #, php-format
 msgid ""
 "Set the maximum zoom level of the map. Leave empty to use the global setting"
 " (%s)."
 msgstr ""
 
-#: Module.php:865
+#: Module.php:874
 msgid ""
 "Set the default bounds of the map by navigating to the desired view and "
 "clicking \"Set the current view as the default view\". Leave unconfigured to"
 " use the global setting."
 msgstr ""
 
-#: Module.php:900
+#: Module.php:909
 msgid "Add feature presence to advanced search"
 msgstr ""
 
-#: Module.php:911
+#: Module.php:920
 msgid "Add geographic location to advanced search"
 msgstr ""
 
-#: Module.php:922
+#: Module.php:931
 msgid "Disable clustering of map features"
 msgstr ""
 
-#: Module.php:923
+#: Module.php:932
 msgid ""
 "Map features are markers, polygons, polylines, and rectangles. Note that "
 "large features may not cluster."
