@@ -148,9 +148,10 @@ const MappingBasemap = {
     },
 
     /**
-     * Stretch a layer over this.minZoom to this.maxZoom. Beyond the provider's
-     * own range, Leaflet then scales the nearest tiles it has instead of
-     * showing nothing.
+     * Stretch a layer over this.minZoom to this.maxZoom. Zoomed in closer than
+     * a provider's maximum zoom, Leaflet enlarges the view at that maximum
+     * instead of showing nothing. Where the provider has no tile at its
+     * maximum, such as a regional basemap outside its region, nothing shows.
      *
      * A provider starting above zoom 2 isn't stretched down, since scaling
      * down that far would request a huge number of tiles. None that Mapping
