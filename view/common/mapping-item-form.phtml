@@ -38,7 +38,7 @@ if (isset($item)) {
     <div id="mapping-feature-image-selector" class="sidebar">
         <a href="#" class="sidebar-close o-icon-close"><span class="screen-reader-text"><?php echo $this->translate('Close Me'); ?></span></a>
         <h3><?php echo $this->translate('Feature image'); ?></h3>
-        <label><input type="radio" class="mapping-feature-image-select" name="feature-image" value="" checked><?php echo $this->translate(' No Image'); ?></label>
+        <label><input type="radio" class="mapping-feature-image-select" name="feature-image" value="" checked> <?php echo $this->translate('No Image'); ?></label>
         <?php foreach ($itemMedia as $media): ?>
         <?php if ($media->hasThumbnails()): ?>
         <label style="cursor:pointer;">
